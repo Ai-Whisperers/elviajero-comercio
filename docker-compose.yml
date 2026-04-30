@@ -7,6 +7,11 @@ services:
       - "3000"
     networks:
       - agent-net
+    volumes:
+      - viajero_data:/app/data
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=/app/data/viajero.db
     deploy:
       mode: replicated
       replicas: 2
@@ -36,6 +41,8 @@ services:
       timeout: 10s
       retries: 3
       start_period: 15s
+volumes:
+  viajero_data:
 networks:
   agent-net:
     external: true
