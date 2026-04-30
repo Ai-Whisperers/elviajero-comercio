@@ -1,36 +1,32 @@
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
-import { WhatsAppFloat } from "@/components/whatsapp-float"
 import content from "@/content/es.json"
-const footer = (content as any).footer || {}
-const whatsappData = (content as any).whatsapp || {}
-const phone = whatsappData.phone || "595981234567"
+import Link from "next/link"
 
+const c = content as any
+const promos = c.promociones?.promotions || []
 
-export default function PromocionesPage() {
-  return (
-    <>
-      <Header />
-      <section className="flex min-h-[30vh] items-center justify-center bg-surface px-4">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold text-foreground">Promociones</h1>
-          <p className="mt-3 text-lg text-muted-foreground">Aprovechá nuestras ofertas</p>
-        </div>
-      </section>
-      <section className="bg-background py-16">
-        <div className="mx-auto max-w-7xl px-4">
-          <div className="rounded-xl border-2 border-accent/30 bg-accent/5 p-8 text-center">
-            <h2 className="mb-4 text-2xl font-bold text-accent">Ofertas Activas</h2>
-            <p className="mb-6 text-muted-foreground">Consultá por WhatsApp nuestras promociones vigentes. Tenemos descuentos por cantidad y combos especiales.</p>
-            <a href="{`https://wa.me/${phone}`}" target="_blank" rel="noopener noreferrer"
-              className="inline-block rounded-lg bg-accent px-8 py-3 font-semibold text-accent-foreground transition-all hover:bg-accent/90">
-                Consultar promociones
-            </a>
+export default function Promociones() {
+  return (<><Header />
+    <section className="bg-accent py-12 text-center text-accent-foreground"><h1 className="text-4xl font-bold">{c.promociones?.hero?.headline}</h1><p className="mt-2 text-accent-foreground/80">{c.promociones?.hero?.subheadline}</p></section>
+
+    <section className="bg-background py-16"><div className="mx-auto max-w-7xl px-4">
+      <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        {promos.map((p:any,i:number)=>(
+          <div key={i} className="overflow-hidden rounded-xl border border-border bg-surface shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg">
+            {p.image && <div className="aspect-video bg-muted flex items-center justify-center overflow-hidden"><img src={p.image} alt={p.title} className="h-full w-full object-cover" /></div>}
+            <div className="p-6">
+              {p.badge && <span className="mb-3 inline-block rounded-full bg-accent px-3 py-1 text-xs font-bold text-accent-foreground">{p.badge}</span>}
+              <h3 className="mb-2 text-xl font-bold text-foreground">{p.title}</h3>
+              <p className="mb-4 text-sm text-muted-foreground">{p.description}</p>
+              <a href={p.ctaHref} target="_blank" rel="noopener noreferrer" className="inline-flex h-10 items-center justify-center rounded-lg bg-primary px-6 text-sm font-semibold text-primary-foreground transition-all hover:bg-primary/90">{p.ctaText}</a>
+            </div>
           </div>
-        </div>
-      </section>
-      <Footer businessName="El Viajero" email={footer.email} whatsapp={phone} instagram={footer.instagram} facebook={footer.facebook} />
-      <WhatsAppFloat phone={phone} />
-    </>
-  )
+        ))}
+      </div>
+      {promos.length === 0 && <div className="py-20 text-center text-muted-foreground">No hay promociones activas en este momento.</div>}
+    </div></section>
+
+    <Footer />
+  </>)
 }

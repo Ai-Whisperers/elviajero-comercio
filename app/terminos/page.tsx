@@ -1,35 +1,30 @@
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
-import { WhatsAppFloat } from "@/components/whatsapp-float"
 import content from "@/content/es.json"
-const footer = (content as any).footer || {}
-const whatsappData = (content as any).whatsapp || {}
-const phone = whatsappData.phone || "595981234567"
 
+const c = content as any
 
 export default function TerminosPage() {
   return (
     <>
       <Header />
-      <section className="flex min-h-[30vh] items-center justify-center bg-surface px-4">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold text-foreground">Términos y Condiciones</h1>
-        </div>
-      </section>
       <section className="bg-background py-16">
-        <div className="mx-auto max-w-3xl px-4 text-muted-foreground leading-relaxed">
-          <p className="mb-4">Al realizar una compra en El Viajero, aceptás los siguientes términos:</p>
-          <ol className="list-decimal pl-6 space-y-3">
-            <li><strong className="text-foreground">Pedidos:</strong> Todos los pedidos se realizan a través de WhatsApp. La confirmación está sujeta a disponibilidad de stock.</li>
-            <li><strong className="text-foreground">Pagos:</strong> Aceptamos efectivo, transferencia bancaria, y tarjetas. El pago debe completarse antes del envío o entrega.</li>
-            <li><strong className="text-foreground">Envíos:</strong> Realizamos entregas en Asunción y área metropolitana. Los tiempos de entrega se coordinan individualmente.</li>
-            <li><strong className="text-foreground">Cambios:</strong> Aceptamos cambios dentro de los 7 días posteriores a la compra, con el producto en perfecto estado.</li>
-            <li><strong className="text-foreground">Garantía:</strong> Todos nuestros productos cuentan con garantía. Consultá los términos específicos con nuestro equipo.</li>
-          </ol>
+        <div className="mx-auto max-w-3xl px-4">
+          <h1 className="mb-8 text-4xl font-bold text-foreground">Términos y Condiciones</h1>
+          <div className="prose prose-gray max-w-none text-muted-foreground">
+            <p>Al realizar una compra o consulta en {c.businessName}, aceptas los siguientes términos y condiciones.</p>
+            <h2 className="mt-8 text-xl font-semibold text-foreground">Productos y precios</h2>
+            <p>Los precios están expresados en Guaraníes (Gs.) y Dólares Americanos (USD). Nos reservamos el derecho de modificar precios sin previo aviso.</p>
+            <h2 className="mt-8 text-xl font-semibold text-foreground">Pedidos</h2>
+            <p>Los pedidos se realizan a través de WhatsApp. La confirmación del pedido está sujeta a disponibilidad de stock.</p>
+            <h2 className="mt-8 text-xl font-semibold text-foreground">Envíos</h2>
+            <p>Realizamos envíos en Asunción y área metropolitana. El envío es gratuito en compras desde Gs. 300.000. Consulta por envíos al interior.</p>
+            <h2 className="mt-8 text-xl font-semibold text-foreground">Cambios y devoluciones</h2>
+            <p>Aceptamos cambios dentro de los 7 días posteriores a la compra, con el producto en su estado original y empaque.</p>
+          </div>
         </div>
       </section>
-      <Footer businessName="El Viajero" email={footer.email} whatsapp={phone} instagram={footer.instagram} facebook={footer.facebook} />
-      <WhatsAppFloat phone={phone} />
+      <Footer />
     </>
   )
 }
