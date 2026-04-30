@@ -3,6 +3,7 @@ import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { CartSidebar } from "@/components/cart-sidebar"
 import { PromoCarousel } from "@/components/promo-carousel"
+import { HeroCarousel } from "@/components/hero-carousel"
 import { CookieConsent } from "@/components/cookie-consent"
 import { WhatsAppFloat } from "@/components/whatsapp-float"
 import { CartProvider } from "@/lib/cart-context"
@@ -19,8 +20,10 @@ const testimonials = h.testimonials || []
 const features = h.features?.items || []
 const stats = h.stats?.items || []
 const promotions = c.promociones?.promotions || []
+const newArrivals = h.newArrivals?.products || []
 const featuredProducts = h.featuredProducts?.products || products.slice(0, 6)
 const bestSellers = h.bestSellers?.products || products.slice(0, 4)
+const storeLocator = c.storeLocator || {}
 
 function AnimatedStat({ value, label }: { value: string; label: string }) {
   const [display, setDisplay] = useState("0")
@@ -64,21 +67,7 @@ function HomePage() {
     <>
       <Header onCartClick={() => setCartOpen(true)} />
       <PromoCarousel />
-
-      {/* Hero */}
-      <section className="relative flex min-h-[70vh] items-center justify-center overflow-hidden" style={{ backgroundImage: "url(/images/hero-bg.svg)", backgroundSize: "cover", backgroundPosition: "center" }}>
-        <div className="absolute inset-0 bg-black/30" />
-        <div className="relative z-10 mx-auto max-w-4xl px-4 text-center">
-          <div className="rounded-2xl bg-white/10 p-8 backdrop-blur-md sm:p-12">
-            <h1 className="mb-4 text-4xl font-bold tracking-tight text-white sm:text-5xl">{h.hero?.headline}</h1>
-            <p className="mx-auto mb-8 max-w-2xl text-lg text-white/90">{h.hero?.subheadline}</p>
-            <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-              <Link href={h.hero?.ctaPrimaryHref || "/tienda"} className="inline-flex h-12 items-center justify-center rounded-lg bg-white px-10 text-sm font-semibold text-primary shadow-sm transition-all hover:bg-white/90 hover:scale-105">{h.hero?.ctaPrimaryText}</Link>
-              <a href={h.hero?.ctaSecondaryHref} target="_blank" rel="noopener noreferrer" className="inline-flex h-12 items-center justify-center rounded-lg border-2 border-white px-10 text-sm font-semibold text-white transition-all hover:bg-white/20 hover:scale-105">{h.hero?.ctaSecondaryText}</a>
-            </div>
-          </div>
-        </div>
-      </section>
+      <HeroCarousel />
 
       {/* Animated Stats */}
       {stats.length > 0 && (
@@ -93,47 +82,53 @@ function HomePage() {
         </section>
       )}
 
-      {/* Featured Products */}
-      {featuredProducts.length > 0 && (
+      {/* Nuevo en Stock carousel */}
+      {newArrivals.length > 0 && (
         <section className="bg-background py-16">
           <div className="mx-auto max-w-7xl px-4">
-            <h2 className="mb-2 text-center text-3xl font-bold text-foreground">{h.featuredProducts?.title || "Productos Destacados"}</h2>
-            <p className="mb-10 text-center text-muted-foreground">{h.featuredProducts?.subtitle || ""}</p>
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {featuredProducts.slice(0, 6).map((p: any, i: number) => (
-                <Link key={i} href="/tienda" className="group overflow-hidden rounded-xl border border-border bg-surface shadow-sm transition-all hover:-translate-y-1 hover:shadow-md">
-                  <div className="aspect-[3/2] bg-muted p-4 flex items-center justify-center">
-                    {p.imageUrl && <Image src={p.imageUrl} alt={p.name} width={400} height={267} className="h-full w-full object-contain" />}
+            <div className="mb-8 flex items-center justify-between">
+              <div>
+                <h2 className="text-3xl font-bold text-foreground">{h.newArrivals?.title || "Nuevo en Stock"}</h2>
+                <p className="text-muted-foreground">{h.newArrivals?.subtitle || ""}</p>
+              </div>
+              <Link href="/tienda" className="text-sm font-semibold text-primary hover:underline">Ver todo</Link>
+            </div>
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-8">
+              {newArrivals.slice(0, 8).map((p: any, i: number) => (
+                <Link key={i} href="/tienda" className="group text-center">
+                  <div className="mb-2 overflow-hidden rounded-xl border border-border bg-surface p-2 transition-all group-hover:-translate-y-1 group-hover:shadow-md">
+                    <div className="aspect-square flex items-center justify-center bg-muted rounded-lg">
+                      {p.imageUrl && <Image src={p.imageUrl} alt={p.name} width={120} height={120} className="h-full w-full object-contain p-2" />}
+                    </div>
                   </div>
-                  <div className="p-4">
-                    {p.brand && <p className="text-xs font-medium text-muted-foreground">{p.brand}</p>}
-                    <h3 className="font-semibold text-foreground group-hover:text-primary">{p.name}</h3>
-                    <p className="text-lg font-bold text-primary mt-1">{p.price}</p>
-                  </div>
+                  <p className="text-xs font-medium text-foreground line-clamp-2 group-hover:text-primary">{p.name}</p>
+                  <p className="text-xs font-bold text-primary mt-0.5">{p.price}</p>
                 </Link>
               ))}
-            </div>
-            <div className="mt-8 text-center">
-              <Link href="/tienda" className="inline-flex h-10 items-center justify-center rounded-lg bg-primary px-8 text-sm font-semibold text-primary-foreground transition-all hover:bg-primary/90">Ver todos los productos</Link>
             </div>
           </div>
         </section>
       )}
 
-      {/* Best Sellers */}
-      {bestSellers.length > 0 && (
+      {/* Featured Products */}
+      {featuredProducts.length > 0 && (
         <section className="bg-surface-light py-16">
           <div className="mx-auto max-w-7xl px-4">
-            <h2 className="mb-8 text-center text-3xl font-bold text-foreground">{h.bestSellers?.title || "Los Más Vendidos"}</h2>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {bestSellers.slice(0, 4).map((p: any, i: number) => (
-                <Link key={i} href="/tienda" className="flex items-center gap-4 rounded-xl border border-border bg-white p-4 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md">
-                  <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-lg bg-muted">
-                    {p.imageUrl && <Image src={p.imageUrl} alt={p.name} width={64} height={64} className="h-full w-full object-contain p-1" />}
+            <div className="mb-8 flex items-center justify-between">
+              <h2 className="text-3xl font-bold text-foreground">{h.featuredProducts?.title || "Productos Destacados"}</h2>
+              <Link href="/tienda" className="text-sm font-semibold text-primary hover:underline">Ver todos</Link>
+            </div>
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {featuredProducts.slice(0, 6).map((p: any, i: number) => (
+                <Link key={i} href="/tienda" className="group overflow-hidden rounded-xl border border-border bg-white shadow-sm transition-all hover:-translate-y-1 hover:shadow-md">
+                  <div className="aspect-[3/2] bg-muted p-4 flex items-center justify-center">
+                    {p.imageUrl && <Image src={p.imageUrl} alt={p.name} width={400} height={267} className="h-full w-full object-contain" />}
                   </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-sm font-semibold text-foreground line-clamp-1">{p.name}</p>
-                    <p className="text-sm font-bold text-primary">{p.price}</p>
+                  <div className="p-4">
+                    {p.brand && <p className="text-xs font-medium text-muted-foreground">{p.brand}</p>}
+                    <h3 className="font-semibold text-foreground group-hover:text-primary line-clamp-1">{p.name}</h3>
+                    <p className="text-lg font-bold text-primary mt-1">{p.price}</p>
+                    {p.priceBefore && <p className="text-xs text-muted-foreground line-through">{p.priceBefore}</p>}
                   </div>
                 </Link>
               ))}
@@ -167,24 +162,47 @@ function HomePage() {
         </section>
       )}
 
-      {/* Seasonal Offers */}
-      {promotions.length > 0 && (
+      {/* Store Locator */}
+      {storeLocator.title && (
         <section className="bg-surface-light py-16">
-          <div className="mx-auto max-w-7xl px-4">
-            <h2 className="mb-8 text-center text-3xl font-bold text-foreground">Ofertas de Temporada</h2>
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {promotions.map((p: any, i: number) => (
-                <div key={i} className="group relative overflow-hidden rounded-xl shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg">
-                  <div className="aspect-video bg-muted">
-                    {p.image && <img src={p.image} alt={p.title} className="h-full w-full object-cover transition-transform group-hover:scale-105" />}
+          <div className="mx-auto max-w-5xl px-4">
+            <div className="grid gap-8 sm:grid-cols-2">
+              <div>
+                <h2 className="mb-4 text-3xl font-bold text-foreground">{storeLocator.title}</h2>
+                <p className="mb-6 text-muted-foreground">{storeLocator.description}</p>
+                <div className="flex flex-col gap-3 text-sm">
+                  <div className="flex items-start gap-3">
+                    <span className="mt-0.5 text-primary text-lg">📍</span>
+                    <div><p className="font-semibold text-foreground">Dirección</p><p className="text-muted-foreground">{storeLocator.address}</p></div>
                   </div>
-                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
-                    {p.badge && <span className="mb-1 inline-block rounded-full bg-accent px-2 py-0.5 text-xs font-bold text-accent-foreground">{p.badge}</span>}
-                    <h3 className="text-lg font-bold text-white">{p.title}</h3>
-                    <p className="text-sm text-white/80">{p.description}</p>
+                  <div className="flex items-start gap-3">
+                    <span className="mt-0.5 text-primary text-lg">🕐</span>
+                    <div><p className="font-semibold text-foreground">Horarios</p><p className="text-muted-foreground">{storeLocator.hours}</p></div>
+                  </div>
+                  <div className="flex gap-3 mt-4">
+                    <a href={storeLocator.googleMapsUrl} target="_blank" rel="noopener noreferrer"
+                      className="inline-flex h-10 items-center justify-center rounded-lg bg-primary px-6 text-sm font-semibold text-primary-foreground transition-all hover:bg-primary/90">
+                      Google Maps
+                    </a>
+                    <a href={`https://wa.me/${storeLocator.whatsappNumber}?text=${encodeURIComponent(storeLocator.whatsappText || "Hola, quiero la dirección")}`} target="_blank" rel="noopener noreferrer"
+                      className="inline-flex h-10 items-center justify-center rounded-lg border border-primary px-6 text-sm font-semibold text-primary transition-all hover:bg-primary/5">
+                      WhatsApp
+                    </a>
                   </div>
                 </div>
-              ))}
+              </div>
+              <div className="overflow-hidden rounded-xl border border-border shadow-sm">
+                <iframe
+                  src={`https://maps.google.com/maps?q=${encodeURIComponent(storeLocator.address)}&output=embed`}
+                  width="100%"
+                  height="300"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="Ubicación de El Viajero"
+                />
+              </div>
             </div>
           </div>
         </section>
@@ -225,6 +243,25 @@ function HomePage() {
           </div>
         </section>
       )}
+
+      {/* Payment Icons */}
+      <section className="bg-primary/5 py-10">
+        <div className="mx-auto max-w-7xl px-4 text-center">
+          <p className="mb-4 text-sm font-medium text-muted-foreground">Medios de pago</p>
+          <div className="flex flex-wrap items-center justify-center gap-6">
+            <div className="flex h-10 w-16 items-center justify-center rounded-lg bg-white shadow-sm text-sm font-bold text-foreground">VISA</div>
+            <div className="flex h-10 w-16 items-center justify-center rounded-lg bg-white shadow-sm text-sm font-bold text-foreground">MC</div>
+            <div className="flex h-10 w-16 items-center justify-center rounded-lg bg-white shadow-sm text-xs font-bold text-blue-600">Mercado Pago</div>
+            <div className="flex h-10 w-16 items-center justify-center rounded-lg bg-white shadow-sm text-sm font-bold text-foreground">Pagopar</div>
+            <div className="flex h-10 w-16 items-center justify-center rounded-lg bg-white shadow-sm text-sm font-bold text-foreground">Bancard</div>
+            <div className="flex h-10 w-16 items-center justify-center rounded-lg bg-white shadow-sm text-xs font-bold text-foreground">Efectivo</div>
+            <div className="flex h-10 w-16 items-center justify-center rounded-lg bg-white shadow-sm text-xs font-bold text-foreground">Transf.</div>
+          </div>
+          {c.paymentMethods?.installments && (
+            <p className="mt-3 text-xs text-muted-foreground">{c.paymentMethods.installments}</p>
+          )}
+        </div>
+      </section>
 
       {/* Newsletter */}
       <section className="bg-primary py-16">

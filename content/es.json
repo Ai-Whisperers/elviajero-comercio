@@ -137,7 +137,8 @@
           "specs": "4 pers | 3 kg | 210x210x130cm | Impermeable 2000mm",
           "stock": 8,
           "weight": "3.0 kg",
-          "featured": true
+          "featured": true,
+          "isNew": true
         },
         {
           "name": "Bolsa de Dormir 0°C",
@@ -149,7 +150,8 @@
           "specs": "Relleno sintético | 1.8 kg | 220x80cm | Compresión incluida",
           "stock": 15,
           "weight": "1.8 kg",
-          "featured": true
+          "featured": true,
+          "isNew": true
         },
         {
           "name": "Silla Plegable Pescador",
@@ -161,7 +163,8 @@
           "specs": "120kg máx | Aluminio | 2.5 kg | Posavasos + bolsillo",
           "stock": 20,
           "weight": "2.5 kg",
-          "featured": false
+          "featured": false,
+          "isNew": true
         },
         {
           "name": "Linterna LED 1000lm",
@@ -173,7 +176,8 @@
           "specs": "1000 lúmenes | USB recargable | IPX4 | 3 modos",
           "stock": 25,
           "weight": "0.3 kg",
-          "featured": true
+          "featured": true,
+          "isNew": true
         },
         {
           "name": "Caña Telescopica 3m",
@@ -185,7 +189,8 @@
           "specs": "3m | Fibra de vidrio | Anillos cerámicos | 6 tramos",
           "stock": 12,
           "weight": "0.6 kg",
-          "featured": false
+          "featured": false,
+          "isNew": true
         },
         {
           "name": "Chaleco Salvavidas",
@@ -197,7 +202,8 @@
           "specs": "Talle M a XXL | Aprobado autoridad marítima | Ajustable",
           "stock": 10,
           "weight": "0.8 kg",
-          "featured": false
+          "featured": false,
+          "isNew": true
         },
         {
           "name": "Mochila 60L Impermeable",
@@ -209,7 +215,8 @@
           "specs": "60L | Costuras selladas | 1.5 kg | Correas acolchadas",
           "stock": 7,
           "weight": "1.5 kg",
-          "featured": true
+          "featured": true,
+          "isNew": false
         },
         {
           "name": "Cuchillo Multiuso",
@@ -221,7 +228,8 @@
           "specs": "15 herramientas | Acero inoxidable | Funda nylon",
           "stock": 30,
           "weight": "0.35 kg",
-          "featured": false
+          "featured": false,
+          "isNew": false
         },
         {
           "name": "Camara Dashcam HD",
@@ -233,7 +241,8 @@
           "specs": "1080p | Visión nocturna | SD 32GB incluida",
           "stock": 6,
           "weight": "0.2 kg",
-          "featured": false
+          "featured": false,
+          "isNew": false
         },
         {
           "name": "Inflador 12V Portatil",
@@ -245,7 +254,8 @@
           "specs": "12V | Digital | Apagado automático | Adaptadores",
           "stock": 18,
           "weight": "0.5 kg",
-          "featured": false
+          "featured": false,
+          "isNew": false
         },
         {
           "name": "Casco Integral Moto",
@@ -257,7 +267,8 @@
           "specs": "DOT certificado | Visor antihumedad | Talle M-XL",
           "stock": 5,
           "weight": "1.4 kg",
-          "featured": true
+          "featured": true,
+          "isNew": false
         },
         {
           "name": "Conservadora 20L",
@@ -269,7 +280,8 @@
           "specs": "20L | 24h frío | Asa reforzada | Cierre hermético",
           "stock": 14,
           "weight": "2.0 kg",
-          "featured": false
+          "featured": false,
+          "isNew": false
         },
         {
           "name": "Parrilla Portátil Doble",
@@ -281,7 +293,8 @@
           "specs": "Doble parrilla | Acero cromado | Plegable | Bolsa incluida",
           "stock": 9,
           "weight": "3.5 kg",
-          "featured": false
+          "featured": false,
+          "isNew": false
         },
         {
           "name": "Hamaca 2m",
@@ -293,7 +306,8 @@
           "specs": "2m | Nylon reforzado | 150kg máx | Cuerdas + bolsa",
           "stock": 22,
           "weight": "0.8 kg",
-          "featured": false
+          "featured": false,
+          "isNew": false
         },
         {
           "name": "Toldo Sombra 3x3",
@@ -306,7 +320,8 @@
           "specs": "3x3m | UV 50+ | Impermeable | Postes + estacas",
           "stock": 4,
           "weight": "2.8 kg",
-          "featured": false
+          "featured": false,
+          "isNew": false
         },
         {
           "name": "Ventilador Recargable",
@@ -318,7 +333,8 @@
           "specs": "USB recargable | 3 velocidades | LED | 8h autonomía",
           "stock": 16,
           "weight": "0.4 kg",
-          "featured": false
+          "featured": false,
+          "isNew": false
         },
         {
           "name": "Caja Herramientas Pesca",
@@ -330,7 +346,8 @@
           "specs": "Bandejas extraíbles | Impermeable | Organizador",
           "stock": 11,
           "weight": "1.2 kg",
-          "featured": false
+          "featured": false,
+          "isNew": false
         },
         {
           "name": "Señuelos Surtidos (10u)",
@@ -342,7 +359,8 @@
           "specs": "10 unidades | Colores surtidos | Cucharitas + spinner + vinilo",
           "stock": 40,
           "weight": "0.15 kg",
-          "featured": false
+          "featured": false,
+          "isNew": false
         },
         {
           "name": "Red de Pesca 3m",
@@ -354,7 +372,8 @@
           "specs": "3m | Nylon trenzado | Mango telescópico",
           "stock": 8,
           "weight": "0.5 kg",
-          "featured": false
+          "featured": false,
+          "isNew": false
         },
         {
           "name": "Boyas Flotantes (6u)",
@@ -366,7 +385,8 @@
           "specs": "6 unidades | Alta visibilidad | Brochetas incluidas",
           "stock": 50,
           "weight": "0.1 kg",
-          "featured": false
+          "featured": false,
+          "isNew": false
         },
         {
           "name": "Botas Montaña",
@@ -379,7 +399,8 @@
           "specs": "Cuero impermeable | Suela vibram | Talle 38-44",
           "stock": 3,
           "weight": "1.2 kg",
-          "featured": false
+          "featured": false,
+          "isNew": false
         },
         {
           "name": "Termo Acero 1L",
@@ -391,7 +412,8 @@
           "specs": "1L | Doble pared | 12h caliente / 24h frío",
           "stock": 20,
           "weight": "0.4 kg",
-          "featured": true
+          "featured": true,
+          "isNew": false
         },
         {
           "name": "Mochila Térmica",
@@ -403,7 +425,8 @@
           "specs": "20L | Aislamiento térmico | Correas ajustables",
           "stock": 13,
           "weight": "0.5 kg",
-          "featured": false
+          "featured": false,
+          "isNew": false
         },
         {
           "name": "Kit Botiquín",
@@ -415,7 +438,8 @@
           "specs": "Vendas + gasa + apósitos + tijera + pinza + alcohol + yodo",
           "stock": 25,
           "weight": "0.3 kg",
-          "featured": false
+          "featured": false,
+          "isNew": false
         },
         {
           "name": "Eslingas Amarre 5t",
@@ -427,7 +451,8 @@
           "specs": "Par 5m x 5t | Ganchos forjados",
           "stock": 10,
           "weight": "2.0 kg",
-          "featured": false
+          "featured": false,
+          "isNew": false
         },
         {
           "name": "Extintor 2kg ABC",
@@ -439,7 +464,8 @@
           "specs": "2kg | Polvo químico ABC | Soporte auto | Recargable",
           "stock": 7,
           "weight": "2.5 kg",
-          "featured": true
+          "featured": true,
+          "isNew": false
         },
         {
           "name": "Tiras Remolque 4m",
@@ -451,7 +477,8 @@
           "specs": "4m | Nylon alta resistencia | 3.500kg capacidad",
           "stock": 9,
           "weight": "1.0 kg",
-          "featured": false
+          "featured": false,
+          "isNew": false
         },
         {
           "name": "Guantes Moto",
@@ -463,7 +490,8 @@
           "specs": "Cuero sintético | Protecciones | Talle S-XL",
           "stock": 15,
           "weight": "0.3 kg",
-          "featured": false
+          "featured": false,
+          "isNew": false
         },
         {
           "name": "Rastreador GPS",
@@ -476,7 +504,8 @@
           "specs": "GPS antirrobo | App móvil | Alertas tiempo real",
           "stock": 4,
           "weight": "0.1 kg",
-          "featured": false
+          "featured": false,
+          "isNew": false
         },
         {
           "name": "Sombrilla Playa 1.8m",
@@ -488,7 +517,8 @@
           "specs": "1.8m | Antiviento | UV 50+ | Bolsa transporte",
           "stock": 6,
           "weight": "1.8 kg",
-          "featured": false
+          "featured": false,
+          "isNew": false
         },
         {
           "name": "Silla Playa Plegable",
@@ -500,7 +530,8 @@
           "specs": "Aluminio | Respaldo reclinable | 120kg máx",
           "stock": 12,
           "weight": "1.5 kg",
-          "featured": false
+          "featured": false,
+          "isNew": false
         },
         {
           "name": "Bebedero Automático",
@@ -512,7 +543,8 @@
           "specs": "Acero inoxidable | Flotador automático | 10L",
           "stock": 8,
           "weight": "0.8 kg",
-          "featured": false
+          "featured": false,
+          "isNew": false
         },
         {
           "name": "Comedero Acero",
@@ -524,7 +556,8 @@
           "specs": "Dos bandejas | Patas reforzadas | Desarmable",
           "stock": 10,
           "weight": "1.0 kg",
-          "featured": false
+          "featured": false,
+          "isNew": false
         },
         {
           "name": "Kit Herramientas Campo",
@@ -536,7 +569,8 @@
           "specs": "Pala + azada + rastrillo | Mango ergonómico",
           "stock": 8,
           "weight": "2.2 kg",
-          "featured": false
+          "featured": false,
+          "isNew": false
         }
       ]
     },
@@ -719,6 +753,118 @@
           "stock": 8,
           "weight": "0.5 kg",
           "featured": false
+        }
+      ]
+    },
+    "heroCarousel": {
+      "enabled": true,
+      "interval": 6000,
+      "slides": [
+        {
+          "image": "/images/hero-bg.svg",
+          "title": "Equipate para tu próxima aventura",
+          "subtitle": "Camping, pesca, outdoor — todo en un solo lugar",
+          "ctaText": "Explorá la Tienda",
+          "ctaHref": "/tienda"
+        },
+        {
+          "image": "/images/categories/camping.svg",
+          "title": "Ofertas en Camping",
+          "subtitle": "Carpas, bolsas de dormir, linternas y más con precios especiales",
+          "ctaText": "Ver Ofertas",
+          "ctaHref": "/promociones"
+        },
+        {
+          "image": "/images/categories/pesca.svg",
+          "title": "Pesca: Temporada Alta",
+          "subtitle": "Equipate con las mejores cañas, señuelos y accesorios",
+          "ctaText": "Ver Productos",
+          "ctaHref": "/tienda#Pesca"
+        }
+      ]
+    },
+    "showOutOfStock": false,
+    "newArrivals": {
+      "title": "Nuevo en Stock",
+      "subtitle": "Los últimos productos que llegaron",
+      "products": [
+        {
+          "name": "Carpa 4 Personas",
+          "category": "Camping",
+          "price": "Gs. 450.000",
+          "description": "Impermeable, fácil de armar, incluye bolsa de transporte. Ideal para familias.",
+          "imageUrl": "/images/productos/carpa-4p.svg",
+          "brand": "OutdoorPro",
+          "specs": "4 pers | 3 kg | 210x210x130cm | Impermeable 2000mm",
+          "stock": 8,
+          "weight": "3.0 kg",
+          "featured": true,
+          "isNew": true
+        },
+        {
+          "name": "Bolsa de Dormir 0°C",
+          "category": "Camping",
+          "price": "Gs. 180.000",
+          "description": "Temperatura confort de 0°C, relleno sintético, compacta y liviana.",
+          "imageUrl": "/images/productos/bolsa-dormir.svg",
+          "brand": "SleepWell",
+          "specs": "Relleno sintético | 1.8 kg | 220x80cm | Compresión incluida",
+          "stock": 15,
+          "weight": "1.8 kg",
+          "featured": true,
+          "isNew": true
+        },
+        {
+          "name": "Silla Plegable Pescador",
+          "category": "Camping",
+          "price": "Gs. 85.000",
+          "description": "Con posavasos y bolsillo lateral. Soporto hasta 120kg.",
+          "imageUrl": "/images/productos/silla-plegable.svg",
+          "brand": "CampMaster",
+          "specs": "120kg máx | Aluminio | 2.5 kg | Posavasos + bolsillo",
+          "stock": 20,
+          "weight": "2.5 kg",
+          "featured": false,
+          "isNew": true
+        },
+        {
+          "name": "Linterna LED 1000lm",
+          "category": "Camping",
+          "price": "Gs. 65.000",
+          "description": "Recargable USB, 3 modos de luz, resistencia al agua IPX4.",
+          "imageUrl": "/images/productos/linterna-led.svg",
+          "brand": "BrightLight",
+          "specs": "1000 lúmenes | USB recargable | IPX4 | 3 modos",
+          "stock": 25,
+          "weight": "0.3 kg",
+          "featured": true,
+          "isNew": true
+        },
+        {
+          "name": "Caña Telescopica 3m",
+          "category": "Pesca",
+          "price": "Gs. 140.000",
+          "description": "Fibra de vidrio, anillos ceramicos, mango de corcho. Ideal para principiantes y expertos.",
+          "imageUrl": "/images/productos/cana-pesca.svg",
+          "brand": "FishMaster",
+          "specs": "3m | Fibra de vidrio | Anillos cerámicos | 6 tramos",
+          "stock": 12,
+          "weight": "0.6 kg",
+          "featured": false,
+          "isNew": true
+        },
+        {
+          "name": "Chaleco Salvavidas",
+          "category": "Pesca",
+          "price": "Gs. 110.000",
+          "description": "Aprobado por autoridad maritima, talles M a XXL, ajustable.",
+          "imageUrl": "/images/productos/chaleco.svg",
+          "brand": "SafeFloat",
+          "specs": "Talle M a XXL | Aprobado autoridad marítima | Ajustable",
+          "stock": 10,
+          "weight": "0.8 kg",
+          "featured": false,
+          "isNew": true
         }
       ]
     }
@@ -1546,5 +1692,66 @@
   "newsletter": {
     "endpoint": "/api/subscribe",
     "listName": "El Viajero Novedades"
+  },
+  "paymentMethods": {
+    "icons": [
+      "visa",
+      "mastercard",
+      "mercadopago",
+      "pagopar",
+      "bancard"
+    ],
+    "installments": "3, 6 y 12 cuotas sin interés",
+    "note": "Consultá medios de pago disponibles"
+  },
+  "storeLocator": {
+    "title": "Visitá Nuestro Local",
+    "description": "Te esperamos en Mariano Roque Alonso para que conozcas todos nuestros productos en persona.",
+    "address": "Coronel Felipe Toledo, Barrio La Concordia",
+    "hours": "Lun-Vie 08:00-19:00 | Sáb 08:00-17:00 | Dom 09:00-13:00",
+    "googleMapsUrl": "https://maps.google.com/?q=Coronel+Felipe+Toledo+Mariano+Roque+Alonso+Paraguay",
+    "whatsappText": "Pedí dirección por WhatsApp",
+    "whatsappNumber": "595981234567"
+  },
+  "categoryMenu": {
+    "camping": [
+      "Carpas y Carpas",
+      "Bolsas de Dormir",
+      "Sillas y Mesas",
+      "Linternas y Faroles",
+      "Coolers y Conservadoras",
+      "Cocinas y Parrillas",
+      "Hamacas y Chinchorros"
+    ],
+    "pesca": [
+      "Cañas y Carretes",
+      "Señuelos y Artificiales",
+      "Cajas y Herramientas",
+      "Redes y Accesorios",
+      "Chalecos Salvavidas"
+    ],
+    "outdoor": [
+      "Mochilas y Bolsos",
+      "Cuchillos y Navajas",
+      "Botas y Calzado",
+      "Termos y Cantimploras",
+      "Botiquines"
+    ],
+    "autos": [
+      "Dashcams",
+      "Infladores 12V",
+      "Eslingas y Amarre",
+      "Extintores"
+    ],
+    "motos": [
+      "Cascos",
+      "Guantes",
+      "GPS y Rastreadores"
+    ],
+    "campo": [
+      "Herramientas",
+      "Bebederos",
+      "Comederos"
+    ]
   }
 }

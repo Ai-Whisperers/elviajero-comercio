@@ -10,18 +10,19 @@ import { useWishlist, useRecentlyViewed } from "@/lib/wishlist"
 import content from "@/content/es.json"
 import Image from "next/image"
 import Link from "next/link"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 const c = content as any
 const cat = c.home?.productCatalog || {}
 const cats = cat.categories || []
 const allProducts = cat.products || []
+const showOutOfStock = c.home?.showOutOfStock !== false
 
 function StockBadge({ stock }: { stock: number }) {
   if (stock === 0) return <span className="rounded-full bg-destructive/10 px-2 py-0.5 text-xs font-medium text-destructive">Agotado</span>
   if (stock <= 3) return <span className="rounded-full bg-warning/10 px-2 py-0.5 text-xs font-medium text-warning">Últimos {stock}</span>
   if (stock <= 5) return <span className="rounded-full bg-amber-500/10 px-2 py-0.5 text-xs font-medium text-amber-600">Quedan {stock}</span>
-  return <span className="rounded-full bg-green-700/10 px-2 py-0.5 text-xs font-medium text-green-700">En stock</span>
+  return null
 }
 
 function ProductCard({ p, onClick, addItem, isWished, toggleWish }: any) {
@@ -43,32 +44,27 @@ function ProductCard({ p, onClick, addItem, isWished, toggleWish }: any) {
         </div>
       </div>
       <div className="p-4" onClick={(e) => e.stopPropagation()}>
-        <div className="mb-2 flex items-center justify-between">
+        <div className="mb-1 flex items-center justify-between">
           {p.brand && <span className="text-xs font-medium text-muted-foreground">{p.brand}</span>}
-          {p.stock !== undefined && <StockBadge stock={p.stock} />}
+          {p.isNew && <span className="rounded-full bg-accent/10 px-2 py-0.5 text-[10px] font-bold text-accent">NUEVO</span>}
         </div>
         <h4 className="font-semibold text-foreground line-clamp-1">{p.name}</h4>
-        <p className="mt-1 text-xs text-muted-foreground line-clamp-2">{p.description}</p>
-        {p.specs && <p className="mt-1 text-[10px] text-muted-foreground/60 line-clamp-1">{p.specs}</p>}
+        {p.specs && <p className="mt-0.5 text-[10px] text-muted-foreground/60 line-clamp-1">{p.specs}</p>}
         <div className="mt-2 flex items-baseline gap-2">
-          <p className="text-lg font-bold text-primary">{p.price}</p>
+          <p className="text-xl font-bold text-primary">{p.price}</p>
           {p.priceBefore && <p className="text-sm text-muted-foreground line-through">{p.priceBefore}</p>}
         </div>
         {p.priceBefore && <span className="mt-1 inline-block rounded-full bg-accent px-2 py-0.5 text-xs font-bold text-accent-foreground">OFERTA</span>}
-        <div className="mt-3 flex gap-2">
+        <div className="mt-3 flex items-center gap-2">
+          {p.stock !== undefined && p.stock > 0 && p.stock <= 5 && <StockBadge stock={p.stock} />}
           <button
             disabled={p.stock === 0}
             onClick={() => addItem({ name: p.name, price: p.price, priceGs: parseGs(p.price), imageUrl: p.imageUrl, category: p.category, priceBefore: p.priceBefore })}
-            className={`flex flex-1 items-center justify-center rounded-lg px-3 py-2 text-sm font-semibold transition-all ${p.stock === 0 ? "cursor-not-allowed bg-muted text-muted-foreground" : "bg-primary text-primary-foreground hover:bg-primary/90"}`}
+            className={`flex flex-1 items-center justify-center rounded-lg px-4 py-2.5 text-sm font-semibold transition-all ${p.stock === 0 ? "cursor-not-allowed bg-muted text-muted-foreground" : "bg-primary text-primary-foreground hover:bg-primary/90"}`}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="mr-1"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="mr-1.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
             {p.stock === 0 ? "Agotado" : "Agregar"}
           </button>
-          <a href={`https://wa.me/595981234567?text=${encodeURIComponent((cat.orderMessageTemplate || "").replace("{{productName}}", p.name).replace("{{productPrice}}", p.price))}`} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}
-            className={`flex items-center justify-center rounded-lg border px-3 py-2 text-sm font-semibold transition-all ${p.stock === 0 ? "border-muted text-muted-foreground pointer-events-none" : "border-primary text-primary hover:bg-primary/5"}`}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="mr-1"><path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21"/></svg>WhatsApp
-          </a>
         </div>
       </div>
     </div>
@@ -82,17 +78,34 @@ function TiendaContent() {
   const [cartOpen, setCartOpen] = useState(false)
   const [selectedProduct, setSelectedProduct] = useState<any>(null)
   const [filtered, setFiltered] = useState<any[] | null>(null)
-  const displayProducts = filtered ?? allProducts
+  const [showOOS, setShowOOS] = useState(false)
+
+  // Filter out OOS products by default
+  const visibleProducts = showOOS ? allProducts : allProducts.filter((p: any) => (p.stock ?? 0) > 0)
+  const displayProducts = filtered ?? visibleProducts
 
   const handleClick = (p: any) => { addRecent(p.name); setSelectedProduct(p) }
-
   const groupedCats = cats.filter((cat: string) => displayProducts.some((p: any) => p.category === cat))
 
   return (
     <>
       <Header onCartClick={() => setCartOpen(true)} />
-      <section className="bg-primary py-12 text-center text-primary-foreground"><h1 className="text-4xl font-bold">Tienda Online</h1><p className="mt-2 text-primary-foreground/80">{c.tienda?.hero?.subheadline}</p></section>
-      <section className="bg-surface-light py-6"><div className="mx-auto max-w-7xl px-4"><SearchAndFilters products={allProducts} categories={cats} onFilteredProducts={setFiltered} /></div></section>
+      <section className="bg-primary py-12 text-center text-primary-foreground">
+        <h1 className="text-4xl font-bold">Tienda Online</h1>
+        <p className="mt-2 text-primary-foreground/80">{c.tienda?.hero?.subheadline}</p>
+      </section>
+      <section className="bg-surface-light py-6">
+        <div className="mx-auto max-w-7xl px-4">
+          <SearchAndFilters products={allProducts} categories={cats} onFilteredProducts={setFiltered} />
+          <div className="mt-2 flex items-center justify-between text-xs text-muted-foreground">
+            <span>{displayProducts.length} de {allProducts.length} productos visibles</span>
+            <label className="flex items-center gap-1.5 cursor-pointer">
+              <input type="checkbox" checked={showOOS} onChange={() => setShowOOS(!showOOS)} className="rounded border-border text-primary focus:ring-primary" />
+              Mostrar agotados
+            </label>
+          </div>
+        </div>
+      </section>
       <section className="bg-background py-16"><div className="mx-auto max-w-7xl px-4">
         {displayProducts.length === 0 && <div className="py-20 text-center"><p className="text-lg text-muted-foreground">No encontramos productos con esos filtros.</p></div>}
         {groupedCats.length === 0 && displayProducts.length > 0 && (
