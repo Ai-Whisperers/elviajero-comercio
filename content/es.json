@@ -1669,17 +1669,76 @@
       }
     ],
     "paymentMethods": [
-      "efectivo",
-      "transferencia",
-      "bancard",
-      "mercadopago",
-      "pagopar"
+      {
+        "name": "Visa",
+        "icon": "visa"
+      },
+      {
+        "name": "Mastercard",
+        "icon": "mastercard"
+      },
+      {
+        "name": "Mercado Pago",
+        "icon": "mercadopago"
+      },
+      {
+        "name": "Pagopar",
+        "icon": "pagopar"
+      },
+      {
+        "name": "Bancard",
+        "icon": "bancard"
+      },
+      {
+        "name": "Efectivo",
+        "icon": "cash"
+      },
+      {
+        "name": "Transferencia",
+        "icon": "transfer"
+      }
     ],
     "trustSignals": [
       "Envio gratis desde Gs. 300.000",
       "Cambios hasta 7 dias",
       "Garantia incluida",
       "Pago 100% seguro"
+    ],
+    "social": [
+      {
+        "name": "Instagram",
+        "url": "https://instagram.com/elviajero_py",
+        "icon": "instagram"
+      },
+      {
+        "name": "Facebook",
+        "url": "https://facebook.com/elviajeropy",
+        "icon": "facebook"
+      },
+      {
+        "name": "TikTok",
+        "url": "https://tiktok.com/@elviajero_py",
+        "icon": "tiktok"
+      },
+      {
+        "name": "YouTube",
+        "url": "https://youtube.com/@elviajero_py",
+        "icon": "youtube"
+      }
+    ],
+    "contactStrip": [
+      {
+        "icon": "📍",
+        "text": "Coronel Felipe Toledo, Barrio La Concordia (detrás de Mariam Lubricantes), Mariano Roque Alonso"
+      },
+      {
+        "icon": "📞",
+        "text": "+595 981 234 567"
+      },
+      {
+        "icon": "🕐",
+        "text": "Lun-Vie 08:00-19:00 | Sáb 08:00-17:00 | Dom 09:00-13:00"
+      }
     ]
   },
   "cookieConsent": {

@@ -1,5 +1,6 @@
 "use client"
 import { useCart } from "@/lib/cart-context"
+import { CartEmptyState } from "@/components/ui"
 
 export function CartSidebar({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { items, removeItem, updateQuantity, total, clearCart } = useCart()
@@ -26,9 +27,7 @@ export function CartSidebar({ open, onClose }: { open: boolean; onClose: () => v
         </div>
 
         <div className="overflow-y-auto px-4 py-4" style={{ maxHeight: "calc(100vh - 200px)" }}>
-          {items.length === 0 && (
-            <p className="py-16 text-center text-muted-foreground">Tu carrito está vacío</p>
-          )}
+          {items.length === 0 && <CartEmptyState />}
           {items.map((item) => (
             <div key={item.name} className="mb-3 rounded-lg border border-border bg-surface p-3">
               <div className="flex items-start justify-between gap-2">

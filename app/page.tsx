@@ -5,6 +5,7 @@ import { CartSidebar } from "@/components/cart-sidebar"
 import { PromoCarousel } from "@/components/promo-carousel"
 import { HeroCarousel } from "@/components/hero-carousel"
 import { CookieConsent } from "@/components/cookie-consent"
+import { NewsletterSuccess } from "@/components/ui"
 import { WhatsAppFloat } from "@/components/whatsapp-float"
 import { CartProvider } from "@/lib/cart-context"
 import content from "@/content/es.json"
@@ -66,6 +67,7 @@ function HomePage() {
   return (
     <>
       <Header onCartClick={() => setCartOpen(true)} />
+      <NewsletterSuccess />
       <PromoCarousel />
       <HeroCarousel />
 
