@@ -1433,7 +1433,9 @@
   },
   "whatsapp": {
     "defaultMessage": "Hola! Quisiera informacion sobre productos de El Viajero",
-    "serviceMessage": "Hola! Quisiera consultar por {{productName}}"
+    "serviceMessage": "Hola! Quisiera consultar por {{productName}}",
+    "businessNumber": "595981234567",
+    "businessLink": "https://wa.me/595981234567"
   },
   "tienda": {
     "seo": {
@@ -1921,14 +1923,44 @@
   },
   "paymentGateway": {
     "provider": "pagopar",
-    "mode": "sandbox",
-    "publicKey": "pk_test_xxxxxxxxxxxxxxxxxxxx",
+    "mode": "live",
+    "publicKey": "pk_live_xxxxxxxxxxxxxxxxxxxx",
+    "secretKey": "sk_live_xxxxxxxxxxxxxxxxxxxx",
     "currency": "PYG",
     "installments": [
       3,
       6,
       12
     ],
-    "minInstallmentAmount": 50000
+    "minInstallmentAmount": 50000,
+    "sandboxUrl": "https://sandbox.pagopar.com/api",
+    "liveUrl": "https://api.pagopar.com"
+  },
+  "supabase": {
+    "url": "https://qyvokpribmbrosafntqa.supabase.co",
+    "anonKey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF5dm9rcHJpYm1icm9zYWZudHFhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ5MzU0OTQsImV4cCI6MjA2MDUxMTQ5NH0.cV8yF7fuylgLCLR4Hn3O2gQ8OAOhS7B7JmPUPw4SXRg",
+    "tables": {
+      "products": "products",
+      "orders": "orders",
+      "customers": "customers",
+      "stock_alerts": "stock_alerts"
+    }
+  },
+  "email": {
+    "from": "El Viajero <no-reply@tiendaelviajero.com.py>",
+    "orderConfirmation": true,
+    "orderSubject": "📦 Confirmación de pedido - El Viajero",
+    "whatsappConfirmation": true
+  },
+  "abandonedCart": {
+    "enabled": true,
+    "reminderDelayMinutes": 60,
+    "reminderMessage": "¡Hola! Te recordamos que tenés productos en tu carrito en El Viajero. ¿Necesitás ayuda para completar tu compra?",
+    "maxReminders": 2
+  },
+  "backInStock": {
+    "enabled": true,
+    "notificationMethod": "whatsapp",
+    "maxAlerts": 3
   }
 }

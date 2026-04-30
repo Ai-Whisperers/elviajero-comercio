@@ -21,8 +21,13 @@ export function SearchAndFilters({
   const [priceMin, setPriceMin] = useState("")
   const [priceMax, setPriceMax] = useState("")
   const [stockFilter, setStockFilter] = useState("")
+  const [brandFilter, setBrandFilter] = useState("")
+  const [pricePreset, setPricePreset] = useState("")
 
   const parseGs = (s: string) => parseInt(s.replace(/[^\d]/g, ""), 10) || 0
+
+  // Get unique brands
+  const brands = [...new Set(products.map((p: any) => p.brand || "").filter(Boolean))].sort()
 
   const filtered = useMemo(() => {
     let result = [...products]
@@ -42,13 +47,26 @@ export function SearchAndFilters({
       result = result.filter((p) => p.category === categoryFilter)
     }
 
-    if (priceMin) {
-      const min = parseGs(priceMin)
-      result = result.filter((p) => parseGs(p.price) >= min)
+    if (brandFilter) {
+      result = result.filter((p) => p.brand === brandFilter)
     }
-    if (priceMax) {
-      const max = parseGs(priceMax)
-      result = result.filter((p) => parseGs(p.price) <= max)
+
+    // Price presets override manual inputs
+    if (pricePreset) {
+      const [min, max] = pricePreset.split("-").map(Number)
+      result = result.filter((p) => {
+        const price = parseGs(p.price)
+        return price >= (min || 0) && (max ? price <= max : true)
+      })
+    } else {
+      if (priceMin) {
+        const min = parseGs(priceMin)
+        result = result.filter((p) => parseGs(p.price) >= min)
+      }
+      if (priceMax) {
+        const max = parseGs(priceMax)
+        result = result.filter((p) => parseGs(p.price) <= max)
+      }
     }
 
     if (stockFilter === "in_stock") {
@@ -123,6 +141,18 @@ export function SearchAndFilters({
           </select>
         </div>
 
+        {/* Brand filter */}
+        {brands.length > 0 && (
+          <div>
+            <label className="mb-1 block text-xs font-medium text-muted-foreground">Marca</label>
+            <select value={brandFilter} onChange={e => setBrandFilter(e.target.value)}
+              className="w-full rounded-lg border border-input bg-background px-3 py-2.5 text-sm text-foreground outline-none focus:border-ring">
+              <option value="">Todas</option>
+              {brands.map(b => <option key={b} value={b}>{b}</option>)}
+            </select>
+          </div>
+        )}
+
         {/* Stock filter */}
         <div>
           <label className="mb-1 block text-xs font-medium text-muted-foreground">Disponibilidad</label>
@@ -144,6 +174,35 @@ export function SearchAndFilters({
             {filtered.length} de {products.length} productos
           </p>
         </div>
+      </div>
+      {/* Price preset buttons */}
+      <div className="mt-3 flex flex-wrap gap-2">
+        <span className="text-xs text-muted-foreground self-center mr-1">Precio:</span>
+        {[
+          { label: "Hasta Gs. 50mil", value: "0-50000" },
+          { label: "Gs. 50mil-150mil", value: "50000-150000" },
+          { label: "Gs. 150mil-300mil", value: "150000-300000" },
+          { label: "Más de Gs. 300mil", value: "300000-0" },
+        ].map((preset) => (
+          <button
+            key={preset.value}
+            onClick={() => {
+              setPricePreset(pricePreset === preset.value ? "" : preset.value)
+            }}
+            className={`rounded-full border px-3 py-1 text-xs font-medium transition-all ${
+              pricePreset === preset.value
+                ? "bg-primary text-primary-foreground border-primary"
+                : "border-border bg-white text-muted-foreground hover:bg-surface"
+            }`}
+          >
+            {preset.label}
+          </button>
+        ))}
+        {pricePreset && (
+          <button onClick={() => setPricePreset("")} className="text-xs text-muted-foreground hover:text-foreground underline">
+            Limpiar
+          </button>
+        )}
       </div>
     </div>
   )

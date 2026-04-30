@@ -1,14 +1,15 @@
 "use client"
-import content from "@/content/es.json"
-import Link from "next/link"
-import { useState } from "react"
 import { useCart } from "@/lib/cart-context"
 import { useRecentlyViewed } from "@/lib/wishlist"
+import Link from "next/link"
+import { useState } from "react"
+import content from "@/content/es.json"
 
 const c = content as any
 const submenu = c.categoryMenu || {}
+const allProducts = c.home?.productCatalog?.products || []
 
-export function Header({ onCartClick, onSearchToggle }: { onCartClick?: () => void; onSearchToggle?: () => void }) {
+export function Header({ onCartClick }: { onCartClick?: () => void }) {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [activeSub, setActiveSub] = useState<string | null>(null)
   const [searchOpen, setSearchOpen] = useState(false)
@@ -17,6 +18,14 @@ export function Header({ onCartClick, onSearchToggle }: { onCartClick?: () => vo
 
   const nav = c.navigation.items || []
 
+  // Predictive search results
+  const searchResults = searchQuery.trim().length > 0
+    ? allProducts.filter((p: any) =>
+        p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (p.brand || "").toLowerCase().includes(searchQuery.toLowerCase())
+      ).slice(0, 5)
+    : []
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
     if (searchQuery.trim()) {
@@ -24,20 +33,47 @@ export function Header({ onCartClick, onSearchToggle }: { onCartClick?: () => vo
     }
   }
 
+  const handleSelectProduct = (slug: string) => {
+    setSearchOpen(false)
+    setSearchQuery("")
+    window.location.href = `/producto/${slug}`
+  }
+
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-white/95 backdrop-blur-sm">
       {/* Search bar (collapsible) */}
       {searchOpen && (
-        <div className="border-b border-border bg-surface px-4 py-3">
+        <div className="border-b border-border bg-surface px-4 py-3 relative">
           <form onSubmit={handleSearch} className="mx-auto flex max-w-2xl gap-2">
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Buscá productos, marcas, categorías..."
-              className="flex-1 rounded-lg border border-input bg-background px-4 py-2.5 text-sm text-foreground outline-none focus:border-ring"
-              autoFocus
-            />
+            <div className="flex-1 relative">
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Buscá productos, marcas, categorías..."
+                className="w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm text-foreground outline-none focus:border-ring"
+                autoFocus
+              />
+              {/* Predictive results */}
+              {searchResults.length > 0 && (
+                <div className="absolute top-full left-0 right-0 z-50 mt-1 rounded-xl border border-border bg-white shadow-lg overflow-hidden">
+                  {searchResults.map((p: any) => {
+                    const slug = p.name.toLowerCase().replace(/[^a-z0-9]/g, "-").replace(/-+/g, "-")
+                    return (
+                      <button
+                        key={p.name}
+                        type="button"
+                        onClick={() => handleSelectProduct(slug)}
+                        className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm hover:bg-surface-light transition-colors"
+                      >
+                        <span className="text-xs font-medium text-muted-foreground line-clamp-1">{p.brand ? `${p.brand} - ` : ""}{p.name}</span>
+                        <span className="ml-auto text-xs font-bold text-primary shrink-0">{p.price}</span>
+                      </button>
+                    )
+                  })}
+                </div>
+              )}
+            </div>
             <button type="submit" className="rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground transition-all hover:bg-primary/90">
               Buscar
             </button>
