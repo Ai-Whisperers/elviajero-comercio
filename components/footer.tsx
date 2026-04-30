@@ -18,7 +18,9 @@ export function Footer() {
   const contactStrip = f.contactStrip || []
 
   return (
-    <footer className="bg-secondary py-12 text-secondary-foreground">
+    <footer className="bg-secondary py-12 text-secondary-foreground relative">
+      {/* Gradient top border */}
+      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent via-primary to-accent" />
       <div className="mx-auto max-w-7xl px-4">
         {/* Contact strip */}
         {contactStrip.length > 0 && (
@@ -50,7 +52,7 @@ export function Footer() {
             <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-white/70">Seguinos</h4>
             <div className="flex gap-3">
               {social.map((s: any, i: number) => (
-                <a key={i} href={s.url} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white/80 transition-all hover:bg-white/20 hover:text-white" aria-label={s.name}>
+                <a key={i} href={s.url} target="_blank" rel="noopener noreferrer" className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white/80 transition-all hover:bg-white/20 hover:text-white hover:scale-110 hover:rotate-3 active:scale-95" aria-label={s.name}>
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d={socialIcons[s.icon] || ""}/></svg>
                 </a>
               ))}

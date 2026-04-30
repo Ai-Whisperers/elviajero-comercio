@@ -24,15 +24,98 @@
   --color-warning: #EF6C00;
 }
 
+/* Dark mode overrides */
+.dark {
+  --color-primary: #4CAF50;
+  --color-primary-foreground: #0A0A0A;
+  --color-secondary: #607D8B;
+  --color-secondary-foreground: #FFFFFF;
+  --color-accent: #64B5F6;
+  --color-accent-foreground: #0A0A0A;
+  --color-background: #0A0A0A;
+  --color-surface: #1A1A2E;
+  --color-surface-light: #16213E;
+  --color-foreground: #EAEAEA;
+  --color-muted: #1A1A2E;
+  --color-muted-foreground: #A0A0B0;
+  --color-border: #2A2A3E;
+  --color-card: #1A1A2E;
+  --color-card-foreground: #EAEAEA;
+  --color-ring: #4CAF50;
+  --color-input: #2A2A3E;
+  --color-destructive: #EF5350;
+  --color-destructive-foreground: #FFFFFF;
+  --color-success: #66BB6A;
+  --color-warning: #FFA726;
+}
+
 body {
   background-color: var(--color-background);
   color: var(--color-foreground);
   font-family: 'Inter', sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 h1, h2, h3, h4 {
   font-family: 'Poppins', sans-serif;
   font-weight: 700;
+}
+
+/* Shimmer animation for skeletons */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, var(--color-muted) 25%, var(--color-surface-light) 50%, var(--color-muted) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+/* Smooth section transitions */
+.section-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+.section-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+/* Card hover lift */
+.card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* Button pulse on click */
+@keyframes button-pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.95); }
+  100% { transform: scale(1); }
+}
+.button-click:active {
+  animation: button-pulse 0.2s ease;
+}
+
+/* Smooth scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-muted-foreground);
 }
 
 /* Mobile tap improvements */
@@ -44,4 +127,11 @@ button, a, input, select, textarea {
 /* Prevent pull-to-refresh on modals */
 .overflow-y-auto {
   overscroll-behavior: contain;
+}
+
+/* Safe area for notched devices */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
 }

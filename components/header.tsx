@@ -2,7 +2,9 @@
 import { useCart } from "@/lib/cart-context"
 import { useRecentlyViewed } from "@/lib/wishlist"
 import Link from "next/link"
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { usePathname } from "next/navigation"
+import { DarkModeToggle } from "@/components/dark-mode-toggle"
 import content from "@/content/es.json"
 
 const c = content as any
@@ -14,7 +16,16 @@ export function Header({ onCartClick }: { onCartClick?: () => void }) {
   const [activeSub, setActiveSub] = useState<string | null>(null)
   const [searchOpen, setSearchOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
+  const [scrolled, setScrolled] = useState(false)
   const { itemCount } = useCart()
+  const pathname = usePathname()
+
+  // Shrink header on scroll
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 40)
+    window.addEventListener("scroll", handleScroll, { passive: true })
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
 
   const nav = c.navigation.items || []
 
@@ -40,7 +51,7 @@ export function Header({ onCartClick }: { onCartClick?: () => void }) {
   }
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-white/95 backdrop-blur-sm">
+    <header className={`sticky top-0 z-40 border-b border-border bg-white/95 backdrop-blur-sm transition-all ${scrolled ? "py-0 shadow-sm" : ""}`}>
       {/* Search bar (collapsible) */}
       {searchOpen && (
         <div className="border-b border-border bg-surface px-4 py-3 relative">
@@ -93,7 +104,8 @@ export function Header({ onCartClick }: { onCartClick?: () => void }) {
 
         {/* Desktop nav with mega menu */}
         <nav className="hidden items-center gap-0 md:flex">
-          {nav.filter((x: any) => x.href !== "/").map((n: any) => {
+          {nav.map((n: any) => {
+            const isActive = pathname === n.href || (n.href !== "/" && pathname.startsWith(n.href))
             const key = n.label.toLowerCase()
             const hasSub = key === "camping" || key === "pesca" || key === "accesorios" || key === "automóviles" || key === "motos" || key === "campo"
             const subKey = key === "accesorios" ? "outdoor" : key === "automóviles" ? "autos" : key
@@ -108,9 +120,12 @@ export function Header({ onCartClick }: { onCartClick?: () => void }) {
               >
                 <Link
                   href={n.href}
-                  className={`rounded-md px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-surface-light ${activeSub === key ? "bg-surface-light" : ""}`}
+                  className={`rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-surface-light relative ${
+                    isActive ? "text-primary" : "text-foreground"
+                  } ${activeSub === key ? "bg-surface-light" : ""}`}
                 >
                   {n.label}
+                  {isActive && <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-primary rounded-full" />}
                 </Link>
                 {hasSub && activeSub === key && items.length > 0 && (
                   <div className="absolute left-0 top-full z-50 min-w-[200px] rounded-xl border border-border bg-white p-3 shadow-lg">
@@ -143,6 +158,7 @@ export function Header({ onCartClick }: { onCartClick?: () => void }) {
           </button>
 
           {/* Cart */}
+          <DarkModeToggle />
           <button onClick={onCartClick} className="relative flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-surface-light">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>

@@ -5,6 +5,7 @@ import { CartSidebar } from "@/components/cart-sidebar"
 import { PromoCarousel } from "@/components/promo-carousel"
 import { HeroCarousel } from "@/components/hero-carousel"
 import { CookieConsent } from "@/components/cookie-consent"
+import { FadeUp, StaggerGrid, StaggerItem } from "@/components/animations/scroll-reveal"
 import { NewsletterSuccess } from "@/components/ui"
 import { WhatsAppFloat } from "@/components/whatsapp-float"
 import { CartProvider } from "@/lib/cart-context"
@@ -86,6 +87,7 @@ function HomePage() {
 
       {/* Nuevo en Stock carousel */}
       {newArrivals.length > 0 && (
+        <FadeUp>
         <section className="bg-background py-16">
           <div className="mx-auto max-w-7xl px-4">
             <div className="mb-8 flex items-center justify-between">
@@ -110,19 +112,23 @@ function HomePage() {
             </div>
           </div>
         </section>
+        </FadeUp>
       )}
 
-      {/* Featured Products */}
+      {/* Featured Products with animations */}
       {featuredProducts.length > 0 && (
+        <FadeUp>
         <section className="bg-surface-light py-16">
           <div className="mx-auto max-w-7xl px-4">
             <div className="mb-8 flex items-center justify-between">
               <h2 className="text-3xl font-bold text-foreground">{h.featuredProducts?.title || "Productos Destacados"}</h2>
               <Link href="/tienda" className="text-sm font-semibold text-primary hover:underline">Ver todos</Link>
             </div>
+            <StaggerGrid>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {featuredProducts.slice(0, 6).map((p: any, i: number) => (
-                <Link key={i} href="/tienda" className="group overflow-hidden rounded-xl border border-border bg-white shadow-sm transition-all hover:-translate-y-1 hover:shadow-md">
+                <StaggerItem key={i}>
+                <Link href="/tienda" className="group overflow-hidden rounded-xl border border-border bg-white shadow-sm transition-all hover:-translate-y-1 hover:shadow-md">
                   <div className="aspect-[3/2] bg-muted p-4 flex items-center justify-center">
                     {p.imageUrl && <Image src={p.imageUrl} alt={p.name} width={400} height={267} className="h-full w-full object-contain" />}
                   </div>
@@ -133,14 +139,18 @@ function HomePage() {
                     {p.priceBefore && <p className="text-xs text-muted-foreground line-through">{p.priceBefore}</p>}
                   </div>
                 </Link>
+                </StaggerItem>
               ))}
             </div>
+          </StaggerGrid>
           </div>
         </section>
+        </FadeUp>
       )}
 
       {/* Features */}
       {features.length > 0 && (
+        <FadeUp>
         <section className="bg-background py-16">
           <div className="mx-auto max-w-7xl px-4">
             <h2 className="mb-10 text-center text-3xl font-bold text-foreground">{h.features?.title}</h2>
@@ -162,6 +172,7 @@ function HomePage() {
             </div>
           </div>
         </section>
+        </FadeUp>
       )}
 
       {/* Store Locator */}
@@ -230,34 +241,59 @@ function HomePage() {
 
       {/* Testimonials */}
       {testimonials.length > 0 && (
+        <FadeUp>
         <section className="bg-surface py-16">
           <div className="mx-auto max-w-7xl px-4">
             <h2 className="mb-10 text-center text-3xl font-bold text-foreground">Lo que dicen nuestros clientes</h2>
-            <div className="grid gap-6 sm:grid-cols-2">
+            <StaggerGrid>
               {testimonials.map((t: any, i: number) => (
-                <div key={i} className="rounded-xl border border-border bg-white p-6 shadow-sm">
+                <StaggerItem key={i}>
+                <div className="rounded-xl border border-border bg-white p-6 shadow-sm">
                   <div className="mb-2 flex gap-1 text-amber-400">{Array.from({ length: t.rating || 5 }).map((_: any, j: number) => <span key={j}>★</span>)}</div>
                   <p className="mb-3 text-muted-foreground">&ldquo;{t.text}&rdquo;</p>
                   <p className="font-medium text-foreground">{t.name}</p>
                 </div>
+                </StaggerItem>
               ))}
-            </div>
+            </StaggerGrid>
           </div>
         </section>
+        </FadeUp>
       )}
 
       {/* Payment Icons */}
       <section className="bg-primary/5 py-10">
         <div className="mx-auto max-w-7xl px-4 text-center">
           <p className="mb-4 text-sm font-medium text-muted-foreground">Medios de pago</p>
-          <div className="flex flex-wrap items-center justify-center gap-6">
-            <div className="flex h-10 w-16 items-center justify-center rounded-lg bg-white shadow-sm text-sm font-bold text-foreground">VISA</div>
-            <div className="flex h-10 w-16 items-center justify-center rounded-lg bg-white shadow-sm text-sm font-bold text-foreground">MC</div>
-            <div className="flex h-10 w-16 items-center justify-center rounded-lg bg-white shadow-sm text-xs font-bold text-blue-600">Mercado Pago</div>
-            <div className="flex h-10 w-16 items-center justify-center rounded-lg bg-white shadow-sm text-sm font-bold text-foreground">Pagopar</div>
-            <div className="flex h-10 w-16 items-center justify-center rounded-lg bg-white shadow-sm text-sm font-bold text-foreground">Bancard</div>
-            <div className="flex h-10 w-16 items-center justify-center rounded-lg bg-white shadow-sm text-xs font-bold text-foreground">Efectivo</div>
-            <div className="flex h-10 w-16 items-center justify-center rounded-lg bg-white shadow-sm text-xs font-bold text-foreground">Transf.</div>
+          <div className="flex flex-wrap items-center justify-center gap-4">
+            <div className="flex h-10 items-center gap-1.5 rounded-lg border border-border bg-white px-4 shadow-sm">
+              <svg width="20" height="14" viewBox="0 0 50 30" fill="#1A1F71"><rect width="50" height="30" rx="4" fill="white"/><circle cx="20" cy="15" r="8" fill="#1A1F71"/><circle cx="30" cy="15" r="8" fill="#E60012"/></svg>
+              <span className="text-xs font-bold text-foreground hidden sm:inline">Visa</span>
+            </div>
+            <div className="flex h-10 items-center gap-1.5 rounded-lg border border-border bg-white px-4 shadow-sm">
+              <svg width="20" height="14" viewBox="0 0 50 30" fill="#EB001B"><rect width="50" height="30" rx="4" fill="white"/><path d="M32 6h-14v18h14V6z" fill="#EB001B"/><path d="M33.5 15c0-3.5-1.4-6.7-3.7-9h5.6c4.3 3.6 7 8.9 7 15s-2.7 11.4-7 15h-5.6c2.3-2.3 3.7-5.5 3.7-9z" fill="#F79E1B"/></svg>
+              <span className="text-xs font-bold text-foreground hidden sm:inline">Mastercard</span>
+            </div>
+            <div className="flex h-10 items-center gap-1.5 rounded-lg border border-border bg-white px-4 shadow-sm">
+              <svg width="20" height="14" viewBox="0 0 50 30" fill="#00B4E6"><rect width="50" height="30" rx="4" fill="white"/><path d="M25 8c-5.5 0-10 4.5-10 10s4.5 10 10 10 10-4.5 10-10-4.5-10-10-10z" fill="#00B4E6"/><circle cx="25" cy="18" r="6" fill="white"/></svg>
+              <span className="text-xs font-bold text-blue-600 hidden sm:inline">Mercado Pago</span>
+            </div>
+            <div className="flex h-10 items-center gap-1.5 rounded-lg border border-border bg-white px-4 shadow-sm">
+              <svg width="20" height="14" viewBox="0 0 50 30" fill="#F39200"><rect width="50" height="30" rx="4" fill="white"/><path d="M16 12h18v6H16z" fill="#F39200"/><circle cx="22" cy="18" r="8" fill="#F39200"/><circle cx="28" cy="18" r="8" fill="#E16200"/></svg>
+              <span className="text-xs font-bold text-foreground hidden sm:inline">Pagopar</span>
+            </div>
+            <div className="flex h-10 items-center gap-1.5 rounded-lg border border-border bg-white px-4 shadow-sm">
+              <svg width="20" height="14" viewBox="0 0 50 30" fill="#E31E24"><rect width="50" height="30" rx="4" fill="white"/><circle cx="25" cy="15" r="9" fill="#E31E24"/><path d="M21 12h8v6H21z" fill="white"/></svg>
+              <span className="text-xs font-bold text-foreground hidden sm:inline">Bancard</span>
+            </div>
+            <div className="flex h-10 items-center gap-1.5 rounded-lg border border-border bg-white px-4 shadow-sm">
+              <svg width="20" height="14" viewBox="0 0 50 30" fill="#4CAF50"><rect width="50" height="30" rx="4" fill="#4CAF50"/><text x="25" y="20" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white">$</text></svg>
+              <span className="text-xs font-bold text-foreground hidden sm:inline">Efectivo</span>
+            </div>
+            <div className="flex h-10 items-center gap-1.5 rounded-lg border border-border bg-white px-4 shadow-sm">
+              <svg width="20" height="14" viewBox="0 0 50 30" fill="#2196F3"><rect width="50" height="30" rx="4" fill="#2196F3"/><text x="25" y="20" textAnchor="middle" fontSize="8" fontWeight="bold" fill="white">TRF</text></svg>
+              <span className="text-xs font-bold text-foreground hidden sm:inline">Transf.</span>
+            </div>
           </div>
           {c.paymentMethods?.installments && (
             <p className="mt-3 text-xs text-muted-foreground">{c.paymentMethods.installments}</p>
@@ -279,6 +315,7 @@ function HomePage() {
 
       {/* Final CTA */}
       {h.finalCta && (
+        <FadeUp>
         <section className="relative overflow-hidden py-16" style={{ background: "linear-gradient(135deg, var(--color-accent) 0%, var(--color-primary) 100%)" }}>
           <div className="relative z-10 mx-auto max-w-3xl px-4 text-center">
             <h2 className="mb-4 text-3xl font-bold text-white">{h.finalCta.title}</h2>
@@ -289,6 +326,7 @@ function HomePage() {
             </div>
           </div>
         </section>
+        </FadeUp>
       )}
 
       <Footer />
