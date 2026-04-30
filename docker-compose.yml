@@ -13,7 +13,7 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.http.routers.viajero.entrypoints=websecure"
-        - "traefik.http.routers.viajero.rule=Host(`viajero.paragu-ai.com`)"
+        - "traefik.http.routers.viajero.rule=Host(`viajero.paragu-ai.com`) || Host(`el-viajero.paragu-ai.com`)"
         - "traefik.http.routers.viajero.tls=true"
         - "traefik.http.routers.viajero.tls.certresolver=letsencryptresolver"
         - "traefik.http.services.viajero.loadbalancer.server.port=3000"

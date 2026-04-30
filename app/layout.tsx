@@ -15,7 +15,7 @@ const jsonLd = {
   "name": "El Viajero",
   "description": "Tienda de camping, pesca, accesorios outdoor y más en Paraguay.",
   "url": "https://el-viajero.paragu-ai.com",
-  "telephone": "+595981234567",
+  "telephone": "+595****4567",
   "email": "info@tiendaelviajero.com.py",
   "address": {
     "@type": "PostalAddress",
