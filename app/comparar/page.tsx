@@ -1,107 +1,92 @@
+
 "use client"
+import { useState, useEffect } from "react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
-import { CookieConsent } from "@/components/cookie-consent"
-import { Breadcrumbs } from "@/components/ui"
-import content from "@/content/es.json"
 import Link from "next/link"
 import Image from "next/image"
-import { useState, useEffect } from "react"
+import content from "@/content/es.json"
 
 const c = content as any
 const allProducts = c.home?.productCatalog?.products || []
 
-export default function CompararPage() {
-  const [selected, setSelected] = useState<string[]>([])
-  const [search, setSearch] = useState("")
+const KEY = "viajero_compare"
+
+export default function ComparePage() {
+  const [items, setItems] = useState<any[]>([])
+  const [clearMsg, setClearMsg] = useState("")
 
   useEffect(() => {
-    try {
-      const params = new URLSearchParams(window.location.search)
-      const ids = params.get("ids")
-      if (ids) setSelected(ids.split(","))
-    } catch {}
+    const names: string[] = JSON.parse(localStorage.getItem(KEY) || "[]")
+    setItems(names.map(n => allProducts.find((p: any) => p.name === n)).filter(Boolean))
   }, [])
 
-  const toggleProduct = (name: string) => {
-    setSelected(prev => prev.includes(name) ? prev.filter(n => n !== name) : [...prev, name].slice(0, 4))
+  const remove = (name: string) => {
+    const names: string[] = JSON.parse(localStorage.getItem(KEY) || "[]")
+    const updated = names.filter(n => n !== name)
+    localStorage.setItem(KEY, JSON.stringify(updated))
+    setItems(prev => prev.filter((p: any) => p.name !== name))
   }
 
-  const compareProducts = allProducts.filter((p: any) => selected.includes(p.name))
+  const clearAll = () => {
+    localStorage.removeItem(KEY)
+    setItems([])
+    setClearMsg("Lista de comparación vaciada")
+    setTimeout(() => setClearMsg(""), 3000)
+  }
+
+  const fields = ["price", "brand", "category", "specs", "weight", "stock"]
 
   return (
     <>
       <Header />
-      <Breadcrumbs items={[{ label: "Inicio", href: "/" }, { label: "Comparar Productos" }]} />
-      <section className="bg-background py-12">
-        <div className="mx-auto max-w-7xl px-4">
-          <h1 className="text-3xl font-bold text-foreground mb-8">Comparar Productos</h1>
-
-          {/* Search selector */}
-          <div className="mb-8">
-            <input
-              value={search}
-              onChange={e => setSearch(e.target.value)}
-              placeholder="Buscá productos para comparar..."
-              className="w-full max-w-md rounded-lg border border-input bg-background px-4 py-2.5 text-sm outline-none focus:border-ring"
-            />
-            {search && (
-              <div className="mt-2 flex flex-wrap gap-2">
-                {allProducts.filter((p: any) => p.name.toLowerCase().includes(search.toLowerCase()) && !selected.includes(p.name)).slice(0, 6).map((p: any) => (
-                  <button key={p.name} onClick={() => { toggleProduct(p.name); setSearch("") }}
-                    className="rounded-full bg-surface border border-border px-3 py-1.5 text-xs font-medium text-foreground hover:bg-primary hover:text-primary-foreground transition-colors">
-                    + {p.name}
-                  </button>
-                ))}
-              </div>
-            )}
-            {selected.length > 0 && (
-              <div className="mt-3 flex flex-wrap gap-2">
-                {selected.map(name => (
-                  <button key={name} onClick={() => toggleProduct(name)} className="rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground">
-                    {name} ✕
-                  </button>
-                ))}
-              </div>
-            )}
+      <section className="min-h-[70vh] bg-background pb-20 pt-8">
+        <div className="mx-auto max-w-6xl px-4">
+          <div className="mb-6 flex items-center justify-between">
+            <h1 className="text-2xl font-bold text-foreground">Comparar productos</h1>
+            {items.length > 0 && <button onClick={clearAll} className="text-sm text-destructive hover:underline">Vaciar lista</button>}
           </div>
+          {clearMsg && <div className="mb-4 rounded-lg bg-success/10 p-3 text-sm text-success">{clearMsg}</div>}
 
-          {compareProducts.length === 0 && (
-            <div className="py-20 text-center">
-              <span className="text-5xl block mb-4">⚖️</span>
-              <p className="text-muted-foreground">Seleccioná productos para comparar (máx. 4).</p>
+          {items.length === 0 ? (
+            <div className="rounded-xl border border-border bg-surface p-12 text-center">
+              <div className="text-5xl mb-4">⚖️</div>
+              <p className="text-lg text-foreground mb-2">No hay productos para comparar</p>
+              <p className="text-sm text-muted-foreground mb-6">Hacé clic en "Comparar" en los productos de la tienda</p>
+              <Link href="/tienda" className="inline-block rounded-lg bg-primary px-6 py-3 font-semibold text-primary-foreground">Ir a la tienda</Link>
             </div>
-          )}
-
-          {compareProducts.length >= 2 && (
+          ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-border">
-                    <th className="py-3 pr-6 text-left text-muted-foreground font-medium w-40">Producto</th>
-                    {compareProducts.map((p: any) => {
-                      const slug = p.name.toLowerCase().replace(/[^a-z0-9]/g, "-").replace(/-+/g, "-")
-                      return (
-                        <th key={p.name} className="py-3 px-4 text-left">
-                          <Link href={`/producto/${slug}`} className="block">
-                            <div className="h-24 w-24 rounded-lg bg-muted p-2 mb-2 flex items-center justify-center mx-auto">
-                              {p.imageUrl && <Image src={p.imageUrl} alt={p.name} width={96} height={96} className="h-full w-full object-contain" />}
-                            </div>
-                            <p className="font-semibold text-foreground text-xs text-center hover:text-primary line-clamp-2">{p.name}</p>
-                          </Link>
-                        </th>
-                      )
-                    })}
+                  <tr>
+                    <th className="w-40 px-4 py-3 text-left text-muted-foreground font-medium"></th>
+                    {items.map((p: any, i: number) => (
+                      <th key={i} className="px-4 py-3 text-center min-w-[180px]">
+                        <button onClick={() => remove(p.name)} className="float-right text-xs text-destructive hover:underline">✕</button>
+                        <div className="flex flex-col items-center">
+                          <div className="mb-2 h-24 w-24 flex items-center justify-center bg-muted rounded-lg p-2">
+                            {p.imageUrl && <Image src={p.imageUrl} alt={p.name} width={96} height={96} className="h-full w-full object-contain" />}
+                          </div>
+                          <p className="font-semibold text-foreground">{p.name}</p>
+                        </div>
+                      </th>
+                    ))}
                   </tr>
                 </thead>
-                <tbody>
-                  <tr className="border-b border-border"><td className="py-3 pr-6 font-medium text-muted-foreground">Precio</td>{compareProducts.map((p: any) => <td key={p.name} className="py-3 px-4"><span className="text-lg font-bold text-primary">{p.price}</span>{p.priceBefore && <span className="text-xs text-muted-foreground line-through ml-1">{p.priceBefore}</span>}</td>)}</tr>
-                  <tr className="border-b border-border"><td className="py-3 pr-6 font-medium text-muted-foreground">Marca</td>{compareProducts.map((p: any) => <td key={p.name} className="py-3 px-4 text-foreground">{p.brand || "—"}</td>)}</tr>
-                  <tr className="border-b border-border"><td className="py-3 pr-6 font-medium text-muted-foreground">Categoría</td>{compareProducts.map((p: any) => <td key={p.name} className="py-3 px-4 text-foreground">{p.category}</td>)}</tr>
-                  <tr className="border-b border-border"><td className="py-3 pr-6 font-medium text-muted-foreground">Stock</td>{compareProducts.map((p: any) => <td key={p.name} className="py-3 px-4">{p.stock > 0 ? <span className="text-green-600">En stock</span> : <span className="text-destructive">Agotado</span>}</td>)}</tr>
-                  <tr className="border-b border-border"><td className="py-3 pr-6 font-medium text-muted-foreground">Especificaciones</td>{compareProducts.map((p: any) => <td key={p.name} className="py-3 px-4 text-xs text-foreground">{p.specs || "—"}</td>)}</tr>
-                  <tr className="border-b border-border"><td className="py-3 pr-6 font-medium text-muted-foreground">Peso</td>{compareProducts.map((p: any) => <td key={p.name} className="py-3 px-4 text-foreground">{p.weight || "—"}</td>)}</tr>
-                  <tr><td className="py-3 pr-6 font-medium text-muted-foreground">Descripción</td>{compareProducts.map((p: any) => <td key={p.name} className="py-3 px-4 text-xs text-muted-foreground">{p.description || "—"}</td>)}</tr>
+                <tbody className="divide-y divide-border">
+                  {fields.map(f => (
+                    <tr key={f}>
+                      <td className="px-4 py-3 font-medium text-muted-foreground capitalize">{f === "price" ? "Precio" : f === "brand" ? "Marca" : f === "category" ? "Categoría" : f === "specs" ? "Especificaciones" : f === "weight" ? "Peso" : "Stock"}</td>
+                      {items.map((p: any, i: number) => (
+                        <td key={i} className="px-4 py-3 text-center text-foreground">
+                          {f === "price" ? <span className="text-lg font-bold text-primary">{p.price}</span> :
+                           f === "stock" ? (p.stock > 0 ? <span className="text-success">En stock</span> : <span className="text-destructive">Agotado</span>) :
+                           (p[f] || "—")}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
@@ -109,7 +94,6 @@ export default function CompararPage() {
         </div>
       </section>
       <Footer />
-      <CookieConsent />
     </>
   )
 }
