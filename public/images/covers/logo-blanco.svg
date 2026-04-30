@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#d0d6e6;stop-opacity:1"/>
+    </linearGradient>
+  </defs>
+  <!-- Monogram: D L W -->
+  <text x="200" y="220" text-anchor="middle" font-family="'Playfair Display','Georgia',serif" font-size="140" font-weight="700" fill="url(#g)" letter-spacing="12">DLW</text>
+  <!-- Subtitle -->
+  <text x="200" y="280" text-anchor="middle" font-family="'Inter',sans-serif" font-size="14" font-weight="300" fill="rgba(255,255,255,0.5)" letter-spacing="8">LITWORKS</text>
+</svg>

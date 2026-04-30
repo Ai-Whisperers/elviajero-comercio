@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0a14;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#11132a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0a0a14;stop-opacity:1" />
+    </linearGradient>
+    <radialGradient id="glow1" cx="50%" cy="40%" r="40%">
+      <stop offset="0%" style="stop-color:#d43d5e;stop-opacity:0.15" />
+      <stop offset="50%" style="stop-color:#94abd6;stop-opacity:0.05" />
+      <stop offset="100%" style="stop-color:transparent" />
+    </radialGradient>
+    <radialGradient id="glow2" cx="30%" cy="60%" r="30%">
+      <stop offset="0%" style="stop-color:#94abd6;stop-opacity:0.1" />
+      <stop offset="100%" style="stop-color:transparent" />
+    </radialGradient>
+    <filter id="goldenGlow">
+      <feGaussianBlur stdDeviation="15" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#bg)"/>
+  <rect width="1920" height="1080" fill="url(#glow1)"/>
+  <rect width="1920" height="1080" fill="url(#glow2)"/>
+
+  <!-- Golden light rays from center -->
+  <g opacity="0.04">
+    <line x1="960" y1="1080" x2="0" y2="0" stroke="#d4a847" stroke-width="60"/>
+    <line x1="960" y1="1080" x2="300" y2="0" stroke="#d4a847" stroke-width="40"/>
+    <line x1="960" y1="1080" x2="600" y2="0" stroke="#d4a847" stroke-width="50"/>
+    <line x1="960" y1="1080" x2="960" y2="0" stroke="#d4a847" stroke-width="30"/>
+    <line x1="960" y1="1080" x2="1320" y2="0" stroke="#d4a847" stroke-width="40"/>
+    <line x1="960" y1="1080" x2="1620" y2="0" stroke="#d4a847" stroke-width="50"/>
+    <line x1="960" y1="1080" x2="1920" y2="0" stroke="#d4a847" stroke-width="60"/>
+  </g>
+
+  <!-- Center golden glow -->
+  <ellipse cx="960" cy="540" rx="200" ry="200" fill="#d4a847" opacity="0.06" filter="url(#goldenGlow)"/>
+  <ellipse cx="960" cy="540" rx="80" ry="80" fill="#ffd700" opacity="0.08"/>
+
+  <!-- Floating particles -->
+  <circle cx="300" cy="200" r="2" fill="#94abd6" opacity="0.3"/>
+  <circle cx="1500" cy="300" r="1.5" fill="#d43d5e" opacity="0.25"/>
+  <circle cx="600" cy="800" r="1" fill="#94abd6" opacity="0.2"/>
+  <circle cx="1300" cy="700" r="2" fill="#d43d5e" opacity="0.3"/>
+  <circle cx="400" cy="400" r="1.5" fill="rgba(255,255,255,0.15)"/>
+  <circle cx="1600" cy="500" r="1" fill="rgba(255,255,255,0.2)"/>
+  <circle cx="800" cy="200" r="1" fill="#d4a847" opacity="0.3"/>
+  <circle cx="1100" cy="850" r="2" fill="#94abd6" opacity="0.15"/>
+  <circle cx="200" cy="650" r="1" fill="rgba(255,255,255,0.1)"/>
+  <circle cx="1700" cy="150" r="1.5" fill="#d4a847" opacity="0.2"/>
+</svg>
