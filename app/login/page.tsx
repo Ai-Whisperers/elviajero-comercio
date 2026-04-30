@@ -55,6 +55,9 @@ function LoginForm() {
               {loading ? "Ingresando..." : "Ingresar"}
             </button>
           </form>
+          <p className="mt-2 text-center text-sm text-muted-foreground">
+            <Link href="/recuperar" className="text-muted-foreground hover:text-primary">¿Olvidaste tu contraseña?</Link>
+          </p>
           <p className="mt-6 text-center text-sm text-muted-foreground">
             ¿No tenés cuenta?{" "}
             <Link href="/register" className="font-semibold text-primary hover:underline">Crear cuenta</Link>

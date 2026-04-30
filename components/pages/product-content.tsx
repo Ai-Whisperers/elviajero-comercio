@@ -6,6 +6,8 @@ import { CartSidebar } from "@/components/cart-sidebar"
 import { CookieConsent } from "@/components/cookie-consent"
 import { WhatsAppFloat } from "@/components/whatsapp-float"
 import { CartToastListener } from "@/components/cart-toast-listener"
+import { BackInStockForm } from "@/components/back-in-stock"
+import { ProductReviews } from "@/components/product-reviews"
 import { useState, useMemo } from "react"
 import Link from "next/link"
 import Image from "next/image"
@@ -150,6 +152,14 @@ export default function ProductPageContent({ slug }: { slug: string }) {
                 </button>
               </div>
 
+              {/* Back in stock */}
+              {!product.stock && (
+                <div className="mt-4">
+                  <p className="mb-2 text-sm font-medium text-muted-foreground">Producto agotado. ¿Querés que te avisemos?</p>
+                  <BackInStockForm productName={product.name} />
+                </div>
+              )}
+
               {/* Trust badges */}
               <div className="mt-8 grid grid-cols-3 gap-3 rounded-xl border border-border bg-surface p-4">
                 <div className="text-center">
@@ -169,6 +179,7 @@ export default function ProductPageContent({ slug }: { slug: string }) {
           </div>
 
           {/* Related products */}
+          <ProductReviews productName={product.name} />
           {allProducts.filter((p: any) => p.category === product.category && p.name !== product.name).length > 0 && (
             <section className="mt-16">
               <h2 className="mb-6 text-xl font-bold text-foreground">Productos relacionados</h2>

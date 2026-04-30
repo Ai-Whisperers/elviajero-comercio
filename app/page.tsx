@@ -7,6 +7,8 @@ import { HeroCarousel } from "@/components/hero-carousel"
 import { CookieConsent } from "@/components/cookie-consent"
 import { FadeUp, StaggerGrid, StaggerItem } from "@/components/animations/scroll-reveal"
 import { CartToastListener } from "@/components/cart-toast-listener"
+import { RecentlyViewed } from "@/components/recently-viewed"
+import { ExitIntentPopup } from "@/components/exit-intent"
 import { NewsletterSuccess } from "@/components/ui"
 import { WhatsAppFloat } from "@/components/whatsapp-float"
 import { CartProvider } from "@/lib/cart-context"
@@ -333,6 +335,8 @@ function HomePage() {
       )}
 
       <Footer />
+      <RecentlyViewed />
+      <ExitIntentPopup />
       <WhatsAppFloat phone={c.home?.contact?.whatsapp || "595981234567"} message={c.whatsapp?.defaultMessage || "Hola! Quiero informacion"} />
       <CartSidebar open={cartOpen} onClose={() => setCartOpen(false)} />
       <CookieConsent />
