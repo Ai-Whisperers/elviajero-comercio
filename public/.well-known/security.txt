@@ -1,4 +1,3 @@
-Contact: mailto:info@tiendaelviajero.com.py
-Expires: 2027-04-30T00:00:00.000Z
+Contact: mailto:admin@elviajero.com.py
 Preferred-Languages: es, en
-Canonical: https://el-viajero.paragu-ai.com/.well-known/security.txt
+Policy: https://el-viajero.paragu-ai.com/privacidad
