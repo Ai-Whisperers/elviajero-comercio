@@ -21,6 +21,10 @@ const config: NextConfig = {
       { protocol: 'https', hostname: 'images.unsplash.com' },
     ],  unoptimized: true },
   output: "standalone",
-  async redirects() { return [{ source: "/s/:path*", destination: "/", permanent: true }] },
+  async redirects() { return [
+    { source: "/s/:path*", destination: "/", permanent: true },
+    { source: "/ofertas", destination: "/promociones", permanent: true },
+    { source: "/carrito", destination: "/tienda", permanent: true },
+  ] },
 }
 export default config
