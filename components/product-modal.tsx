@@ -13,6 +13,8 @@ export function ProductModal({ product: p, onClose }: ProductModalProps) {
 
   const parseGs = (s: string) => parseInt(s.replace(/[^\d]/g, ""), 10) || 0
 
+  if (!p) return null
+
   return (
     <div className="fixed inset-0 z-40 flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-black/50" onClick={onClose} />
