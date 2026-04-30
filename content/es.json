@@ -132,241 +132,411 @@
           "category": "Camping",
           "price": "Gs. 450.000",
           "description": "Impermeable, fácil de armar, incluye bolsa de transporte. Ideal para familias.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/carpa-4p.svg",
+          "brand": "OutdoorPro",
+          "specs": "4 pers | 3 kg | 210x210x130cm | Impermeable 2000mm",
+          "stock": 8,
+          "weight": "3.0 kg",
+          "featured": true
         },
         {
           "name": "Bolsa de Dormir 0°C",
           "category": "Camping",
           "price": "Gs. 180.000",
           "description": "Temperatura confort de 0°C, relleno sintético, compacta y liviana.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/bolsa-dormir.svg",
+          "brand": "SleepWell",
+          "specs": "Relleno sintético | 1.8 kg | 220x80cm | Compresión incluida",
+          "stock": 15,
+          "weight": "1.8 kg",
+          "featured": true
         },
         {
           "name": "Silla Plegable Pescador",
           "category": "Camping",
           "price": "Gs. 85.000",
           "description": "Con posavasos y bolsillo lateral. Soporto hasta 120kg.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/silla-plegable.svg",
+          "brand": "CampMaster",
+          "specs": "120kg máx | Aluminio | 2.5 kg | Posavasos + bolsillo",
+          "stock": 20,
+          "weight": "2.5 kg",
+          "featured": false
         },
         {
           "name": "Linterna LED 1000lm",
           "category": "Camping",
           "price": "Gs. 65.000",
           "description": "Recargable USB, 3 modos de luz, resistencia al agua IPX4.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/linterna-led.svg",
+          "brand": "BrightLight",
+          "specs": "1000 lúmenes | USB recargable | IPX4 | 3 modos",
+          "stock": 25,
+          "weight": "0.3 kg",
+          "featured": true
         },
         {
           "name": "Caña Telescopica 3m",
           "category": "Pesca",
           "price": "Gs. 140.000",
           "description": "Fibra de vidrio, anillos ceramicos, mango de corcho. Ideal para principiantes y expertos.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/cana-pesca.svg",
+          "brand": "FishMaster",
+          "specs": "3m | Fibra de vidrio | Anillos cerámicos | 6 tramos",
+          "stock": 12,
+          "weight": "0.6 kg",
+          "featured": false
         },
         {
           "name": "Chaleco Salvavidas",
           "category": "Pesca",
           "price": "Gs. 110.000",
           "description": "Aprobado por autoridad maritima, talles M a XXL, ajustable.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/chaleco.svg",
+          "brand": "SafeFloat",
+          "specs": "Talle M a XXL | Aprobado autoridad marítima | Ajustable",
+          "stock": 10,
+          "weight": "0.8 kg",
+          "featured": false
         },
         {
           "name": "Mochila 60L Impermeable",
           "category": "Acc. Personales",
           "price": "Gs. 220.000",
           "description": "Costuras selladas, multiple compartimentos, correas acolchadas.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/mochila-60l.svg",
+          "brand": "TrailPro",
+          "specs": "60L | Costuras selladas | 1.5 kg | Correas acolchadas",
+          "stock": 7,
+          "weight": "1.5 kg",
+          "featured": true
         },
         {
           "name": "Cuchillo Multiuso",
           "category": "Acc. Personales",
           "price": "Gs. 75.000",
           "description": "15 herramientas, acero inoxidable, incluye funda de nylon.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/cuchillo.svg",
+          "brand": "ToolMaster",
+          "specs": "15 herramientas | Acero inoxidable | Funda nylon",
+          "stock": 30,
+          "weight": "0.35 kg",
+          "featured": false
         },
         {
           "name": "Camara Dashcam HD",
           "category": "Automoviles",
           "price": "Gs. 280.000",
           "description": "1080p, vision nocturna, deteccion de movimiento, tarjeta SD incluida.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/camara-dashcam.svg",
+          "brand": "AutoVue",
+          "specs": "1080p | Visión nocturna | SD 32GB incluida",
+          "stock": 6,
+          "weight": "0.2 kg",
+          "featured": false
         },
         {
           "name": "Inflador 12V Portatil",
           "category": "Automoviles",
           "price": "Gs. 95.000",
           "description": "Compresor digital, apagado automatico, incluye adaptadores.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/inflador.svg",
+          "brand": "AirGo",
+          "specs": "12V | Digital | Apagado automático | Adaptadores",
+          "stock": 18,
+          "weight": "0.5 kg",
+          "featured": false
         },
         {
           "name": "Casco Integral Moto",
           "category": "Motos",
           "price": "Gs. 320.000",
           "description": "Certificado DOT, visor antihumedad, sistema de ventilacion multiple.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/casco.svg",
+          "brand": "SafeRide",
+          "specs": "DOT certificado | Visor antihumedad | Talle M-XL",
+          "stock": 5,
+          "weight": "1.4 kg",
+          "featured": true
         },
         {
           "name": "Conservadora 20L",
           "category": "Camping",
           "price": "Gs. 180.000",
           "description": "Mantiene frío hasta 24h, asa reforzada, cierre hermético. Ideal para paseos.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/conservadora.svg",
+          "brand": "CoolKing",
+          "specs": "20L | 24h frío | Asa reforzada | Cierre hermético",
+          "stock": 14,
+          "weight": "2.0 kg",
+          "featured": false
         },
         {
           "name": "Parrilla Portátil Doble",
           "category": "Camping",
           "price": "Gs. 250.000",
           "description": "Doble parrilla, patas plegables, incluye bolsa de transporte. Acero cromado.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/parrilla.svg",
+          "brand": "GrillGo",
+          "specs": "Doble parrilla | Acero cromado | Plegable | Bolsa incluida",
+          "stock": 9,
+          "weight": "3.5 kg",
+          "featured": false
         },
         {
           "name": "Hamaca 2m",
           "category": "Camping",
           "price": "Gs. 95.000",
           "description": "Nylon reforzado, soporta 150kg, incluye cuerdas y bolsa. Colores disponibles.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/hamaca.svg",
+          "brand": "NaturRest",
+          "specs": "2m | Nylon reforzado | 150kg máx | Cuerdas + bolsa",
+          "stock": 22,
+          "weight": "0.8 kg",
+          "featured": false
         },
         {
           "name": "Toldo Sombra 3x3",
           "category": "Camping",
           "price": "Gs. 320.000",
           "description": "Protección UV 50+, impermeable, incluye postes y estacas. Fácil armado.",
-          "imageUrl": "/images/product-placeholder.svg",
-          "priceBefore": "Gs. 380.000"
+          "imageUrl": "/images/productos/toldo.svg",
+          "priceBefore": "Gs. 380.000",
+          "brand": "SunBlock",
+          "specs": "3x3m | UV 50+ | Impermeable | Postes + estacas",
+          "stock": 4,
+          "weight": "2.8 kg",
+          "featured": false
         },
         {
           "name": "Ventilador Recargable",
           "category": "Camping",
           "price": "Gs. 65.000",
           "description": "USB recargable, 3 velocidades, luz LED incluida. Autonomía 8h.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/ventilador.svg",
+          "brand": "BreezeGo",
+          "specs": "USB recargable | 3 velocidades | LED | 8h autonomía",
+          "stock": 16,
+          "weight": "0.4 kg",
+          "featured": false
         },
         {
           "name": "Caja Herramientas Pesca",
           "category": "Pesca",
           "price": "Gs. 120.000",
           "description": "Organizador con bandejas extraíbles, impermeable. Ideal para señuelos y accesorios.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/caja-pesca.svg",
+          "brand": "FishMate",
+          "specs": "Bandejas extraíbles | Impermeable | Organizador",
+          "stock": 11,
+          "weight": "1.2 kg",
+          "featured": false
         },
         {
           "name": "Señuelos Surtidos (10u)",
           "category": "Pesca",
           "price": "Gs. 85.000",
           "description": "Surtido de colores y tamaños. Incluye cucharitas, spinner y vinilos.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/senuelos.svg",
+          "brand": "LureKing",
+          "specs": "10 unidades | Colores surtidos | Cucharitas + spinner + vinilo",
+          "stock": 40,
+          "weight": "0.15 kg",
+          "featured": false
         },
         {
           "name": "Red de Pesca 3m",
           "category": "Pesca",
           "price": "Gs. 60.000",
           "description": "Nylon trenzado, mango telescópico. Ideal para pesca deportiva.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/red-pesca.svg",
+          "brand": "NetPro",
+          "specs": "3m | Nylon trenzado | Mango telescópico",
+          "stock": 8,
+          "weight": "0.5 kg",
+          "featured": false
         },
         {
           "name": "Boyas Flotantes (6u)",
           "category": "Pesca",
           "price": "Gs. 35.000",
           "description": "Colores surtidos, alta visibilidad. Incluye brochetas plásticas.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/boyas.svg",
+          "brand": "FloatLine",
+          "specs": "6 unidades | Alta visibilidad | Brochetas incluidas",
+          "stock": 50,
+          "weight": "0.1 kg",
+          "featured": false
         },
         {
           "name": "Botas Montaña",
           "category": "Acc. Personales",
           "price": "Gs. 350.000",
           "description": "Cuero impermeable, suela vibram, puntera reforzada. Talles 38 a 44.",
-          "imageUrl": "/images/product-placeholder.svg",
-          "priceBefore": "Gs. 400.000"
+          "imageUrl": "/images/productos/botas.svg",
+          "priceBefore": "Gs. 400.000",
+          "brand": "TrekStep",
+          "specs": "Cuero impermeable | Suela vibram | Talle 38-44",
+          "stock": 3,
+          "weight": "1.2 kg",
+          "featured": false
         },
         {
           "name": "Termo Acero 1L",
           "category": "Acc. Personales",
           "price": "Gs. 70.000",
           "description": "Acero inoxidable doble pared. Mantiene 12h caliente / 24h frío.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/termo.svg",
+          "brand": "ThermoKing",
+          "specs": "1L | Doble pared | 12h caliente / 24h frío",
+          "stock": 20,
+          "weight": "0.4 kg",
+          "featured": true
         },
         {
           "name": "Mochila Térmica",
           "category": "Acc. Personales",
           "price": "Gs. 120.000",
           "description": "Aislamiento térmico, 20L, correas ajustables. Ideal para viandas y paseos.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/mochila-termica.svg",
+          "brand": "CoolPack",
+          "specs": "20L | Aislamiento térmico | Correas ajustables",
+          "stock": 13,
+          "weight": "0.5 kg",
+          "featured": false
         },
         {
           "name": "Kit Botiquín",
           "category": "Acc. Personales",
           "price": "Gs. 55.000",
           "description": "Vendas, gasa, apósitos, tijera, pinza, alcohol, yodo. Estuche compacto.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/botiquin.svg",
+          "brand": "SafeCare",
+          "specs": "Vendas + gasa + apósitos + tijera + pinza + alcohol + yodo",
+          "stock": 25,
+          "weight": "0.3 kg",
+          "featured": false
         },
         {
           "name": "Eslingas Amarre 5t",
           "category": "Automóviles",
           "price": "Gs. 90.000",
           "description": "Par de eslingas 5m x 5t, ganchos forjados. Ideal para fijar carga.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/eslingas.svg",
+          "brand": "TowMaster",
+          "specs": "Par 5m x 5t | Ganchos forjados",
+          "stock": 10,
+          "weight": "2.0 kg",
+          "featured": false
         },
         {
           "name": "Extintor 2kg ABC",
           "category": "Automóviles",
           "price": "Gs. 110.000",
           "description": "Polvo químico seco ABC, incluye soporte para auto. Recargable.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/extintor.svg",
+          "brand": "FireStop",
+          "specs": "2kg | Polvo químico ABC | Soporte auto | Recargable",
+          "stock": 7,
+          "weight": "2.5 kg",
+          "featured": true
         },
         {
           "name": "Tiras Remolque 4m",
           "category": "Automóviles",
           "price": "Gs. 75.000",
           "description": "Nylon de alta resistencia, ganchos en ambos extremos. Capacidad 3.500kg.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/tiras.svg",
+          "brand": "TowMaster",
+          "specs": "4m | Nylon alta resistencia | 3.500kg capacidad",
+          "stock": 9,
+          "weight": "1.0 kg",
+          "featured": false
         },
         {
           "name": "Guantes Moto",
           "category": "Motos",
           "price": "Gs. 95.000",
           "description": "Cuero sintético, protecciones articulaciones, talle S a XL. Transpirables.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/guantes.svg",
+          "brand": "GripPro",
+          "specs": "Cuero sintético | Protecciones | Talle S-XL",
+          "stock": 15,
+          "weight": "0.3 kg",
+          "featured": false
         },
         {
           "name": "Rastreador GPS",
           "category": "Motos",
           "price": "Gs. 450.000",
           "description": "GPS antirrobo, app móvil, alertas en tiempo real. Batería recargable.",
-          "imageUrl": "/images/product-placeholder.svg",
-          "priceBefore": "Gs. 520.000"
+          "imageUrl": "/images/productos/rastreador.svg",
+          "priceBefore": "Gs. 520.000",
+          "brand": "TrackSafe",
+          "specs": "GPS antirrobo | App móvil | Alertas tiempo real",
+          "stock": 4,
+          "weight": "0.1 kg",
+          "featured": false
         },
         {
           "name": "Sombrilla Playa 1.8m",
           "category": "Playa y Pesca",
           "price": "Gs. 130.000",
           "description": "Antiviento, protección UV 50+, incluye bolsa de transporte.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/sombrilla.svg",
+          "brand": "SunBlock",
+          "specs": "1.8m | Antiviento | UV 50+ | Bolsa transporte",
+          "stock": 6,
+          "weight": "1.8 kg",
+          "featured": false
         },
         {
           "name": "Silla Playa Plegable",
           "category": "Playa y Pesca",
           "price": "Gs. 85.000",
           "description": "Aluminio ligero, respaldo reclinable, soporta 120kg.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/silla-playa.svg",
+          "brand": "BeachRest",
+          "specs": "Aluminio | Respaldo reclinable | 120kg máx",
+          "stock": 12,
+          "weight": "1.5 kg",
+          "featured": false
         },
         {
           "name": "Bebedero Automático",
           "category": "Campo",
           "price": "Gs. 85.000",
           "description": "Acero inoxidable, flotador automático. Capacidad 10L.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/bebedero.svg",
+          "brand": "FarmLife",
+          "specs": "Acero inoxidable | Flotador automático | 10L",
+          "stock": 8,
+          "weight": "0.8 kg",
+          "featured": false
         },
         {
           "name": "Comedero Acero",
           "category": "Campo",
           "price": "Gs. 65.000",
           "description": "Dos bandejas, patas reforzadas, desarmable para limpieza.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/comedero.svg",
+          "brand": "FarmLife",
+          "specs": "Dos bandejas | Patas reforzadas | Desarmable",
+          "stock": 10,
+          "weight": "1.0 kg",
+          "featured": false
         },
         {
           "name": "Kit Herramientas Campo",
           "category": "Campo",
           "price": "Gs. 160.000",
           "description": "Pala, azada, rastrillo desarmables con mango ergonomico.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/kit-campo.svg",
+          "brand": "AgriTool",
+          "specs": "Pala + azada + rastrillo | Mango ergonómico",
+          "stock": 8,
+          "weight": "2.2 kg",
+          "featured": false
         }
       ]
     },
@@ -420,6 +590,137 @@
       "address": "Coronel Felipe Toledo, Barrio La Concordia (detrás de Mariam Lubricantes), Mariano Roque Alonso",
       "hours": "Lun-Vie 08:00-19:00 | Sáb 08:00-17:00 | Dom 09:00-13:00",
       "googleMapsUrl": "https://maps.google.com/?q=Coronel+Felipe+Toledo+Mariano+Roque+Alonso+Paraguay"
+    },
+    "featuredProducts": {
+      "title": "Productos Destacados",
+      "subtitle": "Los más elegidos por nuestros clientes",
+      "products": [
+        {
+          "name": "Carpa 4 Personas",
+          "category": "Camping",
+          "price": "Gs. 450.000",
+          "description": "Impermeable, fácil de armar, incluye bolsa de transporte. Ideal para familias.",
+          "imageUrl": "/images/productos/carpa-4p.svg",
+          "brand": "OutdoorPro",
+          "specs": "4 pers | 3 kg | 210x210x130cm | Impermeable 2000mm",
+          "stock": 8,
+          "weight": "3.0 kg",
+          "featured": true
+        },
+        {
+          "name": "Bolsa de Dormir 0°C",
+          "category": "Camping",
+          "price": "Gs. 180.000",
+          "description": "Temperatura confort de 0°C, relleno sintético, compacta y liviana.",
+          "imageUrl": "/images/productos/bolsa-dormir.svg",
+          "brand": "SleepWell",
+          "specs": "Relleno sintético | 1.8 kg | 220x80cm | Compresión incluida",
+          "stock": 15,
+          "weight": "1.8 kg",
+          "featured": true
+        },
+        {
+          "name": "Linterna LED 1000lm",
+          "category": "Camping",
+          "price": "Gs. 65.000",
+          "description": "Recargable USB, 3 modos de luz, resistencia al agua IPX4.",
+          "imageUrl": "/images/productos/linterna-led.svg",
+          "brand": "BrightLight",
+          "specs": "1000 lúmenes | USB recargable | IPX4 | 3 modos",
+          "stock": 25,
+          "weight": "0.3 kg",
+          "featured": true
+        },
+        {
+          "name": "Mochila 60L Impermeable",
+          "category": "Acc. Personales",
+          "price": "Gs. 220.000",
+          "description": "Costuras selladas, multiple compartimentos, correas acolchadas.",
+          "imageUrl": "/images/productos/mochila-60l.svg",
+          "brand": "TrailPro",
+          "specs": "60L | Costuras selladas | 1.5 kg | Correas acolchadas",
+          "stock": 7,
+          "weight": "1.5 kg",
+          "featured": true
+        },
+        {
+          "name": "Casco Integral Moto",
+          "category": "Motos",
+          "price": "Gs. 320.000",
+          "description": "Certificado DOT, visor antihumedad, sistema de ventilacion multiple.",
+          "imageUrl": "/images/productos/casco.svg",
+          "brand": "SafeRide",
+          "specs": "DOT certificado | Visor antihumedad | Talle M-XL",
+          "stock": 5,
+          "weight": "1.4 kg",
+          "featured": true
+        },
+        {
+          "name": "Termo Acero 1L",
+          "category": "Acc. Personales",
+          "price": "Gs. 70.000",
+          "description": "Acero inoxidable doble pared. Mantiene 12h caliente / 24h frío.",
+          "imageUrl": "/images/productos/termo.svg",
+          "brand": "ThermoKing",
+          "specs": "1L | Doble pared | 12h caliente / 24h frío",
+          "stock": 20,
+          "weight": "0.4 kg",
+          "featured": true
+        }
+      ]
+    },
+    "bestSellers": {
+      "title": "Los Más Vendidos",
+      "products": [
+        {
+          "name": "Parrilla Portátil Doble",
+          "category": "Camping",
+          "price": "Gs. 250.000",
+          "description": "Doble parrilla, patas plegables, incluye bolsa de transporte. Acero cromado.",
+          "imageUrl": "/images/productos/parrilla.svg",
+          "brand": "GrillGo",
+          "specs": "Doble parrilla | Acero cromado | Plegable | Bolsa incluida",
+          "stock": 9,
+          "weight": "3.5 kg",
+          "featured": false
+        },
+        {
+          "name": "Tiras Remolque 4m",
+          "category": "Automóviles",
+          "price": "Gs. 75.000",
+          "description": "Nylon de alta resistencia, ganchos en ambos extremos. Capacidad 3.500kg.",
+          "imageUrl": "/images/productos/tiras.svg",
+          "brand": "TowMaster",
+          "specs": "4m | Nylon alta resistencia | 3.500kg capacidad",
+          "stock": 9,
+          "weight": "1.0 kg",
+          "featured": false
+        },
+        {
+          "name": "Carpa 4 Personas",
+          "category": "Camping",
+          "price": "Gs. 450.000",
+          "description": "Impermeable, fácil de armar, incluye bolsa de transporte. Ideal para familias.",
+          "imageUrl": "/images/productos/carpa-4p.svg",
+          "brand": "OutdoorPro",
+          "specs": "4 pers | 3 kg | 210x210x130cm | Impermeable 2000mm",
+          "stock": 8,
+          "weight": "3.0 kg",
+          "featured": true
+        },
+        {
+          "name": "Red de Pesca 3m",
+          "category": "Pesca",
+          "price": "Gs. 60.000",
+          "description": "Nylon trenzado, mango telescópico. Ideal para pesca deportiva.",
+          "imageUrl": "/images/productos/red-pesca.svg",
+          "brand": "NetPro",
+          "specs": "3m | Nylon trenzado | Mango telescópico",
+          "stock": 8,
+          "weight": "0.5 kg",
+          "featured": false
+        }
+      ]
     }
   },
   "about": {
@@ -487,241 +788,411 @@
           "category": "Camping",
           "price": "Gs. 450.000",
           "description": "Impermeable, fácil de armar, incluye bolsa de transporte. Ideal para familias.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/carpa-4p.svg",
+          "brand": "OutdoorPro",
+          "specs": "4 pers | 3 kg | 210x210x130cm | Impermeable 2000mm",
+          "stock": 8,
+          "weight": "3.0 kg",
+          "featured": true
         },
         {
           "name": "Bolsa de Dormir 0°C",
           "category": "Camping",
           "price": "Gs. 180.000",
           "description": "Temperatura confort de 0°C, relleno sintético, compacta y liviana.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/bolsa-dormir.svg",
+          "brand": "SleepWell",
+          "specs": "Relleno sintético | 1.8 kg | 220x80cm | Compresión incluida",
+          "stock": 15,
+          "weight": "1.8 kg",
+          "featured": true
         },
         {
           "name": "Silla Plegable Pescador",
           "category": "Camping",
           "price": "Gs. 85.000",
           "description": "Con posavasos y bolsillo lateral. Soporto hasta 120kg.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/silla-plegable.svg",
+          "brand": "CampMaster",
+          "specs": "120kg máx | Aluminio | 2.5 kg | Posavasos + bolsillo",
+          "stock": 20,
+          "weight": "2.5 kg",
+          "featured": false
         },
         {
           "name": "Linterna LED 1000lm",
           "category": "Camping",
           "price": "Gs. 65.000",
           "description": "Recargable USB, 3 modos de luz, resistencia al agua IPX4.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/linterna-led.svg",
+          "brand": "BrightLight",
+          "specs": "1000 lúmenes | USB recargable | IPX4 | 3 modos",
+          "stock": 25,
+          "weight": "0.3 kg",
+          "featured": true
         },
         {
           "name": "Caña Telescopica 3m",
           "category": "Pesca",
           "price": "Gs. 140.000",
           "description": "Fibra de vidrio, anillos ceramicos, mango de corcho. Ideal para principiantes y expertos.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/cana-pesca.svg",
+          "brand": "FishMaster",
+          "specs": "3m | Fibra de vidrio | Anillos cerámicos | 6 tramos",
+          "stock": 12,
+          "weight": "0.6 kg",
+          "featured": false
         },
         {
           "name": "Chaleco Salvavidas",
           "category": "Pesca",
           "price": "Gs. 110.000",
           "description": "Aprobado por autoridad maritima, talles M a XXL, ajustable.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/chaleco.svg",
+          "brand": "SafeFloat",
+          "specs": "Talle M a XXL | Aprobado autoridad marítima | Ajustable",
+          "stock": 10,
+          "weight": "0.8 kg",
+          "featured": false
         },
         {
           "name": "Mochila 60L Impermeable",
           "category": "Acc. Personales",
           "price": "Gs. 220.000",
           "description": "Costuras selladas, multiple compartimentos, correas acolchadas.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/mochila-60l.svg",
+          "brand": "TrailPro",
+          "specs": "60L | Costuras selladas | 1.5 kg | Correas acolchadas",
+          "stock": 7,
+          "weight": "1.5 kg",
+          "featured": true
         },
         {
           "name": "Cuchillo Multiuso",
           "category": "Acc. Personales",
           "price": "Gs. 75.000",
           "description": "15 herramientas, acero inoxidable, incluye funda de nylon.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/cuchillo.svg",
+          "brand": "ToolMaster",
+          "specs": "15 herramientas | Acero inoxidable | Funda nylon",
+          "stock": 30,
+          "weight": "0.35 kg",
+          "featured": false
         },
         {
           "name": "Camara Dashcam HD",
           "category": "Automoviles",
           "price": "Gs. 280.000",
           "description": "1080p, vision nocturna, deteccion de movimiento, tarjeta SD incluida.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/camara-dashcam.svg",
+          "brand": "AutoVue",
+          "specs": "1080p | Visión nocturna | SD 32GB incluida",
+          "stock": 6,
+          "weight": "0.2 kg",
+          "featured": false
         },
         {
           "name": "Inflador 12V Portatil",
           "category": "Automoviles",
           "price": "Gs. 95.000",
           "description": "Compresor digital, apagado automatico, incluye adaptadores.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/inflador.svg",
+          "brand": "AirGo",
+          "specs": "12V | Digital | Apagado automático | Adaptadores",
+          "stock": 18,
+          "weight": "0.5 kg",
+          "featured": false
         },
         {
           "name": "Casco Integral Moto",
           "category": "Motos",
           "price": "Gs. 320.000",
           "description": "Certificado DOT, visor antihumedad, sistema de ventilacion multiple.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/casco.svg",
+          "brand": "SafeRide",
+          "specs": "DOT certificado | Visor antihumedad | Talle M-XL",
+          "stock": 5,
+          "weight": "1.4 kg",
+          "featured": true
         },
         {
           "name": "Conservadora 20L",
           "category": "Camping",
           "price": "Gs. 180.000",
           "description": "Mantiene frío hasta 24h, asa reforzada, cierre hermético. Ideal para paseos.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/conservadora.svg",
+          "brand": "CoolKing",
+          "specs": "20L | 24h frío | Asa reforzada | Cierre hermético",
+          "stock": 14,
+          "weight": "2.0 kg",
+          "featured": false
         },
         {
           "name": "Parrilla Portátil Doble",
           "category": "Camping",
           "price": "Gs. 250.000",
           "description": "Doble parrilla, patas plegables, incluye bolsa de transporte. Acero cromado.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/parrilla.svg",
+          "brand": "GrillGo",
+          "specs": "Doble parrilla | Acero cromado | Plegable | Bolsa incluida",
+          "stock": 9,
+          "weight": "3.5 kg",
+          "featured": false
         },
         {
           "name": "Hamaca 2m",
           "category": "Camping",
           "price": "Gs. 95.000",
           "description": "Nylon reforzado, soporta 150kg, incluye cuerdas y bolsa. Colores disponibles.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/hamaca.svg",
+          "brand": "NaturRest",
+          "specs": "2m | Nylon reforzado | 150kg máx | Cuerdas + bolsa",
+          "stock": 22,
+          "weight": "0.8 kg",
+          "featured": false
         },
         {
           "name": "Toldo Sombra 3x3",
           "category": "Camping",
           "price": "Gs. 320.000",
           "description": "Protección UV 50+, impermeable, incluye postes y estacas. Fácil armado.",
-          "imageUrl": "/images/product-placeholder.svg",
-          "priceBefore": "Gs. 380.000"
+          "imageUrl": "/images/productos/toldo.svg",
+          "priceBefore": "Gs. 380.000",
+          "brand": "SunBlock",
+          "specs": "3x3m | UV 50+ | Impermeable | Postes + estacas",
+          "stock": 4,
+          "weight": "2.8 kg",
+          "featured": false
         },
         {
           "name": "Ventilador Recargable",
           "category": "Camping",
           "price": "Gs. 65.000",
           "description": "USB recargable, 3 velocidades, luz LED incluida. Autonomía 8h.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/ventilador.svg",
+          "brand": "BreezeGo",
+          "specs": "USB recargable | 3 velocidades | LED | 8h autonomía",
+          "stock": 16,
+          "weight": "0.4 kg",
+          "featured": false
         },
         {
           "name": "Caja Herramientas Pesca",
           "category": "Pesca",
           "price": "Gs. 120.000",
           "description": "Organizador con bandejas extraíbles, impermeable. Ideal para señuelos y accesorios.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/caja-pesca.svg",
+          "brand": "FishMate",
+          "specs": "Bandejas extraíbles | Impermeable | Organizador",
+          "stock": 11,
+          "weight": "1.2 kg",
+          "featured": false
         },
         {
           "name": "Señuelos Surtidos (10u)",
           "category": "Pesca",
           "price": "Gs. 85.000",
           "description": "Surtido de colores y tamaños. Incluye cucharitas, spinner y vinilos.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/senuelos.svg",
+          "brand": "LureKing",
+          "specs": "10 unidades | Colores surtidos | Cucharitas + spinner + vinilo",
+          "stock": 40,
+          "weight": "0.15 kg",
+          "featured": false
         },
         {
           "name": "Red de Pesca 3m",
           "category": "Pesca",
           "price": "Gs. 60.000",
           "description": "Nylon trenzado, mango telescópico. Ideal para pesca deportiva.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/red-pesca.svg",
+          "brand": "NetPro",
+          "specs": "3m | Nylon trenzado | Mango telescópico",
+          "stock": 8,
+          "weight": "0.5 kg",
+          "featured": false
         },
         {
           "name": "Boyas Flotantes (6u)",
           "category": "Pesca",
           "price": "Gs. 35.000",
           "description": "Colores surtidos, alta visibilidad. Incluye brochetas plásticas.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/boyas.svg",
+          "brand": "FloatLine",
+          "specs": "6 unidades | Alta visibilidad | Brochetas incluidas",
+          "stock": 50,
+          "weight": "0.1 kg",
+          "featured": false
         },
         {
           "name": "Botas Montaña",
           "category": "Acc. Personales",
           "price": "Gs. 350.000",
           "description": "Cuero impermeable, suela vibram, puntera reforzada. Talles 38 a 44.",
-          "imageUrl": "/images/product-placeholder.svg",
-          "priceBefore": "Gs. 400.000"
+          "imageUrl": "/images/productos/botas.svg",
+          "priceBefore": "Gs. 400.000",
+          "brand": "TrekStep",
+          "specs": "Cuero impermeable | Suela vibram | Talle 38-44",
+          "stock": 3,
+          "weight": "1.2 kg",
+          "featured": false
         },
         {
           "name": "Termo Acero 1L",
           "category": "Acc. Personales",
           "price": "Gs. 70.000",
           "description": "Acero inoxidable doble pared. Mantiene 12h caliente / 24h frío.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/termo.svg",
+          "brand": "ThermoKing",
+          "specs": "1L | Doble pared | 12h caliente / 24h frío",
+          "stock": 20,
+          "weight": "0.4 kg",
+          "featured": true
         },
         {
           "name": "Mochila Térmica",
           "category": "Acc. Personales",
           "price": "Gs. 120.000",
           "description": "Aislamiento térmico, 20L, correas ajustables. Ideal para viandas y paseos.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/mochila-termica.svg",
+          "brand": "CoolPack",
+          "specs": "20L | Aislamiento térmico | Correas ajustables",
+          "stock": 13,
+          "weight": "0.5 kg",
+          "featured": false
         },
         {
           "name": "Kit Botiquín",
           "category": "Acc. Personales",
           "price": "Gs. 55.000",
           "description": "Vendas, gasa, apósitos, tijera, pinza, alcohol, yodo. Estuche compacto.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/botiquin.svg",
+          "brand": "SafeCare",
+          "specs": "Vendas + gasa + apósitos + tijera + pinza + alcohol + yodo",
+          "stock": 25,
+          "weight": "0.3 kg",
+          "featured": false
         },
         {
           "name": "Eslingas Amarre 5t",
           "category": "Automóviles",
           "price": "Gs. 90.000",
           "description": "Par de eslingas 5m x 5t, ganchos forjados. Ideal para fijar carga.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/eslingas.svg",
+          "brand": "TowMaster",
+          "specs": "Par 5m x 5t | Ganchos forjados",
+          "stock": 10,
+          "weight": "2.0 kg",
+          "featured": false
         },
         {
           "name": "Extintor 2kg ABC",
           "category": "Automóviles",
           "price": "Gs. 110.000",
           "description": "Polvo químico seco ABC, incluye soporte para auto. Recargable.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/extintor.svg",
+          "brand": "FireStop",
+          "specs": "2kg | Polvo químico ABC | Soporte auto | Recargable",
+          "stock": 7,
+          "weight": "2.5 kg",
+          "featured": true
         },
         {
           "name": "Tiras Remolque 4m",
           "category": "Automóviles",
           "price": "Gs. 75.000",
           "description": "Nylon de alta resistencia, ganchos en ambos extremos. Capacidad 3.500kg.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/tiras.svg",
+          "brand": "TowMaster",
+          "specs": "4m | Nylon alta resistencia | 3.500kg capacidad",
+          "stock": 9,
+          "weight": "1.0 kg",
+          "featured": false
         },
         {
           "name": "Guantes Moto",
           "category": "Motos",
           "price": "Gs. 95.000",
           "description": "Cuero sintético, protecciones articulaciones, talle S a XL. Transpirables.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/guantes.svg",
+          "brand": "GripPro",
+          "specs": "Cuero sintético | Protecciones | Talle S-XL",
+          "stock": 15,
+          "weight": "0.3 kg",
+          "featured": false
         },
         {
           "name": "Rastreador GPS",
           "category": "Motos",
           "price": "Gs. 450.000",
           "description": "GPS antirrobo, app móvil, alertas en tiempo real. Batería recargable.",
-          "imageUrl": "/images/product-placeholder.svg",
-          "priceBefore": "Gs. 520.000"
+          "imageUrl": "/images/productos/rastreador.svg",
+          "priceBefore": "Gs. 520.000",
+          "brand": "TrackSafe",
+          "specs": "GPS antirrobo | App móvil | Alertas tiempo real",
+          "stock": 4,
+          "weight": "0.1 kg",
+          "featured": false
         },
         {
           "name": "Sombrilla Playa 1.8m",
           "category": "Playa y Pesca",
           "price": "Gs. 130.000",
           "description": "Antiviento, protección UV 50+, incluye bolsa de transporte.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/sombrilla.svg",
+          "brand": "SunBlock",
+          "specs": "1.8m | Antiviento | UV 50+ | Bolsa transporte",
+          "stock": 6,
+          "weight": "1.8 kg",
+          "featured": false
         },
         {
           "name": "Silla Playa Plegable",
           "category": "Playa y Pesca",
           "price": "Gs. 85.000",
           "description": "Aluminio ligero, respaldo reclinable, soporta 120kg.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/silla-playa.svg",
+          "brand": "BeachRest",
+          "specs": "Aluminio | Respaldo reclinable | 120kg máx",
+          "stock": 12,
+          "weight": "1.5 kg",
+          "featured": false
         },
         {
           "name": "Bebedero Automático",
           "category": "Campo",
           "price": "Gs. 85.000",
           "description": "Acero inoxidable, flotador automático. Capacidad 10L.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/bebedero.svg",
+          "brand": "FarmLife",
+          "specs": "Acero inoxidable | Flotador automático | 10L",
+          "stock": 8,
+          "weight": "0.8 kg",
+          "featured": false
         },
         {
           "name": "Comedero Acero",
           "category": "Campo",
           "price": "Gs. 65.000",
           "description": "Dos bandejas, patas reforzadas, desarmable para limpieza.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/comedero.svg",
+          "brand": "FarmLife",
+          "specs": "Dos bandejas | Patas reforzadas | Desarmable",
+          "stock": 10,
+          "weight": "1.0 kg",
+          "featured": false
         },
         {
           "name": "Kit Herramientas Campo",
           "category": "Campo",
           "price": "Gs. 160.000",
           "description": "Pala, azada, rastrillo desarmables con mango ergonomico.",
-          "imageUrl": "/images/product-placeholder.svg"
+          "imageUrl": "/images/productos/kit-campo.svg",
+          "brand": "AgriTool",
+          "specs": "Pala + azada + rastrillo | Mango ergonómico",
+          "stock": 8,
+          "weight": "2.2 kg",
+          "featured": false
         }
       ]
     }
@@ -767,11 +1238,13 @@
     "items": [
       {
         "question": "¿Dónde están ubicados?",
-        "answer": "Estamos en Coronel Felipe Toledo, M.R. Alonso. También podés contactarnos por WhatsApp."
+        "answer": "Estamos en Coronel Felipe Toledo, M.R. Alonso. También podés contactarnos por WhatsApp.",
+        "id": "ubicacion"
       },
       {
         "question": "¿Cuál es el horario de atencion?",
-        "answer": "Atendemos de Lunes a Viernes de 08:00 a 19:00, Sabados de 08:00 a 17:00 y Domingos de 09:00 a 13:00."
+        "answer": "Atendemos de Lunes a Viernes de 08:00 a 19:00, Sabados de 08:00 a 17:00 y Domingos de 09:00 a 13:00.",
+        "id": "horarios"
       },
       {
         "question": "¿Hacen envíos?",
@@ -779,11 +1252,13 @@
       },
       {
         "question": "¿Cómo puedo pedir un producto?",
-        "answer": "Escribinos por WhatsApp al +595 981 234 567 con el producto que te interesa. Te pasamos precio, disponibilidad y formas de pago."
+        "answer": "Escribinos por WhatsApp al +595 981 234 567 con el producto que te interesa. Te pasamos precio, disponibilidad y formas de pago.",
+        "id": "como-comprar"
       },
       {
         "question": "¿Qué métodos de pago aceptan?",
-        "answer": "Aceptamos efectivo (Gs. / USD), transferencia bancaria, tarjetas de credito y debito (Bancard), Mercado Pago y Pagopar."
+        "answer": "Aceptamos efectivo (Gs. / USD), transferencia bancaria, tarjetas de credito y debito (Bancard), Mercado Pago y Pagopar.",
+        "id": "medios-de-pago"
       },
       {
         "question": "¿Tienen garantía?",
@@ -795,15 +1270,18 @@
       },
       {
         "question": "¿Cómo comprar online?",
-        "answer": "Navega los productos, elegi los que te interesen y hace tu pedido por WhatsApp. Te pasamos precio final, disponibilidad y opciones de pago."
+        "answer": "Navega los productos, elegi los que te interesen y hace tu pedido por WhatsApp. Te pasamos precio final, disponibilidad y opciones de pago.",
+        "id": "como-comprar"
       },
       {
         "question": "¿Cuál es el costo de envio?",
-        "answer": "Envío según tarifa fija por distancia. Consultanos por WhatsApp para cotizar el envío a tu zona."
+        "answer": "Envío según tarifa fija por distancia. Consultanos por WhatsApp para cotizar el envío a tu zona.",
+        "id": "envios"
       },
       {
         "question": "¿Cuánto tarda la entrega?",
-        "answer": "Las entregas en Asunción y area metropolitana se realizan dentro de las 24-48hs habiles posteriores a la confirmacion del pedido."
+        "answer": "Las entregas en Asunción y area metropolitana se realizan dentro de las 24-48hs habiles posteriores a la confirmacion del pedido.",
+        "id": "tiempo-entrega"
       }
     ]
   },
@@ -1018,15 +1496,15 @@
           },
           {
             "label": "Envios",
-            "href": "/faq?q=envios"
+            "href": "/faq#envios"
           },
           {
             "label": "Cambios y devoluciones",
-            "href": "/faq?q=cambios-y-devoluciones"
+            "href": "/faq#cambios"
           },
           {
             "label": "Medios de pago",
-            "href": "/faq?q=medios-de-pago"
+            "href": "/faq#medios-de-pago"
           }
         ]
       },
@@ -1057,5 +1535,16 @@
       "Garantia incluida",
       "Pago 100% seguro"
     ]
+  },
+  "cookieConsent": {
+    "enabled": true,
+    "message": "Usamos cookies para mejorar tu experiencia. Al continuar, aceptás nuestra Política de Privacidad.",
+    "acceptText": "Aceptar",
+    "moreInfoText": "Más información",
+    "moreInfoLink": "/privacidad"
+  },
+  "newsletter": {
+    "endpoint": "/api/subscribe",
+    "listName": "El Viajero Novedades"
   }
 }
