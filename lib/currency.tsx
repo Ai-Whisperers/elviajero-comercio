@@ -1,9 +1,10 @@
-"use client"
+'use client'
+
 import { createContext, useContext, useState, useEffect } from "react"
+import { formatPrice as sharedFormatPrice } from "@ai-whisperers/commerce"
 
 type Currency = "PYG" | "USD"
 
-// Rate: 1 USD = ~7,400 PYG (adjustable)
 const RATE_PYG_PER_USD = 7400
 
 interface CurrencyCtx {
@@ -13,12 +14,7 @@ interface CurrencyCtx {
   formatDual: (pygStr: string) => { pyg: string; usd: string }
 }
 
-const CurrencyContext = createContext<CurrencyCtx>({
-  currency: "PYG",
-  setCurrency: () => {},
-  formatPrice: (s) => s,
-  formatDual: (s) => ({ pyg: s, usd: s }),
-})
+const CurrencyContext = createContext<CurrencyCtx>(null!)
 
 export function CurrencyProvider({ children }: { children: React.ReactNode }) {
   const [currency, setCur] = useState<Currency>("PYG")
@@ -46,16 +42,16 @@ export function CurrencyProvider({ children }: { children: React.ReactNode }) {
     const n = pygNum(pygStr)
     if (currency === "USD") {
       const usd = n / RATE_PYG_PER_USD
-      return "USD " + usd.toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 2 })
+      return `USD ${usd.toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`
     }
-    return "Gs. " + n.toLocaleString("es-PY")
+    return sharedFormatPrice(n, "PYG")
   }
 
   const formatDual = (pygStr: string) => {
     const n = pygNum(pygStr)
     return {
-      pyg: "Gs. " + n.toLocaleString("es-PY"),
-      usd: "USD " + (n / RATE_PYG_PER_USD).toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 2 }),
+      pyg: sharedFormatPrice(n, "PYG"),
+      usd: `USD ${(n / RATE_PYG_PER_USD).toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`,
     }
   }
 
