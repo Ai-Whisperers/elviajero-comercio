@@ -40,8 +40,8 @@
   },
   "home": {
     "seo": {
-      "title": "El Viajero Comercio - Camping, Pesca y Aventura en Asuncion",
-      "description": "Todo para tu aventura: camping, pesca, accesorios para auto y moto, equipo outdoor. Visitanos en Asuncion o pedi por WhatsApp."
+      "title": "El Viajero - Camping, Pesca y Aventura en Paraguay",
+      "description": "Todo para tu aventura: camping, pesca, accesorios para auto y moto, equipo outdoor. Visitanos en Mariano Roque Alonso o pedí por WhatsApp."
     },
     "hero": {
       "headline": "El Viajero Comercio - Tu Aventura Empieza Aca",
@@ -116,8 +116,9 @@
       "categories": [
         "Camping",
         "Pesca",
+        "Playa y Pesca",
         "Acc. Personales",
-        "Automoviles",
+        "Automóviles",
         "Motos",
         "Campo"
       ],
@@ -200,6 +201,163 @@
           "imageUrl": "https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=600&q=80"
         },
         {
+          "name": "Conservadora 20L",
+          "category": "Camping",
+          "price": "Gs. 180.000",
+          "description": "Mantiene frío hasta 24h, asa reforzada, cierre hermético. Ideal para paseos.",
+          "imageUrl": ""
+        },
+        {
+          "name": "Parrilla Portátil Doble",
+          "category": "Camping",
+          "price": "Gs. 250.000",
+          "description": "Doble parrilla, patas plegables, incluye bolsa de transporte. Acero cromado.",
+          "imageUrl": ""
+        },
+        {
+          "name": "Hamaca 2m",
+          "category": "Camping",
+          "price": "Gs. 95.000",
+          "description": "Nylon reforzado, soporta 150kg, incluye cuerdas y bolsa. Colores disponibles.",
+          "imageUrl": ""
+        },
+        {
+          "name": "Toldo Sombra 3x3",
+          "category": "Camping",
+          "price": "Gs. 320.000",
+          "description": "Protección UV 50+, impermeable, incluye postes y estacas. Fácil armado.",
+          "imageUrl": "",
+          "priceBefore": "Gs. 380.000"
+        },
+        {
+          "name": "Ventilador Recargable",
+          "category": "Camping",
+          "price": "Gs. 65.000",
+          "description": "USB recargable, 3 velocidades, luz LED incluida. Autonomía 8h.",
+          "imageUrl": ""
+        },
+        {
+          "name": "Caja Herramientas Pesca",
+          "category": "Pesca",
+          "price": "Gs. 120.000",
+          "description": "Organizador con bandejas extraíbles, impermeable. Ideal para señuelos y accesorios.",
+          "imageUrl": ""
+        },
+        {
+          "name": "Señuelos Surtidos (10u)",
+          "category": "Pesca",
+          "price": "Gs. 85.000",
+          "description": "Surtido de colores y tamaños. Incluye cucharitas, spinner y vinilos.",
+          "imageUrl": ""
+        },
+        {
+          "name": "Red de Pesca 3m",
+          "category": "Pesca",
+          "price": "Gs. 60.000",
+          "description": "Nylon trenzado, mango telescópico. Ideal para pesca deportiva.",
+          "imageUrl": ""
+        },
+        {
+          "name": "Boyas Flotantes (6u)",
+          "category": "Pesca",
+          "price": "Gs. 35.000",
+          "description": "Colores surtidos, alta visibilidad. Incluye brochetas plásticas.",
+          "imageUrl": ""
+        },
+        {
+          "name": "Botas Montaña",
+          "category": "Acc. Personales",
+          "price": "Gs. 350.000",
+          "description": "Cuero impermeable, suela vibram, puntera reforzada. Talles 38 a 44.",
+          "imageUrl": "",
+          "priceBefore": "Gs. 400.000"
+        },
+        {
+          "name": "Termo Acero 1L",
+          "category": "Acc. Personales",
+          "price": "Gs. 70.000",
+          "description": "Acero inoxidable doble pared. Mantiene 12h caliente / 24h frío.",
+          "imageUrl": ""
+        },
+        {
+          "name": "Mochila Térmica",
+          "category": "Acc. Personales",
+          "price": "Gs. 120.000",
+          "description": "Aislamiento térmico, 20L, correas ajustables. Ideal para viandas y paseos.",
+          "imageUrl": ""
+        },
+        {
+          "name": "Kit Botiquín",
+          "category": "Acc. Personales",
+          "price": "Gs. 55.000",
+          "description": "Vendas, gasa, apósitos, tijera, pinza, alcohol, yodo. Estuche compacto.",
+          "imageUrl": ""
+        },
+        {
+          "name": "Eslingas Amarre 5t",
+          "category": "Automóviles",
+          "price": "Gs. 90.000",
+          "description": "Par de eslingas 5m x 5t, ganchos forjados. Ideal para fijar carga.",
+          "imageUrl": ""
+        },
+        {
+          "name": "Extintor 2kg ABC",
+          "category": "Automóviles",
+          "price": "Gs. 110.000",
+          "description": "Polvo químico seco ABC, incluye soporte para auto. Recargable.",
+          "imageUrl": ""
+        },
+        {
+          "name": "Tiras Remolque 4m",
+          "category": "Automóviles",
+          "price": "Gs. 75.000",
+          "description": "Nylon de alta resistencia, ganchos en ambos extremos. Capacidad 3.500kg.",
+          "imageUrl": ""
+        },
+        {
+          "name": "Guantes Moto",
+          "category": "Motos",
+          "price": "Gs. 95.000",
+          "description": "Cuero sintético, protecciones articulaciones, talle S a XL. Transpirables.",
+          "imageUrl": ""
+        },
+        {
+          "name": "Rastreador GPS",
+          "category": "Motos",
+          "price": "Gs. 450.000",
+          "description": "GPS antirrobo, app móvil, alertas en tiempo real. Batería recargable.",
+          "imageUrl": "",
+          "priceBefore": "Gs. 520.000"
+        },
+        {
+          "name": "Sombrilla Playa 1.8m",
+          "category": "Playa y Pesca",
+          "price": "Gs. 130.000",
+          "description": "Antiviento, protección UV 50+, incluye bolsa de transporte.",
+          "imageUrl": ""
+        },
+        {
+          "name": "Silla Playa Plegable",
+          "category": "Playa y Pesca",
+          "price": "Gs. 85.000",
+          "description": "Aluminio ligero, respaldo reclinable, soporta 120kg.",
+          "imageUrl": ""
+        },
+        {
+          "name": "Bebedero Automático",
+          "category": "Campo",
+          "price": "Gs. 85.000",
+          "description": "Acero inoxidable, flotador automático. Capacidad 10L.",
+          "imageUrl": ""
+        },
+        {
+          "name": "Comedero Acero",
+          "category": "Campo",
+          "price": "Gs. 65.000",
+          "description": "Dos bandejas, patas reforzadas, desarmable para limpieza.",
+          "imageUrl": ""
+        },
+        {
           "name": "Kit Herramientas Campo",
           "category": "Campo",
           "price": "Gs. 160.000",
@@ -236,7 +394,7 @@
     ],
     "finalCta": {
       "title": "Listo para tu proxima aventura?",
-      "description": "Contactanos por WhatsApp y te asesoramos sobre los productos que necesitas. Hacemos envios en Asuncion y zonas aledanas.",
+      "description": "Contactanos por WhatsApp y te asesoramos sobre los productos que necesitas. Hacemos envíos en zona metropolitana y a todo Paraguay.",
       "buttonText": "Escribinos Ahora",
       "buttonLink": "https://wa.me/595981234567?text=Hola!%20Quisiera%20informacion%20sobre%20productos",
       "secondaryText": "Ver Catalogo",
@@ -251,29 +409,29 @@
     "contact": {
       "title": "Contacto",
       "subtitle": "Escribinos o visitanos",
-      "description": "Estamos en Av. Mariscal Lopez 1234, Asuncion. Consultanos por WhatsApp para cualquier consulta.",
-      "phone": "+595 981 234 567",
-      "whatsapp": "595981234567",
-      "email": "info@elviajerocomerc.io.com.py",
-      "address": "Av. Mariscal Lopez 1234, Asuncion",
-      "hours": "Lun-Vie 08:00-19:00, Sab 08:00-17:00, Dom 09:00-13:00",
-      "googleMapsUrl": "https://maps.google.com/?q=Av.+Mariscal+Lopez+1234+Asuncion+Paraguay"
+      "description": "Estamos en Coronel Felipe Toledo, M.R. Alonso. Consultanos por WhatsApp para cualquier consulta.",
+      "phone": "[PENDIENTE: teléfono]",
+      "whatsapp": "[PENDIENTE: WhatsApp]",
+      "email": "[PENDIENTE: email con dominio]",
+      "address": "Coronel Felipe Toledo, Barrio La Concordia (detrás de Mariam Lubricantes), Mariano Roque Alonso",
+      "hours": "[PENDIENTE: horarios]",
+      "googleMapsUrl": "https://maps.google.com/?q=Coronel+Felipe+Toledo+Mariano+Roque+Alonso+Paraguay"
     }
   },
   "about": {
     "seo": {
-      "title": "Sobre El Viajero Comercio | Tu Tienda Outdoor en Asuncion",
-      "description": "Conoce la historia de El Viajero Comercio. Apasionados por la aventura y el aire libre desde 2018 en Asuncion."
+      "title": "Sobre El Viajero | Tu Tienda Outdoor en Paraguay",
+      "description": "Conocé El Viajero. Apasionados por la aventura y el aire libre en Mariano Roque Alonso, Paraguay."
     },
     "hero": {
       "headline": "Sobre El Viajero Comercio",
-      "subheadline": "Apasionados por la aventura desde 2018"
+      "subheadline": "Nuevos en el rubro, expertos en equiparte"
     },
     "story": {
       "paragraphs": [
-        "El Viajero Comercio nacio en 2018 en Asuncion con una mision clara: equipar a los aventureros paraguayos con todo lo necesario para explorar Paraguay y el mundo. Desde una pequena tienda en el centro, comenzamos importando carpas y equipos de camping que eran dificiles de conseguir en el pais.",
-        "Hoy somos un referente en articulos outdoor, con mas de 500 productos en stock y 6 categorias que cubren camping, pesca, accesorios para auto y moto, equipo personal y agro. Nos enorgullece brindar atencion personalizada y asesoramiento experto para que cada cliente encuentre exactamente lo que necesita.",
-        "Creemos que el equipo correcto hace la diferencia entre un buen viaje y una experiencia inolvidable. Seguimos creciendo, trayendo las mejores marcas y los productos mas innovadores para que tu proxima aventura sea la mejor de todas."
+        "El Viajero nació con una misión clara: equipar a los aventureros paraguayos con todo lo necesario para explorar Paraguay. Desde nuestro local en Mariano Roque Alonso, comenzamos trayendo carpas y equipos de camping de la mejor calidad.",
+        "Apostamos a la variedad: camping, pesca, accesorios para auto y moto, equipo personal y más. Nos enorgullece brindar atención personalizada y asesoramiento experto para que cada cliente encuentre exactamente lo que necesita.",
+        "Creemos que el equipo correcto hace la diferencia entre un buen viaje y una experiencia inolvidable. Seguimos creciendo, trayendo las mejores marcas y los productos más innovadores."
       ]
     },
     "values": [
@@ -297,8 +455,8 @@
   },
   "productos": {
     "seo": {
-      "title": "Productos - El Viajero Comercio | Catalogo Completo en Asuncion",
-      "description": "Explora nuestro catalogo completo de camping, pesca, accesorios para auto y moto en Asuncion. Pedi por WhatsApp y recibi en tu casa."
+      "title": "Productos - El Viajero | Catálogo Completo en Paraguay",
+      "description": "Explora nuestro catálogo completo de camping, pesca, accesorios para auto y moto. Pedí por WhatsApp y recibí en todo Paraguay."
     },
     "hero": {
       "headline": "Nuestros Productos",
@@ -313,8 +471,9 @@
       "categories": [
         "Camping",
         "Pesca",
+        "Playa y Pesca",
         "Acc. Personales",
-        "Automoviles",
+        "Automóviles",
         "Motos",
         "Campo"
       ],
@@ -386,6 +545,163 @@
           "description": "Certificado DOT, visor antihumedad."
         },
         {
+          "name": "Conservadora 20L",
+          "category": "Camping",
+          "price": "Gs. 180.000",
+          "description": "Mantiene frío hasta 24h, asa reforzada, cierre hermético. Ideal para paseos.",
+          "imageUrl": ""
+        },
+        {
+          "name": "Parrilla Portátil Doble",
+          "category": "Camping",
+          "price": "Gs. 250.000",
+          "description": "Doble parrilla, patas plegables, incluye bolsa de transporte. Acero cromado.",
+          "imageUrl": ""
+        },
+        {
+          "name": "Hamaca 2m",
+          "category": "Camping",
+          "price": "Gs. 95.000",
+          "description": "Nylon reforzado, soporta 150kg, incluye cuerdas y bolsa. Colores disponibles.",
+          "imageUrl": ""
+        },
+        {
+          "name": "Toldo Sombra 3x3",
+          "category": "Camping",
+          "price": "Gs. 320.000",
+          "description": "Protección UV 50+, impermeable, incluye postes y estacas. Fácil armado.",
+          "imageUrl": "",
+          "priceBefore": "Gs. 380.000"
+        },
+        {
+          "name": "Ventilador Recargable",
+          "category": "Camping",
+          "price": "Gs. 65.000",
+          "description": "USB recargable, 3 velocidades, luz LED incluida. Autonomía 8h.",
+          "imageUrl": ""
+        },
+        {
+          "name": "Caja Herramientas Pesca",
+          "category": "Pesca",
+          "price": "Gs. 120.000",
+          "description": "Organizador con bandejas extraíbles, impermeable. Ideal para señuelos y accesorios.",
+          "imageUrl": ""
+        },
+        {
+          "name": "Señuelos Surtidos (10u)",
+          "category": "Pesca",
+          "price": "Gs. 85.000",
+          "description": "Surtido de colores y tamaños. Incluye cucharitas, spinner y vinilos.",
+          "imageUrl": ""
+        },
+        {
+          "name": "Red de Pesca 3m",
+          "category": "Pesca",
+          "price": "Gs. 60.000",
+          "description": "Nylon trenzado, mango telescópico. Ideal para pesca deportiva.",
+          "imageUrl": ""
+        },
+        {
+          "name": "Boyas Flotantes (6u)",
+          "category": "Pesca",
+          "price": "Gs. 35.000",
+          "description": "Colores surtidos, alta visibilidad. Incluye brochetas plásticas.",
+          "imageUrl": ""
+        },
+        {
+          "name": "Botas Montaña",
+          "category": "Acc. Personales",
+          "price": "Gs. 350.000",
+          "description": "Cuero impermeable, suela vibram, puntera reforzada. Talles 38 a 44.",
+          "imageUrl": "",
+          "priceBefore": "Gs. 400.000"
+        },
+        {
+          "name": "Termo Acero 1L",
+          "category": "Acc. Personales",
+          "price": "Gs. 70.000",
+          "description": "Acero inoxidable doble pared. Mantiene 12h caliente / 24h frío.",
+          "imageUrl": ""
+        },
+        {
+          "name": "Mochila Térmica",
+          "category": "Acc. Personales",
+          "price": "Gs. 120.000",
+          "description": "Aislamiento térmico, 20L, correas ajustables. Ideal para viandas y paseos.",
+          "imageUrl": ""
+        },
+        {
+          "name": "Kit Botiquín",
+          "category": "Acc. Personales",
+          "price": "Gs. 55.000",
+          "description": "Vendas, gasa, apósitos, tijera, pinza, alcohol, yodo. Estuche compacto.",
+          "imageUrl": ""
+        },
+        {
+          "name": "Eslingas Amarre 5t",
+          "category": "Automóviles",
+          "price": "Gs. 90.000",
+          "description": "Par de eslingas 5m x 5t, ganchos forjados. Ideal para fijar carga.",
+          "imageUrl": ""
+        },
+        {
+          "name": "Extintor 2kg ABC",
+          "category": "Automóviles",
+          "price": "Gs. 110.000",
+          "description": "Polvo químico seco ABC, incluye soporte para auto. Recargable.",
+          "imageUrl": ""
+        },
+        {
+          "name": "Tiras Remolque 4m",
+          "category": "Automóviles",
+          "price": "Gs. 75.000",
+          "description": "Nylon de alta resistencia, ganchos en ambos extremos. Capacidad 3.500kg.",
+          "imageUrl": ""
+        },
+        {
+          "name": "Guantes Moto",
+          "category": "Motos",
+          "price": "Gs. 95.000",
+          "description": "Cuero sintético, protecciones articulaciones, talle S a XL. Transpirables.",
+          "imageUrl": ""
+        },
+        {
+          "name": "Rastreador GPS",
+          "category": "Motos",
+          "price": "Gs. 450.000",
+          "description": "GPS antirrobo, app móvil, alertas en tiempo real. Batería recargable.",
+          "imageUrl": "",
+          "priceBefore": "Gs. 520.000"
+        },
+        {
+          "name": "Sombrilla Playa 1.8m",
+          "category": "Playa y Pesca",
+          "price": "Gs. 130.000",
+          "description": "Antiviento, protección UV 50+, incluye bolsa de transporte.",
+          "imageUrl": ""
+        },
+        {
+          "name": "Silla Playa Plegable",
+          "category": "Playa y Pesca",
+          "price": "Gs. 85.000",
+          "description": "Aluminio ligero, respaldo reclinable, soporta 120kg.",
+          "imageUrl": ""
+        },
+        {
+          "name": "Bebedero Automático",
+          "category": "Campo",
+          "price": "Gs. 85.000",
+          "description": "Acero inoxidable, flotador automático. Capacidad 10L.",
+          "imageUrl": ""
+        },
+        {
+          "name": "Comedero Acero",
+          "category": "Campo",
+          "price": "Gs. 65.000",
+          "description": "Dos bandejas, patas reforzadas, desarmable para limpieza.",
+          "imageUrl": ""
+        },
+        {
           "name": "Kit Herramientas Campo",
           "category": "Campo",
           "price": "Gs. 160.000",
@@ -396,8 +712,8 @@
   },
   "contacto": {
     "seo": {
-      "title": "Contacto - El Viajero Comercio | Av. Mariscal Lopez, Asuncion",
-      "description": "Contactanos por WhatsApp, telefono o visitanos en Av. Mariscal Lopez 1234, Asuncion. Estamos para ayudarte con tus proyectos outdoor."
+      "title": "Contacto - El Viajero | Tienda Outdoor en Mariano Roque Alonso",
+      "description": "Contactanos por WhatsApp para consultar productos de camping, pesca y outdoor. Visitanos en Mariano Roque Alonso o pedí delivery a todo Paraguay."
     },
     "hero": {
       "headline": "Contacto",
@@ -405,11 +721,11 @@
     },
     "info": {
       "title": "Informacion de Contacto",
-      "phone": "+595 981 234 567",
-      "whatsapp": "595981234567",
-      "email": "info@elviajerocomerc.io.com.py",
-      "address": "Av. Mariscal Lopez 1234, Asuncion",
-      "hours": "Lun-Vie 08:00-19:00 | Sab 08:00-17:00 | Dom 09:00-13:00"
+      "phone": "[PENDIENTE: teléfono]",
+      "whatsapp": "[PENDIENTE: WhatsApp]",
+      "email": "[PENDIENTE: email con dominio]",
+      "address": "Coronel Felipe Toledo, Barrio La Concordia (detrás de Mariam Lubricantes), Mariano Roque Alonso",
+      "hours": "[PENDIENTE: horarios]"
     },
     "form": {
       "title": "Envianos un Mensaje",
@@ -424,8 +740,8 @@
   },
   "faq": {
     "seo": {
-      "title": "Preguntas Frecuentes - El Viajero Comercio",
-      "description": "Resolvemos tus dudas sobre productos, envios, pagos, garantia y cambios en El Viajero Comercio."
+      "title": "Preguntas Frecuentes - El Viajero | Camping y Outdoor",
+      "description": "Resolvé tus dudas sobre productos, envíos, pagos y garantía en El Viajero. Envíos a todo Paraguay."
     },
     "hero": {
       "headline": "Preguntas Frecuentes",
@@ -435,7 +751,7 @@
     "items": [
       {
         "question": "Donde estan ubicados?",
-        "answer": "Estamos en Av. Mariscal Lopez 1234, Asuncion, casi San Martin. Tambien podes contactarnos por WhatsApp al +595 981 234 567."
+        "answer": "Estamos en Coronel Felipe Toledo, M.R. Alonso. También podés contactarnos por WhatsApp."
       },
       {
         "question": "Cual es el horario de atencion?",
@@ -443,7 +759,7 @@
       },
       {
         "question": "Hacen envios?",
-        "answer": "Si, hacemos entregas en Asuncion, Fernando de la Mora, San Lorenzo, Lambare, Luque y Capiatá. Envio gratis en compras desde Gs. 300.000."
+        "answer": "Sí, hacemos entregas en Mariano Roque Alonso, Asunción y área metropolitana. También hacemos envíos a todo Paraguay por encomienda. El costo depende de la distancia."
       },
       {
         "question": "Como puedo pedir un producto?",
@@ -467,7 +783,7 @@
       },
       {
         "question": "Cual es el costo de envio?",
-        "answer": "Envio gratis en compras desde Gs. 300.000 para Asuncion, Fernando de la Mora, San Lorenzo, Lambare, Luque y Capiatá. Fuera de esas zonas consultanos."
+        "answer": "Envío según tarifa fija por distancia. Consultanos por WhatsApp para cotizar el envío a tu zona."
       },
       {
         "question": "Cuanto tarda la entrega?",
@@ -481,8 +797,8 @@
   },
   "tienda": {
     "seo": {
-      "title": "Tienda Online - El Viajero Comercio | Compra en Asuncion",
-      "description": "Compra online en El Viajero Comercio. Camping, pesca, accesorios para auto y moto. Hacemos envios en Asuncion y zonas aledanas."
+      "title": "Tienda Online - El Viajero | Camping, Pesca y Outdoor",
+      "description": "Compra online en El Viajero. Camping, pesca, accesorios para auto y moto. Hacemos envíos a todo Paraguay."
     },
     "hero": {
       "headline": "Tienda Online",
@@ -494,7 +810,7 @@
         {
           "icon": "Truck",
           "text": "Envio a tu domicilio",
-          "description": "En Asuncion y area metropolitana"
+          "description": "En zona metropolitana y todo Paraguay"
         },
         {
           "icon": "ShieldCheck",
@@ -607,8 +923,8 @@
   },
   "promociones": {
     "seo": {
-      "title": "Promociones - El Viajero Comercio | Ofertas en Camping y Pesca",
-      "description": "Aprovecha nuestras promociones en camping, pesca, accesorios para auto y moto. Ofertas por tiempo limitado en Asuncion."
+      "title": "Promociones - El Viajero | Ofertas en Camping y Pesca",
+      "description": "Aprovechá nuestras promociones en camping, pesca, accesorios para auto y moto. Ofertas por tiempo limitado. Envíos a todo Paraguay."
     },
     "hero": {
       "headline": "Promociones",
@@ -647,10 +963,10 @@
     "ctaText": "Escribir una opinion"
   },
   "footer": {
-    "description": "El Viajero Comercio - Todo para tu aventura en Asuncion. Camping, pesca, accesorios para auto y moto, equipo outdoor y mas. Desde 2018 equipando a los aventureros paraguayos.",
-    "address": "Av. Mariscal Lopez 1234, Asuncion",
-    "phone": "+595 981 234 567",
-    "hours": "Lun-Vie 08:00-19:00 | Sab 08:00-17:00 | Dom 09:00-13:00",
+    "description": "El Viajero - Todo para tu aventura en Mariano Roque Alonso, Paraguay. Camping, pesca, accesorios para auto y moto, equipo outdoor y más.",
+    "address": "Coronel Felipe Toledo, Barrio La Concordia (detrás de Mariam Lubricantes), Mariano Roque Alonso",
+    "phone": "[PENDIENTE: teléfono]",
+    "hours": "[PENDIENTE: horarios]",
     "columns": [
       {
         "title": "El Viajero",

@@ -1,1 +1,37 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="800" viewBox="0 0 1920 800"><defs><linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#1B5E20"/><stop offset="100%" stop-color="#2E7D32"/></linearGradient></defs><rect width="1920" height="800" fill="url(#g)"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 600" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a237e"/>
+      <stop offset="30%" stop-color="#1565C0"/>
+      <stop offset="60%" stop-color="#4a90d9"/>
+      <stop offset="100%" stop-color="#e8f0fe"/>
+    </linearGradient>
+    <linearGradient id="mountain1" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0%" stop-color="#1B5E20"/>
+      <stop offset="100%" stop-color="#2E7D32"/>
+    </linearGradient>
+    <linearGradient id="mountain2" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0%" stop-color="#1a3a1a"/>
+      <stop offset="100%" stop-color="#1B5E20"/>
+    </linearGradient>
+    <linearGradient id="mountain3" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0%" stop-color="#0d1f0d"/>
+      <stop offset="100%" stop-color="#1a3a1a"/>
+    </linearGradient>
+  </defs>
+  <!-- Sky -->
+  <rect width="1920" height="600" fill="url(#sky)"/>
+  <!-- Sun glow -->
+  <circle cx="1400" cy="180" r="80" fill="#FFB300" opacity="0.15"/>
+  <circle cx="1400" cy="180" r="40" fill="#FFB300" opacity="0.3"/>
+  <!-- Far mountains -->
+  <path d="M0 400 L100 280 L200 350 L350 200 L500 330 L650 180 L800 310 L950 220 L1100 340 L1300 190 L1450 320 L1600 240 L1750 350 L1920 280 L1920 600 L0 600Z" fill="url(#mountain3)" opacity="0.5"/>
+  <!-- Mid mountains -->
+  <path d="M0 450 L80 330 L200 400 L300 260 L450 380 L600 220 L750 360 L900 250 L1050 370 L1200 210 L1350 350 L1500 270 L1650 390 L1800 310 L1920 350 L1920 600 L0 600Z" fill="url(#mountain2)" opacity="0.6"/>
+  <!-- Front mountains -->
+  <path d="M0 500 L100 400 L250 460 L380 320 L520 440 L680 300 L820 420 L950 340 L1100 450 L1250 290 L1400 420 L1550 360 L1700 480 L1850 350 L1920 420 L1920 600 L0 600Z" fill="url(#mountain1)"/>
+  <!-- Trees layer -->
+  <path d="M0 520 Q50 480 100 520 Q150 490 200 520 Q250 485 300 520 Q350 495 400 520 Q450 480 500 520 Q550 490 600 520 Q650 475 700 520 Q750 490 800 520 Q850 480 900 520 Q950 495 1000 520 Q1050 480 1100 520 Q1150 490 1200 520 Q1250 485 1300 520 Q1350 495 1400 520 Q1450 480 1500 520 Q1550 490 1600 520 Q1650 485 1700 520 Q1750 495 1800 520 Q1850 480 1900 520 L1920 520 L1920 600 L0 600Z" fill="#0d4712" opacity="0.8"/>
+  <!-- Ground -->
+  <rect x="0" y="550" width="1920" height="50" fill="#1a3a1a"/>
+</svg>
