@@ -9,6 +9,7 @@ import { CartProvider, useCart } from "@/lib/cart-context"
 import { ToastProvider } from "@/components/toast"
 import { CartToastListener } from "@/components/cart-toast-listener"
 import { useWishlist, useRecentlyViewed } from "@/lib/wishlist"
+import { PriceUSD } from "@/components/price-usd"
 import content from "@/content/es.json"
 import Image from "next/image"
 import Link from "next/link"
@@ -58,6 +59,7 @@ function ProductCard({ p, onClick, addItem, isWished, toggleWish }: any) {
         </Link>
         <div className="mt-2 flex items-baseline gap-2">
           <p className="text-xl font-bold text-primary">{p.price}</p>
+          <PriceUSD pygStr={p.price} />
           {p.priceBefore && <p className="text-sm text-muted-foreground line-through">{p.priceBefore}</p>}
         </div>
         {p.priceBefore && <span className="mt-1 inline-block rounded-full bg-accent px-2 py-0.5 text-xs font-bold text-accent-foreground">OFERTA</span>}
