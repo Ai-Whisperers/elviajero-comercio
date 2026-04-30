@@ -111,6 +111,9 @@ function CheckoutForm() {
       if (!orderId) orderId = localId
     }
 
+    // Track purchase
+    try { if (typeof window !== "undefined" && (window as any).gtag) { const tn = finalTotal || 0; (window as any).gtag("event", "purchase", { transaction_id: orderId || Date.now().toString(36), value: tn / 7400, currency: "USD", items: items.map((i: any) => ({ item_id: i.name, item_name: i.name, price: (i.priceGs || 0) / 7400, quantity: i.quantity })) }); if ((window as any).fbq) (window as any).fbq("track", "Purchase", { value: tn / 7400, currency: "USD" }) } } catch {}
+
     // Redirect to payment gateway if applicable
     if (paymentMethod === "mercadopago" || paymentMethod === "transferencia") {
       try {

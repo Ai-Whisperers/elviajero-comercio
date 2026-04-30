@@ -43,14 +43,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setItems((prev) => {
       const exist = prev.find((i) => i.name === item.name)
       if (exist) {
-        if (typeof window !== "undefined") window.dispatchEvent(new CustomEvent("cart-toast", {
-          detail: { message: item.name + " (+1) en el carrito", type: "success" },
-        }))
+        if (typeof window !== "undefined") window.dispatchEvent(new CustomEvent("cart-toast", { detail: { message: item.name + " (+1) en el carrito", type: "success" } }))
+        try { if (typeof window !== "undefined" && (window as any).gtag) { const p = parseInt(item.priceGs?.toString() || "0", 10); (window as any).gtag("event", "add_to_cart", { currency: "PYG", value: p / 7400, items: [{ item_id: item.name, item_name: item.name, price: p / 7400, quantity: 1 }] }) } } catch {}
         return prev.map((i) => (i.name === item.name ? { ...i, quantity: i.quantity + 1 } : i))
       }
-      if (typeof window !== "undefined") window.dispatchEvent(new CustomEvent("cart-toast", {
-        detail: { message: item.name + " agregado al carrito", type: "success" },
-      }))
+      if (typeof window !== "undefined") window.dispatchEvent(new CustomEvent("cart-toast", { detail: { message: item.name + " agregado al carrito", type: "success" } }))
+        try { if (typeof window !== "undefined" && (window as any).gtag) { const p = parseInt(item.priceGs?.toString() || "0", 10); (window as any).gtag("event", "add_to_cart", { currency: "PYG", value: p / 7400, items: [{ item_id: item.name, item_name: item.name, price: p / 7400, quantity: 1 }] }) } } catch {}
       return [...prev, { ...item, quantity: 1 }]
     })
   }, [])
