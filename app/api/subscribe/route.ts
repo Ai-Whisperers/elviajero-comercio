@@ -1,27 +1,23 @@
-// Simple newsletter subscription endpoint (stores to local JSON file)
-// In production, replace with Mailchimp/SendGrid/ConvertKit API
-import { NextResponse } from "next/server"
-import { writeFile, mkdir } from "fs/promises"
-import { join } from "path"
+import { NextRequest, NextResponse } from "next/server"
+import fs from "fs"
+import path from "path"
 
-export async function POST(request: Request) {
+export async function POST(req: NextRequest) {
   try {
-    const formData = await request.formData()
-    const email = formData.get("email") as string
+    const form = await req.formData()
+    const email = form.get("email")?.toString()
+    if (!email) return NextResponse.redirect(new URL("/?subscribe=error", req.url))
 
-    if (!email || !email.includes("@") || !email.includes(".")) {
-      return NextResponse.json({ error: "Email inválido" }, { status: 400 })
-    }
+    const filePath = path.join(process.cwd(), "data", "subscribers.json")
+    let subscribers: string[] = []
+    try {
+      if (fs.existsSync(filePath)) subscribers = JSON.parse(fs.readFileSync(filePath, "utf-8"))
+    } catch {}
+    if (!subscribers.includes(email)) subscribers.push(email)
+    fs.writeFileSync(filePath, JSON.stringify(subscribers, null, 2))
 
-    // Store subscription (in production, use an email service)
-    const dataDir = join(process.cwd(), "data")
-    await mkdir(dataDir, { recursive: true })
-    const filePath = join(dataDir, "subscribers.jsonl")
-    await writeFile(filePath, JSON.stringify({ email, subscribedAt: new Date().toISOString() }) + "\n", { flag: "a" })
-
-    // Redirect back with success
-    return NextResponse.redirect(new URL("/?subscribed=true", request.url), 303)
+    return NextResponse.redirect(new URL("/?subscribe=success", req.url))
   } catch {
-    return NextResponse.json({ error: "Error al suscribir" }, { status: 500 })
+    return NextResponse.redirect(new URL("/?subscribe=error", req.url))
   }
 }

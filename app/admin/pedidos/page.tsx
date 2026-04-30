@@ -1,114 +1,62 @@
 "use client"
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
-import { CookieConsent } from "@/components/cookie-consent"
-import { Breadcrumbs } from "@/components/ui"
+import { AdminShell, useAdminAuth } from "@/components/admin/admin-layout"
 import { useState, useEffect } from "react"
-import Link from "next/link"
 
-export default function AdminPedidosPage() {
+const statuses = ["pendiente", "confirmado", "enviado", "entregado", "cancelado"]
+
+export default function AdminOrders() {
+  const { authed } = useAdminAuth()
   const [orders, setOrders] = useState<any[]>([])
-  const [loading, setLoading] = useState(true)
+  const [filter, setFilter] = useState("todos")
 
-  const fetchOrders = async () => {
-    try {
-      const res = await fetch("/api/orders")
-      const data = await res.json()
-      setOrders(data)
-    } catch {}
-    setLoading(false)
-  }
-
-  useEffect(() => { fetchOrders() }, [])
-
-  const updateStatus = async (id: string, status: string) => {
-    await fetch("/api/orders", {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id, status })
+  useEffect(() => {
+    if (!authed) return
+    const users = JSON.parse(localStorage.getItem("viajero_users") || "[]")
+    const all: any[] = []
+    users.forEach((u: any) => {
+      const ords = JSON.parse(localStorage.getItem(`viajero_orders_${u.id}`) || "[]")
+      all.push(...ords.map((o: any) => ({ ...o, user: u.name, userId: u.id })))
     })
-    fetchOrders()
+    setOrders(all.sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime()))
+  }, [authed])
+
+  const update = (orderId: string, userId: string, newStatus: string) => {
+    const ords = JSON.parse(localStorage.getItem(`viajero_orders_${userId}`) || "[]")
+    const idx = ords.findIndex((o: any) => o.id === orderId)
+    if (idx >= 0) { ords[idx].status = newStatus; localStorage.setItem(`viajero_orders_${userId}`, JSON.stringify(ords)); setOrders(orders.map(o => o.id === orderId ? { ...o, status: newStatus } : o)) }
   }
 
-  const statusColors: Record<string, string> = {
-    pending: "bg-yellow-100 text-yellow-800",
-    processing: "bg-blue-100 text-blue-800",
-    shipped: "bg-purple-100 text-purple-800",
-    delivered: "bg-green-100 text-green-800",
-    cancelled: "bg-red-100 text-red-800"
-  }
+  const filtered = filter === "todos" ? orders : orders.filter(o => o.status === filter)
 
-  const formatGs = (n: number) => "Gs. " + (n || 0).toLocaleString("es-PY")
+  if (!authed) return null
 
   return (
     <>
-      <Header />
-      <Breadcrumbs items={[{ label: "Inicio", href: "/" }, { label: "Admin", href: "/admin" }, { label: "Pedidos" }]} />
-      <section className="bg-background py-12">
-        <div className="mx-auto max-w-6xl px-4">
-          <h1 className="text-3xl font-bold text-foreground mb-8">Gestión de Pedidos</h1>
-
-          {loading && <p className="text-muted-foreground">Cargando pedidos...</p>}
-
-          {!loading && orders.length === 0 && (
-            <div className="py-20 text-center">
-              <span className="text-5xl block mb-4">📦</span>
-              <p className="text-muted-foreground">No hay pedidos todavía.</p>
-              <p className="text-xs text-muted-foreground mt-1">Los pedidos aparecen acá cuando los clientes usan el checkout.</p>
-            </div>
-          )}
-
-          {orders.length > 0 && (
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-border text-left text-muted-foreground">
-                    <th className="pb-3 pr-4 font-medium">ID</th>
-                    <th className="pb-3 pr-4 font-medium">Cliente</th>
-                    <th className="pb-3 pr-4 font-medium">Total</th>
-                    <th className="pb-3 pr-4 font-medium">Estado</th>
-                    <th className="pb-3 pr-4 font-medium">Fecha</th>
-                    <th className="pb-3 font-medium">Acción</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {orders.map((order: any) => (
-                    <tr key={order.id} className="border-b border-border">
-                      <td className="py-3 pr-4 font-mono text-xs">{order.id}</td>
-                      <td className="py-3 pr-4">
-                        <p className="font-medium text-foreground">{order.customer?.name || "—"}</p>
-                        <p className="text-xs text-muted-foreground">{order.customer?.phone || "—"}</p>
-                      </td>
-                      <td className="py-3 pr-4 font-semibold text-foreground">{formatGs(order.total)}</td>
-                      <td className="py-3 pr-4">
-                        <span className={`inline-block rounded-full px-2 py-0.5 text-xs font-medium ${statusColors[order.status] || "bg-gray-100"}`}>
-                          {order.status === "pending" ? "Pendiente" : order.status === "processing" ? "Procesando" : order.status === "shipped" ? "Enviado" : order.status === "delivered" ? "Entregado" : order.status}
-                        </span>
-                      </td>
-                      <td className="py-3 pr-4 text-xs text-muted-foreground">{new Date(order.createdAt).toLocaleDateString("es")}</td>
-                      <td className="py-3">
-                        <select
-                          value={order.status}
-                          onChange={(e) => updateStatus(order.id, e.target.value)}
-                          className="rounded-lg border border-input bg-background px-2 py-1 text-xs outline-none"
-                        >
-                          <option value="pending">Pendiente</option>
-                          <option value="processing">Procesando</option>
-                          <option value="shipped">Enviado</option>
-                          <option value="delivered">Entregado</option>
-                          <option value="cancelled">Cancelado</option>
-                        </select>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
+      <div className="mb-6 flex items-center justify-between">
+        <h1 className="text-xl font-bold text-white">Pedidos ({orders.length})</h1>
+        <div className="flex gap-2">
+          {["todos", ...statuses].map(s => (
+            <button key={s} onClick={() => setFilter(s)} className={`rounded-full px-3 py-1 text-xs font-medium ${filter === s ? "bg-green-600 text-white" : "bg-gray-800 text-gray-400 hover:text-white"}`}>{s === "todos" ? "Todos" : s}</button>
+          ))}
         </div>
-      </section>
-      <Footer />
-      <CookieConsent />
+      </div>
+      <div className="space-y-3">
+        {filtered.map(o => (
+          <div key={o.id} className="rounded-xl border border-gray-800 bg-gray-900 p-4">
+            <div className="flex items-center justify-between mb-2">
+              <span className="font-bold text-white">#{o.id.slice(0, 8)}</span>
+              <span className="text-xs text-gray-500">{new Date(o.date).toLocaleDateString("es", { dateStyle: "long" })}</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <div className="text-sm"><p className="text-gray-400">{o.user || "Invitado"} · {o.items?.length || 0} artículos</p><p className="text-white font-bold mt-1">{o.total}</p></div>
+              <select value={o.status} onChange={e => update(o.id, o.userId, e.target.value)} className="rounded-lg bg-gray-800 border border-gray-700 px-3 py-1.5 text-xs text-white">
+                {statuses.map(s => <option key={s} value={s}>{s}</option>)}
+              </select>
+            </div>
+          </div>
+        ))}
+        {filtered.length === 0 && <div className="text-center py-12 text-gray-500 text-sm">No hay pedidos</div>}
+      </div>
     </>
   )
 }
