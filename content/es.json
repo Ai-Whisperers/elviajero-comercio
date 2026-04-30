@@ -1812,5 +1812,123 @@
       "Bebederos",
       "Comederos"
     ]
+  },
+  "deliveryZones": [
+    {
+      "zone": "Mariano Roque Alonso",
+      "fee": 0,
+      "minForFree": 0,
+      "days": "Mismo día"
+    },
+    {
+      "zone": "Asunción",
+      "fee": 15000,
+      "minForFree": 300000,
+      "days": "24h"
+    },
+    {
+      "zone": "Fernando de la Mora",
+      "fee": 15000,
+      "minForFree": 300000,
+      "days": "24h"
+    },
+    {
+      "zone": "San Lorenzo",
+      "fee": 15000,
+      "minForFree": 300000,
+      "days": "24h"
+    },
+    {
+      "zone": "Lambaré",
+      "fee": 20000,
+      "minForFree": 300000,
+      "days": "24-48h"
+    },
+    {
+      "zone": "Luque",
+      "fee": 20000,
+      "minForFree": 300000,
+      "days": "24-48h"
+    },
+    {
+      "zone": "Capiatá",
+      "fee": 25000,
+      "minForFree": 300000,
+      "days": "24-48h"
+    },
+    {
+      "zone": "Limpio",
+      "fee": 25000,
+      "minForFree": 300000,
+      "days": "24-48h"
+    },
+    {
+      "zone": "Ñemby",
+      "fee": 25000,
+      "minForFree": 300000,
+      "days": "24-48h"
+    },
+    {
+      "zone": "Interior (encomienda)",
+      "fee": 0,
+      "minForFree": 0,
+      "days": "3-7 días",
+      "note": "Consultar costo según destino"
+    }
+  ],
+  "coupons": {
+    "enabled": true,
+    "list": [
+      {
+        "code": "VIAJERO10",
+        "type": "percent",
+        "value": 10,
+        "minPurchase": 200000,
+        "description": "10% de descuento en compras desde Gs. 200.000",
+        "active": true
+      },
+      {
+        "code": "ENVIOGRATIS",
+        "type": "free_shipping",
+        "value": 0,
+        "minPurchase": 0,
+        "description": "Envío gratis sin mínimo",
+        "active": true
+      },
+      {
+        "code": "BIENVENIDO",
+        "type": "percent",
+        "value": 15,
+        "minPurchase": 100000,
+        "description": "15% off para compradores nuevos",
+        "active": true,
+        "maxUses": 50
+      }
+    ]
+  },
+  "analytics": {
+    "ga4": {
+      "measurementId": "G-XXXXXXXX",
+      "enabled": true
+    },
+    "events": {
+      "view_item": true,
+      "add_to_cart": true,
+      "begin_checkout": true,
+      "purchase": true,
+      "whatsapp_click": true
+    }
+  },
+  "paymentGateway": {
+    "provider": "pagopar",
+    "mode": "sandbox",
+    "publicKey": "pk_test_xxxxxxxxxxxxxxxxxxxx",
+    "currency": "PYG",
+    "installments": [
+      3,
+      6,
+      12
+    ],
+    "minInstallmentAmount": 50000
   }
 }

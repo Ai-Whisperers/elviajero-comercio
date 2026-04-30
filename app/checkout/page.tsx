@@ -5,6 +5,9 @@ import { CartSidebar } from "@/components/cart-sidebar"
 import { CookieConsent } from "@/components/cookie-consent"
 import { Breadcrumbs } from "@/components/ui"
 import { CartProvider, useCart } from "@/lib/cart-context"
+import { DeliveryCalculator } from "@/components/delivery-calculator"
+import { CouponInput } from "@/components/coupon-input"
+import { trackWhatsAppClick, trackBeginCheckout } from "@/components/analytics"
 import { useState } from "react"
 import Link from "next/link"
 
@@ -17,19 +20,42 @@ function CheckoutContent() {
   const [notes, setNotes] = useState("")
   const [method, setMethod] = useState("whatsapp")
   const [submitted, setSubmitted] = useState(false)
+  const [deliveryFee, setDeliveryFee] = useState(0)
+  const [discount, setDiscount] = useState(0)
+  const [couponCode, setCouponCode] = useState("")
 
   const formatGs = (n: number) => "Gs. " + n.toLocaleString("es-PY")
+  const finalTotal = Math.max(0, total - discount + deliveryFee)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    trackBeginCheckout(finalTotal)
+    
     const msg = encodeURIComponent(
       "🛒 *Nuevo Pedido - El Viajero*\n\n" +
       items.map(i => `• ${i.name} x${i.quantity}: ${formatGs(i.priceGs * i.quantity)}`).join("\n") +
-      `\n\n*Total: ${formatGs(total)}*\n\n` +
+      `\n${deliveryFee > 0 ? `\n🚚 Envío: ${formatGs(deliveryFee)}` : "\n🚚 Envío: Gratis 🎉"}` +
+      `${discount > 0 ? `\n💰 Descuento: -${formatGs(discount)} (${couponCode})` : ""}` +
+      `\n\n*Total: ${formatGs(finalTotal)}*\n\n` +
       `👤 ${name}\n📞 ${phone}\n📍 ${address}, ${city}\n📝 ${notes}\n\n💳 Método: ${method === "whatsapp" ? "Consultar" : method === "transfer" ? "Transferencia" : "Efectivo"}`
     )
+    
+    // Save order to API
+    try {
+      await fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          items, total: finalTotal, customer: { name, phone, address, city },
+          delivery: { fee: deliveryFee }, payment: method, notes,
+          coupon: couponCode || null, discount
+        })
+      })
+    } catch {}
+    
     if (method === "whatsapp") {
       window.open(`https://wa.me/595981234567?text=${msg}`, "_blank")
+      trackWhatsAppClick("checkout_submit")
     }
     clearCart()
     setSubmitted(true)
@@ -115,8 +141,11 @@ function CheckoutContent() {
             </form>
 
             {/* Summary */}
-            <div className="rounded-xl border border-border bg-surface p-6 shadow-sm">
-              <h2 className="text-lg font-bold text-foreground mb-4">Resumen del pedido</h2>
+            <div className="space-y-4">
+              <DeliveryCalculator subtotal={total} onFeeChange={setDeliveryFee} />
+              <CouponInput subtotal={total} onDiscount={(amt, code) => { setDiscount(amt); setCouponCode(code) }} />
+              <div className="rounded-xl border border-border bg-surface p-6 shadow-sm">
+                <h2 className="text-lg font-bold text-foreground mb-4">Resumen del pedido</h2>
               <div className="space-y-3">
                 {items.map((item, i) => (
                   <div key={i} className="flex items-center justify-between text-sm">
@@ -125,16 +154,20 @@ function CheckoutContent() {
                   </div>
                 ))}
               </div>
-              <div className="mt-6 border-t border-border pt-4">
+              <div className="mt-6 border-t border-border pt-4 space-y-2">
+                {discount > 0 && <div className="flex items-center justify-between text-sm"><span className="text-green-600">Descuento ({couponCode})</span><span className="text-green-600">-{formatGs(discount)}</span></div>}
+                {deliveryFee > 0 && <div className="flex items-center justify-between text-sm"><span>Envío</span><span>{formatGs(deliveryFee)}</span></div>}
+                {deliveryFee === 0 && total > 0 && <div className="flex items-center justify-between text-sm"><span className="text-green-600">Envío</span><span className="text-green-600">Gratis 🎉</span></div>}
                 <div className="flex items-center justify-between">
                   <span className="font-bold text-foreground">Total</span>
-                  <span className="text-xl font-bold text-primary">{formatGs(total)}</span>
+                  <span className="text-xl font-bold text-primary">{formatGs(finalTotal)}</span>
                 </div>
               </div>
               <button onClick={handleSubmit} className="mt-6 w-full rounded-lg bg-primary py-3 font-semibold text-primary-foreground transition-all hover:bg-primary/90">
                 Enviar pedido por WhatsApp
               </button>
               <p className="mt-3 text-xs text-muted-foreground text-center">Te responderemos en minutos para confirmar.</p>
+              </div>
             </div>
           </div>
         </div>
