@@ -49,7 +49,7 @@ export default function Home() {
             {h.subheadline && <p className="mx-auto mb-8 max-w-2xl text-lg text-white/80">{h.subheadline}</p>}
             <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
               {h.ctaPrimaryText && (
-                <a href={h.ctaPrimaryHref || "/catalogo"} className="inline-flex h-10 items-center justify-center rounded-md bg-secondary px-8 text-sm font-semibold text-secondary-foreground shadow-xs transition-all hover:scale-105">
+                <a href="/catalogo" className="inline-flex h-10 items-center justify-center rounded-md bg-secondary px-8 text-sm font-semibold text-secondary-foreground shadow-xs transition-all hover:scale-105">
                   {h.ctaPrimaryText}
                 </a>
               )}
