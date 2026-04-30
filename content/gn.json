@@ -1,0 +1,60 @@
+{
+  "siteName": "El Viajero",
+  "businessName": "El Viajero",
+  "navigation": {
+    "items": [
+      { "label": "Hógape", "href": "/" },
+      { "label": "Ñemuhápe", "href": "/tienda" },
+      { "label": "Promociones", "href": "/promociones" },
+      { "label": "Ñane rehegua", "href": "/nosotros" },
+      { "label": "Contacto", "href": "/contacto" },
+      { "label": "Blog", "href": "/blog" },
+      { "label": "FAQ", "href": "/faq" }
+    ],
+    "ctaText": "Mba'e reipota?",
+    "ctaHref": "https://wa.me/595981234567"
+  },
+  "home": {
+    "seo": { "title": "El Viajero — Nembiaporã ko'ápe oñepyrũ", "description": "Camping, pesca, accesorio automóvil ha moto pegua. Opamba'e ne mba'e'apópe g̃uarã Paraguáipe." },
+    "heroCarousel": {
+      "slides": [
+        { "title": "Nembiaporã ko'ápe oñepyrũ", "subtitle": "Camping, pesca, ha hetave", "ctaText": "Ehecha", "ctaHref": "/tienda" }
+      ]
+    },
+    "stats": {
+      "items": [
+        { "value": "7", "label": "Categoría" },
+        { "value": "500+", "label": "Producto" },
+        { "value": "10", "label": "Año" },
+        { "value": "100%", "label": "Garantía" }
+      ]
+    },
+    "features": {
+      "title": "Mba'ére eiporavo El Viajero",
+      "items": [
+        { "title": "Envío Paraguái pópe", "description": "Oguata opárupi.", "icon": "truck" },
+        { "title": "Garantía", "description": "Opamba'e oreko garantía.", "icon": "shield" },
+        { "title": "Soporte WhatsApp", "description": "Nepyrũrã ore WhatsApp rupive.", "icon": "message-circle" }
+      ]
+    },
+    "newsletter": { "title": "Eguenohẽ novedades", "description": "Ñe'ẽmondo roguerohoryvéva", "buttonText": "Añemboheraguy" }
+  },
+  "footer": {
+    "columns": [
+      { "title": "Navegación", "links": [
+        { "label": "Hógape", "href": "/" },
+        { "label": "Ñemuhápe", "href": "/tienda" },
+        { "label": "Ñane rehegua", "href": "/nosotros" },
+        { "label": "Contacto", "href": "/contacto" }
+      ]}
+    ],
+    "social": [
+      { "name": "Instagram", "url": "https://instagram.com/elviajero_py", "icon": "instagram" },
+      { "name": "Facebook", "url": "https://facebook.com/elviajeropy", "icon": "facebook" },
+      { "name": "TikTok", "url": "https://tiktok.com/@elviajero_py", "icon": "tiktok" }
+    ]
+  },
+  "whatsapp": { "defaultMessage": "Mba'épa reipota? Ajuaju WhatsApp rupive" },
+  "paymentMethods": { "icons": ["visa", "mastercard", "mercadopago", "pagopar", "bancard", "efectivo", "transferencia"], "installments": "3, 6 ha 12 cuota" },
+  "cookieConsent": { "message": "Jaipuru cookie'i ne remiandu porãve hag̃ua", "acceptText": "Ajuave" }
+}

@@ -15,7 +15,11 @@ const config: NextConfig = {
       { source: '/images/(.*)', headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }] },
     ]
   },
-  images: { unoptimized: true },
+  images: {
+    remotePatterns: [
+      { protocol: 'https', hostname: '**.cloudflare.com' },
+      { protocol: 'https', hostname: 'images.unsplash.com' },
+    ],  unoptimized: true },
   output: "standalone",
   async redirects() { return [{ source: "/s/:path*", destination: "/", permanent: true }] },
 }

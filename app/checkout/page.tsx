@@ -68,7 +68,7 @@ function CheckoutForm() {
     else { setPromoCode(result.promo); setPromoError("") }
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (submitting) return
     setSubmitting(true)
 
@@ -81,6 +81,29 @@ function CheckoutForm() {
       addressId: addressId || "guest",
       paymentMethod: paymentMethods.find(p => p.id === paymentMethod)?.name || paymentMethod,
     })
+
+    // Redirect to payment gateway if applicable
+    if (paymentMethod === "mercadopago" || paymentMethod === "transferencia") {
+      try {
+        const res = await fetch("/api/checkout/" + (paymentMethod === "mercadopago" ? "pagopar" : "bancard"), {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            order: { id: orderId },
+            items: items.map(i => ({ name: i.name, priceGs: i.priceGs * i.quantity, quantity: i.quantity })),
+            total: finalTotal,
+            customer: { name, email, phone },
+          }),
+        })
+        const data = await res.json()
+        if (data.ok && data.redirectUrl) {
+          clearCart()
+          window.location.href = data.redirectUrl
+          return
+        }
+      } catch {}
+    }
+
     setSubmitting(false)
     setDone(true)
     clearCart()
