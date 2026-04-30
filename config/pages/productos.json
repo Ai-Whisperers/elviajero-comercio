@@ -1,0 +1,12 @@
+{
+  "slug": "productos",
+  "titleKey": "productos.seo.title",
+  "descriptionKey": "productos.seo.description",
+  "sections": [
+    { "id": "hero", "variant": "minimal", "content": "productos.hero" },
+    { "id": "gallery", "variant": "grid", "content": "home.gallery" },
+    { "id": "cta-banner", "variant": "gradient", "content": "home.finalCta" },
+    { "id": "whatsapp-float", "variant": "standard", "content": "whatsapp" }
+  ],
+  "skipDefaults": ["header", "footer"]
+}

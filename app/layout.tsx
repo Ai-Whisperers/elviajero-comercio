@@ -1,20 +1,16 @@
 import type { Metadata } from "next"
 import "./globals.css"
-import { Inter, Playfair_Display } from "next/font/google"
-
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
-const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair" })
 
 export const metadata: Metadata = {
-  title: "Dayah LitWorks — Diseño de portadas de libros profesionales",
-  description: "Diseño de portadas de libros personalizadas y premade. Servicio profesional para autores indie en todo el mundo.",
-  icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
-  openGraph: { title: "Dayah LitWorks", description: "Diseño de portadas de libros profesionales", images: "/images/covers/og-dayah.png" },
+  title: "El Viajero — Tu Aventura Empieza Acá",
+  description: "Camping, pesca, accesorios para auto y moto, equipo outdoor. Todo para tu aventura en Paraguay.",
+  icons: { icon: "/favicon.svg" },
+  openGraph: { title: "El Viajero", description: "Tu aventura empieza acá" },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es" className={`${inter.variable} ${playfair.variable}`}>
+    <html lang="es">
       <body className="antialiased">{children}</body>
     </html>
   )

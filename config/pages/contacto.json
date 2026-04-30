@@ -1,0 +1,41 @@
+{
+  "slug": "contacto",
+  "titleKey": "contacto.seo.title",
+  "descriptionKey": "contacto.seo.description",
+  "schemaType": "Store",
+  "sections": [
+    {
+      "id": "hero",
+      "variant": "minimal",
+      "content": "contacto.hero"
+    },
+    {
+      "id": "contact",
+      "variant": "split",
+      "content": "contacto.info"
+    },
+    {
+      "id": "lead-form",
+      "variant": "standard",
+      "content": "contacto.form",
+      "title": "Envianos un Mensaje",
+      "subtitle": "Te respondemos a la brevedad"
+    },
+    {
+      "id": "google-maps",
+      "variant": "default",
+      "content": "contacto.info"
+    },
+    {
+      "id": "faq",
+      "variant": "accordion",
+      "content": "faq",
+      "title": "Preguntas Frecuentes"
+    },
+    {
+      "id": "cta-banner",
+      "variant": "gradient",
+      "content": "home.finalCta"
+    }
+  ]
+}

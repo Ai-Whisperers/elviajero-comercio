@@ -1,43 +1,34 @@
-'use client'
-import Image from "next/image"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import Image from "next/image"
 
-export interface NavItem { label: string; href: string }
-
-export function Header({ logo, navItems, locale = "es" }: {
-  logo?: string; navItems?: NavItem[]; locale?: string
-}) {
-  const pathname = usePathname()
-  const isActive = (href: string) => {
-    if (href === '/') return pathname === '/' || pathname === `/s/${locale}/dayah-litworks`
-    return pathname.includes(href)
-  }
+export function Header({ logo }: { logo?: string }) {
+  const navItems = [
+    {label:"Inicio", href:"/"},
+    {label:"Tienda", href:"/tienda"},
+    {label:"Productos", href:"/productos"},
+    {label:"Nosotros", href:"/nosotros"},
+    {label:"Contacto", href:"/contacto"},
+    {label:"FAQ", href:"/faq"},
+  ]
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur-sm">
+    <header className="sticky top-0 z-40 border-b border-border bg-white/95 backdrop-blur-sm">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
         <Link href="/" className="flex items-center gap-2">
-          {logo && <Image src={logo} alt="Dayah LitWorks" width={120} height={40} className="h-8 w-auto" />}
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-sm font-bold text-primary-foreground">EV</div>
+          <span className="hidden text-lg font-bold text-foreground sm:inline">El Viajero</span>
         </Link>
-        <nav className="hidden items-center gap-1 md:flex">
-          {navItems?.map((item, i) => (
-            <Link key={i} href={item.href}
-              className={`rounded-md px-3 py-2 text-sm font-medium transition-colors ${
-                isActive(item.href) ? 'bg-secondary text-secondary-foreground' : 'text-foreground hover:bg-surface-light'
-              }`}
-              aria-current={isActive(item.href) ? 'page' : undefined}
-            >
+        <nav className="flex items-center gap-1">
+          {navItems.map((item) => (
+            <Link key={item.href} href={item.href}
+              className="rounded-md px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-surface-light">
               {item.label}
             </Link>
           ))}
-          <a href="https://wa.me/595986868241" target="_blank" rel="noopener noreferrer"
-            className="ml-3 rounded-md bg-secondary px-4 py-2 text-sm font-semibold text-secondary-foreground transition-all hover:scale-105">
-            Contactanos
+          <a href="https://wa.me/595981234567" target="_blank" rel="noopener noreferrer"
+            className="ml-3 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition-all hover:bg-primary/90">
+            WhatsApp
           </a>
-          <div className="ml-4 flex gap-1">
-            <Link href="/" className={`rounded px-2 py-1 text-xs font-medium ${locale === 'es' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground'}`}>ES</Link>
-          </div>
         </nav>
       </div>
     </header>

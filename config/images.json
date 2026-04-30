@@ -1,0 +1,20 @@
+{
+  "hero": "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=1920&q=80",
+  "store": "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&q=80",
+  "categories": {
+    "camping": "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=800&q=80",
+    "pesca": "https://images.unsplash.com/photo-1575880963075-51d727bb1c12?w=800&q=80",
+    "accesorios-personales": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&q=80",
+    "automoviles": "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=800&q=80",
+    "motos": "https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=800&q=80",
+    "campo-granja": "https://images.unsplash.com/photo-1593113598336-86d3a9cb3f79?w=800&q=80"
+  },
+  "gallery": [
+    "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=600&q=80",
+    "https://images.unsplash.com/photo-1506976785307-8732e54ad72d?w=600&q=80",
+    "https://images.unsplash.com/photo-1464146072230-91cabc968266?w=600&q=80",
+    "https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?w=600&q=80",
+    "https://images.unsplash.com/photo-1537907690979-ee2e10f0d6b3?w=600&q=80",
+    "https://images.unsplash.com/photo-1559526324-593bc073d938?w=600&q=80"
+  ]
+}

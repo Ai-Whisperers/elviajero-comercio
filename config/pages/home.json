@@ -1,0 +1,69 @@
+{
+  "slug": "",
+  "titleKey": "home.seo.title",
+  "descriptionKey": "home.seo.description",
+  "schemaType": "Store",
+  "sections": [
+    {
+      "id": "promo-banner",
+      "variant": "carousel",
+      "content": "promociones.promotions"
+    },
+    {
+      "id": "hero",
+      "variant": "image",
+      "content": "home.hero",
+      "image": "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=1920&q=80",
+      "styling": {
+        "backgroundImage": "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=1920&q=80",
+        "textColor": "light"
+      }
+    },
+    {
+      "id": "stats-counter",
+      "variant": "inline",
+      "content": "home.stats"
+    },
+    {
+      "id": "features",
+      "variant": "grid",
+      "content": "home.features"
+    },
+    {
+      "id": "commerce-catalog",
+      "variant": "grid"
+    },
+    {
+      "id": "blog-index",
+      "variant": "grid",
+      "content": "blog.index",
+      "title": "Tips y Consejos",
+      "subtitle": "Aprendé antes de tu proxima aventura"
+    },
+    {
+      "id": "gallery",
+      "variant": "grid",
+      "content": "home.gallery",
+      "title": "Nuestros Productos",
+      "subtitle": "Conoce nuestra variedad"
+    },
+    {
+      "id": "testimonials",
+      "variant": "carousel",
+      "content": "home.testimonials",
+      "title": "Lo que dicen nuestros clientes"
+    },
+    {
+      "id": "newsletter-signup",
+      "variant": "standard",
+      "content": "home.newsletter",
+      "title": "Recibi Novedades",
+      "subtitle": "Suscribite para recibir ofertas y nuevos productos"
+    },
+    {
+      "id": "cta-banner",
+      "variant": "gradient",
+      "content": "home.finalCta"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "slug": "reservas",
+  "titleKey": "reservas.seo.title",
+  "descriptionKey": "reservas.seo.description",
+  "sections": [
+    { "id": "header", "variant": "standard", "content": "navigation" },
+    { "id": "hero", "variant": "minimal", "content": "reservas.hero" },
+    { "id": "booking-embed", "variant": "iframe", "content": "reservas.booking" },
+    { "id": "contact", "variant": "split", "content": "home.contact" },
+    { "id": "footer", "variant": "standard", "content": "footer" }
+  ]
+}

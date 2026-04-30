@@ -1,0 +1,12 @@
+{
+  "slug": "nosotros",
+  "titleKey": "about.seo.title",
+  "descriptionKey": "about.seo.description",
+  "sections": [
+    { "id": "hero", "variant": "minimal", "content": "about.hero" },
+    { "id": "features", "variant": "grid", "content": "about.values" },
+    { "id": "cta-banner", "variant": "gradient", "content": "home.finalCta" },
+    { "id": "whatsapp-float", "variant": "standard", "content": "whatsapp" }
+  ],
+  "skipDefaults": ["header", "footer"]
+}

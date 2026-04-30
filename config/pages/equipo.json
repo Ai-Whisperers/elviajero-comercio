@@ -1,0 +1,13 @@
+{
+  "slug": "equipo",
+  "titleKey": "equipo.seo.title",
+  "descriptionKey": "equipo.seo.description",
+  "sections": [
+    { "id": "header", "variant": "standard", "content": "navigation" },
+    { "id": "hero", "variant": "minimal", "content": "equipo.hero" },
+    { "id": "team", "variant": "cards", "content": "equipo.team" },
+    { "id": "contact", "variant": "split", "content": "home.contact" },
+    { "id": "google-maps", "variant": "default", "content": "home.location" },
+    { "id": "footer", "variant": "standard", "content": "footer" }
+  ]
+}

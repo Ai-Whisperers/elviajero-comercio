@@ -1,25 +1,27 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #94abd6;
-  --color-primary-foreground: #0a0a14;
-  --color-secondary: #d43d5e;
-  --color-secondary-foreground: #ffffff;
-  --color-background: #0a0a14;
-  --color-surface: #11132a;
-  --color-surface-light: #1b2040;
-  --color-foreground: #eaeaea;
-  --color-muted: #1b2040;
-  --color-muted-foreground: #a0aac8;
-  --color-border: #1b2040;
-  --color-card: #11132a;
-  --color-card-foreground: #eaeaea;
-  --color-ring: #94abd6;
-  --color-input: #1b2040;
-  --color-destructive: #c0392b;
-  --color-destructive-foreground: #eaeaea;
-  --color-success: #64ffda;
-  --color-warning: #ffd93d;
+  --color-primary: #1B5E20;
+  --color-primary-foreground: #FFFFFF;
+  --color-secondary: #37474F;
+  --color-secondary-foreground: #FFFFFF;
+  --color-accent: #E65100;
+  --color-accent-foreground: #FFFFFF;
+  --color-background: #FFFFFF;
+  --color-surface: #FAFAFA;
+  --color-surface-light: #F0F7F0;
+  --color-foreground: #1B2A1B;
+  --color-muted: #F0F7F0;
+  --color-muted-foreground: #4A5A4A;
+  --color-border: #E0E0E0;
+  --color-card: #FFFFFF;
+  --color-card-foreground: #1B2A1B;
+  --color-ring: #1B5E20;
+  --color-input: #E0E0E0;
+  --color-destructive: #C62828;
+  --color-destructive-foreground: #FFFFFF;
+  --color-success: #2E7D32;
+  --color-warning: #EF6C00;
 }
 
 body {
@@ -29,6 +31,6 @@ body {
 }
 
 h1, h2, h3, h4 {
-  font-family: 'Playfair Display', serif;
-  font-weight: 800;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
 }

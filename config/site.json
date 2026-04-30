@@ -1,0 +1,210 @@
+{
+  "title": "El Viajero Comercio",
+  "description": "Tienda de articulos de camping, pesca, accesorios para auto y moto, equipo outdoor y mas. Todo para tu aventura en Paraguay.",
+  "businessType": "viajero_comercio",
+  "vertical": "retail-local",
+  "country": "Paraguay",
+  "domain": null,
+  "path": "/s/es/viajero-comercio",
+  "publicUrl": "https://paragu-ai.com/s/es/viajero-comercio",
+  "defaultLocale": "es",
+  "locales": [
+    "es"
+  ],
+  "pages": [
+    "home",
+    "tienda",
+    "productos",
+    "nosotros",
+    "contacto",
+    "faq",
+    "promociones",
+    "blog",
+    "privacidad",
+    "terminos"
+  ],
+  "navigation": [
+    {
+      "labelKey": "navigation.home",
+      "path": ""
+    },
+    {
+      "label": "Tienda",
+      "path": "tienda"
+    },
+    {
+      "label": "Productos",
+      "path": "productos"
+    },
+    {
+      "label": "Blog",
+      "path": "blog"
+    },
+    {
+      "label": "Ofertas",
+      "path": "promociones"
+    },
+    {
+      "labelKey": "navigation.faq",
+      "path": "faq"
+    },
+    {
+      "label": "Contacto",
+      "path": "contacto"
+    }
+  ],
+  "contact": {
+    "phone": "+595 981 234 567",
+    "email": "info@elviajerocomerc.io.com.py",
+    "whatsapp": "595981234567",
+    "instagram": "@elviajerocomerc.io",
+    "facebook": "elviajerocomerc.io"
+  },
+  "location": {
+    "address": "Av. Mariscal Lopez 1234, c/ San Martin",
+    "city": "Asuncion",
+    "department": "Central",
+    "country": "Paraguay",
+    "googleMapsUrl": "https://maps.google.com/?q=Av.+Mariscal+Lopez+1234+Asuncion+Paraguay"
+  },
+  "hours": {
+    "Lunes a Viernes": "08:00 - 19:00",
+    "Sabado": "08:00 - 17:00",
+    "Domingo": "09:00 - 13:00"
+  },
+  "settings": {
+    "currency": "PYG",
+    "locale": "es-PY",
+    "timezone": "America/Asuncion",
+    "delivery": {
+      "enabled": true,
+      "freeThresholdGs": 300000,
+      "freeThresholdLabel": "Envio gratis desde Gs. 300.000",
+      "zones": [
+        "Asuncion",
+        "Fernando de la Mora",
+        "San Lorenzo",
+        "Lambare",
+        "Luque",
+        "Capiat\u00e1"
+      ],
+      "national": false,
+      "expressAvailable": true,
+      "expressFee": 30000,
+      "pickupAvailable": true,
+      "pickupAddresses": [
+        "Av. Mariscal Lopez 1234, Asuncion"
+      ]
+    }
+  },
+  "commerce": {
+    "enabled": true,
+    "currency": "PYG",
+    "locale": "es-PY",
+    "reviews": {
+      "enabled": true,
+      "moderation": "auto"
+    },
+    "wishlist": {
+      "enabled": true
+    },
+    "recentlyViewed": {
+      "enabled": true
+    },
+    "backInStock": {
+      "enabled": true
+    },
+    "abandonedCart": {
+      "enabled": true,
+      "whatsappReminder": true
+    },
+    "storePickup": {
+      "enabled": true
+    }
+  },
+  "blog": {
+    "enabled": true,
+    "categories": [
+      "camping",
+      "pesca",
+      "aventura",
+      "mantenimiento",
+      "consejos"
+    ]
+  },
+  "chrome": {
+    "header": {
+      "id": "header",
+      "variant": "standard",
+      "content": "navigation"
+    },
+    "footer": [
+      {
+        "id": "contact-strip",
+        "variant": "standard",
+        "content": "home.contact"
+      },
+      {
+        "id": "whatsapp-float",
+        "variant": "standard",
+        "content": "whatsapp"
+      },
+      {
+        "id": "footer",
+        "variant": "standard",
+        "content": "footer"
+      }
+    ]
+  },
+  "isLiveProduction": true,
+  "features": {
+    "whatsappFloat": {
+      "enabled": true
+    },
+    "productCatalog": {
+      "enabled": true
+    },
+    "testimonials": {
+      "enabled": true
+    },
+    "featuresGrid": {
+      "enabled": true
+    },
+    "statsCounter": {
+      "enabled": true
+    },
+    "promoBanner": {
+      "enabled": true
+    },
+    "newsletterSignup": {
+      "enabled": true
+    },
+    "blog": {
+      "enabled": true
+    },
+    "wishlist": {
+      "enabled": true
+    },
+    "reviews": {
+      "enabled": true
+    },
+    "faq": {
+      "enabled": true
+    },
+    "backInStockNotifications": {
+      "enabled": true
+    },
+    "storePickupReserve": {
+      "enabled": true
+    },
+    "giftCards": {
+      "enabled": false
+    },
+    "loyalty": {
+      "enabled": false
+    },
+    "referral": {
+      "enabled": false
+    }
+  }
+}
