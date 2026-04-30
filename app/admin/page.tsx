@@ -2,10 +2,12 @@
 import { AdminShell, useAdminAuth } from "@/components/admin/admin-layout"
 import { BarChart, StatCard } from "@/components/admin/charts"
 import { exportOrdersCSV } from "@/lib/export-csv"
+import { useAutoRefresh } from "@/lib/auto-refresh"
 import { useState, useEffect } from "react"
 
 function DashboardContent() {
   const { authed } = useAdminAuth()
+  const { refreshKey, refresh } = useAutoRefresh(30000)
   const [stats, setStats] = useState({ users: 0, orders: 0, revenue: 0 })
   const [orders, setOrders] = useState<any[]>([])
 
@@ -20,7 +22,7 @@ function DashboardContent() {
     setOrders(all.sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, 10))
     const parse = (s: string) => parseInt(s.replace(/[^0-9]/g, ""), 10) || 0
     setStats({ users: users.length, orders: all.length, revenue: all.reduce((s, o) => s + parse(o.total), 0) })
-  }, [authed])
+  }, [authed, refreshKey])
 
   const format = (n: number) => "Gs. " + n.toLocaleString("es-PY")
 
@@ -29,6 +31,7 @@ function DashboardContent() {
   return (
     <>
       <h1 className="mb-6 text-xl font-bold text-white">Dashboard</h1>
+      <button onClick={refresh} className="mb-6 rounded-lg border border-gray-700 px-3 py-1.5 text-xs text-gray-400 hover:text-white transition-all">\u21bb Actualizar</button>
       <div className="grid grid-cols-3 gap-4 mb-8">
         {[
           { label: "Usuarios", value: stats.users.toString(), color: "text-blue-400" },
