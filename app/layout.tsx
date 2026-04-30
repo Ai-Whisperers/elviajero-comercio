@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: "Dayah LitWorks — Diseño de portadas de libros profesionales",
   description: "Diseño de portadas de libros personalizadas y premade. Servicio profesional para autores indie en todo el mundo.",
   icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
-  openGraph: { title: "Dayah LitWorks", description: "Diseño de portadas de libros profesionales" },
+  openGraph: { title: "Dayah LitWorks", description: "Diseño de portadas de libros profesionales", images: "/images/covers/og-dayah.png" },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
