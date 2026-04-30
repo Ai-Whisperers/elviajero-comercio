@@ -20,7 +20,8 @@ const paymentMethods = [
   { id: "transferencia", name: "Transferencia Bancaria", icon: "🏦", desc: "Depósito o transferencia a cuenta bancaria" },
   { id: "mercadopago", name: "Mercado Pago", icon: "💳", desc: "Tarjeta de crédito/débito" },
   { id: "efectivo", name: "Efectivo", icon: "💵", desc: "Pago en efectivo contra entrega" },
-  { id: "whatsapp", name: "WhatsApp", icon: "💬", desc: "Te contactamos para coordinar el pago" },
+  { id: "whatsapp", name: "WhatsApp", icon: "\ud83d\udcac", desc: "Te contactamos para coordinar el pago" },
+  { id: "stripe", name: "Tarjeta internacional", icon: "\ud83c\udf10", desc: "Visa, Mastercard, PayPal (USD)" },
 ]
 
 // City → shipping cost (Gs.)

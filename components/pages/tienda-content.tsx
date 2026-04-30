@@ -10,6 +10,7 @@ import { ToastProvider } from "@/components/toast"
 import { CartToastListener } from "@/components/cart-toast-listener"
 import { useWishlist, useRecentlyViewed } from "@/lib/wishlist"
 import { PriceUSD } from "@/components/price-usd"
+import { SafeImage } from "@/components/safe-image"
 import content from "@/content/es.json"
 import Image from "next/image"
 import Link from "next/link"
@@ -45,7 +46,7 @@ function ProductCard({ p, onClick, addItem, isWished, toggleWish }: any) {
       </button>
       <Link href={`/producto/${slugify(p.name)}`} onClick={() => onClick(p)}>
         <div className="aspect-[3/2] flex items-center justify-center overflow-hidden bg-muted p-4">
-          {p.imageUrl ? <Image src={p.imageUrl} alt={p.name} width={400} height={267} className="h-full w-full object-contain" /> : <div className="text-center"><p className="text-xs text-muted-foreground">Sin imagen</p></div>}
+          {p.imageUrl ? <SafeImage src={p.imageUrl} alt={p.name} width={400} height={267} containerClassName="h-full w-full" className="h-full w-full object-contain" /> : <div className="text-center"><p className="text-xs text-muted-foreground">Sin imagen</p></div>}
         </div>
       </Link>
       <div className="p-4">

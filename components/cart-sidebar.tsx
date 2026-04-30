@@ -1,8 +1,19 @@
 "use client"
 import { useCart } from "@/lib/cart-context"
 import { CartEmptyState } from "@/components/ui"
+import { useState, useEffect } from "react"
 
 export function CartSidebar({ open, onClose }: { open: boolean; onClose: () => void }) {
+  useEffect(() => {
+    if (!open) return
+    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") onClose() }
+    document.addEventListener("keydown", handler)
+    document.body.style.overflow = "hidden"
+    return () => {
+      document.removeEventListener("keydown", handler)
+      document.body.style.overflow = ""
+    }
+  }, [open, onClose])
   const { items, removeItem, updateQuantity, total, clearCart } = useCart()
 
   const formatGs = (n: number) => "Gs. " + n.toLocaleString("es-PY")
