@@ -4,6 +4,11 @@ import { useState, useEffect } from "react"
 const STORAGE_KEY = "viajero-wishlist"
 const RECENT_KEY = "viajero-recently-viewed"
 
+export function getWishlistCount(): number {
+  if (typeof window === "undefined") return 0
+  try { const f = JSON.parse(localStorage.getItem("viajero_favs") || "[]"); return f.length } catch { return 0 }
+}
+
 export function useWishlist() {
   const [items, setItems] = useState<string[]>([])
   const [loaded, setLoaded] = useState(false)
