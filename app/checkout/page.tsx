@@ -77,12 +77,39 @@ function CheckoutForm() {
     // Use promo
     if (promoCode) usePromo(promoCode)
 
-    const orderId = addOrder({
+    const orderData = {
       items: items.map(i => ({ name: i.name, price: formatPrice(i.priceGs * i.quantity), quantity: i.quantity, imageUrl: i.imageUrl })),
       total: formatPrice(finalTotal),
-      addressId: addressId || "guest",
-      paymentMethod: paymentMethods.find(p => p.id === paymentMethod)?.name || paymentMethod,
-    })
+      customer: { name, email, phone },
+      delivery: user ? addresses.find(a => a.id === addressId) : { city: guestCity, street: guestStreet },
+      payment: paymentMethods.find(p => p.id === paymentMethod)?.name || paymentMethod,
+      notes: note,
+      coupon: promoCode?.code || null,
+      discount: promoDiscount,
+    }
+
+    // Save order via API (works for guests too)
+    let orderId = ""
+    try {
+      const res = await fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(orderData),
+      })
+      const data = await res.json()
+      if (data.success) orderId = data.order.id
+    } catch {}
+
+    // Also save to user's orders if logged in
+    if (user) {
+      const localId = addOrder({
+        items: orderData.items,
+        total: orderData.total,
+        addressId: addressId || "guest",
+        paymentMethod: orderData.payment,
+      })
+      if (!orderId) orderId = localId
+    }
 
     // Redirect to payment gateway if applicable
     if (paymentMethod === "mercadopago" || paymentMethod === "transferencia") {
