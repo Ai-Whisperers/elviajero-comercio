@@ -18,7 +18,7 @@ export function Footer({ logo, businessName, email, whatsapp, instagram, faceboo
             <div className="flex flex-col gap-2 text-sm text-muted-foreground">
               <Link href="/" className="hover:text-foreground">Inicio</Link>
               <Link href="/servicios" className="hover:text-foreground">Servicios</Link>
-              <Link href="/portafolio" className="hover:text-foreground">Portafolio</Link>
+              <Link href="/catalogo" className="hover:text-foreground">Portafolio</Link>
               <Link href="/sobre" className="hover:text-foreground">Sobre</Link>
               <Link href="/contacto" className="hover:text-foreground">Contacto</Link>
               <Link href="/privacidad" className="hover:text-foreground">Privacidad</Link>

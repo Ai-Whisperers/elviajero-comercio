@@ -37,7 +37,6 @@ export function Header({ logo, navItems, locale = "es" }: {
           </a>
           <div className="ml-4 flex gap-1">
             <Link href="/" className={`rounded px-2 py-1 text-xs font-medium ${locale === 'es' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground'}`}>ES</Link>
-            <Link href="/en" className={`rounded px-2 py-1 text-xs font-medium ${locale === 'en' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground'}`}>EN</Link>
           </div>
         </nav>
       </div>

@@ -8,6 +8,7 @@ const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfa
 export const metadata: Metadata = {
   title: "Dayah LitWorks — Diseño de portadas de libros profesionales",
   description: "Diseño de portadas de libros personalizadas y premade. Servicio profesional para autores indie en todo el mundo.",
+  icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
   openGraph: { title: "Dayah LitWorks", description: "Diseño de portadas de libros profesionales" },
 }
 
