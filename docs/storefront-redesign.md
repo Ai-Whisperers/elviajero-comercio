@@ -1,4 +1,4 @@
-# El Viajero Comercio — 100-Item Storefront Redesign Plan
+# El Viajero — 100-Item Storefront Redesign Plan
 
 > Deep research de mejores practicas UX/UI, arquitectura de componentes, herramientas y patrones
 > Basado en: analisis del codebase (55+ componentes commerce, 19 API routes, 35+ lib modules), revision de mejores practicas REI/Decathlon/Backcountry/Patagonia/MercadoLibre, y estado actual del sitio

@@ -1,4 +1,4 @@
-# CUESTIONARIO — El Viajero Comercio
+# CUESTIONARIO — El Viajero
 
 > Encuesta completa para entender el negocio, su marca, sus productos y sus necesidades digitales.
 > Cada sección incluye opciones múltiples que el cliente puede seleccionar **y/o** modificar/escribir su propia respuesta.
@@ -12,7 +12,7 @@
 > ¿Cuál es el nombre exacto registrado?
 
 Opciones:
-- [ ] El Viajero Comercio
+- [ ] El Viajero
 - [ ] El Viajero
 - [ ] Otro: _________________________
 
@@ -705,4 +705,4 @@ Una vez completado este cuestionario, con las respuestas vamos a:
 ---
 
 **Cuestionario preparado por Fun4Me / Paragu-AI Builder**
-*Basado en el catálogo de productos de El Viajero Comercio*
+*Basado en el catálogo de productos de El Viajero*

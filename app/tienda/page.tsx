@@ -93,7 +93,7 @@ function TiendaContent() {
                           Agregar
                         </button>
                         <a
-                          href={`https://wa.me/[PENDIENTE]?text=${encodeURIComponent((cat.orderMessageTemplate || "").replace("{{productName}}", p.name).replace("{{productPrice}}", p.price))}`}
+                          href={`https://wa.me/595981234567?text=${encodeURIComponent((cat.orderMessageTemplate || "").replace("{{productName}}", p.name).replace("{{productPrice}}", p.price))}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           onClick={(e) => e.stopPropagation()}

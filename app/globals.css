@@ -34,3 +34,14 @@ h1, h2, h3, h4 {
   font-family: 'Poppins', sans-serif;
   font-weight: 700;
 }
+
+/* Mobile tap improvements */
+button, a, input, select, textarea {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Prevent pull-to-refresh on modals */
+.overflow-y-auto {
+  overscroll-behavior: contain;
+}

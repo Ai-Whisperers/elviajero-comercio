@@ -1,4 +1,4 @@
-# El Viajero Comercio — Competitive Intelligence & Product Dossier
+# El Viajero — Competitive Intelligence & Product Dossier
 
 > **Documento completo**: competencia directa, catalogo de productos, precios de mercado, imagenes, enlaces y analisis
 > **Fecha**: 2026-04-28 | **Fuentes**: DuckDuckGo, scraping web de e-commerce paraguayo, directorios comerciales
@@ -25,7 +25,7 @@
 
 | Campo | Valor |
 |-------|-------|
-| **Negocio** | El Viajero Comercio |
+| **Negocio** | El Viajero |
 | **Tipo** | Tienda de Camping, Pesca y Aventura |
 | **Vertical** | `retail-local` / `outdoor-sporting-goods` |
 | **Ubicacion** | Av. Mariscal Lopez 1234, Asuncion |

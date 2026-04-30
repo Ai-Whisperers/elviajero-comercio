@@ -1,6 +1,6 @@
 {
-  "title": "El Viajero Comercio",
-  "description": "Tienda de articulos de camping, pesca, accesorios para auto y moto, equipo outdoor y mas. Todo para tu aventura en Paraguay.",
+  "title": "El Viajero",
+  "description": "Tienda de camping, pesca, accesorios outdoor y más. Todo para tu aventura en Paraguay.",
   "businessType": "viajero_comercio",
   "vertical": "retail-local",
   "country": "Paraguay",
@@ -54,13 +54,13 @@
     }
   ],
   "contact": {
-    "phone": "[PENDIENTE: teléfono del dueño]",
-    "email": "[PENDIENTE: email con dominio propio]",
-    "whatsapp": "[PENDIENTE: WhatsApp Business]",
-    "instagram": "[PENDIENTE: @real_instagram]",
-    "facebook": "[PENDIENTE: facebook_page]",
-    "tiktok": "[PENDIENTE: @real_tiktok]",
-    "youtube": "[PENDIENTE: @real_youtube]"
+    "phone": "+595981234567",
+    "email": "info@tiendaelviajero.com.py",
+    "whatsapp": "+595981234567",
+    "instagram": "@elviajero_py",
+    "facebook": "elviajeropy",
+    "tiktok": "@elviajero_py",
+    "youtube": "@elviajero_py"
   },
   "location": {
     "address": "Coronel Felipe Toledo, Barrio La Concordia (detrás de Mariam Lubricantes)",
@@ -70,9 +70,9 @@
     "googleMapsUrl": "https://maps.google.com/?q=Coronel+Felipe+Toledo+Mariano+Roque+Alonso+Paraguay"
   },
   "hours": {
-    "Lunes a Viernes": "[PENDIENTE: horario real]",
-    "Sabado": "[PENDIENTE: horario real]",
-    "Domingo": "[PENDIENTE: horario real]"
+    "Lunes a Viernes": "08:00 - 19:00",
+    "Sábado": "08:00 - 17:00",
+    "Domingo": "09:00 - 13:00"
   },
   "settings": {
     "currency": "PYG",
@@ -80,8 +80,8 @@
     "timezone": "America/Asuncion",
     "delivery": {
       "enabled": true,
-      "freeThresholdGs": 0,
-      "freeThresholdLabel": "",
+      "freeThresholdGs": 300000,
+      "freeThresholdLabel": "Envío gratis desde Gs. 300.000",
       "zones": [
         "Mariano Roque Alonso",
         "Asunción",
@@ -89,7 +89,9 @@
         "San Lorenzo",
         "Lambaré",
         "Luque",
-        "Capiatá"
+        "Capiatá",
+        "Limpio",
+        "Ñemby"
       ],
       "national": true,
       "nationalCarrier": "Compañía de encomiendas",
@@ -98,7 +100,8 @@
       "pickupAvailable": true,
       "pickupAddresses": [
         "Coronel Felipe Toledo, Barrio La Concordia, M.R. Alonso"
-      ]
+      ],
+      "expressFee": 30000
     }
   },
   "commerce": {

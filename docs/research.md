@@ -1,4 +1,4 @@
-# El Viajero Comercio — Market Research & Similar Stores
+# El Viajero — Market Research & Similar Stores
 
 > Generated: 2026-04-28 | Source: DuckDuckGo, web scraping of Paraguayan e-commerce
 
@@ -6,7 +6,7 @@
 
 | Field | Value |
 |-------|-------|
-| Business | El Viajero Comercio |
+| Business | El Viajero |
 | Type | Camping, Fishing & Outdoor Store |
 | Vertical | retail-local / outdoor-sporting-goods |
 | Location | Av. Mariscal Lopez 1234, Asuncion |

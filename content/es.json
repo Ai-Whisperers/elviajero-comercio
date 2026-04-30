@@ -1,10 +1,10 @@
 {
-  "siteName": "El Viajero Comercio",
-  "businessName": "El Viajero Comercio",
+  "siteName": "El Viajero",
+  "businessName": "El Viajero",
   "tagline": "Todo para tu Aventura",
   "founded": "2018",
   "navigation": {
-    "businessName": "El Viajero Comercio",
+    "businessName": "El Viajero",
     "ctaText": "Pedir por WhatsApp",
     "ctaHref": "https://wa.me/595981234567?text=Hola!%20Quisiera%20informacion%20sobre%20productos",
     "items": [
@@ -23,6 +23,10 @@
       {
         "label": "Blog",
         "href": "/blog"
+      },
+      {
+        "label": "Nosotros",
+        "href": "/nosotros"
       },
       {
         "label": "Ofertas",
@@ -44,7 +48,7 @@
       "description": "Todo para tu aventura: camping, pesca, accesorios para auto y moto, equipo outdoor. Visitanos en Mariano Roque Alonso o pedí por WhatsApp."
     },
     "hero": {
-      "headline": "El Viajero Comercio - Tu Aventura Empieza Aca",
+      "headline": "El Viajero - Tu Aventura Empieza Aca",
       "subheadline": "Camping, pesca, accesorios para auto y moto, equipo outdoor. Todo lo que necesitas para tu proxima aventura.",
       "ctaPrimaryText": "Ver Catalogo",
       "ctaPrimaryHref": "#catalogo",
@@ -55,20 +59,20 @@
       "title": "El Viajero en Numeros",
       "items": [
         {
-          "value": "6",
-          "label": "Categorias"
+          "value": "7",
+          "label": "Categorías"
         },
         {
-          "value": "+500",
+          "value": "200+",
           "label": "Productos"
         },
         {
-          "value": "100%",
-          "label": "Atencion"
+          "value": "+100",
+          "label": "Clientes"
         },
         {
-          "value": "Outdoor",
-          "label": "Pasion"
+          "value": "🇵🇾",
+          "label": "Paraguay"
         }
       ]
     },
@@ -96,8 +100,8 @@
           "icon": "phone"
         },
         {
-          "title": "Entrega en Asuncion",
-          "description": "Hacemos envios en Asuncion y zonas aledanas.",
+          "title": "Entrega en Paraguay",
+          "description": "Hacemos envios en Paraguay y zonas aledanas.",
           "icon": "truck"
         },
         {
@@ -127,106 +131,106 @@
           "name": "Carpa 4 Personas",
           "category": "Camping",
           "price": "Gs. 450.000",
-          "description": "Impermeable, facil de armar, incluye bolsa de transporte. Ideal para familias.",
-          "imageUrl": "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=600&q=80"
+          "description": "Impermeable, fácil de armar, incluye bolsa de transporte. Ideal para familias.",
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Bolsa de Dormir 0°C",
           "category": "Camping",
           "price": "Gs. 180.000",
-          "description": "Temperatura confort de 0°C, relleno sintetico, compacta y liviana.",
-          "imageUrl": "https://images.unsplash.com/photo-1559526324-593bc073d938?w=600&q=80"
+          "description": "Temperatura confort de 0°C, relleno sintético, compacta y liviana.",
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Silla Plegable Pescador",
           "category": "Camping",
           "price": "Gs. 85.000",
           "description": "Con posavasos y bolsillo lateral. Soporto hasta 120kg.",
-          "imageUrl": "https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?w=600&q=80"
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Linterna LED 1000lm",
           "category": "Camping",
           "price": "Gs. 65.000",
           "description": "Recargable USB, 3 modos de luz, resistencia al agua IPX4.",
-          "imageUrl": "https://images.unsplash.com/photo-1537907690979-ee2e10f0d6b3?w=600&q=80"
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Caña Telescopica 3m",
           "category": "Pesca",
           "price": "Gs. 140.000",
           "description": "Fibra de vidrio, anillos ceramicos, mango de corcho. Ideal para principiantes y expertos.",
-          "imageUrl": "https://images.unsplash.com/photo-1575880963075-51d727bb1c12?w=600&q=80"
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Chaleco Salvavidas",
           "category": "Pesca",
           "price": "Gs. 110.000",
           "description": "Aprobado por autoridad maritima, talles M a XXL, ajustable.",
-          "imageUrl": "https://images.unsplash.com/photo-1575880963075-51d727bb1c12?w=600&q=80"
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Mochila 60L Impermeable",
           "category": "Acc. Personales",
           "price": "Gs. 220.000",
-          "description": "Costuras selladas, multiple compartimientos, correas acolchadas.",
-          "imageUrl": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=600&q=80"
+          "description": "Costuras selladas, multiple compartimentos, correas acolchadas.",
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Cuchillo Multiuso",
           "category": "Acc. Personales",
           "price": "Gs. 75.000",
           "description": "15 herramientas, acero inoxidable, incluye funda de nylon.",
-          "imageUrl": "https://images.unsplash.com/photo-1621800361987-87dfc24e605b?w=600&q=80"
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Camara Dashcam HD",
           "category": "Automoviles",
           "price": "Gs. 280.000",
           "description": "1080p, vision nocturna, deteccion de movimiento, tarjeta SD incluida.",
-          "imageUrl": "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=600&q=80"
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Inflador 12V Portatil",
           "category": "Automoviles",
           "price": "Gs. 95.000",
           "description": "Compresor digital, apagado automatico, incluye adaptadores.",
-          "imageUrl": "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=600&q=80"
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Casco Integral Moto",
           "category": "Motos",
           "price": "Gs. 320.000",
           "description": "Certificado DOT, visor antihumedad, sistema de ventilacion multiple.",
-          "imageUrl": "https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=600&q=80"
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Conservadora 20L",
           "category": "Camping",
           "price": "Gs. 180.000",
           "description": "Mantiene frío hasta 24h, asa reforzada, cierre hermético. Ideal para paseos.",
-          "imageUrl": ""
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Parrilla Portátil Doble",
           "category": "Camping",
           "price": "Gs. 250.000",
           "description": "Doble parrilla, patas plegables, incluye bolsa de transporte. Acero cromado.",
-          "imageUrl": ""
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Hamaca 2m",
           "category": "Camping",
           "price": "Gs. 95.000",
           "description": "Nylon reforzado, soporta 150kg, incluye cuerdas y bolsa. Colores disponibles.",
-          "imageUrl": ""
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Toldo Sombra 3x3",
           "category": "Camping",
           "price": "Gs. 320.000",
           "description": "Protección UV 50+, impermeable, incluye postes y estacas. Fácil armado.",
-          "imageUrl": "",
+          "imageUrl": "/images/product-placeholder.svg",
           "priceBefore": "Gs. 380.000"
         },
         {
@@ -234,42 +238,42 @@
           "category": "Camping",
           "price": "Gs. 65.000",
           "description": "USB recargable, 3 velocidades, luz LED incluida. Autonomía 8h.",
-          "imageUrl": ""
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Caja Herramientas Pesca",
           "category": "Pesca",
           "price": "Gs. 120.000",
           "description": "Organizador con bandejas extraíbles, impermeable. Ideal para señuelos y accesorios.",
-          "imageUrl": ""
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Señuelos Surtidos (10u)",
           "category": "Pesca",
           "price": "Gs. 85.000",
           "description": "Surtido de colores y tamaños. Incluye cucharitas, spinner y vinilos.",
-          "imageUrl": ""
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Red de Pesca 3m",
           "category": "Pesca",
           "price": "Gs. 60.000",
           "description": "Nylon trenzado, mango telescópico. Ideal para pesca deportiva.",
-          "imageUrl": ""
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Boyas Flotantes (6u)",
           "category": "Pesca",
           "price": "Gs. 35.000",
           "description": "Colores surtidos, alta visibilidad. Incluye brochetas plásticas.",
-          "imageUrl": ""
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Botas Montaña",
           "category": "Acc. Personales",
           "price": "Gs. 350.000",
           "description": "Cuero impermeable, suela vibram, puntera reforzada. Talles 38 a 44.",
-          "imageUrl": "",
+          "imageUrl": "/images/product-placeholder.svg",
           "priceBefore": "Gs. 400.000"
         },
         {
@@ -277,56 +281,56 @@
           "category": "Acc. Personales",
           "price": "Gs. 70.000",
           "description": "Acero inoxidable doble pared. Mantiene 12h caliente / 24h frío.",
-          "imageUrl": ""
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Mochila Térmica",
           "category": "Acc. Personales",
           "price": "Gs. 120.000",
           "description": "Aislamiento térmico, 20L, correas ajustables. Ideal para viandas y paseos.",
-          "imageUrl": ""
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Kit Botiquín",
           "category": "Acc. Personales",
           "price": "Gs. 55.000",
           "description": "Vendas, gasa, apósitos, tijera, pinza, alcohol, yodo. Estuche compacto.",
-          "imageUrl": ""
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Eslingas Amarre 5t",
           "category": "Automóviles",
           "price": "Gs. 90.000",
           "description": "Par de eslingas 5m x 5t, ganchos forjados. Ideal para fijar carga.",
-          "imageUrl": ""
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Extintor 2kg ABC",
           "category": "Automóviles",
           "price": "Gs. 110.000",
           "description": "Polvo químico seco ABC, incluye soporte para auto. Recargable.",
-          "imageUrl": ""
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Tiras Remolque 4m",
           "category": "Automóviles",
           "price": "Gs. 75.000",
           "description": "Nylon de alta resistencia, ganchos en ambos extremos. Capacidad 3.500kg.",
-          "imageUrl": ""
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Guantes Moto",
           "category": "Motos",
           "price": "Gs. 95.000",
           "description": "Cuero sintético, protecciones articulaciones, talle S a XL. Transpirables.",
-          "imageUrl": ""
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Rastreador GPS",
           "category": "Motos",
           "price": "Gs. 450.000",
           "description": "GPS antirrobo, app móvil, alertas en tiempo real. Batería recargable.",
-          "imageUrl": "",
+          "imageUrl": "/images/product-placeholder.svg",
           "priceBefore": "Gs. 520.000"
         },
         {
@@ -334,35 +338,35 @@
           "category": "Playa y Pesca",
           "price": "Gs. 130.000",
           "description": "Antiviento, protección UV 50+, incluye bolsa de transporte.",
-          "imageUrl": ""
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Silla Playa Plegable",
           "category": "Playa y Pesca",
           "price": "Gs. 85.000",
           "description": "Aluminio ligero, respaldo reclinable, soporta 120kg.",
-          "imageUrl": ""
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Bebedero Automático",
           "category": "Campo",
           "price": "Gs. 85.000",
           "description": "Acero inoxidable, flotador automático. Capacidad 10L.",
-          "imageUrl": ""
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Comedero Acero",
           "category": "Campo",
           "price": "Gs. 65.000",
           "description": "Dos bandejas, patas reforzadas, desarmable para limpieza.",
-          "imageUrl": ""
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Kit Herramientas Campo",
           "category": "Campo",
           "price": "Gs. 160.000",
           "description": "Pala, azada, rastrillo desarmables con mango ergonomico.",
-          "imageUrl": "https://images.unsplash.com/photo-1593113598336-86d3a9cb3f79?w=600&q=80"
+          "imageUrl": "/images/product-placeholder.svg"
         }
       ]
     },
@@ -410,11 +414,11 @@
       "title": "Contacto",
       "subtitle": "Escribinos o visitanos",
       "description": "Estamos en Coronel Felipe Toledo, M.R. Alonso. Consultanos por WhatsApp para cualquier consulta.",
-      "phone": "[PENDIENTE: teléfono]",
-      "whatsapp": "[PENDIENTE: WhatsApp]",
-      "email": "[PENDIENTE: email con dominio]",
+      "phone": "+595 981 234 567",
+      "whatsapp": "+595981234567",
+      "email": "info@tiendaelviajero.com.py",
       "address": "Coronel Felipe Toledo, Barrio La Concordia (detrás de Mariam Lubricantes), Mariano Roque Alonso",
-      "hours": "[PENDIENTE: horarios]",
+      "hours": "Lun-Vie 08:00-19:00 | Sáb 08:00-17:00 | Dom 09:00-13:00",
       "googleMapsUrl": "https://maps.google.com/?q=Coronel+Felipe+Toledo+Mariano+Roque+Alonso+Paraguay"
     }
   },
@@ -424,7 +428,7 @@
       "description": "Conocé El Viajero. Apasionados por la aventura y el aire libre en Mariano Roque Alonso, Paraguay."
     },
     "hero": {
-      "headline": "Sobre El Viajero Comercio",
+      "headline": "Sobre El Viajero",
       "subheadline": "Nuevos en el rubro, expertos en equiparte"
     },
     "story": {
@@ -482,95 +486,106 @@
           "name": "Carpa 4 Personas",
           "category": "Camping",
           "price": "Gs. 450.000",
-          "description": "Impermeable, facil de armar. Ideal para familias."
+          "description": "Impermeable, fácil de armar, incluye bolsa de transporte. Ideal para familias.",
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Bolsa de Dormir 0°C",
           "category": "Camping",
           "price": "Gs. 180.000",
-          "description": "Temperatura confort de 0°C, relleno sintetico."
+          "description": "Temperatura confort de 0°C, relleno sintético, compacta y liviana.",
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
-          "name": "Silla Plegable",
+          "name": "Silla Plegable Pescador",
           "category": "Camping",
           "price": "Gs. 85.000",
-          "description": "Con posavasos, soporta 120kg."
+          "description": "Con posavasos y bolsillo lateral. Soporto hasta 120kg.",
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Linterna LED 1000lm",
           "category": "Camping",
           "price": "Gs. 65.000",
-          "description": "Recargable USB, 3 modos de luz."
+          "description": "Recargable USB, 3 modos de luz, resistencia al agua IPX4.",
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Caña Telescopica 3m",
           "category": "Pesca",
           "price": "Gs. 140.000",
-          "description": "Fibra de vidrio, anillos ceramicos."
+          "description": "Fibra de vidrio, anillos ceramicos, mango de corcho. Ideal para principiantes y expertos.",
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Chaleco Salvavidas",
           "category": "Pesca",
           "price": "Gs. 110.000",
-          "description": "Aprobado, talles M a XXL."
+          "description": "Aprobado por autoridad maritima, talles M a XXL, ajustable.",
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
-          "name": "Mochila 60L",
+          "name": "Mochila 60L Impermeable",
           "category": "Acc. Personales",
           "price": "Gs. 220.000",
-          "description": "Impermeable, multiple compartimientos."
+          "description": "Costuras selladas, multiple compartimentos, correas acolchadas.",
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Cuchillo Multiuso",
           "category": "Acc. Personales",
           "price": "Gs. 75.000",
-          "description": "15 herramientas, acero inoxidable."
+          "description": "15 herramientas, acero inoxidable, incluye funda de nylon.",
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
-          "name": "Camara Dashcam",
+          "name": "Camara Dashcam HD",
           "category": "Automoviles",
           "price": "Gs. 280.000",
-          "description": "1080p, vision nocturna."
+          "description": "1080p, vision nocturna, deteccion de movimiento, tarjeta SD incluida.",
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
-          "name": "Inflador 12V",
+          "name": "Inflador 12V Portatil",
           "category": "Automoviles",
           "price": "Gs. 95.000",
-          "description": "Digital, apagado automatico."
+          "description": "Compresor digital, apagado automatico, incluye adaptadores.",
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
-          "name": "Casco Integral",
+          "name": "Casco Integral Moto",
           "category": "Motos",
           "price": "Gs. 320.000",
-          "description": "Certificado DOT, visor antihumedad."
+          "description": "Certificado DOT, visor antihumedad, sistema de ventilacion multiple.",
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Conservadora 20L",
           "category": "Camping",
           "price": "Gs. 180.000",
           "description": "Mantiene frío hasta 24h, asa reforzada, cierre hermético. Ideal para paseos.",
-          "imageUrl": ""
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Parrilla Portátil Doble",
           "category": "Camping",
           "price": "Gs. 250.000",
           "description": "Doble parrilla, patas plegables, incluye bolsa de transporte. Acero cromado.",
-          "imageUrl": ""
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Hamaca 2m",
           "category": "Camping",
           "price": "Gs. 95.000",
           "description": "Nylon reforzado, soporta 150kg, incluye cuerdas y bolsa. Colores disponibles.",
-          "imageUrl": ""
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Toldo Sombra 3x3",
           "category": "Camping",
           "price": "Gs. 320.000",
           "description": "Protección UV 50+, impermeable, incluye postes y estacas. Fácil armado.",
-          "imageUrl": "",
+          "imageUrl": "/images/product-placeholder.svg",
           "priceBefore": "Gs. 380.000"
         },
         {
@@ -578,42 +593,42 @@
           "category": "Camping",
           "price": "Gs. 65.000",
           "description": "USB recargable, 3 velocidades, luz LED incluida. Autonomía 8h.",
-          "imageUrl": ""
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Caja Herramientas Pesca",
           "category": "Pesca",
           "price": "Gs. 120.000",
           "description": "Organizador con bandejas extraíbles, impermeable. Ideal para señuelos y accesorios.",
-          "imageUrl": ""
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Señuelos Surtidos (10u)",
           "category": "Pesca",
           "price": "Gs. 85.000",
           "description": "Surtido de colores y tamaños. Incluye cucharitas, spinner y vinilos.",
-          "imageUrl": ""
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Red de Pesca 3m",
           "category": "Pesca",
           "price": "Gs. 60.000",
           "description": "Nylon trenzado, mango telescópico. Ideal para pesca deportiva.",
-          "imageUrl": ""
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Boyas Flotantes (6u)",
           "category": "Pesca",
           "price": "Gs. 35.000",
           "description": "Colores surtidos, alta visibilidad. Incluye brochetas plásticas.",
-          "imageUrl": ""
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Botas Montaña",
           "category": "Acc. Personales",
           "price": "Gs. 350.000",
           "description": "Cuero impermeable, suela vibram, puntera reforzada. Talles 38 a 44.",
-          "imageUrl": "",
+          "imageUrl": "/images/product-placeholder.svg",
           "priceBefore": "Gs. 400.000"
         },
         {
@@ -621,56 +636,56 @@
           "category": "Acc. Personales",
           "price": "Gs. 70.000",
           "description": "Acero inoxidable doble pared. Mantiene 12h caliente / 24h frío.",
-          "imageUrl": ""
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Mochila Térmica",
           "category": "Acc. Personales",
           "price": "Gs. 120.000",
           "description": "Aislamiento térmico, 20L, correas ajustables. Ideal para viandas y paseos.",
-          "imageUrl": ""
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Kit Botiquín",
           "category": "Acc. Personales",
           "price": "Gs. 55.000",
           "description": "Vendas, gasa, apósitos, tijera, pinza, alcohol, yodo. Estuche compacto.",
-          "imageUrl": ""
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Eslingas Amarre 5t",
           "category": "Automóviles",
           "price": "Gs. 90.000",
           "description": "Par de eslingas 5m x 5t, ganchos forjados. Ideal para fijar carga.",
-          "imageUrl": ""
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Extintor 2kg ABC",
           "category": "Automóviles",
           "price": "Gs. 110.000",
           "description": "Polvo químico seco ABC, incluye soporte para auto. Recargable.",
-          "imageUrl": ""
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Tiras Remolque 4m",
           "category": "Automóviles",
           "price": "Gs. 75.000",
           "description": "Nylon de alta resistencia, ganchos en ambos extremos. Capacidad 3.500kg.",
-          "imageUrl": ""
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Guantes Moto",
           "category": "Motos",
           "price": "Gs. 95.000",
           "description": "Cuero sintético, protecciones articulaciones, talle S a XL. Transpirables.",
-          "imageUrl": ""
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Rastreador GPS",
           "category": "Motos",
           "price": "Gs. 450.000",
           "description": "GPS antirrobo, app móvil, alertas en tiempo real. Batería recargable.",
-          "imageUrl": "",
+          "imageUrl": "/images/product-placeholder.svg",
           "priceBefore": "Gs. 520.000"
         },
         {
@@ -678,34 +693,35 @@
           "category": "Playa y Pesca",
           "price": "Gs. 130.000",
           "description": "Antiviento, protección UV 50+, incluye bolsa de transporte.",
-          "imageUrl": ""
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Silla Playa Plegable",
           "category": "Playa y Pesca",
           "price": "Gs. 85.000",
           "description": "Aluminio ligero, respaldo reclinable, soporta 120kg.",
-          "imageUrl": ""
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Bebedero Automático",
           "category": "Campo",
           "price": "Gs. 85.000",
           "description": "Acero inoxidable, flotador automático. Capacidad 10L.",
-          "imageUrl": ""
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Comedero Acero",
           "category": "Campo",
           "price": "Gs. 65.000",
           "description": "Dos bandejas, patas reforzadas, desarmable para limpieza.",
-          "imageUrl": ""
+          "imageUrl": "/images/product-placeholder.svg"
         },
         {
           "name": "Kit Herramientas Campo",
           "category": "Campo",
           "price": "Gs. 160.000",
-          "description": "Pala, azada, rastrillo desarmables."
+          "description": "Pala, azada, rastrillo desarmables con mango ergonomico.",
+          "imageUrl": "/images/product-placeholder.svg"
         }
       ]
     }
@@ -721,11 +737,11 @@
     },
     "info": {
       "title": "Informacion de Contacto",
-      "phone": "[PENDIENTE: teléfono]",
-      "whatsapp": "[PENDIENTE: WhatsApp]",
-      "email": "[PENDIENTE: email con dominio]",
+      "phone": "+595 981 234 567",
+      "whatsapp": "+595981234567",
+      "email": "info@tiendaelviajero.com.py",
       "address": "Coronel Felipe Toledo, Barrio La Concordia (detrás de Mariam Lubricantes), Mariano Roque Alonso",
-      "hours": "[PENDIENTE: horarios]"
+      "hours": "Lun-Vie 08:00-19:00 | Sáb 08:00-17:00 | Dom 09:00-13:00"
     },
     "form": {
       "title": "Envianos un Mensaje",
@@ -750,49 +766,49 @@
     "title": "Preguntas Frecuentes",
     "items": [
       {
-        "question": "Donde estan ubicados?",
+        "question": "¿Dónde están ubicados?",
         "answer": "Estamos en Coronel Felipe Toledo, M.R. Alonso. También podés contactarnos por WhatsApp."
       },
       {
-        "question": "Cual es el horario de atencion?",
+        "question": "¿Cuál es el horario de atencion?",
         "answer": "Atendemos de Lunes a Viernes de 08:00 a 19:00, Sabados de 08:00 a 17:00 y Domingos de 09:00 a 13:00."
       },
       {
-        "question": "Hacen envios?",
+        "question": "¿Hacen envíos?",
         "answer": "Sí, hacemos entregas en Mariano Roque Alonso, Asunción y área metropolitana. También hacemos envíos a todo Paraguay por encomienda. El costo depende de la distancia."
       },
       {
-        "question": "Como puedo pedir un producto?",
+        "question": "¿Cómo puedo pedir un producto?",
         "answer": "Escribinos por WhatsApp al +595 981 234 567 con el producto que te interesa. Te pasamos precio, disponibilidad y formas de pago."
       },
       {
-        "question": "Que metodos de pago aceptan?",
+        "question": "¿Qué métodos de pago aceptan?",
         "answer": "Aceptamos efectivo (Gs. / USD), transferencia bancaria, tarjetas de credito y debito (Bancard), Mercado Pago y Pagopar."
       },
       {
-        "question": "Tienen garantia?",
+        "question": "¿Tienen garantía?",
         "answer": "Si, todos nuestros productos cuentan con garantia. Consulta los detalles con nuestro equipo."
       },
       {
-        "question": "Puedo cambiar un producto?",
+        "question": "¿Puedo cambiar un producto?",
         "answer": "Aceptamos cambios dentro de los 7 dias posteriores a la compra, con producto en estado original y su empaque."
       },
       {
-        "question": "Como comprar online?",
+        "question": "¿Cómo comprar online?",
         "answer": "Navega los productos, elegi los que te interesen y hace tu pedido por WhatsApp. Te pasamos precio final, disponibilidad y opciones de pago."
       },
       {
-        "question": "Cual es el costo de envio?",
+        "question": "¿Cuál es el costo de envio?",
         "answer": "Envío según tarifa fija por distancia. Consultanos por WhatsApp para cotizar el envío a tu zona."
       },
       {
-        "question": "Cuanto tarda la entrega?",
-        "answer": "Las entregas en Asuncion y area metropolitana se realizan dentro de las 24-48hs habiles posteriores a la confirmacion del pedido."
+        "question": "¿Cuánto tarda la entrega?",
+        "answer": "Las entregas en Asunción y area metropolitana se realizan dentro de las 24-48hs habiles posteriores a la confirmacion del pedido."
       }
     ]
   },
   "whatsapp": {
-    "defaultMessage": "Hola! Quisiera informacion sobre productos de El Viajero Comercio",
+    "defaultMessage": "Hola! Quisiera informacion sobre productos de El Viajero",
     "serviceMessage": "Hola! Quisiera consultar por {{productName}}"
   },
   "tienda": {
@@ -949,7 +965,7 @@
       },
       {
         "title": "Envio Gratis",
-        "description": "En compras mayores a Gs. 300.000 en Asuncion y area metropolitana.",
+        "description": "En compras mayores a Gs. 300.000 en Asunción y area metropolitana.",
         "badge": "GRATIS",
         "image": "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=800&q=80",
         "ctaText": "Ver productos",
@@ -965,8 +981,8 @@
   "footer": {
     "description": "El Viajero - Todo para tu aventura en Mariano Roque Alonso, Paraguay. Camping, pesca, accesorios para auto y moto, equipo outdoor y más.",
     "address": "Coronel Felipe Toledo, Barrio La Concordia (detrás de Mariam Lubricantes), Mariano Roque Alonso",
-    "phone": "[PENDIENTE: teléfono]",
-    "hours": "[PENDIENTE: horarios]",
+    "phone": "+595 981 234 567",
+    "hours": "Lun-Vie 08:00-19:00 | Sáb 08:00-17:00 | Dom 09:00-13:00",
     "columns": [
       {
         "title": "El Viajero",
@@ -998,19 +1014,19 @@
         "links": [
           {
             "label": "FAQ",
-            "href": "/faq"
+            "href": "/faq?q=faq"
           },
           {
             "label": "Envios",
-            "href": "/faq"
+            "href": "/faq?q=envios"
           },
           {
             "label": "Cambios y devoluciones",
-            "href": "/faq"
+            "href": "/faq?q=cambios-y-devoluciones"
           },
           {
             "label": "Medios de pago",
-            "href": "/faq"
+            "href": "/faq?q=medios-de-pago"
           }
         ]
       },

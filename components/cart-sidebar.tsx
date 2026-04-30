@@ -70,7 +70,7 @@ export function CartSidebar({ open, onClose }: { open: boolean; onClose: () => v
           <div className="border-t bg-white px-4 py-4">
             <p className="mb-3 text-lg font-bold text-foreground">Total: {formatGs(total)}</p>
             <a
-              href={`https://wa.me/[PENDIENTE]?text=${whatsappMsg}`}
+              href={`https://wa.me/595981234567?text=${whatsappMsg}`}
               target="_blank"
               rel="noopener noreferrer"
               className="flex w-full items-center justify-center rounded-lg bg-primary py-3 font-semibold text-primary-foreground transition-all hover:bg-primary/90"

@@ -3,6 +3,7 @@ import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { CartSidebar } from "@/components/cart-sidebar"
 import { PromoCarousel } from "@/components/promo-carousel"
+import { WhatsAppFloat } from "@/components/whatsapp-float"
 import { CartProvider } from "@/lib/cart-context"
 import content from "@/content/es.json"
 import Link from "next/link"
@@ -25,8 +26,8 @@ function HomePage() {
       <Header onCartClick={() => setCartOpen(true)} />
       <PromoCarousel />
 
-      <section className="relative flex min-h-[70vh] items-center justify-center overflow-hidden" style={{backgroundColor: "var(--color-primary)"}}>
-        <div className="relative z-10 mx-auto max-w-4xl px-4 text-center">
+      <section className="relative flex min-h-[70vh] items-center justify-center overflow-hidden" style={{backgroundImage: "url(/images/hero-bg.svg)", backgroundSize: "cover", backgroundPosition: "center"}}>
+        <div className="absolute inset-0 bg-black/30" /><div className="relative z-10 mx-auto max-w-4xl px-4 text-center">
           <div className="rounded-2xl bg-white/10 p-8 backdrop-blur-md sm:p-12">
             <h1 className="mb-4 text-4xl font-bold tracking-tight text-white sm:text-5xl">{h.hero?.headline}</h1>
             <p className="mx-auto mb-8 max-w-2xl text-lg text-white/90">{h.hero?.subheadline}</p>
@@ -101,28 +102,13 @@ function HomePage() {
       </section>}
 
       <Footer />
-      <WhatsAppFloat />
+      <WhatsAppFloat phone={c.home?.contact?.whatsapp || "595981234567"} message={c.whatsapp?.defaultMessage || "Hola! Quiero informacion"} />
       <CartSidebar open={cartOpen} onClose={() => setCartOpen(false)} />
     </>
   )
 }
 
-function WhatsAppFloat() {
-  const w = c.home?.contact?.whatsapp || "[PENDIENTE]";
-  return (
-    <a href={"https://wa.me/" + w + "?text=" + encodeURIComponent(c.whatsapp?.defaultMessage || "Hola! Quiero informacion")}
-      target="_blank" rel="noopener noreferrer"
-      className="fixed bottom-6 right-6 z-30 flex h-14 w-14 items-center justify-center rounded-full bg-[#25d366] text-white shadow-lg transition-all hover:scale-110 hover:shadow-xl"
-      aria-label="WhatsApp">
-      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-        <path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21"/>
-        <path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1Z"/>
-        <path d="M14 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1Z"/>
-        <path d="M9.5 13.5c.5 1 1.5 1.5 2.5 1.5s2-.5 2.5-1.5"/>
-      </svg>
-    </a>
-  );
-}
+
 
 export default function Page() {
   return (

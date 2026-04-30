@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /login
+Disallow: /register
+
+Sitemap: https://el-viajero.paragu-ai.com/sitemap.xml

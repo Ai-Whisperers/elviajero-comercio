@@ -5,10 +5,10 @@
 
 ## 000-009: Business Identity
 
-- [ ] 000 Rename `businessName` from "El Viajero Comercio" to "El Viajero" in content/es.json
-- [ ] 001 Rename `siteName` from "El Viajero Comercio" to "El Viajero" in content/es.json
-- [ ] 002 Rename `navigation.businessName` from "El Viajero Comercio" to "El Viajero"
-- [ ] 003 Update site.json `title` to "El Viajero" (not "El Viajero Comercio")
+- [ ] 000 Rename `businessName` from "El Viajero" to "El Viajero" in content/es.json
+- [ ] 001 Rename `siteName` from "El Viajero" to "El Viajero" in content/es.json
+- [ ] 002 Rename `navigation.businessName` from "El Viajero" to "El Viajero"
+- [ ] 003 Update site.json `title` to "El Viajero" (not "El Viajero")
 - [ ] 004 Change `description` in site.json to avoid redundant "Comercio"
 - [ ] 005 Fix `site.json` `domain` from null to actual domain once purchased
 - [ ] 006 Remove hardcoded "595981234567" placeholder WhatsApp from content/es.json
@@ -109,7 +109,7 @@
 
 ## 080-089: Config Files Audit
 
-- [ ] 080 Rename "El Viajero Comercio" in ALL config/pages/*.json
+- [ ] 080 Rename "El Viajero" in ALL config/pages/*.json
 - [ ] 081 Remove unused config/pages/reservas.json (not wired into navigation)
 - [ ] 082 Remove unused config/pages/equipo.json (not wired into navigation)
 - [ ] 083 Remove unused config/pages/blog.json (content is in content/es.json)

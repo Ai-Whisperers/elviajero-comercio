@@ -9,7 +9,7 @@
 
 | Field | Value |
 |-------|-------|
-| **Legal name** | El Viajero (not "El Viajero Comercio") |
+| **Legal name** | El Viajero (not "El Viajero") |
 | **RUC** | Contribuyente General (IVA completo) |
 | **Founded** | Less than 1 year ago (started approx. 2025) |
 | **Team size** | Solo el dueño |
@@ -206,7 +206,7 @@ None yet — will develop together.
 ## 13. Key Differentiators vs Current Config
 
 **The site.json has these inaccuracies that need fixing:**
-- [ ] Business name is "El Viajero" not "El Viajero Comercio"
+- [ ] Business name is "El Viajero" not "El Viajero"
 - [ ] Address is Mariano Roque Alonso (La Concordia), not Av. Mariscal Lopez
 - [ ] Contact email doesn't exist yet — owner expects domain email
 - [ ] Founded year was 2018 in config — actual is less than 1 year (~2025)
