@@ -42,7 +42,15 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const addItem = useCallback((item: Omit<CartItem, "quantity">) => {
     setItems((prev) => {
       const exist = prev.find((i) => i.name === item.name)
-      if (exist) return prev.map((i) => (i.name === item.name ? { ...i, quantity: i.quantity + 1 } : i))
+      if (exist) {
+        if (typeof window !== "undefined") window.dispatchEvent(new CustomEvent("cart-toast", {
+          detail: { message: item.name + " (+1) en el carrito", type: "success" },
+        }))
+        return prev.map((i) => (i.name === item.name ? { ...i, quantity: i.quantity + 1 } : i))
+      }
+      if (typeof window !== "undefined") window.dispatchEvent(new CustomEvent("cart-toast", {
+        detail: { message: item.name + " agregado al carrito", type: "success" },
+      }))
       return [...prev, { ...item, quantity: 1 }]
     })
   }, [])

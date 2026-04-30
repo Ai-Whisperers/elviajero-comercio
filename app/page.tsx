@@ -6,9 +6,11 @@ import { PromoCarousel } from "@/components/promo-carousel"
 import { HeroCarousel } from "@/components/hero-carousel"
 import { CookieConsent } from "@/components/cookie-consent"
 import { FadeUp, StaggerGrid, StaggerItem } from "@/components/animations/scroll-reveal"
+import { CartToastListener } from "@/components/cart-toast-listener"
 import { NewsletterSuccess } from "@/components/ui"
 import { WhatsAppFloat } from "@/components/whatsapp-float"
 import { CartProvider } from "@/lib/cart-context"
+import { ToastProvider } from "@/components/toast"
 import content from "@/content/es.json"
 import Link from "next/link"
 import Image from "next/image"
@@ -68,6 +70,7 @@ function HomePage() {
   return (
     <>
       <Header onCartClick={() => setCartOpen(true)} />
+      <CartToastListener />
       <NewsletterSuccess />
       <PromoCarousel />
       <HeroCarousel />
@@ -340,7 +343,9 @@ function HomePage() {
 export default function Page() {
   return (
     <CartProvider>
-      <HomePage />
+      <ToastProvider>
+        <HomePage />
+      </ToastProvider>
     </CartProvider>
   )
 }
