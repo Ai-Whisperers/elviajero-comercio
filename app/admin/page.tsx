@@ -1,5 +1,7 @@
 "use client"
 import { AdminShell, useAdminAuth } from "@/components/admin/admin-layout"
+import { BarChart, StatCard } from "@/components/admin/charts"
+import { exportOrdersCSV } from "@/lib/export-csv"
 import { useState, useEffect } from "react"
 
 function DashboardContent() {
@@ -40,6 +42,7 @@ function DashboardContent() {
         ))}
       </div>
 
+{orders.length > 0 && (<div className="mb-8"><BarChart title="Pedidos ultimos 7 dias" data={(()=>{const d: Record<string, number> = {};for(let i=6;i>=0;i--){const t=new Date();t.setDate(t.getDate()-i);d[t.toLocaleDateString("es",{weekday:"short"})]=0}orders.forEach((o:any)=>{const t=new Date(o.date).toLocaleDateString("es",{weekday:"short"});if(t in d)d[t]++});return Object.entries(d).map(([l,v])=>({label:l,value:v}))})()}/></div>)}
       <h2 className="mb-4 text-lg font-bold text-white">Pedidos recientes</h2>
       <div className="overflow-x-auto rounded-xl border border-gray-800">
         <table className="w-full text-sm">

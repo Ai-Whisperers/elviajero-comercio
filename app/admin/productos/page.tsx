@@ -1,6 +1,7 @@
 "use client"
 import { AdminShell, useAdminAuth } from "@/components/admin/admin-layout"
 import { useState, useEffect } from "react"
+import { StatCard } from "@/components/admin/charts"
 import content from "@/content/es.json"
 
 const c = content as any

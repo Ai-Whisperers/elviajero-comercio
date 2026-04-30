@@ -1,5 +1,6 @@
 "use client"
 import { AdminShell, useAdminAuth } from "@/components/admin/admin-layout"
+import { exportOrdersCSV } from "@/lib/export-csv"
 import { useState, useEffect } from "react"
 
 const statuses = ["pendiente", "confirmado", "enviado", "entregado", "cancelado"]

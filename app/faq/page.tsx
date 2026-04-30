@@ -2,6 +2,7 @@
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { CookieConsent } from "@/components/cookie-consent"
+import { FaqJsonLd } from "@/components/faq-json-ld"
 import content from "@/content/es.json"
 import { useState, useEffect } from "react"
 const c = content as any
@@ -25,6 +26,7 @@ export default function FAQPage() {
 
   return (
     <>
+      <FaqJsonLd />
       <Header />
       <section className="bg-primary py-12 text-center text-primary-foreground">
         <h1 className="text-4xl font-bold">{c.faq?.hero?.headline || "FAQ"}</h1>
