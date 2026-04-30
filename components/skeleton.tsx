@@ -1,34 +1,30 @@
-export function ProductCardSkeleton() {
+
+"use client"
+export function SkeletonCard() {
   return (
-    <div className="rounded-xl border border-border bg-surface overflow-hidden animate-pulse">
-      <div className="aspect-[3/2] bg-muted" />
-      <div className="p-4 space-y-3">
-        <div className="h-3 bg-muted rounded w-1/3" />
-        <div className="h-4 bg-muted rounded w-3/4" />
-        <div className="h-3 bg-muted rounded w-full" />
-        <div className="h-5 bg-muted rounded w-1/4" />
-        <div className="h-9 bg-muted rounded w-full mt-2" />
-      </div>
+    <div className="animate-pulse rounded-xl border border-border bg-surface p-4">
+      <div className="mb-3 aspect-[3/2] rounded-lg bg-muted" />
+      <div className="h-3 w-2/3 rounded bg-muted mb-2" />
+      <div className="h-4 w-1/2 rounded bg-muted mb-2" />
+      <div className="h-3 w-1/3 rounded bg-muted" />
     </div>
   )
 }
 
-export function ProductGridSkeleton({ count = 8 }: { count?: number }) {
+export function SkeletonGrid({ count = 6 }: { count?: number }) {
   return (
-    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-      {Array.from({ length: count }).map((_, i) => <ProductCardSkeleton key={i} />)}
+    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      {Array.from({ length: count }).map((_, i) => <SkeletonCard key={i} />)}
     </div>
   )
 }
 
-export function HeroSkeleton() {
+export function SkeletonText({ lines = 3 }: { lines?: number }) {
   return (
-    <div className="min-h-[70vh] bg-muted animate-pulse flex items-center justify-center">
-      <div className="text-center space-y-4">
-        <div className="h-8 bg-muted-foreground/20 rounded w-96 mx-auto" />
-        <div className="h-4 bg-muted-foreground/20 rounded w-64 mx-auto" />
-        <div className="h-10 bg-muted-foreground/20 rounded w-40 mx-auto" />
-      </div>
+    <div className="animate-pulse space-y-2">
+      {Array.from({ length: lines }).map((_, i) => (
+        <div key={i} className={"h-3 rounded bg-muted " + (i === lines - 1 ? "w-2/3" : "w-full")} />
+      ))}
     </div>
   )
 }

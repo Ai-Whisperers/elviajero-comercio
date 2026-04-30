@@ -9,6 +9,7 @@ import { FadeUp, StaggerGrid, StaggerItem } from "@/components/animations/scroll
 import { CartToastListener } from "@/components/cart-toast-listener"
 import { RecentlyViewed } from "@/components/recently-viewed"
 import { ExitIntentPopup } from "@/components/exit-intent"
+import { NewsletterForm } from "@/components/newsletter-form"
 import { NewsletterSuccess } from "@/components/ui"
 import { WhatsAppFloat } from "@/components/whatsapp-float"
 import { CartProvider } from "@/lib/cart-context"

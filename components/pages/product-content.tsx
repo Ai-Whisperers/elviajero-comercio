@@ -8,6 +8,10 @@ import { WhatsAppFloat } from "@/components/whatsapp-float"
 import { CartToastListener } from "@/components/cart-toast-listener"
 import { BackInStockForm } from "@/components/back-in-stock"
 import { ProductReviews } from "@/components/product-reviews"
+import { ImageGallery } from "@/components/image-gallery"
+import { ShareWhatsApp } from "@/components/share-whatsapp"
+import { RecentlyViewedProducts } from "@/components/recently-viewed-products"
+import { ProductTabs } from "@/components/product-tabs"
 import { useState, useMemo } from "react"
 import Link from "next/link"
 import Image from "next/image"
@@ -67,31 +71,12 @@ export default function ProductPageContent({ slug }: { slug: string }) {
 
           <div className="grid gap-8 lg:grid-cols-2">
             {/* Image gallery */}
-            <div className="space-y-4">
-              <div className="relative aspect-square overflow-hidden rounded-2xl border border-border bg-surface">
-                {product.imageUrl && (
-                  <Image src={product.imageUrl} alt={product.name} fill className="object-contain p-8 hover:scale-110 transition-transform duration-500" />
-                )}
-                {product.isNew && (
-                  <span className="absolute left-3 top-3 rounded-full bg-primary px-3 py-1 text-xs font-bold text-primary-foreground">NUEVO</span>
-                )}
-                {product.priceBefore && (
-                  <span className="absolute right-3 top-3 rounded-full bg-accent px-3 py-1 text-xs font-bold text-accent-foreground">OFERTA</span>
-                )}
-              </div>
-              {imageSources.length > 1 && (
-                <div className="flex gap-3">
-                  {imageSources.map((src: string, i: number) => (
-                    <button key={i} onClick={() => setSelectedImage(i)}
-                      className={`h-16 w-16 overflow-hidden rounded-lg border-2 transition-all ${
-                        i === selectedImage ? "border-primary" : "border-border"
-                      }`}>
-                      <Image src={src} alt="" width={64} height={64} className="h-full w-full object-contain p-1" />
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
+            <ImageGallery
+              images={imageSources}
+              productName={product.name}
+              isNew={product.isNew}
+              hasDiscount={!!product.priceBefore}
+            />
 
             {/* Product info */}
             <div className="flex flex-col">
@@ -175,8 +160,40 @@ export default function ProductPageContent({ slug }: { slug: string }) {
                   <p className="text-xs font-medium text-foreground">Soporte WhatsApp</p>
                 </div>
               </div>
+              <ShareWhatsApp productName={product.name} productUrl={typeof window !== 'undefined' ? window.location.href : ''} />
             </div>
           </div>
+
+          {/* Product Tabs */}
+          <ProductTabs tabs={[
+            { id: "desc", label: "Descripci\u00f3n", content: <p className="text-muted-foreground">{product.description}</p> },
+            { id: "specs", label: "Especificaciones", content: (
+              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+                {specLines.map((spec: string, i: number) => (
+                  <div key={i} className="rounded-lg border border-border bg-surface p-3">
+                    <p className="text-xs text-muted-foreground mb-1">Especificaci\u00f3n</p>
+                    <p className="text-sm font-medium text-foreground">{spec}</p>
+                  </div>
+                ))}
+                <div className="rounded-lg border border-border bg-surface p-3">
+                  <p className="text-xs text-muted-foreground mb-1">Peso</p>
+                  <p className="text-sm font-medium text-foreground">{product.weight || "\u2014"}</p>
+                </div>
+              </div>
+            )},
+            { id: "shipping", label: "Env\u00edo", content: (
+              <div className="rounded-xl border border-border bg-surface p-6">
+                <h3 className="font-semibold text-foreground mb-3">Opciones de env\u00edo</h3>
+                <div className="space-y-3 text-sm text-muted-foreground">
+                  <p>📦 Env\u00edo a domicilio: Gs. 10.000 - Gs. 25.000 seg\u00fan ciudad</p>
+                  <p>🏪 Retiro en tienda: Gratis</p>
+                  <p>⏱ Tiempo de entrega: 2-5 d\u00edas h\u00e1biles</p>
+                </div>
+              </div>
+            )},
+          ]} />
+
+          <RecentlyViewedProducts exclude={product.name} />
 
           {/* Related products */}
           <ProductReviews productName={product.name} />

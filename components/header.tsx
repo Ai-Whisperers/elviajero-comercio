@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation"
 import { DarkModeToggle } from "@/components/dark-mode-toggle"
 import { LanguageSwitcher } from "@/components/language-switcher"
 import { CurrencySwitcher } from "@/components/currency-switcher"
+import { SearchAutocomplete } from "@/components/search-autocomplete"
 import content from "@/content/es.json"
 
 const c = content as any
@@ -151,13 +152,7 @@ export function Header({ onCartClick }: { onCartClick?: () => void }) {
 
         <div className="flex items-center gap-2">
           {/* Search toggle */}
-          <button
-            onClick={() => setSearchOpen(!searchOpen)}
-            className="hidden md:flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-surface-light"
-            aria-label="Buscar"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-          </button>
+          <div className="hidden md:block w-48 lg:w-64"><SearchAutocomplete /></div>
 
           {/* User menu */}
           <CurrencySwitcher />

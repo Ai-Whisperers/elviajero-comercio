@@ -55,7 +55,18 @@ export function CartProvider({ children }: { children: ReactNode }) {
     })
   }, [])
 
-  const removeItem = useCallback((name: string) => setItems((prev) => prev.filter((i) => i.name !== name)), [])
+  const removeItem = useCallback((name: string) => {
+    setItems((prev) => {
+      const item = prev.find((i) => i.name === name)
+      const filtered = prev.filter((i) => i.name !== name)
+      if (item && typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent("cart-toast", {
+          detail: { message: item.name + " eliminado del carrito", type: "info" },
+        }))
+      }
+      return filtered
+    })
+  }, [])
   const updateQuantity = useCallback(
     (name: string, qty: number) =>
       setItems((prev) => prev.map((i) => (i.name === name ? { ...i, quantity: Math.max(1, qty) } : i))),
