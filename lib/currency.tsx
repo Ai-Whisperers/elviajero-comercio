@@ -1,7 +1,10 @@
 'use client'
 
 import { createContext, useContext, useState, useEffect } from "react"
-import { formatPrice as sharedFormatPrice } from "@ai-whisperers/commerce"
+// Local formatPrice (replaces @ai-whisperers/commerce which is unavailable)
+const sharedFormatPrice = (n: number, _currency?: string): string => {
+  return n.toLocaleString('es-PY') + ' Gs.'
+}
 
 type Currency = "PYG" | "USD"
 

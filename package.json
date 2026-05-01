@@ -10,11 +10,6 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@ai-whisperers/commerce": "^0.1.0",
-    "@ai-whisperers/seo": "^0.1.0",
-    "@ai-whisperers/tokens": "^0.1.0",
-    "@ai-whisperers/ui": "^0.1.0",
-    "@ai-whisperers/whatsapp": "^0.1.0",
     "@supabase/supabase-js": "^2.105.1",
     "better-sqlite3": "^12.9.0",
     "clsx": "^2.1.1",

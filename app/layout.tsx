@@ -1,6 +1,7 @@
-import { ErrorBoundary } from "@ai-whisperers/ui"
+import { ErrorBoundary } from "@/components/error-boundary"
 import type { Metadata } from "next"
 import "./globals.css"
+import { CurrencyProvider } from "@/lib/currency"
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://el-viajero.paragu-ai.com"),
@@ -75,7 +76,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           paddingBottom: "env(safe-area-inset-bottom, 0px)",
         }}
       >
-        <ErrorBoundary>{children}</ErrorBoundary>
+        <ErrorBoundary>
+          <CurrencyProvider>{children}</CurrencyProvider>
+        </ErrorBoundary>
       </body>
     </html>
   )
