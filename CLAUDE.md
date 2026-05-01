@@ -1,5 +1,50 @@
 # El Viajero — AI Agent Guide
 
+## Quick Links
+- **Live:** https://el-viajero.paragu-ai.com
+- **Repo:** github.com/Ai-Whisperers/elviajero-comercio
+- **Docker service:** elviajero-comercio_web (2 replicas)
+- **VPS:** 72.61.44.159
+- **Traefik:** Host(`el-viajero.paragu-ai.com`)
+
+## Architecture
+Cloudflare (DNS, SSL) → VPS → Traefik → elviajero-comercio_web:3000
+
+## Pages
+12 pages: Home, Tienda (catalog), Blog (6 posts), Nosotros, Contacto, FAQ, Promociones, Privacidad, Términos, Sitemap
+
+## Design System
+Green (#1B5E20) + orange (#E65100) on light background. Fonts: Inter (all). Voice: practical, adventurous, Spanish/English/Guaraní.
+
+## Content
+Content lives in `content/es.json` (and other locales when applicable).
+All text, services, products, FAQ items are editable there.
+
+## Build & Deploy
+```bash
+npm run build
+docker build -t elviajero-comercio:prod .
+docker stack deploy -c docker-compose.yml elviajero-comercio
+```
+
+## Critical Patterns
+- All products in content/es.json (12 products, 6 categories)
+- WhatsApp-first ordering (all CTAs go to WhatsApp with prefilled templates)
+- Currency toggle (PYG/USD) with localStorage persistence
+- Language toggle (ES/EN/GN)
+- Dark mode toggle
+- SQLite database for orders and admin
+- Full admin panel
+
+## Client Onboarding
+See `docs/client-questionnaire.md` for the full onboarding questionnaire.
+See `docs/brand-guide.md` for brand identity details.
+
+
+---
+
+# El Viajero — AI Agent Guide
+
 Standalone Next.js 15 app at **https://viajero.paragu-ai.com**.
 Outdoor/camping/fishing e-commerce store in Asuncion (est. 2018).
 
