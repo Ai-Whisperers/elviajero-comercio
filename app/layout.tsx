@@ -1,3 +1,4 @@
+import { ErrorBoundary } from "@ai-whisperers/ui"
 import type { Metadata } from "next"
 import "./globals.css"
 
@@ -74,7 +75,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           paddingBottom: "env(safe-area-inset-bottom, 0px)",
         }}
       >
-        {children}
+        <ErrorBoundary>{children}</ErrorBoundary>
       </body>
     </html>
   )
