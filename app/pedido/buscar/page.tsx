@@ -1,5 +1,6 @@
 
 "use client"
+export const dynamic = "force-dynamic"
 import { useState } from "react"
 import { AuthProvider } from "@/lib/auth-context"
 import Link from "next/link"

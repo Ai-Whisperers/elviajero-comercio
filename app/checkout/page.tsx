@@ -1,4 +1,5 @@
 "use client"
+export const dynamic = "force-dynamic"
 import { useAuth, AuthProvider } from "@/lib/auth-context"
 import { useCart } from "@/lib/cart-context"
 import { CartProvider } from "@/lib/cart-context"
@@ -102,7 +103,7 @@ function CheckoutForm() {
 
     // Also save to user's orders if logged in
     if (user) {
-      const localId = addOrder({
+      const localId = await addOrder({
         items: orderData.items,
         total: orderData.total,
         addressId: addressId || "guest",

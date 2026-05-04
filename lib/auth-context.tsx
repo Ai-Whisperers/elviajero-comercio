@@ -48,9 +48,10 @@ interface AuthContextType {
   addresses: Address[]
   addAddress: (a: Omit<Address, "id">) => Promise<{ ok: boolean; error?: string }>
   updateAddress: (id: string, a: Partial<Address>) => Promise<{ ok: boolean; error?: string }>
-  removeAddress: (id: string) => void
+  removeAddress: (id: string) => Promise<void>
   orders: Order[]
-  addOrder: (o: Omit<Order, "id" | "date" | "status">) => string
+  refreshOrders: () => Promise<void>
+  addOrder: (o: Omit<Order, "id" | "date" | "status">) => Promise<string>
   favorites: string[]
   toggleFavorite: (productName: string) => void
   isFavorite: (productName: string) => boolean
@@ -58,17 +59,17 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | null>(null)
 
-function genId() {
-  return Date.now().toString(36) + Math.random().toString(36).slice(2, 8)
-}
-
-function hash(s: string) {
-  let h = 0
-  for (let i = 0; i < s.length; i++) {
-    h = ((h << 5) - h) + s.charCodeAt(i)
-    h = h & h
-  }
-  return "h" + Math.abs(h).toString(36)
+async function api(path: string, options?: RequestInit) {
+  const token = typeof window !== "undefined" ? localStorage.getItem("viajero_token") : null
+  const res = await fetch(path, {
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      ...options?.headers,
+    },
+  })
+  return res.json()
 }
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
@@ -77,119 +78,171 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [orders, setOrders] = useState<Order[]>([])
   const [favorites, setFavorites] = useState<string[]>([])
 
+  // Restore session on mount
   useEffect(() => {
-    try {
-      const sess = localStorage.getItem("viajero_session")
-      if (!sess) return
-      const u: User = JSON.parse(sess)
-      setUser(u)
-      setAddresses(JSON.parse(localStorage.getItem(`viajero_addr_${u.id}`) || "[]"))
-      setOrders(JSON.parse(localStorage.getItem(`viajero_orders_${u.id}`) || "[]"))
-      setFavorites(JSON.parse(localStorage.getItem(`viajero_favs_${u.id}`) || "[]"))
-    } catch {}
+    if (typeof window === "undefined") return
+    const token = localStorage.getItem("viajero_token")
+    if (!token) return
+
+    api("/api/auth", {
+      method: "POST",
+      body: JSON.stringify({ action: "me", token }),
+    }).then((res) => {
+      if (res.ok) {
+        setUser(res.user)
+        loadAddresses(token)
+        loadOrders(token)
+      } else {
+        localStorage.removeItem("viajero_token")
+      }
+    })
   }, [])
 
-  const persistUser = useCallback((u: User | null) => {
-    if (u) localStorage.setItem("viajero_session", JSON.stringify(u))
-    else localStorage.removeItem("viajero_session")
-    setUser(u)
-  }, [])
+  function loadAddresses(token: string) {
+    api("/api/addresses").then((res) => {
+      if (Array.isArray(res)) setAddresses(res)
+    })
+  }
+
+  function loadOrders(token: string) {
+    api("/api/orders").then((res) => {
+      if (Array.isArray(res)) {
+        setOrders(res.map((o: any) => ({
+          ...o,
+          date: o.createdAt || o.date,
+        })))
+      }
+    })
+  }
 
   const login = useCallback(async (email: string, password: string) => {
-    const all = JSON.parse(localStorage.getItem("viajero_users") || "[]")
-    const found = all.find((u: any) => u.email === email && u.password === hash(password))
-    if (!found) return { ok: false, error: "Email o contraseña incorrectos" }
-    const u: User = { id: found.id, name: found.name, email: found.email, phone: found.phone, createdAt: found.createdAt }
-    persistUser(u)
-    setAddresses(JSON.parse(localStorage.getItem(`viajero_addr_${u.id}`) || "[]"))
-    setOrders(JSON.parse(localStorage.getItem(`viajero_orders_${u.id}`) || "[]"))
-    setFavorites(JSON.parse(localStorage.getItem(`viajero_favs_${u.id}`) || "[]"))
+    const res = await api("/api/auth", {
+      method: "POST",
+      body: JSON.stringify({ action: "login", email, password }),
+    })
+    if (!res.ok) return { ok: false, error: res.error || "Error al iniciar sesión" }
+    localStorage.setItem("viajero_token", res.token)
+    setUser(res.user)
+    loadAddresses(res.token)
+    loadOrders(res.token)
     return { ok: true }
-  }, [persistUser])
+  }, [])
 
   const register = useCallback(async (name: string, email: string, password: string, phone: string) => {
-    const all = JSON.parse(localStorage.getItem("viajero_users") || "[]")
-    if (all.some((u: any) => u.email === email)) return { ok: false, error: "Este email ya está registrado" }
-    if (password.length < 6) return { ok: false, error: "La contraseña debe tener al menos 6 caracteres" }
-    const nu = { id: genId(), name, email, password: hash(password), phone, createdAt: new Date().toISOString() }
-    all.push(nu)
-    localStorage.setItem("viajero_users", JSON.stringify(all))
-    const u: User = { id: nu.id, name, email, phone, createdAt: nu.createdAt }
-    persistUser(u)
+    const res = await api("/api/auth", {
+      method: "POST",
+      body: JSON.stringify({ action: "register", name, email, password, phone }),
+    })
+    if (!res.ok) return { ok: false, error: res.error || "Error al registrarse" }
     return { ok: true }
-  }, [persistUser])
+  }, [])
 
-  const logout = useCallback(() => {
-    persistUser(null)
+  const logout = useCallback(async () => {
+    const token = localStorage.getItem("viajero_token")
+    if (token) {
+      await api("/api/auth", {
+        method: "POST",
+        body: JSON.stringify({ action: "logout", token }),
+      })
+    }
+    localStorage.removeItem("viajero_token")
+    setUser(null)
     setAddresses([])
     setOrders([])
     setFavorites([])
-  }, [persistUser])
+  }, [])
 
   const updateProfile = useCallback(async (data: Partial<User>) => {
     if (!user) return { ok: false, error: "No hay sesión" }
-    const all = JSON.parse(localStorage.getItem("viajero_users") || "[]")
-    const idx = all.findIndex((u: any) => u.id === user.id)
-    if (idx === -1) return { ok: false, error: "Usuario no encontrado" }
-    all[idx] = { ...all[idx], ...data }
-    localStorage.setItem("viajero_users", JSON.stringify(all))
-    const updated = { ...user, ...data }
-    persistUser(updated)
+    const token = localStorage.getItem("viajero_token")
+    const res = await fetch("/api/update-profile", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      body: JSON.stringify(data),
+    })
+    const json = await res.json()
+    if (!json.ok) return { ok: false, error: json.error || "Error" }
+    setUser({ ...user, ...data })
     return { ok: true }
-  }, [user, persistUser])
+  }, [user])
 
   const changePassword = useCallback(async (current: string, newPass: string) => {
     if (!user) return { ok: false, error: "No hay sesión" }
     if (newPass.length < 6) return { ok: false, error: "Mínimo 6 caracteres" }
-    const all = JSON.parse(localStorage.getItem("viajero_users") || "[]")
-    const found = all.find((u: any) => u.id === user.id)
-    if (!found || found.password !== hash(current)) return { ok: false, error: "Contraseña actual incorrecta" }
-    found.password = hash(newPass)
-    localStorage.setItem("viajero_users", JSON.stringify(all))
-    return { ok: true }
+    const token = localStorage.getItem("viajero_token")
+    const res = await fetch("/api/change-password", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ current, newPass }),
+    })
+    const json = await res.json()
+    return json.ok ? { ok: true } : { ok: false, error: json.error || "Error" }
   }, [user])
 
   const addAddress = useCallback(async (a: Omit<Address, "id">) => {
-    if (!user) return { ok: false, error: "No hay sesión" }
-    const addrs: Address[] = JSON.parse(localStorage.getItem(`viajero_addr_${user.id}`) || "[]")
-    if (addrs.length >= 10) return { ok: false, error: "Máximo 10 direcciones" }
-    const na = { ...a, id: genId() }
-    if (na.isDefault) addrs.forEach(ad => ad.isDefault = false)
-    addrs.push(na)
-    localStorage.setItem(`viajero_addr_${user.id}`, JSON.stringify(addrs))
-    setAddresses([...addrs])
-    return { ok: true }
-  }, [user])
+    const res: any = await api("/api/addresses", {
+      method: "POST",
+      body: JSON.stringify(a),
+    })
+    if (res.ok) {
+      setAddresses(prev => [...prev, res.address])
+    }
+    return res.ok ? { ok: true } : { ok: false, error: res.error || "Error" }
+  }, [])
 
   const updateAddress = useCallback(async (id: string, a: Partial<Address>) => {
-    if (!user) return { ok: false, error: "No hay sesión" }
-    const addrs: Address[] = JSON.parse(localStorage.getItem(`viajero_addr_${user.id}`) || "[]")
-    const idx = addrs.findIndex(ad => ad.id === id)
-    if (idx === -1) return { ok: false, error: "Dirección no encontrada" }
-    addrs[idx] = { ...addrs[idx], ...a }
-    if (a.isDefault) addrs.forEach((ad, i) => { if (i !== idx) ad.isDefault = false })
-    localStorage.setItem(`viajero_addr_${user.id}`, JSON.stringify(addrs))
-    setAddresses([...addrs])
-    return { ok: true }
-  }, [user])
+    const res: any = await api("/api/addresses", {
+      method: "PUT",
+      body: JSON.stringify({ id, ...a }),
+    })
+    if (res.ok) {
+      setAddresses(prev => prev.map(ad => ad.id === id ? res.address : ad))
+    }
+    return res.ok ? { ok: true } : { ok: false, error: res.error || "Error" }
+  }, [])
 
-  const removeAddress = useCallback((id: string) => {
+  const removeAddress = useCallback(async (id: string) => {
+    const res: any = await api("/api/addresses", {
+      method: "DELETE",
+      body: JSON.stringify({ id }),
+    })
+    if (res.ok) {
+      setAddresses(prev => prev.filter(a => a.id !== id))
+    }
+  }, [])
+
+  const addOrder = useCallback(async (o: Omit<Order, "id" | "date" | "status">): Promise<string> => {
+    const res: any = await api("/api/orders", {
+      method: "POST",
+      body: JSON.stringify(o),
+    })
+    if (res.ok) {
+      setOrders(prev => [res.order, ...prev])
+      return res.order.id
+    }
+    return ""
+  }, [])
+
+  const refreshOrders = useCallback(async () => {
+    const res = await api("/api/orders")
+    if (Array.isArray(res)) {
+      setOrders(res.map((o: any) => ({
+        ...o,
+        date: o.createdAt || o.date,
+      })))
+    }
+  }, [])
+
+  const loadFavorites = useCallback(() => {
     if (!user) return
-    const addrs: Address[] = JSON.parse(localStorage.getItem(`viajero_addr_${user.id}`) || "[]")
-    const filtered = addrs.filter(a => a.id !== id)
-    localStorage.setItem(`viajero_addr_${user.id}`, JSON.stringify(filtered))
-    setAddresses(filtered)
+    const favs = JSON.parse(localStorage.getItem(`viajero_favs_${user.id}`) || "[]")
+    setFavorites(favs)
   }, [user])
 
-  const addOrder = useCallback((o: Omit<Order, "id" | "date" | "status">) => {
-    if (!user) return ""
-    const no: Order = { ...o, id: genId(), date: new Date().toISOString(), status: "pendiente" }
-    const ords: Order[] = JSON.parse(localStorage.getItem(`viajero_orders_${user.id}`) || "[]")
-    ords.unshift(no)
-    localStorage.setItem(`viajero_orders_${user.id}`, JSON.stringify(ords))
-    setOrders([...ords])
-    return no.id
-  }, [user])
+  useEffect(() => {
+    if (user && typeof window !== "undefined") loadFavorites()
+    else setFavorites([])
+  }, [user, loadFavorites])
 
   const toggleFavorite = useCallback((productName: string) => {
     if (!user) return
@@ -207,7 +260,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     <AuthContext.Provider value={{
       user, login, register, logout, updateProfile, changePassword,
       addresses, addAddress, updateAddress, removeAddress,
-      orders, addOrder,
+      orders, refreshOrders, addOrder,
       favorites, toggleFavorite, isFavorite,
     }}>
       {children}

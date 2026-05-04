@@ -27,6 +27,12 @@ function initTables() {
       phone TEXT DEFAULT '',
       created_at TEXT DEFAULT (datetime('now'))
     );
+    CREATE TABLE IF NOT EXISTS sessions (
+      token TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      expires_at TEXT NOT NULL,
+      FOREIGN KEY (user_id) REFERENCES users(id)
+    );
     CREATE TABLE IF NOT EXISTS addresses (
       id TEXT PRIMARY KEY,
       user_id TEXT NOT NULL,

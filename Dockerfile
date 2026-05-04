@@ -1,5 +1,6 @@
 FROM paragu-ai/next-base:node20 AS deps
 WORKDIR /app
+ENV NODE_ENV=development
 COPY package.json package-lock.json* ./
 RUN npm install --legacy-peer-deps
 
