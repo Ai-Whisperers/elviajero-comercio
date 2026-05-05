@@ -134,7 +134,7 @@ function TiendaContent() {
       <section className="bg-background py-16"><div className="mx-auto max-w-7xl px-4">
         {displayProducts.length === 0 && <div className="py-20 text-center"><p className="text-lg text-muted-foreground">No encontramos productos con esos filtros.</p></div>}
         {groupedCats.map((category: string) => (
-          <div key={category} className="mb-12 last:mb-0">
+          <div key={category} id={category.toLowerCase().replace(/[^a-z]/g, "")} className="mb-12 scroll-mt-28 last:mb-0">
             <div className="mb-6 flex items-center justify-between">
               <h2 className="text-2xl font-bold text-foreground">{category}</h2>
               <Link href={`/categoria/${category.toLowerCase().replace(/[^a-z]/g, "")}`} className="text-sm font-semibold text-primary hover:underline">Ver todo</Link>

@@ -761,25 +761,39 @@
       "interval": 6000,
       "slides": [
         {
-          "image": "/images/hero-bg.svg",
+          "image": "/images/marketing/hero-carousel-01-family-river.png",
           "title": "Equipate para tu próxima aventura",
           "subtitle": "Camping, pesca, outdoor — todo en un solo lugar",
           "ctaText": "Explorá la Tienda",
           "ctaHref": "/tienda"
         },
         {
-          "image": "/images/categories/camping.svg",
+          "image": "/images/marketing/category-camping.png",
           "title": "Ofertas en Camping",
           "subtitle": "Carpas, bolsas de dormir, linternas y más con precios especiales",
           "ctaText": "Ver Ofertas",
           "ctaHref": "/promociones"
         },
         {
-          "image": "/images/categories/pesca.svg",
+          "image": "/images/marketing/hero-carousel-02-fishing-sunrise.png",
           "title": "Pesca: Temporada Alta",
           "subtitle": "Equipate con las mejores cañas, señuelos y accesorios",
           "ctaText": "Ver Productos",
-          "ctaHref": "/tienda#Pesca"
+          "ctaHref": "/tienda#pesca"
+        },
+        {
+          "image": "/images/marketing/hero-carousel-03-truck-adventure.png",
+          "title": "Ruta y aventura",
+          "subtitle": "Equipo outdoor, autos y moto — cargá tu próximo viaje",
+          "ctaText": "Ver productos",
+          "ctaHref": "/productos"
+        },
+        {
+          "image": "/images/marketing/hero-carousel-05-trail-wide.png",
+          "title": "Paraguay te espera",
+          "subtitle": "Descubrí destinos y preparate con nosotros",
+          "ctaText": "Ir al Blog",
+          "ctaHref": "/blog"
         }
       ]
     },
@@ -1486,22 +1500,22 @@
           {
             "name": "Camping",
             "description": "Todo para armar el campamento perfecto",
-            "image": "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=800&q=80"
+            "image": "/images/marketing/category-camping.png"
           },
           {
             "name": "Pesca",
             "description": "Tecnicas, señuelos y equipamiento",
-            "image": "https://images.unsplash.com/photo-1575880963075-51d727bb1c12?w=800&q=80"
+            "image": "/images/marketing/category-pesca.png"
           },
           {
             "name": "Aventura",
             "description": "Destinos y tips para explorar Paraguay",
-            "image": "https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?w=800&q=80"
+            "image": "/images/marketing/blog-cat-aventura.png"
           },
           {
             "name": "Mantenimiento",
             "description": "Cuidado y reparacion de tu equipo",
-            "image": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&q=80"
+            "image": "/images/marketing/blog-cat-mantenimiento.png"
           }
         ],
         "posts": [
@@ -1511,7 +1525,7 @@
             "category": "Camping",
             "excerpt": "Tipos de carpa, materiales, capacidad y presupuesto. Todo lo que necesitas saber para acertar en tu compra.",
             "date": "2026-04-15",
-            "image": "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=800&q=80",
+            "image": "/images/marketing/blog-post-guia-carpa.png",
             "author": "Equipo El Viajero"
           },
           {
@@ -1520,7 +1534,7 @@
             "category": "Pesca",
             "excerpt": "Descubri los mejores rios y lagunas para pescar en Paraguay. Tips por temporada y especies.",
             "date": "2026-04-10",
-            "image": "https://images.unsplash.com/photo-1575880963075-51d727bb1c12?w=800&q=80",
+            "image": "/images/marketing/blog-post-lugares-pesca.png",
             "author": "Equipo El Viajero"
           },
           {
@@ -1529,7 +1543,7 @@
             "category": "Camping",
             "excerpt": "No te olvides de nada. Checklist completa de equipo esencial para tu proxima acampada.",
             "date": "2026-04-05",
-            "image": "https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?w=800&q=80",
+            "image": "/images/marketing/blog-post-checklist-camping.png",
             "author": "Equipo El Viajero"
           },
           {
@@ -1538,7 +1552,7 @@
             "category": "Pesca",
             "excerpt": "Materiales, longitudes, accion y mas. Guia para principiantes y expertos.",
             "date": "2026-03-28",
-            "image": "https://images.unsplash.com/photo-1575880963075-51d727bb1c12?w=800&q=80",
+            "image": "/images/marketing/blog-post-elegir-cana.png",
             "author": "Equipo El Viajero"
           },
           {
@@ -1547,7 +1561,7 @@
             "category": "Mantenimiento",
             "excerpt": "Como limpiar y guardar tu carpa, bolsa de dormir y demas equipo para que duren años.",
             "date": "2026-03-20",
-            "image": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&q=80",
+            "image": "/images/marketing/blog-post-mantenimiento-camping.png",
             "author": "Equipo El Viajero"
           },
           {
@@ -1556,7 +1570,7 @@
             "category": "Aventura",
             "excerpt": "Saltos del Monday, Cerro Cora, San Bernardino y mas. Planifica tu proxima escapada.",
             "date": "2026-03-15",
-            "image": "https://images.unsplash.com/photo-1506976785307-8732e54ad72d?w=800&q=80",
+            "image": "/images/marketing/blog-post-destinos-paraguay.png",
             "author": "Equipo El Viajero"
           }
         ]
@@ -1577,7 +1591,7 @@
         "title": "Kit Camping Completo",
         "description": "Carpa 4 pers + 2 bolsas de dormir + colchon inflable. Ahorra Gs. 80.000",
         "badge": "-15%",
-        "image": "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=800&q=80",
+        "image": "/images/marketing/promo-kit-camping.png",
         "ctaText": "Consultar por WhatsApp",
         "ctaHref": "https://wa.me/595981234567?text=Hola!%20Quiero%20info%20del%20Kit%20Camping%20Completo"
       },
@@ -1585,7 +1599,7 @@
         "title": "Combo Pesca Inicial",
         "description": "Caña + caja de herramientas + señuelos. Ideal para empezar.",
         "badge": "-10%",
-        "image": "https://images.unsplash.com/photo-1575880963075-51d727bb1c12?w=800&q=80",
+        "image": "/images/marketing/promo-combo-pesca.png",
         "ctaText": "Consultar por WhatsApp",
         "ctaHref": "https://wa.me/595981234567?text=Hola!%20Quiero%20info%20del%20Combo%20Pesca%20Inicial"
       },
@@ -1593,7 +1607,7 @@
         "title": "Envio Gratis",
         "description": "En compras mayores a Gs. 300.000 en Asunción y area metropolitana.",
         "badge": "GRATIS",
-        "image": "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=800&q=80",
+        "image": "/images/marketing/promo-envio-gratis.png",
         "ctaText": "Ver productos",
         "ctaHref": "/tienda"
       }
