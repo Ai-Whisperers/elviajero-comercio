@@ -47,7 +47,7 @@ export default function AdminCustomerHistory() {
   return (
     <>
       <div className="mb-6">
-        <h1 className="text-xl font-bold text-white">Historial de clientes</h1>
+        <h1 className="text-2xl font-bold text-white">Historial de clientes</h1>
         <p className="text-sm text-zinc-500 mt-0.5">{profiles.length} clientes registrados</p>
       </div>
 

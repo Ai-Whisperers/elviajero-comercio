@@ -30,25 +30,25 @@ export default function AdminTheme() {
 
   return (
     <>
-      <h1 className="mb-6 text-xl font-bold text-white">Personalizar tema</h1>
+      <h1 className="mb-6 text-2xl font-bold text-white">Personalizar tema</h1>
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
         {PRESETS.map((p) => (
           <button key={p.name} onClick={() => apply(p)}
-            className={"rounded-xl border-2 p-4 text-center transition-all " + (theme.name === p.name ? "border-green-500" : "border-gray-700 hover:border-gray-500")}>
+            className={"rounded-xl border-2 p-4 text-center transition-all " + (theme.name === p.name ? "border-emerald-500" : "border-zinc-700/60 hover:border-zinc-500")}>
             <div className="mb-3 flex items-center justify-center gap-2">
               <div className="h-8 w-8 rounded-full" style={{ backgroundColor: p.primary }} />
               <div className="h-8 w-8 rounded-lg" style={{ backgroundColor: p.card }} />
               <div className="h-8 w-8 rounded-lg" style={{ backgroundColor: p.bg }} />
             </div>
-            <p className="text-xs text-gray-400">{p.name}</p>
+            <p className="text-xs text-zinc-400">{p.name}</p>
           </button>
         ))}
       </div>
-      <div className="mt-8 rounded-xl border border-gray-800 bg-gray-900 p-5">
-        <h2 className="mb-3 text-sm font-semibold text-gray-300">Vista previa</h2>
+      <div className="mt-8 rounded-xl border border-zinc-800/60 bg-zinc-900/50 p-5">
+        <h2 className="mb-3 text-sm font-semibold text-zinc-300">Vista previa</h2>
         <div className="rounded-xl p-4" style={{ backgroundColor: theme.card }}>
           <div className="mb-2 h-3 w-24 rounded" style={{ backgroundColor: theme.primary }} />
-          <div className="h-3 w-48 rounded bg-gray-700" />
+          <div className="h-3 w-48 rounded bg-zinc-700" />
         </div>
       </div>
     </>
