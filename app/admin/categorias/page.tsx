@@ -36,28 +36,28 @@ export default function AdminCategories() {
         <h1 className="text-xl font-bold text-white">Categorías ({cats.length})</h1>
         <input type="text" value={search} onChange={e => setSearch(e.target.value)}
           placeholder="Buscar categoría..."
-          className="w-56 rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-sm text-white outline-none focus:border-green-500" />
+          className="w-56 rounded-lg border border-zinc-700/60 bg-zinc-800 px-4 py-2 text-sm text-white outline-none focus:border-emerald-500/50" />
       </div>
       <div className="mb-6 flex gap-3">
         <input value={newCat} onChange={e => setNewCat(e.target.value)} placeholder="Nueva categoría"
-          className="flex-1 rounded-lg border border-gray-700 bg-gray-800 px-4 py-2.5 text-sm text-white outline-none focus:border-green-500" />
-        <button onClick={add} className="rounded-lg bg-green-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-green-500">Agregar</button>
+          className="flex-1 rounded-lg border border-zinc-700/60 bg-zinc-800 px-4 py-2.5 text-sm text-white outline-none focus:border-emerald-500/50" />
+        <button onClick={add} className="rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-emerald-500">Agregar</button>
       </div>
       {loading ? (
         <div className="flex flex-wrap gap-2">
-          {Array.from({ length: 6 }).map((_, i) => <div key={i} className="h-10 w-28 animate-pulse rounded-full bg-gray-800" />)}
+          {Array.from({ length: 6 }).map((_, i) => <div key={i} className="h-10 w-28 animate-pulse rounded-full bg-zinc-800" />)}
         </div>
       ) : filtered.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-16 text-gray-500">
-          <svg className="w-12 h-12 mb-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
+        <div className="flex flex-col items-center justify-center py-16 text-zinc-500">
+          <svg className="w-12 h-12 mb-4 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
           <p className="text-sm">{search ? "Sin resultados" : "Sin categorías todavía"}</p>
         </div>
       ) : (
         <div className="flex flex-wrap gap-2">
           {filtered.map(cat => (
-            <div key={cat.id} className="flex items-center gap-2 rounded-full border border-gray-700 bg-gray-800 px-4 py-2 text-sm text-gray-300">
+            <div key={cat.id} className="flex items-center gap-2 rounded-full border border-zinc-700/60 bg-zinc-800 px-4 py-2 text-sm text-zinc-300">
               {cat.name}
-              <button onClick={() => remove(cat.id)} className="text-gray-500 hover:text-red-400 text-xs">✕</button>
+              <button onClick={() => remove(cat.id)} className="text-zinc-500 hover:text-red-400 text-xs">✕</button>
             </div>
           ))}
         </div>
