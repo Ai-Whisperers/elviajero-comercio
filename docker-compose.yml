@@ -11,7 +11,7 @@ services:
       - NODE_ENV=production
       - NEXT_PUBLIC_SUPABASE_URL=https://qyvokpribmbrosafntqa.supabase.co
       - NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF5dm9rcHJpYm1icm9zYWZudHFhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ5MzU0OTQsImV4cCI6MjA2MDUxMTQ5NH0.cV8yF7fuylgLCLR4Hn3O2gQ8OAOhS7B7JmPUPw4SXRg
-      - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY}
+      - SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF5dm9rcHJpYm1icm9zYWZudHFhIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NjMxODE1NSwiZXhwOjIwOTE4OTQxNTV9.rphBsAVMuI_2X8RCU7D0JiGd8pqqdpcQ7vpUrirU06g
       - NEXT_PUBLIC_BASE_URL=https://el-viajero.paragu-ai.com
       - PYG_PAYMENT_GATEWAY=pagopar
       # Payment keys — set these to activate real payments

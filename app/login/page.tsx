@@ -26,14 +26,14 @@ function LoginForm() {
       })
       const data = await res.json()
       if (data.ok) {
-        // Check if they're admin — redirect to admin
-        const me = await fetch("/api/auth", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ action: "me" }),
-        }).then(r => r.json())
+        // Set auth cookie manually
+        if (data.session?.access_token) {
+          document.cookie = "sb-qyvokpribmbrosafntqa-auth-token=" + data.session.access_token + "; path=/; max-age=34560000; SameSite=lax"
+        }
+        // Admin check based on the login response role
         const params = new URLSearchParams(window.location.search)
-        const redirectTo = params.get("redirect") || (me?.user?.role === "admin" ? "/admin" : "/mi-cuenta")
+        // Redirect based on where they were going
+        const redirectTo = params.get("redirect") || "/mi-cuenta"
         window.location.assign(redirectTo)
         return
       }
