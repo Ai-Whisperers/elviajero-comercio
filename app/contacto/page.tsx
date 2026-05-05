@@ -1,6 +1,7 @@
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import content from "@/content/es.json"
+import Image from "next/image"
 
 const c = content as any
 const info = c.contacto?.info || {}
@@ -10,9 +11,15 @@ export default function ContactoPage() {
   return (
     <>
       <Header />
-      <section className="bg-primary py-12 text-center text-primary-foreground">
-        <h1 className="text-4xl font-bold">{c.contacto?.hero?.headline || "Contacto"}</h1>
-        <p className="mt-2 text-primary-foreground/80">{c.contacto?.hero?.subheadline}</p>
+      <section className="relative overflow-hidden py-16 text-center text-primary-foreground">
+        <div className="pointer-events-none absolute inset-0">
+          <Image src="/images/marketing/contact-hero-storefront.png" alt="" fill className="object-cover object-[center_35%]" sizes="100vw" priority />
+          <div className="absolute inset-0 bg-primary/78" aria-hidden />
+        </div>
+        <div className="relative z-10 px-4">
+          <h1 className="text-4xl font-bold">{c.contacto?.hero?.headline || "Contacto"}</h1>
+          <p className="mt-2 text-primary-foreground/80">{c.contacto?.hero?.subheadline}</p>
+        </div>
       </section>
       <section className="bg-background py-16">
         <div className="mx-auto max-w-4xl px-4">

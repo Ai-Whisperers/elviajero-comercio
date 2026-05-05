@@ -115,9 +115,15 @@ function TiendaContent() {
     <>
       <Header onCartClick={() => setCartOpen(true)} />
       <CartToastListener />
-      <section className="bg-primary py-12 text-center text-primary-foreground">
-        <h1 className="text-4xl font-bold">Tienda Online</h1>
-        <p className="mt-2 text-primary-foreground/80">{c.tienda?.hero?.subheadline}</p>
+      <section className="relative overflow-hidden py-16 text-center text-primary-foreground">
+        <div className="pointer-events-none absolute inset-0">
+          <Image src="/images/marketing/tienda-hero-bg.png" alt="" fill className="object-cover object-center" sizes="100vw" priority />
+          <div className="absolute inset-0 bg-primary/82" aria-hidden />
+        </div>
+        <div className="relative z-10 px-4">
+          <h1 className="text-4xl font-bold">Tienda Online</h1>
+          <p className="mt-2 text-primary-foreground/80">{c.tienda?.hero?.subheadline}</p>
+        </div>
       </section>
       <section className="bg-surface-light py-6">
         <div className="mx-auto max-w-7xl px-4">
