@@ -175,7 +175,7 @@ function ContentEditor() {
 
       <div className="flex-1">
         <div className="mb-6 flex items-center justify-between">
-          <h1 className="text-xl font-bold text-white">{SECTIONS.find(s => s.key === section)?.label}</h1>
+          <h1 className="text-2xl font-bold text-white">{SECTIONS.find(s => s.key === section)?.label}</h1>
           <div className="flex items-center gap-3">
             {saved && <span className="text-xs text-emerald-400">✓ Guardado</span>}
             <button onClick={save} disabled={saving}

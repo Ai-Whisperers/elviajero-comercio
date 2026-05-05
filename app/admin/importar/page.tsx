@@ -36,7 +36,7 @@ export default function AdminImport() {
 
   return (
     <>
-      <h1 className="mb-6 text-xl font-bold text-white">Importar productos (CSV)</h1>
+      <h1 className="mb-6 text-2xl font-bold text-white">Importar productos (CSV)</h1>
       <p className="mb-4 text-sm text-zinc-400">Formato: name,price,stock,category,brand,description (una línea por producto)</p>
       <input type="file" accept=".csv" onChange={handleFile} disabled={importing} className="text-sm text-zinc-400 file:mr-4 file:rounded-lg file:border-0 file:bg-emerald-600 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-emerald-500 disabled:opacity-50" />
       {importing && <p className="mt-4 text-sm text-amber-400">Importando...</p>}

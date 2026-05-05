@@ -26,7 +26,7 @@ export default function AdminEnrich() {
 
   return (
     <>
-      <h1 className="mb-6 text-xl font-bold text-white">Enriquecer productos</h1>
+      <h1 className="mb-6 text-2xl font-bold text-white">Enriquecer productos</h1>
       <p className="mb-6 text-sm text-zinc-400">Añadí descripciones, especificaciones, marcas y más para mejorar el SEO y la experiencia de compra.</p>
 
       <div className="overflow-x-auto max-h-[70vh] rounded-xl border border-zinc-800/60">

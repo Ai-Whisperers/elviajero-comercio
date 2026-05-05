@@ -73,7 +73,7 @@ export default function SalesReport() {
       {/* Header */}
       <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-xl font-bold text-white">Reportes de ventas</h1>
+          <h1 className="text-2xl font-bold text-white">Reportes de ventas</h1>
           <p className="text-sm text-zinc-500 mt-0.5">{orders.length} pedidos en total · {filtered.length} en el período</p>
         </div>
         <div className="flex items-center gap-2">

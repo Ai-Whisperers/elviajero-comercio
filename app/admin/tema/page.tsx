@@ -30,7 +30,7 @@ export default function AdminTheme() {
 
   return (
     <>
-      <h1 className="mb-6 text-xl font-bold text-white">Personalizar tema</h1>
+      <h1 className="mb-6 text-2xl font-bold text-white">Personalizar tema</h1>
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
         {PRESETS.map((p) => (
           <button key={p.name} onClick={() => apply(p)}

@@ -33,7 +33,7 @@ export default function AdminPromos() {
   return (
     <>
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-xl font-bold text-white">Códigos Promocionales ({promos.length})</h1>
+        <h1 className="text-2xl font-bold text-white">Códigos Promocionales ({promos.length})</h1>
         <div className="flex items-center gap-3">
           <input type="text" value={search} onChange={e => setSearch(e.target.value)}
             placeholder="Buscar código..."

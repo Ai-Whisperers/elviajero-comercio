@@ -21,7 +21,7 @@ export default function AdminSubscribers() {
   return (
     <>
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-xl font-bold text-white">Suscriptores ({subs.length})</h1>
+        <h1 className="text-2xl font-bold text-white">Suscriptores ({subs.length})</h1>
         <button onClick={copyAll} className="rounded-lg border border-zinc-700/60 px-3 py-1.5 text-xs text-zinc-400 hover:text-white transition-all">{copied ? "Copiado!" : "Copiar todos"}</button>
       </div>
       <div className="rounded-xl border border-zinc-800/60">

@@ -25,7 +25,7 @@ export default function AdminUsers() {
   return (
     <>
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-xl font-bold text-white">Usuarios ({filtered.length})</h1>
+        <h1 className="text-2xl font-bold text-white">Usuarios ({filtered.length})</h1>
         <input type="text" value={search} onChange={e => setSearch(e.target.value)}
           placeholder="Buscar por nombre, email, rol..."
           className="w-64 rounded-lg border border-zinc-700/60 bg-zinc-800 px-4 py-2 text-sm text-white outline-none focus:border-emerald-500/50" />

@@ -24,7 +24,7 @@ export default function AdminReviews() {
 
   return (
     <>
-      <h1 className="mb-6 text-xl font-bold text-white">Reseñas ({reviews.length})</h1>
+      <h1 className="mb-6 text-2xl font-bold text-white">Reseñas ({reviews.length})</h1>
       <div className="mb-4 flex flex-wrap gap-2">
         <button onClick={() => setFilter("")} className={`rounded-full px-3 py-1 text-xs font-medium ${!filter ? "bg-emerald-600 text-white" : "bg-zinc-800 text-zinc-400"}`}>Todas</button>
         {productNames.map(n => (

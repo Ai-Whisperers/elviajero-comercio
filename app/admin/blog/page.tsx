@@ -50,7 +50,7 @@ export default function AdminBlog() {
   return (
     <>
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-xl font-bold text-white">Blog ({posts.length})</h1>
+        <h1 className="text-2xl font-bold text-white">Blog ({posts.length})</h1>
         <button onClick={() => { setShowForm(!showForm); setEditing(null); setForm({ slug: "", title: "", excerpt: "", content: "", category: "general", image_url: "", author: "", published: false, created_at: new Date().toISOString().split("T")[0] }) }}
           className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-500">
           {showForm ? "Cancelar" : "+ Nuevo post"}

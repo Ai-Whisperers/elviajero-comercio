@@ -35,7 +35,7 @@ export default function AdminPhotos() {
 
   return (
     <>
-      <h1 className="mb-6 text-xl font-bold text-white">Fotos de Productos</h1>
+      <h1 className="mb-6 text-2xl font-bold text-white">Fotos de Productos</h1>
       <p className="mb-6 text-sm text-zinc-400">Subí fotos reales para reemplazar los placeholders SVG. Clickeá en cada producto para elegir una imagen.</p>
 
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">

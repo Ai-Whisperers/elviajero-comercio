@@ -73,7 +73,7 @@ export default function AdminProducts() {
   return (
     <>
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-xl font-bold text-white">Productos ({total})</h1>
+        <h1 className="text-2xl font-bold text-white">Productos ({total})</h1>
         <div className="flex gap-2">
           <button onClick={() => setShowBulk(!showBulk)} className="rounded-lg border border-zinc-700/60 px-4 py-2 text-sm font-semibold text-zinc-300 hover:text-white">{showBulk ? "Cancelar" : "Actualización masiva"}</button>
           <button onClick={() => setShowNew(!showNew)} className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-500">{showNew ? "Cancelar" : "+ Nuevo"}</button>
