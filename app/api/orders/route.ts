@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
   if (!user) return NextResponse.json({ ok: false, error: 'No autorizado' }, { status: 401 })
 
   const { data } = await supabase
-    .from('orders')
+    .from('ej_orders')
     .select('*')
     .eq('user_id', user.id)
     .order('created_at', { ascending: false })
@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
     if (!items || !items.length) return NextResponse.json({ ok: false, error: 'Carrito vacío' }, { status: 400 })
 
     const id = 'ORD-' + Date.now().toString(36).toUpperCase() + Math.random().toString(36).slice(2, 6).toUpperCase()
-    const { error } = await supabase.from('orders').insert({
+    const { error } = await supabase.from('ej_orders').insert({
       id, user_id: user.id, items: JSON.stringify(items), total: total || '0',
       status: 'pendiente', address_id: addressId || '', payment_method: paymentMethod || '', note: note || '',
     })
@@ -62,7 +62,7 @@ export async function PATCH(req: NextRequest) {
     const { id, status } = body
     if (!id) return NextResponse.json({ ok: false, error: 'ID requerido' }, { status: 400 })
 
-    await supabase.from('orders').update({ status: status || 'pendiente' }).eq('id', id).eq('user_id', user.id)
+    await supabase.from('ej_orders').update({ status: status || 'pendiente' }).eq('id', id).eq('user_id', user.id)
     return NextResponse.json({ ok: true })
   } catch (err) {
     return NextResponse.json({ ok: false, error: String(err) }, { status: 500 })

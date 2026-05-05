@@ -12,7 +12,7 @@ function DashboardContent() {
     if (!authed) return
     async function load() {
       const { count: userCount } = await supabase.from("profiles").select("*", { count: "exact", head: true })
-      const { data: ords } = await supabase.from("orders").select("total, status, created_at")
+      const { data: ords } = await supabase.from("ej_orders").select("total, status, created_at")
       const parse = (s: string) => parseInt(s.replace(/[^0-9]/g, ""), 10) || 0
       const totalRevenue = (ords || []).reduce((s, o) => s + parse(o.total), 0)
       setStats({ users: userCount || 0, orders: ords?.length || 0, revenue: totalRevenue })

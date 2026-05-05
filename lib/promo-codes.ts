@@ -1,15 +1,15 @@
 // Promo codes — serialized in localStorage so admin can add them
+import { STORAGE_KEYS } from "@/lib/storage-keys"
+
 export interface PromoCode {
   code: string
   type: "percentage" | "fixed"
-  value: number     // percentage (10) or fixed amount (15000)
+  value: number
   minPurchase: number
   maxUses: number
   usedCount: number
   expiresAt: number | null
 }
-
-const STORAGE_KEY = "viajero_promos"
 
 const DEFAULT_PROMOS: PromoCode[] = [
   { code: "BIENVENIDO10", type: "percentage", value: 10, minPurchase: 100000, maxUses: 100, usedCount: 0, expiresAt: null },
@@ -18,10 +18,10 @@ const DEFAULT_PROMOS: PromoCode[] = [
 
 export function getPromoCodes(): PromoCode[] {
   try {
-    const saved = localStorage.getItem(STORAGE_KEY)
+    const saved = localStorage.getItem(STORAGE_KEYS.PROMOS)
     if (saved) return JSON.parse(saved)
   } catch {}
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_PROMOS))
+  localStorage.setItem(STORAGE_KEYS.PROMOS, JSON.stringify(DEFAULT_PROMOS))
   return DEFAULT_PROMOS
 }
 
@@ -45,6 +45,6 @@ export function usePromo(promo: PromoCode) {
   const idx = promos.findIndex((p) => p.code === promo.code)
   if (idx >= 0) {
     promos[idx].usedCount++
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(promos))
+    localStorage.setItem(STORAGE_KEYS.PROMOS, JSON.stringify(promos))
   }
 }

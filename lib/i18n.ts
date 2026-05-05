@@ -1,11 +1,12 @@
 type Lang = "es" | "en" | "gn"
+import { STORAGE_KEYS } from "@/lib/storage-keys"
 
 let currentLang: Lang = "es"
 
 export function getLang(): Lang {
   if (typeof window === "undefined") return "es"
   try {
-    const saved = localStorage.getItem("viajero_lang") as Lang | null
+    const saved = localStorage.getItem(STORAGE_KEYS.LANG) as Lang | null
     if (saved && ["es", "en", "gn"].includes(saved)) return saved
     const urlLang = new URLSearchParams(window.location.search).get("lang") as Lang | null
     if (urlLang && ["es", "en", "gn"].includes(urlLang)) return urlLang
@@ -15,12 +16,12 @@ export function getLang(): Lang {
 
 export function setLang(lang: Lang) {
   currentLang = lang
-  if (typeof window !== "undefined") localStorage.setItem("viajero_lang", lang)
+  if (typeof window !== "undefined") localStorage.setItem(STORAGE_KEYS.LANG, lang)
 }
 
 export function t(key: string): string {
   const lang = getLang()
-  if (lang === "es") return key // Spanish is the source
+  if (lang === "es") return key
   try {
     const data = require(`@/content/${lang}.json`)
     const parts = key.split(".")
@@ -28,5 +29,5 @@ export function t(key: string): string {
     for (const p of parts) { if (val && typeof val === "object") val = val[p]; else return key }
     if (typeof val === "string") return val
   } catch {}
-  return key // fallback to Spanish
+  return key
 }

@@ -13,13 +13,13 @@ export default function AdminOrders() {
 
   useEffect(() => {
     if (!authed) return
-    supabase.from("orders").select("*").order("created_at", { ascending: false }).then(({ data }) => {
+    supabase.from("ej_orders").select("*").order("created_at", { ascending: false }).then(({ data }) => {
       if (data) setOrders(data.map((o: any) => ({ ...o, items: typeof o.items === "string" ? JSON.parse(o.items) : o.items })))
     })
   }, [authed, supabase])
 
   const update = async (orderId: string, newStatus: string) => {
-    await supabase.from("orders").update({ status: newStatus }).eq("id", orderId)
+    await supabase.from("ej_orders").update({ status: newStatus }).eq("id", orderId)
     setOrders(orders.map(o => o.id === orderId ? { ...o, status: newStatus } : o))
   }
 

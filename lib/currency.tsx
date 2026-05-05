@@ -1,14 +1,11 @@
-'use client'
-
-import { createContext, useContext, useState, useEffect } from "react"
-// Local formatPrice (replaces @ai-whisperers/commerce which is unavailable)
-const sharedFormatPrice = (n: number, _currency?: string): string => {
-  return n.toLocaleString('es-PY') + ' Gs.'
-}
+"use client"
+import { createContext, useContext, useState, useEffect, ReactNode } from "react"
+import { STORAGE_KEYS } from "@/lib/storage-keys"
+import es from "@/content/es.json"
 
 type Currency = "PYG" | "USD"
-
-const RATE_PYG_PER_USD = 7400
+// Rate from content config, fallback to 7400
+const RATE_PYG_PER_USD = (es as any)?.paymentGateway?.rate || 7400
 
 interface CurrencyCtx {
   currency: Currency
@@ -19,42 +16,38 @@ interface CurrencyCtx {
 
 const CurrencyContext = createContext<CurrencyCtx>(null!)
 
-export function CurrencyProvider({ children }: { children: React.ReactNode }) {
+export function CurrencyProvider({ children }: { children: ReactNode }) {
   const [currency, setCur] = useState<Currency>("PYG")
 
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem("viajero_currency") as Currency | null
-      if (saved === "PYG" || saved === "USD") setCur(saved)
-    } catch {}
+    const saved = localStorage.getItem(STORAGE_KEYS.CURRENCY) as Currency | null
+    if (saved === "PYG" || saved === "USD") setCur(saved)
   }, [])
 
   const setCurrency = (c: Currency) => {
     setCur(c)
-    localStorage.setItem("viajero_currency", c)
-    window.dispatchEvent(new CustomEvent("currency-change", { detail: c }))
+    localStorage.setItem(STORAGE_KEYS.CURRENCY, c)
   }
 
   const pygNum = (pygStr: string): number => {
     const m = pygStr.match(/[\d.,]+/)
-    if (!m) return 0
-    return parseInt(m[0].replace(/[.,]/g, ""), 10) || 0
+    return m ? parseFloat(m[0].replace(/\./g, "").replace(",", ".")) : 0
   }
 
   const formatPrice = (pygStr: string): string => {
     const n = pygNum(pygStr)
     if (currency === "USD") {
       const usd = n / RATE_PYG_PER_USD
-      return `USD ${usd.toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`
+      return `USD ${usd.toFixed(2)}`
     }
-    return sharedFormatPrice(n, "PYG")
+    return pygStr
   }
 
   const formatDual = (pygStr: string) => {
     const n = pygNum(pygStr)
     return {
-      pyg: sharedFormatPrice(n, "PYG"),
-      usd: `USD ${(n / RATE_PYG_PER_USD).toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`,
+      pyg: `Gs. ${n.toLocaleString("es-PY")}`,
+      usd: `USD ${(n / RATE_PYG_PER_USD).toFixed(2)}`,
     }
   }
 
@@ -66,5 +59,7 @@ export function CurrencyProvider({ children }: { children: React.ReactNode }) {
 }
 
 export function useCurrency() {
-  return useContext(CurrencyContext)
+  const ctx = useContext(CurrencyContext)
+  if (!ctx) throw new Error("useCurrency must be used within CurrencyProvider")
+  return ctx
 }

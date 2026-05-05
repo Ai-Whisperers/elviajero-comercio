@@ -163,9 +163,6 @@ BEGIN
   UPDATE public.promo_codes SET used_count = used_count + 1 WHERE code = code_text;
 END;
 $$;
-  AFTER INSERT ON auth.users
-  FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
-
 -- ============================================================
 -- RLS POLICIES
 -- ============================================================
@@ -244,6 +241,7 @@ CREATE INDEX IF NOT EXISTS idx_orders_status ON public.orders(status);
 CREATE INDEX IF NOT EXISTS idx_orders_created ON public.orders(created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_addresses_user_id ON public.addresses(user_id);
 CREATE INDEX IF NOT EXISTS idx_products_category ON public.products(category);
-CREATE INDEX IF NOT EXISTS idx_products_featured ON public.products(featured) WHERE featured = true;
-CREATE INDEX IF NOT EXISTS idx_reviews_product ON public.reviews(product_name);
+-- Index skipped: products table uses builder schema without featured column
 CREATE INDEX IF NOT EXISTS idx_stock_alerts_product ON public.stock_alerts(product_name);
+-- Index skipped: reviews table uses builder schema (no product_name column)
+CREATE INDEX IF NOT EXISTS idx_orders_user_id ON public.orders(user_id);

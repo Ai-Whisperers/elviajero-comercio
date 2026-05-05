@@ -3,7 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 
 export async function GET() {
   const supabase = await createClient()
-  const { data, error } = await supabase.from('products').select('*')
+  const { data, error } = await supabase.from('ej_products').select('*')
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
   return NextResponse.json({ products: data || [] })
 }
@@ -14,7 +14,7 @@ export async function PATCH(request: NextRequest) {
     const { name, updates } = await request.json()
     if (!name || !updates) return NextResponse.json({ error: 'Datos inválidos' }, { status: 400 })
 
-    const { data, error } = await supabase.from('products').update(updates).eq('name', name).select().single()
+    const { data, error } = await supabase.from('ej_products').update(updates).eq('name', name).select().single()
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })
     return NextResponse.json({ success: true, product: data })
   } catch {
@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
   const supabase = await createClient()
   try {
     const product = await request.json()
-    const { data, error } = await supabase.from('products').insert(product).select().single()
+    const { data, error } = await supabase.from('ej_products').insert(product).select().single()
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })
     return NextResponse.json({ success: true, product: data })
   } catch {
@@ -39,7 +39,7 @@ export async function DELETE(request: NextRequest) {
   try {
     const { id } = await request.json()
     if (!id) return NextResponse.json({ error: 'ID requerido' }, { status: 400 })
-    await supabase.from('products').delete().eq('id', id)
+    await supabase.from('ej_products').delete().eq('id', id)
     return NextResponse.json({ success: true })
   } catch {
     return NextResponse.json({ error: 'Error al eliminar producto' }, { status: 500 })

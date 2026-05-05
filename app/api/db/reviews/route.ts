@@ -1,33 +1,3 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { getAdminClient } from '@/lib/supabase/admin'
-
-export async function GET(req: NextRequest) {
-  try {
-    const supabase = getAdminClient()
-    const { searchParams } = new URL(req.url)
-    const product = searchParams.get('product')
-
-    let query = supabase.from('reviews').select('*').order('created_at', { ascending: false })
-    if (product) query = query.eq('product_name', product)
-
-    const { data } = await query
-    return NextResponse.json({ reviews: data || [] })
-  } catch (err) {
-    return NextResponse.json({ error: String(err) }, { status: 500 })
-  }
-}
-
-export async function POST(req: NextRequest) {
-  try {
-    const { review } = await req.json()
-    const supabase = getAdminClient()
-    const { error } = await supabase.from('reviews').insert({
-      product_name: review.productName, user_name: review.userName || 'Anónimo',
-      rating: review.rating, text: review.text || '',
-    })
-    if (error) return NextResponse.json({ error: error.message }, { status: 500 })
-    return NextResponse.json({ ok: true })
-  } catch (err) {
-    return NextResponse.json({ error: String(err) }, { status: 500 })
-  }
-}
+import { createCrudRoutes } from "@/lib/db/crud-factory"
+const { GET, POST, PUT, DELETE } = createCrudRoutes({ table: "reviews", searchFields: ["author", "product"] })
+export { GET, POST, PUT, DELETE }
