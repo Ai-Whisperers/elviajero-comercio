@@ -3,7 +3,8 @@ import { createServerClient } from '@supabase/ssr'
 
 export async function POST(req: NextRequest) {
   try {
-    const supabaseResponse = NextResponse.next()
+    // Create a single response that collects Supabase SSR cookies
+    const response = NextResponse.json({ ok: false })
     const supabase = createServerClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -12,21 +13,24 @@ export async function POST(req: NextRequest) {
           getAll() { return req.cookies.getAll() },
           setAll(cookiesToSet) {
             cookiesToSet.forEach(({ name, value, options }) =>
-              supabaseResponse.cookies.set(name, value, options)
+              response.cookies.set(name, value, options)
             )
           },
         },
       }
     )
 
-    const { data: { session } } = await supabase.auth.getSession()
-    const body = await req.json()
+    // Prepare: read session before body (so getSession doesn't block JSON parse)
+    const [{ data: { session } }, body] = await Promise.all([
+      supabase.auth.getSession(),
+      req.json(),
+    ])
     const { action } = body
 
     if (action === 'me') {
       if (!session) return NextResponse.json({ ok: false, error: 'No hay sesión' }, { status: 401 })
       const { data: profile } = await supabase.from('profiles').select('*').eq('id', session.user.id).single()
-      const json = NextResponse.json({
+      const res = NextResponse.json({
         ok: true,
         user: {
           id: session.user.id,
@@ -37,9 +41,9 @@ export async function POST(req: NextRequest) {
           createdAt: profile?.created_at || session.user.created_at,
         },
       })
-      // Merge cookies from SSR response
-      supabaseResponse.cookies.getAll().forEach(c => json.cookies.set(c.name, c.value, { ...c }))
-      return json
+      // Copy Supabase auth cookies to the JSON response
+      response.cookies.getAll().forEach(c => res.cookies.set(c.name, c.value, c))
+      return res
     }
 
     if (action === 'login') {
@@ -47,13 +51,9 @@ export async function POST(req: NextRequest) {
       const { error } = await supabase.auth.signInWithPassword({ email, password })
       if (error) return NextResponse.json({ ok: false, error: 'Credenciales incorrectas' }, { status: 401 })
 
-      // Force refresh to ensure cookies are set
-      await supabase.auth.getSession()
-
-      const json = NextResponse.json({ ok: true })
-      // Copy set-cookie headers from the SSR response
-      supabaseResponse.cookies.getAll().forEach(c => json.cookies.set(c.name, c.value, { ...c }))
-      return json
+      const res = NextResponse.json({ ok: true })
+      response.cookies.getAll().forEach(c => res.cookies.set(c.name, c.value, c))
+      return res
     }
 
     if (action === 'register') {
@@ -63,16 +63,16 @@ export async function POST(req: NextRequest) {
         if (error.message.includes('already registered')) return NextResponse.json({ ok: false, error: 'Email ya registrado' }, { status: 409 })
         return NextResponse.json({ ok: false, error: error.message }, { status: 400 })
       }
-      const json = NextResponse.json({ ok: true })
-      supabaseResponse.cookies.getAll().forEach(c => json.cookies.set(c.name, c.value, { ...c }))
-      return json
+      const res = NextResponse.json({ ok: true })
+      response.cookies.getAll().forEach(c => res.cookies.set(c.name, c.value, c))
+      return res
     }
 
     if (action === 'logout') {
       await supabase.auth.signOut()
-      const json = NextResponse.json({ ok: true })
-      supabaseResponse.cookies.getAll().forEach(c => json.cookies.set(c.name, c.value, { ...c }))
-      return json
+      const res = NextResponse.json({ ok: true })
+      response.cookies.getAll().forEach(c => res.cookies.set(c.name, c.value, c))
+      return res
     }
 
     return NextResponse.json({ error: 'Acción desconocida' }, { status: 400 })
