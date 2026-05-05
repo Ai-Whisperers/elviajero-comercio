@@ -11,8 +11,8 @@ const c = content as any
 const products = c.home?.productCatalog?.products || []
 const submenu = c.categoryMenu || {}
 
-export function CategoryContent({ slug, name, emoji, description }: {
-  slug: string; name: string; emoji: string; description: string
+export function CategoryContent({ slug, name, emoji, description, heroImage }: {
+  slug: string; name: string; emoji: string; description: string; heroImage?: string
 }) {
   const catProducts = products.filter((p: any) => p.category === name)
   const subItems = submenu[slug] || []
@@ -21,7 +21,10 @@ export function CategoryContent({ slug, name, emoji, description }: {
     <CartProvider>
       <Header />
       <section className="bg-primary py-12 text-center text-primary-foreground relative overflow-hidden">
-        <div className="absolute inset-0 opacity-20" style={{ backgroundImage: `url(/images/categories/${slug}.svg)`, backgroundSize: "cover", backgroundPosition: "center" }} />
+        {heroImage && (
+          <Image src={heroImage} alt="" fill className="object-cover object-center" sizes="100vw" priority />
+        )}
+        <div className={`absolute inset-0 ${heroImage ? "bg-primary/82" : "bg-primary"}`} aria-hidden />
         <div className="relative z-10">
           <span className="text-5xl mb-2 block">{emoji}</span>
           <h1 className="text-4xl font-bold">{name}</h1>

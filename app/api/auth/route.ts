@@ -26,7 +26,19 @@ function getSSRClient(req: NextRequest) {
   })
 }
 
-// Direct client for token-based auth
+// Direct client for token-based auth — use service role to verify,
+// then switch to anon for profile reads
+let _adminSvcClient: ReturnType<typeof createClient> | null = null
+function getServiceClient() {
+  if (!_adminSvcClient) {
+    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || ''
+    _adminSvcClient = createClient(supabaseUrl, supabaseAnonKey, {
+      auth: { persistSession: false },
+      global: { headers: { apikey: supabaseAnonKey, Authorization: `Bearer ${serviceKey}` } },
+    })
+  }
+  return _adminSvcClient
+}
 function getTokenClient(token: string) {
   return createClient(supabaseUrl, supabaseAnonKey, {
     auth: { persistSession: false },
@@ -51,19 +63,23 @@ export async function POST(req: NextRequest) {
 
       // Fallback to token-based auth
       if (!user && bearerToken) {
-        const tokenClient = getTokenClient(bearerToken)
-        const { data: { user: tokenUser }, error: tokenError } = await tokenClient.auth.getUser()
-        user = tokenUser ?? undefined
-        if (tokenError) console.error('Token auth error:', tokenError.message)
+        // Use service role client to verify the JWT (works with any valid Supabase JWT)
+        const svc = getServiceClient()
+        const { data: tokenUser, error } = await svc.auth.getUser(bearerToken)
+        if (!error && tokenUser?.user) {
+          user = tokenUser.user
+        } else {
+          console.error('Token auth error:', error?.message)
+        }
       }
 
       if (!user) {
         return NextResponse.json({ ok: false, error: 'No hay sesión' }, { status: 401 })
       }
 
-      // Use admin client to read profile (RLS with anon key doesn't allow this)
-      const adminClient = getAdminClient()
-      const { data: profile } = await adminClient.from('profiles').select('*').eq('id', user.id).single()
+      // Use service client to read profile
+      const svc = getServiceClient()
+      const { data: profile } = await svc.from('profiles').select('*').eq('id', user.id).single()
       return NextResponse.json({
         ok: true,
         user: {

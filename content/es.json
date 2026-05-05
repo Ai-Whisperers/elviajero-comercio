@@ -582,22 +582,26 @@
       {
         "name": "Carlos Mendoza",
         "text": "Excelente atencion y buenos precios. Encontre todo lo que necesitaba para mi viaje de camping a San Bernardino.",
-        "rating": 5
+        "rating": 5,
+        "image": "/images/testimonials/avatar-carlos.png"
       },
       {
         "name": "Maria Gonzalez",
         "text": "Me asesoraron muy bien para elegir mi caña de pescar. Volvere sin duda.",
-        "rating": 5
+        "rating": 5,
+        "image": "/images/testimonials/avatar-maria.png"
       },
       {
         "name": "Luis Ramirez",
         "text": "Compre mi carpa y accesorios para la moto. Todo de buena calidad y a buen precio. Recomendado.",
-        "rating": 4
+        "rating": 4,
+        "image": "/images/testimonials/avatar-luis.png"
       },
       {
         "name": "Ana Benitez",
         "text": "Tienen productos que no se consiguen en otros lados. La picana electrica me salvo en el camino a Caacupe.",
-        "rating": 5
+        "rating": 5,
+        "image": "/images/testimonials/avatar-ana.png"
       }
     ],
     "finalCta": {
@@ -787,6 +791,13 @@
           "subtitle": "Equipo outdoor, autos y moto — cargá tu próximo viaje",
           "ctaText": "Ver productos",
           "ctaHref": "/productos"
+        },
+        {
+          "image": "/images/marketing/hero-carousel-04-shop-warm.png",
+          "title": "Visitanos en la Tienda",
+          "subtitle": "Te esperamos en Mariano Roque Alonso con atencion personalizada",
+          "ctaText": "Ver Direccion",
+          "ctaHref": "/contacto"
         },
         {
           "image": "/images/marketing/hero-carousel-05-trail-wide.png",

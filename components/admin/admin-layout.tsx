@@ -17,35 +17,13 @@ export function useAdminAuth() {
   useEffect(() => {
     let cancelled = false
 
-    // First try Supabase SSR cookie (if set properly)
-    const supabase = createClient()
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
-      if (cancelled) return
-      if (session?.user) {
-        const { data } = await supabase.from("profiles").select("*").eq("id", session.user.id).single()
-        if (data && data.role === "admin") {
-          setAuthed(true)
-          setAdmin({ id: data.id, name: data.name, email: session.user.email || "", role: data.role })
-          setLoading(false)
-          return
-        }
-      }
-
-      // Fallback: try reading the access_token from cookie directly
-      const cookies = document.cookie.split("; ").reduce((acc, c) => {
-        const [k, v] = c.split("=", 2)
-        acc[k.trim()] = v
-        return acc
-      }, {} as Record<string, string>)
-
-      const authCookie = cookies["sb-qyvokpribmbrosafntqa-auth-token"]
-      if (authCookie) {
-        try {
-          // Try to decode as base64 JSON (SSR format)
-          const parsed = JSON.parse(atob(authCookie))
-          const accessToken = parsed.access_token || parsed
-
-          // Verify with me endpoint using Authorization header
+    async function checkAuth() {
+      try {
+        // 1) Try localStorage session (set by login page)
+        const stored = localStorage.getItem("elviajero_admin_session")
+        if (stored) {
+          const session = JSON.parse(stored)
+          const accessToken = session.access_token || session
           const res = await fetch("/api/auth", {
             method: "POST",
             headers: { "Content-Type": "application/json", "Authorization": `Bearer ${accessToken}` },
@@ -53,17 +31,46 @@ export function useAdminAuth() {
           })
           const data = await res.json()
           if (res.ok && data.ok && data.user?.role === "admin") {
-            setAuthed(true)
-            setAdmin(data.user)
-            setLoading(false)
+            if (!cancelled) { setAuthed(true); setAdmin(data.user); setLoading(false) }
             return
           }
-        } catch { /* cookie not parseable */ }
-      }
+        }
 
+        // 2) Fallback: try Supabase SSR cookie
+        const supabase = createClient()
+        const { data: { session } } = await supabase.auth.getSession()
+        if (session?.user) {
+          const { data: profile } = await supabase.from("profiles").select("*").eq("id", session.user.id).single()
+          if (profile && profile.role === "admin") {
+            if (!cancelled) { setAuthed(true); setAdmin({ id: profile.id, name: profile.name, email: session.user.email || "", role: profile.role }); setLoading(false) }
+            return
+          }
+        }
+
+        // 3) Fallback: our custom cookie
+        const cookies = document.cookie.split("; ").reduce((acc, c) => {
+          const [k, v] = c.split("=", 2)
+          acc[k.trim()] = v
+          return acc
+        }, {} as Record<string, string>)
+        const token = cookies["elviajero_admin_token"]
+        if (token) {
+          const res = await fetch("/api/auth", {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+            body: JSON.stringify({ action: "me" }),
+          })
+          const data = await res.json()
+          if (res.ok && data.ok && data.user?.role === "admin") {
+            if (!cancelled) { setAuthed(true); setAdmin(data.user); setLoading(false) }
+            return
+          }
+        }
+      } catch {}
       if (!cancelled) setLoading(false)
-    })
+    }
 
+    checkAuth()
     return () => { cancelled = true }
   }, [router])
 

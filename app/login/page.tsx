@@ -26,13 +26,15 @@ function LoginForm() {
       })
       const data = await res.json()
       if (data.ok) {
-        // Set auth cookie manually
-        if (data.session?.access_token) {
-          document.cookie = "sb-qyvokpribmbrosafntqa-auth-token=" + data.session.access_token + "; path=/; max-age=34560000; SameSite=lax"
+        // Store full session in localStorage for admin layout
+        if (data.session) {
+          localStorage.setItem("elviajero_admin_session", JSON.stringify(data.session))
         }
-        // Admin check based on the login response role
+        // Also set a simple auth token cookie as fallback
+        if (data.session?.access_token) {
+          document.cookie = "elviajero_admin_token=" + data.session.access_token + "; path=/; max-age=34560000; SameSite=lax; Secure"
+        }
         const params = new URLSearchParams(window.location.search)
-        // Redirect based on where they were going
         const redirectTo = params.get("redirect") || "/mi-cuenta"
         window.location.assign(redirectTo)
         return

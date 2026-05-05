@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 267">
-  <rect width="400" height="267" fill="#FAFAFA"/>
-  <rect x="120" y="40" width="160" height="160" rx="12" fill="#E8F5E9" stroke="#1B5E20" stroke-width="1" stroke-opacity="0.2"/>
-  <text x="200" y="140" font-family="sans-serif" font-size="48" text-anchor="middle">📦</text>
-  <text x="200" y="230" font-family="sans-serif" font-size="12" fill="#6B7B6B" text-anchor="middle">Producto</text>
-  <text x="200" y="246" font-family="sans-serif" font-size="10" fill="#9E9E9E" text-anchor="middle">Foto próximamente</text>
-</svg>

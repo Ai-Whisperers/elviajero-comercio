@@ -23,6 +23,16 @@ const c = content as any
 const h = c.home || {}
 const products = h.productCatalog?.products || []
 const categories = h.productCatalog?.categories || []
+const ICON_MAP: Record<string, string> = {
+  camping: "/images/icons/camping.png",
+  pesca: "/images/icons/pesca.png",
+  playaypesca: "/images/icons/playa-pesca.png",
+  accpersonales: "/images/icons/accesorios.png",
+  automviles: "/images/icons/autos.png",
+  motos: "/images/icons/motos.png",
+  campo: "/images/icons/campo.png",
+}
+function catSlug(cat: string) { return cat.toLowerCase().replace(/[^a-z]/g, "") }
 const testimonials = h.testimonials || []
 const features = h.features?.items || []
 const stats = h.stats?.items || []
@@ -233,13 +243,15 @@ function HomePage() {
           <div className="mx-auto max-w-7xl px-4">
             <h2 className="mb-6 text-center text-3xl font-bold text-foreground">{h.productCatalog?.title}</h2>
             <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-7">
-              {categories.map((cat: string, i: number) => (
-                <Link key={i} href={"/tienda#" + cat.toLowerCase().replace(/[^a-z]/g, "")}
+              {categories.map((cat: string, i: number) => {
+                const slug = catSlug(cat)
+                return (
+                <Link key={i} href={"/tienda#" + slug}
                   className="flex flex-col items-center gap-2 rounded-xl border border-border bg-white p-4 text-center transition-all hover:-translate-y-1 hover:shadow-md">
-                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-2xl">{cat[0]}</div>
+                  <Image src={ICON_MAP[slug] || ""} alt={cat} width={64} height={64} className="h-16 w-16" />
                   <div className="text-xs font-semibold text-foreground">{cat}</div>
                 </Link>
-              ))}
+              )})}
             </div>
           </div>
         </section>
@@ -255,9 +267,14 @@ function HomePage() {
               {testimonials.map((t: any, i: number) => (
                 <StaggerItem key={i}>
                 <div className="rounded-xl border border-border bg-white p-6 shadow-sm">
-                  <div className="mb-2 flex gap-1 text-amber-400">{Array.from({ length: t.rating || 5 }).map((_: any, j: number) => <span key={j}>★</span>)}</div>
-                  <p className="mb-3 text-muted-foreground">&ldquo;{t.text}&rdquo;</p>
-                  <p className="font-medium text-foreground">{t.name}</p>
+                  <div className="mb-3 flex items-center gap-3">
+                    {t.image && <Image src={t.image} alt={t.name} width={48} height={48} className="h-12 w-12 rounded-full object-cover" />}
+                    <div>
+                      <p className="font-medium text-foreground">{t.name}</p>
+                      <div className="flex gap-1 text-amber-400">{Array.from({ length: t.rating || 5 }).map((_: any, j: number) => <span key={j}>★</span>)}</div>
+                    </div>
+                  </div>
+                  <p className="text-muted-foreground">&ldquo;{t.text}&rdquo;</p>
                 </div>
                 </StaggerItem>
               ))}

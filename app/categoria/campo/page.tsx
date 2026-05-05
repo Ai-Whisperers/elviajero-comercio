@@ -2,5 +2,5 @@
 import { CategoryContent } from "@/components/category-layout"
 
 export default function CampoPage() {
-  return <CategoryContent slug="campo" name="Campo" emoji="🌾" description="Herramientas agrícolas, bebederos, comederos y más." />
+  return <CategoryContent slug="campo" name="Campo" emoji="🌾" description="Herramientas agrícolas, bebederos, comederos y más." heroImage="/images/marketing/hero-campo.png" />
 }
