@@ -1,17 +1,19 @@
-
 "use client"
 import { AdminShell, useAdminAuth } from "@/components/admin/admin-layout"
 import { useState, useEffect } from "react"
+import { createClient } from "@/lib/supabase/client"
 
 export default function AdminUsers() {
   const { authed } = useAdminAuth()
+  const supabase = createClient()
   const [users, setUsers] = useState<any[]>([])
 
   useEffect(() => {
     if (!authed) return
-    const all = JSON.parse(localStorage.getItem("viajero_users") || "[]")
-    setUsers(all.map((u: any) => ({ ...u, password: "***" })))
-  }, [authed])
+    supabase.from("profiles").select("id, name, email, phone, role, created_at").order("created_at", { ascending: false }).then(({ data }) => {
+      if (data) setUsers(data)
+    })
+  }, [authed, supabase])
 
   if (!authed) return null
 
@@ -21,15 +23,15 @@ export default function AdminUsers() {
       <div className="overflow-x-auto rounded-xl border border-gray-800">
         <table className="w-full text-sm">
           <thead className="border-b border-gray-800 bg-gray-900 text-left">
-            <tr><th className="px-4 py-3 text-gray-400">Nombre</th><th className="px-4 py-3 text-gray-400">Email</th><th className="px-4 py-3 text-gray-400">Teléfono</th><th className="px-4 py-3 text-gray-400">Registro</th></tr>
+            <tr><th className="px-4 py-3 text-gray-400">Nombre</th><th className="px-4 py-3 text-gray-400">Email</th><th className="px-4 py-3 text-gray-400">Rol</th><th className="px-4 py-3 text-gray-400">Registro</th></tr>
           </thead>
           <tbody className="divide-y divide-gray-800">
             {users.map((u, i) => (
               <tr key={i} className="text-white hover:bg-gray-800/50">
-                <td className="px-4 py-3">{u.name}</td>
-                <td className="px-4 py-3 text-gray-400">{u.email}</td>
-                <td className="px-4 py-3">{u.phone || "—"}</td>
-                <td className="px-4 py-3 text-gray-400">{u.createdAt ? new Date(u.createdAt).toLocaleDateString("es") : "—"}</td>
+                <td className="px-4 py-3">{u.name || "—"}</td>
+                <td className="px-4 py-3 text-gray-400">{u.email || "—"}</td>
+                <td className="px-4 py-3"><span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${u.role === "admin" ? "bg-green-900/30 text-green-400" : "bg-gray-800 text-gray-400"}`}>{u.role || "customer"}</span></td>
+                <td className="px-4 py-3 text-gray-400">{u.created_at ? new Date(u.created_at).toLocaleDateString("es") : "—"}</td>
               </tr>
             ))}
           </tbody>

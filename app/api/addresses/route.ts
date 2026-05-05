@@ -1,86 +1,102 @@
-import { NextRequest, NextResponse } from "next/server"
-import { getDb } from "@/lib/db"
-import crypto from "crypto"
+import { NextRequest, NextResponse } from 'next/server'
+import { createClient } from '@/lib/supabase/server'
 
-function getUserFromToken(token: string): any | null {
-  if (!token) return null
-  const db = getDb()
-  const session: any = db.prepare(
-    "SELECT u.id, u.name, u.email FROM sessions s JOIN users u ON s.user_id = u.id WHERE s.token = ? AND s.expires_at > datetime('now')"
-  ).get(token)
-  return session || null
+async function getUser(supabase: any) {
+  const { data: { session } } = await supabase.auth.getSession()
+  if (!session) return null
+  return session.user
 }
 
 export async function GET(req: NextRequest) {
-  const token = req.headers.get("authorization")?.replace("Bearer ", "") || ""
-  const user = getUserFromToken(token)
-  if (!user) return NextResponse.json({ ok: false, error: "No autorizado" }, { status: 401 })
+  const supabase = await createClient()
+  const user = await getUser(supabase)
+  if (!user) return NextResponse.json({ ok: false, error: 'No autorizado' }, { status: 401 })
 
-  const db = getDb()
-  const addresses = db.prepare("SELECT id, label, name, street, city, state, zip, phone, is_default as isDefault FROM addresses WHERE user_id = ? ORDER BY is_default DESC, rowid ASC").all(user.id)
-  return NextResponse.json(addresses)
+  const { data } = await supabase
+    .from('addresses')
+    .select('*')
+    .eq('user_id', user.id)
+    .order('is_default', { ascending: false })
+
+  return NextResponse.json((data || []).map((a: any) => ({
+    id: a.id, label: a.label || '', name: a.name || '', street: a.street,
+    city: a.city, state: a.state || '', zip: a.zip || '', phone: a.phone || '',
+    isDefault: a.is_default,
+  })))
 }
 
 export async function POST(req: NextRequest) {
-  const token = req.headers.get("authorization")?.replace("Bearer ", "") || ""
-  const user = getUserFromToken(token)
-  if (!user) return NextResponse.json({ ok: false, error: "No autorizado" }, { status: 401 })
+  const supabase = await createClient()
+  const user = await getUser(supabase)
+  if (!user) return NextResponse.json({ ok: false, error: 'No autorizado' }, { status: 401 })
 
   try {
     const body = await req.json()
     const { label, name, street, city, state, zip, phone, isDefault } = body
-    if (!street || !city) return NextResponse.json({ ok: false, error: "Calle y ciudad son obligatorios" }, { status: 400 })
+    if (!street || !city) return NextResponse.json({ ok: false, error: 'Calle y ciudad son obligatorios' }, { status: 400 })
 
-    const db = getDb()
-    const id = crypto.randomUUID()
+    if (isDefault) await supabase.from('addresses').update({ is_default: false }).eq('user_id', user.id)
 
-    if (isDefault) db.prepare("UPDATE addresses SET is_default = 0 WHERE user_id = ?").run(user.id)
-    db.prepare("INSERT INTO addresses (id, user_id, label, name, street, city, state, zip, phone, is_default) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
-      .run(id, user.id, label || "", name || "", street, city, state || "", zip || "", phone || "", isDefault ? 1 : 0)
+    const { data, error } = await supabase.from('addresses').insert({
+      user_id: user.id, label: label || '', name: name || '', street, city,
+      state: state || '', zip: zip || '', phone: phone || '', is_default: isDefault ? true : false,
+    }).select().single()
 
-    const addr = db.prepare("SELECT id, label, name, street, city, state, zip, phone, is_default as isDefault FROM addresses WHERE id = ?").get(id)
-    return NextResponse.json({ ok: true, address: addr })
+    if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 })
+
+    return NextResponse.json({
+      ok: true,
+      address: { id: data.id, label: data.label || '', name: data.name || '', street: data.street,
+        city: data.city, state: data.state || '', zip: data.zip || '', phone: data.phone || '', isDefault: data.is_default },
+    })
   } catch (err) {
     return NextResponse.json({ ok: false, error: String(err) }, { status: 500 })
   }
 }
 
 export async function PUT(req: NextRequest) {
-  const token = req.headers.get("authorization")?.replace("Bearer ", "") || ""
-  const user = getUserFromToken(token)
-  if (!user) return NextResponse.json({ ok: false, error: "No autorizado" }, { status: 401 })
+  const supabase = await createClient()
+  const user = await getUser(supabase)
+  if (!user) return NextResponse.json({ ok: false, error: 'No autorizado' }, { status: 401 })
 
   try {
     const body = await req.json()
     const { id, label, name, street, city, state, zip, phone, isDefault } = body
-    if (!id) return NextResponse.json({ ok: false, error: "ID requerido" }, { status: 400 })
+    if (!id) return NextResponse.json({ ok: false, error: 'ID requerido' }, { status: 400 })
 
-    const db = getDb()
-    const existing = db.prepare("SELECT id FROM addresses WHERE id = ? AND user_id = ?").get(id, user.id)
-    if (!existing) return NextResponse.json({ ok: false, error: "Dirección no encontrada" }, { status: 404 })
+    const updates: any = {}
+    if (label !== undefined) updates.label = label
+    if (name !== undefined) updates.name = name
+    if (street !== undefined) updates.street = street
+    if (city !== undefined) updates.city = city
+    if (state !== undefined) updates.state = state
+    if (zip !== undefined) updates.zip = zip
+    if (phone !== undefined) updates.phone = phone
+    if (isDefault !== undefined) { updates.is_default = isDefault; await supabase.from('addresses').update({ is_default: false }).eq('user_id', user.id) }
 
-    if (isDefault) db.prepare("UPDATE addresses SET is_default = 0 WHERE user_id = ?").run(user.id)
-    db.prepare("UPDATE addresses SET label=?, name=?, street=?, city=?, state=?, zip=?, phone=?, is_default=? WHERE id=?")
-      .run(label || "", name || "", street || "", city || "", state || "", zip || "", phone || "", isDefault ? 1 : 0, id)
+    const { data, error } = await supabase.from('addresses').update(updates).eq('id', id).eq('user_id', user.id).select().single()
+    if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 })
 
-    const addr = db.prepare("SELECT id, label, name, street, city, state, zip, phone, is_default as isDefault FROM addresses WHERE id = ?").get(id)
-    return NextResponse.json({ ok: true, address: addr })
+    return NextResponse.json({
+      ok: true,
+      address: { id: data.id, label: data.label || '', name: data.name || '', street: data.street,
+        city: data.city, state: data.state || '', zip: data.zip || '', phone: data.phone || '', isDefault: data.is_default },
+    })
   } catch (err) {
     return NextResponse.json({ ok: false, error: String(err) }, { status: 500 })
   }
 }
 
 export async function DELETE(req: NextRequest) {
-  const token = req.headers.get("authorization")?.replace("Bearer ", "") || ""
-  const user = getUserFromToken(token)
-  if (!user) return NextResponse.json({ ok: false, error: "No autorizado" }, { status: 401 })
+  const supabase = await createClient()
+  const user = await getUser(supabase)
+  if (!user) return NextResponse.json({ ok: false, error: 'No autorizado' }, { status: 401 })
 
   try {
     const { id } = await req.json()
-    if (!id) return NextResponse.json({ ok: false, error: "ID requerido" }, { status: 400 })
+    if (!id) return NextResponse.json({ ok: false, error: 'ID requerido' }, { status: 400 })
 
-    const db = getDb()
-    db.prepare("DELETE FROM addresses WHERE id = ? AND user_id = ?").run(id, user.id)
+    await supabase.from('addresses').delete().eq('id', id).eq('user_id', user.id)
     return NextResponse.json({ ok: true })
   } catch (err) {
     return NextResponse.json({ ok: false, error: String(err) }, { status: 500 })

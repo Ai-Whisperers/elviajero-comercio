@@ -1,30 +1,26 @@
 "use client"
 import { AdminShell, useAdminAuth } from "@/components/admin/admin-layout"
-import { exportOrdersCSV } from "@/lib/export-csv"
 import { useState, useEffect } from "react"
+import { createClient } from "@/lib/supabase/client"
 
 const statuses = ["pendiente", "confirmado", "enviado", "entregado", "cancelado"]
 
 export default function AdminOrders() {
   const { authed } = useAdminAuth()
+  const supabase = createClient()
   const [orders, setOrders] = useState<any[]>([])
   const [filter, setFilter] = useState("todos")
 
   useEffect(() => {
     if (!authed) return
-    const users = JSON.parse(localStorage.getItem("viajero_users") || "[]")
-    const all: any[] = []
-    users.forEach((u: any) => {
-      const ords = JSON.parse(localStorage.getItem(`viajero_orders_${u.id}`) || "[]")
-      all.push(...ords.map((o: any) => ({ ...o, user: u.name, userId: u.id })))
+    supabase.from("orders").select("*").order("created_at", { ascending: false }).then(({ data }) => {
+      if (data) setOrders(data.map((o: any) => ({ ...o, items: typeof o.items === "string" ? JSON.parse(o.items) : o.items })))
     })
-    setOrders(all.sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime()))
-  }, [authed])
+  }, [authed, supabase])
 
-  const update = (orderId: string, userId: string, newStatus: string) => {
-    const ords = JSON.parse(localStorage.getItem(`viajero_orders_${userId}`) || "[]")
-    const idx = ords.findIndex((o: any) => o.id === orderId)
-    if (idx >= 0) { ords[idx].status = newStatus; localStorage.setItem(`viajero_orders_${userId}`, JSON.stringify(ords)); setOrders(orders.map(o => o.id === orderId ? { ...o, status: newStatus } : o)) }
+  const update = async (orderId: string, newStatus: string) => {
+    await supabase.from("orders").update({ status: newStatus }).eq("id", orderId)
+    setOrders(orders.map(o => o.id === orderId ? { ...o, status: newStatus } : o))
   }
 
   const filtered = filter === "todos" ? orders : orders.filter(o => o.status === filter)
@@ -45,12 +41,12 @@ export default function AdminOrders() {
         {filtered.map(o => (
           <div key={o.id} className="rounded-xl border border-gray-800 bg-gray-900 p-4">
             <div className="flex items-center justify-between mb-2">
-              <span className="font-bold text-white">#{o.id.slice(0, 8)}</span>
-              <span className="text-xs text-gray-500">{new Date(o.date).toLocaleDateString("es", { dateStyle: "long" })}</span>
+              <span className="font-bold text-white">#{o.id?.slice(0, 8)}</span>
+              <span className="text-xs text-gray-500">{o.created_at ? new Date(o.created_at).toLocaleDateString("es", { dateStyle: "long" }) : ""}</span>
             </div>
             <div className="flex items-center justify-between">
-              <div className="text-sm"><p className="text-gray-400">{o.user || "Invitado"} · {o.items?.length || 0} artículos</p><p className="text-white font-bold mt-1">{o.total}</p></div>
-              <select value={o.status} onChange={e => update(o.id, o.userId, e.target.value)} className="rounded-lg bg-gray-800 border border-gray-700 px-3 py-1.5 text-xs text-white">
+              <div className="text-sm"><p className="text-gray-400">{o.user_id?.slice(0, 8) || "Invitado"} · {o.items?.length || 0} artículos</p><p className="text-white font-bold mt-1">{o.total}</p></div>
+              <select value={o.status} onChange={e => update(o.id, e.target.value)} className="rounded-lg bg-gray-800 border border-gray-700 px-3 py-1.5 text-xs text-white">
                 {statuses.map(s => <option key={s} value={s}>{s}</option>)}
               </select>
             </div>

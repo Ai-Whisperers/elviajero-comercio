@@ -1,11 +1,14 @@
 "use client"
 import { createContext, useContext, useState, useEffect, useCallback } from "react"
+import { createClient } from "@/lib/supabase/client"
+import type { User as SupabaseUser } from "@supabase/supabase-js"
 
 export interface User {
   id: string
   name: string
   email: string
   phone: string
+  role: string
   createdAt: string
 }
 
@@ -40,9 +43,12 @@ export interface Order {
 
 interface AuthContextType {
   user: User | null
+  loading: boolean
   login: (email: string, password: string) => Promise<{ ok: boolean; error?: string }>
   register: (name: string, email: string, password: string, phone: string) => Promise<{ ok: boolean; error?: string }>
-  logout: () => void
+  loginWithGoogle: () => Promise<void>
+  loginWithFacebook: () => Promise<void>
+  logout: () => Promise<void>
   updateProfile: (data: Partial<User>) => Promise<{ ok: boolean; error?: string }>
   changePassword: (current: string, newPass: string) => Promise<{ ok: boolean; error?: string }>
   addresses: Address[]
@@ -59,190 +65,181 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | null>(null)
 
-async function api(path: string, options?: RequestInit) {
-  const token = typeof window !== "undefined" ? localStorage.getItem("viajero_token") : null
-  const res = await fetch(path, {
-    ...options,
-    headers: {
-      "Content-Type": "application/json",
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      ...options?.headers,
-    },
-  })
-  return res.json()
-}
-
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [supabase] = useState(() => createClient())
   const [addresses, setAddresses] = useState<Address[]>([])
   const [orders, setOrders] = useState<Order[]>([])
   const [favorites, setFavorites] = useState<string[]>([])
 
-  // Restore session on mount
-  useEffect(() => {
-    if (typeof window === "undefined") return
-    const token = localStorage.getItem("viajero_token")
-    if (!token) return
+  const refreshOrders = useCallback(async () => {
+    if (!user) return
+    const { data } = await supabase
+      .from("orders")
+      .select("*")
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: false })
+    if (data) setOrders(data.map((o: any) => ({ ...o, id: o.id || "", date: o.created_at || o.date, items: o.items || [], total: o.total || "0", status: o.status || "pendiente", addressId: o.address_id || "", paymentMethod: o.payment_method || "" })))
+  }, [user, supabase])
 
-    api("/api/auth", {
-      method: "POST",
-      body: JSON.stringify({ action: "me", token }),
-    }).then((res) => {
-      if (res.ok) {
-        setUser(res.user)
-        loadAddresses(token)
-        loadOrders(token)
+  const loadAddresses = useCallback(async () => {
+    if (!user) return
+    const { data } = await supabase
+      .from("addresses")
+      .select("*")
+      .eq("user_id", user.id)
+      .order("is_default", { ascending: false })
+    if (data) setAddresses(data.map((a: any) => ({ id: a.id, label: a.label || "", name: a.name || "", street: a.street, city: a.city, state: a.state || "", zip: a.zip || "", phone: a.phone || "", isDefault: a.is_default })))
+  }, [user, supabase])
+
+  const fetchProfile = useCallback(async (supabaseUser: SupabaseUser) => {
+    try {
+      const { data } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", supabaseUser.id)
+        .single()
+      if (data) {
+        setUser({ id: data.id, name: data.name || supabaseUser.email?.split("@")[0] || "", email: supabaseUser.email || "", phone: data.phone || "", role: data.role || "customer", createdAt: data.created_at || "" })
       } else {
-        localStorage.removeItem("viajero_token")
+        setUser({ id: supabaseUser.id, name: supabaseUser.email?.split("@")[0] || "", email: supabaseUser.email || "", phone: "", role: "customer", createdAt: supabaseUser.created_at || "" })
       }
-    })
-  }, [])
+    } catch {
+      setUser({ id: supabaseUser.id, name: supabaseUser.email?.split("@")[0] || "", email: supabaseUser.email || "", phone: "", role: "customer", createdAt: supabaseUser.created_at || "" })
+    }
+  }, [supabase])
 
-  function loadAddresses(token: string) {
-    api("/api/addresses").then((res) => {
-      if (Array.isArray(res)) setAddresses(res)
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) fetchProfile(session.user)
+      setLoading(false)
     })
-  }
 
-  function loadOrders(token: string) {
-    api("/api/orders").then((res) => {
-      if (Array.isArray(res)) {
-        setOrders(res.map((o: any) => ({
-          ...o,
-          date: o.createdAt || o.date,
-        })))
-      }
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session?.user) { fetchProfile(session.user); loadAddresses(); refreshOrders() }
+      else { setUser(null); setAddresses([]); setOrders([]) }
     })
-  }
+
+    return () => subscription.unsubscribe()
+  }, [supabase, fetchProfile, loadAddresses, refreshOrders])
 
   const login = useCallback(async (email: string, password: string) => {
-    const res = await api("/api/auth", {
-      method: "POST",
-      body: JSON.stringify({ action: "login", email, password }),
-    })
-    if (!res.ok) return { ok: false, error: res.error || "Error al iniciar sesión" }
-    localStorage.setItem("viajero_token", res.token)
-    setUser(res.user)
-    loadAddresses(res.token)
-    loadOrders(res.token)
+    const { error } = await supabase.auth.signInWithPassword({ email, password })
+    if (error) return { ok: false, error: error.message === "Invalid login credentials" ? "Credenciales incorrectas" : error.message }
     return { ok: true }
-  }, [])
+  }, [supabase])
 
   const register = useCallback(async (name: string, email: string, password: string, phone: string) => {
-    const res = await api("/api/auth", {
-      method: "POST",
-      body: JSON.stringify({ action: "register", name, email, password, phone }),
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: { data: { name, phone } },
     })
-    if (!res.ok) return { ok: false, error: res.error || "Error al registrarse" }
+    if (error) {
+      if (error.message.includes("already registered")) return { ok: false, error: "Email ya registrado" }
+      return { ok: false, error: error.message }
+    }
     return { ok: true }
-  }, [])
+  }, [supabase])
+
+  const loginWithGoogle = useCallback(async () => {
+    await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: { redirectTo: `${window.location.origin}/auth/callback` },
+    })
+  }, [supabase])
+
+  const loginWithFacebook = useCallback(async () => {
+    await supabase.auth.signInWithOAuth({
+      provider: "facebook",
+      options: { redirectTo: `${window.location.origin}/auth/callback` },
+    })
+  }, [supabase])
 
   const logout = useCallback(async () => {
-    const token = localStorage.getItem("viajero_token")
-    if (token) {
-      await api("/api/auth", {
-        method: "POST",
-        body: JSON.stringify({ action: "logout", token }),
-      })
-    }
-    localStorage.removeItem("viajero_token")
+    await supabase.auth.signOut()
     setUser(null)
     setAddresses([])
     setOrders([])
     setFavorites([])
-  }, [])
+  }, [supabase])
 
   const updateProfile = useCallback(async (data: Partial<User>) => {
     if (!user) return { ok: false, error: "No hay sesión" }
-    const token = localStorage.getItem("viajero_token")
-    const res = await fetch("/api/update-profile", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-      body: JSON.stringify(data),
-    })
-    const json = await res.json()
-    if (!json.ok) return { ok: false, error: json.error || "Error" }
+    const updates: any = {}
+    if (data.name) updates.name = data.name
+    if (data.phone !== undefined) updates.phone = data.phone
+    const { error } = await supabase.from("profiles").update(updates).eq("id", user.id)
+    if (error) return { ok: false, error: error.message }
     setUser({ ...user, ...data })
     return { ok: true }
-  }, [user])
+  }, [user, supabase])
 
-  const changePassword = useCallback(async (current: string, newPass: string) => {
-    if (!user) return { ok: false, error: "No hay sesión" }
+  const changePassword = useCallback(async (_current: string, newPass: string) => {
     if (newPass.length < 6) return { ok: false, error: "Mínimo 6 caracteres" }
-    const token = localStorage.getItem("viajero_token")
-    const res = await fetch("/api/change-password", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-      body: JSON.stringify({ current, newPass }),
-    })
-    const json = await res.json()
-    return json.ok ? { ok: true } : { ok: false, error: json.error || "Error" }
-  }, [user])
+    const { error } = await supabase.auth.updateUser({ password: newPass })
+    if (error) return { ok: false, error: error.message }
+    return { ok: true }
+  }, [supabase])
 
   const addAddress = useCallback(async (a: Omit<Address, "id">) => {
-    const res: any = await api("/api/addresses", {
-      method: "POST",
-      body: JSON.stringify(a),
-    })
-    if (res.ok) {
-      setAddresses(prev => [...prev, res.address])
+    if (!user) return { ok: false, error: "No hay sesión" }
+    if (a.isDefault) await supabase.from("addresses").update({ is_default: false }).eq("user_id", user.id)
+    const { data, error } = await supabase.from("addresses").insert({
+      user_id: user.id, label: a.label, name: a.name, street: a.street,
+      city: a.city, state: a.state, zip: a.zip, phone: a.phone, is_default: a.isDefault,
+    }).select().single()
+    if (error) return { ok: false, error: error.message }
+    if (data) {
+      setAddresses(prev => [...prev, { id: data.id, label: data.label || "", name: data.name || "", street: data.street, city: data.city, state: data.state || "", zip: data.zip || "", phone: data.phone || "", isDefault: data.is_default }])
     }
-    return res.ok ? { ok: true } : { ok: false, error: res.error || "Error" }
-  }, [])
+    return { ok: true }
+  }, [user, supabase])
 
   const updateAddress = useCallback(async (id: string, a: Partial<Address>) => {
-    const res: any = await api("/api/addresses", {
-      method: "PUT",
-      body: JSON.stringify({ id, ...a }),
-    })
-    if (res.ok) {
-      setAddresses(prev => prev.map(ad => ad.id === id ? res.address : ad))
-    }
-    return res.ok ? { ok: true } : { ok: false, error: res.error || "Error" }
-  }, [])
+    if (!user) return { ok: false, error: "No hay sesión" }
+    const updates: any = {}
+    if (a.label !== undefined) updates.label = a.label
+    if (a.name !== undefined) updates.name = a.name
+    if (a.street !== undefined) updates.street = a.street
+    if (a.city !== undefined) updates.city = a.city
+    if (a.state !== undefined) updates.state = a.state
+    if (a.zip !== undefined) updates.zip = a.zip
+    if (a.phone !== undefined) updates.phone = a.phone
+    if (a.isDefault !== undefined) { updates.is_default = a.isDefault; await supabase.from("addresses").update({ is_default: false }).eq("user_id", user.id) }
+    const { error } = await supabase.from("addresses").update(updates).eq("id", id).eq("user_id", user.id)
+    if (error) return { ok: false, error: error.message }
+    setAddresses(prev => prev.map(ad => ad.id === id ? { ...ad, ...a } : ad))
+    return { ok: true }
+  }, [user, supabase])
 
   const removeAddress = useCallback(async (id: string) => {
-    const res: any = await api("/api/addresses", {
-      method: "DELETE",
-      body: JSON.stringify({ id }),
-    })
-    if (res.ok) {
-      setAddresses(prev => prev.filter(a => a.id !== id))
-    }
-  }, [])
+    if (!user) return
+    await supabase.from("addresses").delete().eq("id", id).eq("user_id", user.id)
+    setAddresses(prev => prev.filter(a => a.id !== id))
+  }, [user, supabase])
 
   const addOrder = useCallback(async (o: Omit<Order, "id" | "date" | "status">): Promise<string> => {
-    const res: any = await api("/api/orders", {
-      method: "POST",
-      body: JSON.stringify(o),
+    if (!user) return ""
+    const id = "ORD-" + Date.now().toString(36).toUpperCase() + Math.random().toString(36).slice(2, 6).toUpperCase()
+    const { error } = await supabase.from("orders").insert({
+      id, user_id: user.id, items: o.items, total: o.total || "0",
+      status: "pendiente", address_id: o.addressId || "", payment_method: o.paymentMethod || "",
     })
-    if (res.ok) {
-      setOrders(prev => [res.order, ...prev])
-      return res.order.id
-    }
-    return ""
-  }, [])
+    if (error) return ""
+    setOrders(prev => [{ id, date: new Date().toISOString(), items: o.items, total: o.total, status: "pendiente", addressId: o.addressId || "", paymentMethod: o.paymentMethod || "" } as Order, ...prev])
+    return id
+  }, [user, supabase])
 
-  const refreshOrders = useCallback(async () => {
-    const res = await api("/api/orders")
-    if (Array.isArray(res)) {
-      setOrders(res.map((o: any) => ({
-        ...o,
-        date: o.createdAt || o.date,
-      })))
-    }
-  }, [])
-
-  const loadFavorites = useCallback(() => {
-    if (!user) return
-    const favs = JSON.parse(localStorage.getItem(`viajero_favs_${user.id}`) || "[]")
-    setFavorites(favs)
-  }, [user])
+  useEffect(() => { if (user) { loadAddresses(); refreshOrders() } }, [user, loadAddresses, refreshOrders])
 
   useEffect(() => {
-    if (user && typeof window !== "undefined") loadFavorites()
-    else setFavorites([])
-  }, [user, loadFavorites])
+    if (user) {
+      const favs = JSON.parse(localStorage.getItem(`viajero_favs_${user.id}`) || "[]")
+      setFavorites(favs)
+    } else setFavorites([])
+  }, [user])
 
   const toggleFavorite = useCallback((productName: string) => {
     if (!user) return
@@ -258,7 +255,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <AuthContext.Provider value={{
-      user, login, register, logout, updateProfile, changePassword,
+      user, loading, login, register, loginWithGoogle, loginWithFacebook, logout, updateProfile, changePassword,
       addresses, addAddress, updateAddress, removeAddress,
       orders, refreshOrders, addOrder,
       favorites, toggleFavorite, isFavorite,

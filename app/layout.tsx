@@ -7,12 +7,26 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://el-viajero.paragu-ai.com"),
   title: "El Viajero — Tu Aventura Empieza Acá",
   description: "Camping, pesca, accesorios para auto y moto, equipo outdoor. Todo para tu aventura en Paraguay.",
-  icons: { icon: "/images/favicon.svg" },
-  openGraph: { title: "El Viajero", description: "Tu aventura empieza acá", images: [{ url: "/images/og-viajero.svg" }] },
+  icons: { icon: "/images/favicon.svg", apple: "/images/favicon.svg" },
   manifest: "/manifest.json",
+  appleWebApp: { capable: true, statusBarStyle: "black-translucent" },
+  themeColor: "#1B5E20",
+  openGraph: {
+    title: "El Viajero",
+    description: "Tu aventura empieza acá",
+    images: [{ url: "/images/og-viajero.svg", width: 1200, height: 630 }],
+    type: "website",
+    locale: "es_PY",
+    siteName: "El Viajero",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "El Viajero",
+    description: "Tu aventura empieza acá",
+    images: ["https://el-viajero.paragu-ai.com/images/og-viajero.svg"],
+  },
   other: {
-    "apple-mobile-web-app-capable": "yes",
-    "apple-mobile-web-app-status-bar-style": "black-translucent",
+    "facebook-domain-verification": process.env.NEXT_PUBLIC_FB_VERIFICATION || "",
   },
 }
 
@@ -46,36 +60,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="es">
       <head>
-        <meta name="theme-color" content="#1B5E20" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <link rel="manifest" href="/manifest.json" />
-        {/* GA4 */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}" />
-        <script dangerouslySetInnerHTML={{
-          __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${process.env.NEXT_PUBLIC_GA_ID}');`
-        }} />
-        {/* Meta Pixel */}
-        <script dangerouslySetInnerHTML={{
-          __html: `!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','XXXXXXXXXXX');fbq('track','PageView');`
-        }} />
-        <script dangerouslySetInnerHTML={{
-          __html: `if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('/sw.js')})}`
-        }} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://qyvokpribmbrosafntqa.supabase.co" />
       </head>
-      <body
-        className="antialiased overflow-x-hidden"
-        style={{
-          paddingTop: "env(safe-area-inset-top, 0px)",
-          paddingBottom: "env(safe-area-inset-bottom, 0px)",
-        }}
-      >
+      <body className="antialiased overflow-x-hidden">
         <ErrorBoundary>
           <CurrencyProvider>{children}</CurrencyProvider>
         </ErrorBoundary>

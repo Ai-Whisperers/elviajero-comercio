@@ -1,28 +1,87 @@
-#!/usr/bin/env node
-// Seed script - run with: npx tsx scripts/seed.ts
-import fs from "fs"
-import path from "path"
+import { createClient } from '@supabase/supabase-js'
+import * as fs from 'fs'
+import * as path from 'path'
 
-const contentPath = path.join(process.cwd(), "content", "es.json")
-const content = JSON.parse(fs.readFileSync(contentPath, "utf-8"))
+async function seed() {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 
-// Add more testimonials
-content.home.testimonials = [
-  ...(content.home.testimonials || []),
-  { name: "Laura Cabral", text: "Excelente atención y productos de primera calidad. La carpa que compré me salvó el fin de semana.", rating: 5 },
-  { name: "Marcos Benítez", text: "Compré artículos de pesca y llegaron rápido. Muy recomendado.", rating: 5 },
-  { name: "Sofía Ramírez", text: "Buena variedad y precios accesibles. Volveré a comprar.", rating: 4 },
-]
+  if (!supabaseUrl || !serviceRoleKey) {
+    console.error('Missing SUPABASE env vars')
+    process.exit(1)
+  }
 
-// Add more products if needed
-if (!content.home.productCatalog.products.find((p: any) => p.name === "Linterna LED Recargable")) {
-  content.home.productCatalog.products.push(
-    { name: "Linterna LED Recargable", category: "Camping", price: "Gs. 95.000", priceBefore: "Gs. 120.000", description: "Linterna LED recargable USB, 3 modos de luz.", brand: "OutdoorTech", specs: "1000 lúmenes | USB-C | 8h batería", stock: 15, weight: "0.3 kg", imageUrl: "/images/product-placeholder.svg", isNew: true },
-    { name: "Kit de Supervivencia 12pza", category: "Camping", price: "Gs. 180.000", description: "Kit completo de supervivencia con brújula, silbato, multiherramienta.", brand: "SurvivorPro", specs: "12 piezas | Estuche incluido | 450g", stock: 8, weight: "0.45 kg", imageUrl: "/images/product-placeholder.svg" },
-    { name: "Red de Pesca 3m", category: "Pesca", price: "Gs. 65.000", description: "Red de pesca profesional de 3 metros.", brand: "FishMaster", specs: "3m | Nylon reforzado | Malla 2cm", stock: 20, weight: "0.5 kg", imageUrl: "/images/product-placeholder.svg" }
-  )
+  const supabase = createClient(supabaseUrl, serviceRoleKey, {
+    auth: { persistSession: false },
+  })
+
+  // 1. Seed products from content/es.json
+  const content = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'content', 'es.json'), 'utf-8'))
+  const prodCatalog = content.home?.productCatalog
+  if (prodCatalog?.products?.length > 0) {
+    const { count } = await supabase.from('products').select('*', { count: 'exact', head: true })
+    if (count === 0) {
+      const { error } = await supabase.from('products').insert(
+        prodCatalog.products.map((p: any) => ({
+          name: p.name,
+          category: p.category || '',
+          price: p.price || '0',
+          price_before: p.priceBefore || '',
+          description: p.description || '',
+          brand: p.brand || '',
+          specs: p.specs || '',
+          stock: p.stock ?? 0,
+          weight: p.weight || '',
+          image_url: p.imageUrl || '',
+          is_new: p.isNew || false,
+          featured: p.featured || false,
+        }))
+      )
+      if (error) console.error('Products insert error:', error.message)
+      else console.log(`Seeded ${prodCatalog.products.length} products`)
+    } else {
+      console.log(`Products table already has ${count} rows, skipping`)
+    }
+  }
+
+  // 2. Seed categories
+  if (prodCatalog?.categories?.length > 0) {
+    const { count } = await supabase.from('categories').select('*', { count: 'exact', head: true })
+    if (count === 0) {
+      const { error } = await supabase.from('categories').insert(
+        prodCatalog.categories.map((name: string) => ({ name }))
+      )
+      if (error) console.error('Categories insert error:', error.message)
+      else console.log(`Seeded ${prodCatalog.categories.length} categories`)
+    }
+  }
+
+  // 3. Create admin user (from env or first registered user)
+  const adminEmail = process.env.ADMIN_EMAIL || 'admin@elviajero.com.py'
+  const adminPassword = process.env.ADMIN_PASSWORD || 'Admin123!'
+
+  const { data: existing } = await supabase.auth.admin.listUsers()
+  const adminUser = existing?.users?.find((u: any) => u.email === adminEmail)
+  if (!adminUser) {
+    const { data, error } = await supabase.auth.admin.createUser({
+      email: adminEmail,
+      password: adminPassword,
+      email_confirm: true,
+      user_metadata: { name: 'Admin' },
+    })
+    if (error) console.error('Admin user creation error:', error.message)
+    else {
+      // Set admin role in profiles
+      if (data?.user?.id) {
+        await supabase.from('profiles').update({ role: 'admin' }).eq('id', data.user.id)
+        console.log(`Admin user created: ${adminEmail}`)
+      }
+    }
+  } else {
+    console.log(`Admin user already exists: ${adminEmail}`)
+  }
+
+  console.log('Seed complete!')
 }
-content.home.productCatalog.categories = [...new Set(content.home.productCatalog.products.map((p: any) => p.category))]
 
-fs.writeFileSync(contentPath, JSON.stringify(content, null, 2), "utf-8")
-console.log("✅ Seed data added to es.json")
+seed().catch(console.error)

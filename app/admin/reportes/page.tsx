@@ -1,24 +1,21 @@
-
 "use client"
 import { AdminShell, useAdminAuth } from "@/components/admin/admin-layout"
 import { BarChart, StatCard } from "@/components/admin/charts"
 import { exportOrdersCSV } from "@/lib/export-csv"
 import { useState, useEffect } from "react"
+import { createClient } from "@/lib/supabase/client"
 
 export default function SalesReport() {
   const { authed } = useAdminAuth()
+  const supabase = createClient()
   const [orders, setOrders] = useState<any[]>([])
 
   useEffect(() => {
     if (!authed) return
-    const users = JSON.parse(localStorage.getItem("viajero_users") || "[]")
-    const all: any[] = []
-    users.forEach((u: any) => {
-      const ords = JSON.parse(localStorage.getItem("viajero_orders_" + u.id) || "[]")
-      all.push(...ords.map((o: any) => ({ ...o, user: u.name })))
+    supabase.from("orders").select("*").order("created_at", { ascending: true }).then(({ data }) => {
+      if (data) setOrders(data.map((o: any) => ({ ...o, items: typeof o.items === "string" ? JSON.parse(o.items) : o.items, date: o.created_at || o.date })))
     })
-    setOrders(all.sort((a: any, b: any) => new Date(a.date).getTime() - new Date(b.date).getTime()))
-  }, [authed])
+  }, [authed, supabase])
 
   const byMonth: Record<string, { total: number; count: number }> = {}
   const parseNum = (s: string) => parseInt(s.replace(/[^0-9]/g, ""), 10) || 0

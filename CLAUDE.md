@@ -16,9 +16,18 @@ Cloudflare (DNS, SSL) → VPS → Traefik → elviajero-comercio_web:3000
 ## Design System
 Green (#1B5E20) + orange (#E65100) on light background. Fonts: Inter (all). Voice: practical, adventurous, Spanish/English/Guaraní.
 
-## Content
-Content lives in `content/es.json` (and other locales when applicable).
-All text, services, products, FAQ items are editable there.
+## Data Layer
+**Supabase** (PostgreSQL) - shared project `qyvokpribmbrosafntqa`
+- Customer auth: Supabase Auth (email/password, Google, Facebook)
+- Tables: profiles, products, categories, orders, addresses, promo_codes, reviews, subscribers, abandoned_carts, stock_alerts
+- Admin auth: profiles.role = 'admin'
+- Supabase clients: `lib/supabase/server.ts` (SSR), `lib/supabase/browser.ts` (client), `lib/supabase/admin.ts` (service_role)
+- Migration: `supabase/migrations/001_elviajero_schema.sql`
+- RLS policies on all tables
+
+## Content (Static)
+Content still lives in `content/es.json` (and other locales) for page copy.
+Dynamic data (products, orders) now comes from Supabase.
 
 ## Build & Deploy
 ```bash

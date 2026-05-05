@@ -1,68 +1,68 @@
-import { NextRequest, NextResponse } from "next/server"
-import { getDb } from "@/lib/db"
+import { NextRequest, NextResponse } from 'next/server'
+import { createClient } from '@/lib/supabase/server'
 
-function getUserFromToken(token: string): any | null {
-  if (!token) return null
-  const db = getDb()
-  const session: any = db.prepare(
-    "SELECT u.id, u.name, u.email FROM sessions s JOIN users u ON s.user_id = u.id WHERE s.token = ? AND s.expires_at > datetime('now')"
-  ).get(token)
-  return session || null
+async function getUser(supabase: any) {
+  const { data: { session } } = await supabase.auth.getSession()
+  if (!session) return null
+  return session.user
 }
 
 export async function GET(req: NextRequest) {
-  const token = req.headers.get("authorization")?.replace("Bearer ", "") || ""
-  const user = getUserFromToken(token)
-  if (!user) return NextResponse.json({ ok: false, error: "No autorizado" }, { status: 401 })
+  const supabase = await createClient()
+  const user = await getUser(supabase)
+  if (!user) return NextResponse.json({ ok: false, error: 'No autorizado' }, { status: 401 })
 
-  const db = getDb()
-  const orders = db.prepare("SELECT id, items, total, status, address_id as addressId, payment_method as paymentMethod, note, created_at as createdAt FROM orders WHERE user_id = ? ORDER BY created_at DESC").all(user.id)
+  const { data } = await supabase
+    .from('orders')
+    .select('*')
+    .eq('user_id', user.id)
+    .order('created_at', { ascending: false })
 
-  const parsed = orders.map((o: any) => ({
+  return NextResponse.json((data || []).map((o: any) => ({
     ...o,
-    items: JSON.parse(o.items || "[]")
-  }))
-
-  return NextResponse.json(parsed)
+    items: typeof o.items === 'string' ? JSON.parse(o.items) : o.items,
+    date: o.created_at || o.date,
+  })))
 }
 
 export async function POST(req: NextRequest) {
-  const token = req.headers.get("authorization")?.replace("Bearer ", "") || ""
-  const user = getUserFromToken(token)
-  if (!user) return NextResponse.json({ ok: false, error: "No autorizado" }, { status: 401 })
+  const supabase = await createClient()
+  const user = await getUser(supabase)
+  if (!user) return NextResponse.json({ ok: false, error: 'No autorizado' }, { status: 401 })
 
   try {
     const body = await req.json()
     const { items, total, addressId, paymentMethod, note } = body
-    if (!items || !items.length) return NextResponse.json({ ok: false, error: "Carrito vacío" }, { status: 400 })
+    if (!items || !items.length) return NextResponse.json({ ok: false, error: 'Carrito vacío' }, { status: 400 })
 
-    const db = getDb()
-    const id = "ORD-" + Date.now().toString(36).toUpperCase() + Math.random().toString(36).slice(2, 6).toUpperCase()
-    db.prepare("INSERT INTO orders (id, user_id, items, total, status, address_id, payment_method, note) VALUES (?, ?, ?, ?, 'pendiente', ?, ?, ?)")
-      .run(id, user.id, JSON.stringify(items), total || "0", addressId || "", paymentMethod || "whatsapp", note || "")
+    const id = 'ORD-' + Date.now().toString(36).toUpperCase() + Math.random().toString(36).slice(2, 6).toUpperCase()
+    const { error } = await supabase.from('orders').insert({
+      id, user_id: user.id, items: JSON.stringify(items), total: total || '0',
+      status: 'pendiente', address_id: addressId || '', payment_method: paymentMethod || '', note: note || '',
+    })
 
-    const row: any = db.prepare("SELECT id, items, total, status, address_id as addressId, payment_method as paymentMethod, note, created_at as createdAt FROM orders WHERE id = ?").get(id)
-    return NextResponse.json({ ok: true, order: { ...row, items: JSON.parse(row?.items || "[]") } })
+    if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 })
+
+    return NextResponse.json({
+      ok: true,
+      order: { id, items, total, status: 'pendiente', addressId: addressId || '', paymentMethod: paymentMethod || '' },
+    })
   } catch (err) {
     return NextResponse.json({ ok: false, error: String(err) }, { status: 500 })
   }
 }
 
 export async function PATCH(req: NextRequest) {
-  const token = req.headers.get("authorization")?.replace("Bearer ", "") || ""
-  const user = getUserFromToken(token)
-  if (!user) return NextResponse.json({ ok: false, error: "No autorizado" }, { status: 401 })
+  const supabase = await createClient()
+  const user = await getUser(supabase)
+  if (!user) return NextResponse.json({ ok: false, error: 'No autorizado' }, { status: 401 })
 
   try {
     const body = await req.json()
     const { id, status } = body
-    if (!id) return NextResponse.json({ ok: false, error: "ID requerido" }, { status: 400 })
+    if (!id) return NextResponse.json({ ok: false, error: 'ID requerido' }, { status: 400 })
 
-    const db = getDb()
-    const existing = db.prepare("SELECT id FROM orders WHERE id = ? AND user_id = ?").get(id, user.id)
-    if (!existing) return NextResponse.json({ ok: false, error: "Pedido no encontrado" }, { status: 404 })
-
-    db.prepare("UPDATE orders SET status = ? WHERE id = ?").run(status || "pendiente", id)
+    await supabase.from('orders').update({ status: status || 'pendiente' }).eq('id', id).eq('user_id', user.id)
     return NextResponse.json({ ok: true })
   } catch (err) {
     return NextResponse.json({ ok: false, error: String(err) }, { status: 500 })

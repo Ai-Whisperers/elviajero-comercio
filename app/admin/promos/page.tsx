@@ -1,30 +1,36 @@
 "use client"
 import { AdminShell, useAdminAuth } from "@/components/admin/admin-layout"
 import { useState, useEffect } from "react"
-
-const KEY = "viajero_promos"
+import { createClient } from "@/lib/supabase/client"
 
 export default function AdminPromos() {
   const { authed } = useAdminAuth()
+  const supabase = createClient()
   const [promos, setPromos] = useState<any[]>([])
   const [showForm, setShowForm] = useState(false)
   const [form, setForm] = useState({ code: "", type: "percentage", value: 10, minPurchase: 0, maxUses: 100 })
 
-  useEffect(() => { if (authed) setPromos(JSON.parse(localStorage.getItem(KEY) || "[]")) }, [authed])
+  useEffect(() => {
+    if (authed) supabase.from("promo_codes").select("*").then(({ data }) => {
+      if (data) setPromos(data)
+    })
+  }, [authed, supabase])
 
-  const add = () => {
-    const all = JSON.parse(localStorage.getItem(KEY) || "[]")
-    all.push({ ...form, usedCount: 0, expiresAt: null })
-    localStorage.setItem(KEY, JSON.stringify(all))
-    setPromos(all)
-    setShowForm(false)
-    setForm({ code: "", type: "percentage", value: 10, minPurchase: 0, maxUses: 100 })
+  const add = async () => {
+    const { data, error } = await supabase.from("promo_codes").insert({
+      code: form.code, type: form.type, value: form.value,
+      min_purchase: form.minPurchase, max_uses: form.maxUses,
+    }).select().single()
+    if (!error && data) {
+      setPromos([...promos, data])
+      setShowForm(false)
+      setForm({ code: "", type: "percentage", value: 10, minPurchase: 0, maxUses: 100 })
+    }
   }
 
-  const remove = (code: string) => {
-    const all = promos.filter(p => p.code !== code)
-    localStorage.setItem(KEY, JSON.stringify(all))
-    setPromos(all)
+  const remove = async (code: string) => {
+    await supabase.from("promo_codes").delete().eq("code", code)
+    setPromos(promos.filter(p => p.code !== code))
   }
 
   if (!authed) return null
@@ -52,7 +58,7 @@ export default function AdminPromos() {
       <div className="space-y-2">
         {promos.map((p: any) => (
           <div key={p.code} className="flex items-center justify-between rounded-xl border border-gray-800 bg-gray-900 p-4">
-            <div><p className="font-bold text-white">{p.code}</p><p className="text-xs text-gray-500">{p.type === "percentage" ? `${p.value}%` : `Gs. ${p.value.toLocaleString("es-PY")}`} · min Gs. {p.minPurchase.toLocaleString("es-PY")} · {p.usedCount}/{p.maxUses}</p></div>
+            <div><p className="font-bold text-white">{p.code}</p><p className="text-xs text-gray-500">{p.type === "percentage" ? `${p.value}%` : `Gs. ${(p.value || 0).toLocaleString("es-PY")}`} · min Gs. {(p.min_purchase || 0).toLocaleString("es-PY")} · {p.used_count || 0}/{p.max_uses || 100}</p></div>
             <button onClick={() => remove(p.code)} className="text-xs text-red-400 hover:underline">Eliminar</button>
           </div>
         ))}

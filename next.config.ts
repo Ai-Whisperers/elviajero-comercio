@@ -19,6 +19,7 @@ const config: NextConfig = {
     remotePatterns: [
       { protocol: 'https', hostname: '**.cloudflare.com' },
       { protocol: 'https', hostname: 'images.unsplash.com' },
+      { protocol: 'https', hostname: 'qyvokpribmbrosafntqa.supabase.co' },
     ],  unoptimized: true },
   output: "standalone",
   async redirects() { return [

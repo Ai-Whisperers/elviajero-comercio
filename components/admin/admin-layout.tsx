@@ -2,24 +2,57 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
+import { createClient } from "@/lib/supabase/client"
+import type { User as SupabaseUser } from "@supabase/supabase-js"
 
-const ADMIN_PASSWORD_HASH = "h1a8c4c"
-
-function hash(s: string) {
-  let h = 0; for (let i = 0; i < s.length; i++) { h = ((h << 5) - h) + s.charCodeAt(i); h = h & h }
-  return "h" + Math.abs(h).toString(36)
+interface Profile {
+  id: string
+  name: string
+  email: string
+  role: string
 }
 
 export function useAdminAuth() {
   const [authed, setAuthed] = useState(false)
+  const [admin, setAdmin] = useState<Profile | null>(null)
+  const [loading, setLoading] = useState(true)
+  const supabase = createClient()
   const router = useRouter()
-  useEffect(() => { if (localStorage.getItem("viajero_admin_auth") === "true") setAuthed(true) }, [])
-  const login = (pass: string) => {
-    if (hash(pass) === ADMIN_PASSWORD_HASH) { localStorage.setItem("viajero_admin_auth", "true"); setAuthed(true); return true }
-    return false
+
+  useEffect(() => {
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
+      if (!session) { setLoading(false); return }
+      const { data } = await supabase.from("profiles").select("*").eq("id", session.user.id).single()
+      if (data && data.role === "admin") {
+        setAuthed(true)
+        setAdmin({ id: data.id, name: data.name, email: session.user.email || "", role: data.role })
+      }
+      setLoading(false)
+    })
+  }, [supabase])
+
+  const login = async (email: string, password: string) => {
+    const { data: { session }, error } = await supabase.auth.signInWithPassword({ email, password })
+    if (error || !session) return false
+
+    const { data } = await supabase.from("profiles").select("*").eq("id", session.user.id).single()
+    if (!data || data.role !== "admin") {
+      await supabase.auth.signOut()
+      return false
+    }
+    setAuthed(true)
+    setAdmin({ id: data.id, name: data.name, email: session.user.email || "", role: data.role })
+    return true
   }
-  const logout = () => { localStorage.removeItem("viajero_admin_auth"); setAuthed(false); router.push("/admin") }
-  return { authed, login, logout }
+
+  const logout = async () => {
+    await supabase.auth.signOut()
+    setAuthed(false)
+    setAdmin(null)
+    router.push("/admin")
+  }
+
+  return { authed, admin, loading, login, logout }
 }
 
 const nav = [
@@ -28,16 +61,37 @@ const nav = [
   { label: "Pedidos", href: "/admin/pedidos", icon: "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" },
   { label: "Promos", href: "/admin/promos", icon: "M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" },
   { label: "Reseñas", href: "/admin/resenas", icon: "M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" },
+  { label: "Usuarios", href: "/admin/usuarios", icon: "M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197" },
+  { label: "Categorías", href: "/admin/categorias", icon: "M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" },
+  { label: "Suscriptores", href: "/admin/suscriptores", icon: "M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" },
+  { label: "Reportes", href: "/admin/reportes", icon: "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" },
+  { label: "Importar CSV", href: "/admin/importar", icon: "M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" },
+  { label: "Tema", href: "/admin/tema", icon: "M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" },
 ]
 
 export function AdminShell({ children }: { children: React.ReactNode }) {
-  const { authed, login, logout } = useAdminAuth()
+  const { authed, loading, login, logout } = useAdminAuth()
   const pathname = usePathname()
-  const [pass, setPass] = useState("")
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
   const [error, setError] = useState("")
+  const [logging, setLogging] = useState(false)
+
+  if (loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-[#0A0A0A]">
+        <p className="text-sm text-gray-500">Cargando...</p>
+      </div>
+    )
+  }
 
   if (!authed) {
-    if (pathname !== "/admin") return null
+    if (pathname !== "/admin") return (
+      <div className="flex min-h-screen items-center justify-center bg-[#0A0A0A]">
+        <p className="text-sm text-gray-500">Acceso denegado</p>
+      </div>
+    )
+
     return (
       <div className="flex min-h-screen items-center justify-center bg-[#0A0A0A] px-4">
         <div className="w-full max-w-sm">
@@ -45,10 +99,18 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
             <h1 className="text-2xl font-bold text-white">Admin</h1>
             <p className="mt-1 text-sm text-gray-400">El Viajero</p>
           </div>
-          <form onSubmit={(e) => { e.preventDefault(); if (!login(pass)) setError("Contraseña incorrecta"); else setError("") }} className="space-y-4">
+          <form onSubmit={async (e) => {
+            e.preventDefault(); setError(""); setLogging(true)
+            const ok = await login(email, password)
+            setLogging(false)
+            if (!ok) setError("Credenciales incorrectas o no tienes permisos de administrador")
+          }} className="space-y-4">
             {error && <div className="rounded-lg bg-red-900/30 p-3 text-sm text-red-400">{error}</div>}
-            <input type="password" value={pass} onChange={e => setPass(e.target.value)} placeholder="Contraseña" className="w-full rounded-lg border border-gray-700 bg-gray-900 px-4 py-3 text-sm text-white outline-none focus:border-green-500" />
-            <button type="submit" className="w-full rounded-lg bg-green-600 py-3 font-semibold text-white hover:bg-green-500">Ingresar</button>
+            <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="Email" className="w-full rounded-lg border border-gray-700 bg-gray-900 px-4 py-3 text-sm text-white outline-none focus:border-green-500" required />
+            <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Contraseña" className="w-full rounded-lg border border-gray-700 bg-gray-900 px-4 py-3 text-sm text-white outline-none focus:border-green-500" required />
+            <button type="submit" disabled={logging} className="w-full rounded-lg bg-green-600 py-3 font-semibold text-white hover:bg-green-500 disabled:opacity-50">
+              {logging ? "Ingresando..." : "Ingresar"}
+            </button>
           </form>
         </div>
       </div>

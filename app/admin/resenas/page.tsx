@@ -1,28 +1,28 @@
 "use client"
 import { AdminShell, useAdminAuth } from "@/components/admin/admin-layout"
 import { useState, useEffect } from "react"
-
-const KEY = "viajero_reviews"
+import { createClient } from "@/lib/supabase/client"
 
 export default function AdminReviews() {
   const { authed } = useAdminAuth()
+  const supabase = createClient()
   const [reviews, setReviews] = useState<any[]>([])
   const [filter, setFilter] = useState("")
 
   useEffect(() => {
     if (!authed) return
-    const all = JSON.parse(localStorage.getItem(KEY) || "[]")
-    setReviews(all)
-  }, [authed])
+    supabase.from("reviews").select("*").order("created_at", { ascending: false }).then(({ data }) => {
+      if (data) setReviews(data)
+    })
+  }, [authed, supabase])
 
-  const remove = (id: string) => {
-    const all = reviews.filter(r => r.id !== id)
-    localStorage.setItem(KEY, JSON.stringify(all))
-    setReviews(all)
+  const remove = async (id: string) => {
+    await supabase.from("reviews").delete().eq("id", id)
+    setReviews(reviews.filter(r => r.id !== id))
   }
 
-  const filtered = filter ? reviews.filter(r => r.productName === filter) : reviews
-  const productNames = [...new Set(reviews.map(r => r.productName))]
+  const filtered = filter ? reviews.filter(r => r.product_name === filter) : reviews
+  const productNames = [...new Set(reviews.map(r => r.product_name))]
 
   if (!authed) return null
 
@@ -41,13 +41,13 @@ export default function AdminReviews() {
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">
                 <div className="flex gap-0.5 text-amber-400 text-sm">{Array.from({ length: 5 }).map((_, i) => <span key={i}>{i < r.rating ? "★" : "☆"}</span>)}</div>
-                <span className="text-sm font-medium text-white">{r.userName}</span>
-                <span className="text-xs text-gray-500">{new Date(r.date).toLocaleDateString("es")}</span>
+                <span className="text-sm font-medium text-white">{r.user_name}</span>
+                <span className="text-xs text-gray-500">{r.created_at ? new Date(r.created_at).toLocaleDateString("es") : ""}</span>
               </div>
               <button onClick={() => remove(r.id)} className="text-xs text-red-400 hover:underline">Eliminar</button>
             </div>
             <p className="text-sm text-gray-300">{r.text}</p>
-            <p className="mt-1 text-xs text-gray-500">Producto: {r.productName}</p>
+            <p className="mt-1 text-xs text-gray-500">Producto: {r.product_name}</p>
           </div>
         ))}
         {filtered.length === 0 && <div className="text-center py-12 text-gray-500">Sin reseñas</div>}

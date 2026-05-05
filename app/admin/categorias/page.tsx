@@ -1,33 +1,33 @@
-
 "use client"
 import { AdminShell, useAdminAuth } from "@/components/admin/admin-layout"
 import { useState, useEffect } from "react"
+import { createClient } from "@/lib/supabase/client"
 
 export default function AdminCategories() {
   const { authed } = useAdminAuth()
-  const [cats, setCats] = useState<string[]>([])
+  const supabase = createClient()
+  const [cats, setCats] = useState<any[]>([])
   const [newCat, setNewCat] = useState("")
 
   useEffect(() => {
     if (!authed) return
-    try {
-      const saved = localStorage.getItem("viajero_admin_categories")
-      setCats(saved ? JSON.parse(saved) : [])
-    } catch {}
-  }, [authed])
+    supabase.from("categories").select("*").order("name").then(({ data }) => {
+      if (data) setCats(data)
+    })
+  }, [authed, supabase])
 
-  const add = () => {
-    if (!newCat.trim() || cats.includes(newCat.trim())) return
-    const updated = [...cats, newCat.trim()]
-    localStorage.setItem("viajero_admin_categories", JSON.stringify(updated))
-    setCats(updated)
-    setNewCat("")
+  const add = async () => {
+    if (!newCat.trim()) return
+    const { data, error } = await supabase.from("categories").insert({ name: newCat.trim() }).select().single()
+    if (!error && data) {
+      setCats([...cats, data])
+      setNewCat("")
+    }
   }
 
-  const remove = (cat: string) => {
-    const updated = cats.filter(c => c !== cat)
-    localStorage.setItem("viajero_admin_categories", JSON.stringify(updated))
-    setCats(updated)
+  const remove = async (id: string) => {
+    await supabase.from("categories").delete().eq("id", id)
+    setCats(cats.filter(c => c.id !== id))
   }
 
   if (!authed) return null
@@ -41,9 +41,9 @@ export default function AdminCategories() {
       </div>
       <div className="flex flex-wrap gap-2">
         {cats.map(cat => (
-          <div key={cat} className="flex items-center gap-2 rounded-full border border-gray-700 bg-gray-800 px-4 py-2 text-sm text-gray-300">
-            {cat}
-            <button onClick={() => remove(cat)} className="text-gray-500 hover:text-red-400">x</button>
+          <div key={cat.id} className="flex items-center gap-2 rounded-full border border-gray-700 bg-gray-800 px-4 py-2 text-sm text-gray-300">
+            {cat.name}
+            <button onClick={() => remove(cat.id)} className="text-gray-500 hover:text-red-400">x</button>
           </div>
         ))}
       </div>

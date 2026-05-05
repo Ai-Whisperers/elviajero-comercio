@@ -10,7 +10,7 @@
     "items": [
       {
         "label": "Inicio",
-        "href": ""
+        "href": "/"
       },
       {
         "label": "Tienda",
@@ -1615,7 +1615,7 @@
         "links": [
           {
             "label": "Inicio",
-            "href": ""
+            "href": "/"
           },
           {
             "label": "Tienda",
