@@ -4,7 +4,7 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import { AdminSidebar } from "./sidebar"
-import { Package, LogOut, ExternalLink, Menu, Bell, User } from "lucide-react"
+import { Package, LogOut, ExternalLink, Menu, User } from "lucide-react"
 
 interface Profile { id: string; name: string; email: string; role: string }
 
@@ -12,18 +12,59 @@ export function useAdminAuth() {
   const [authed, setAuthed] = useState(false)
   const [admin, setAdmin] = useState<Profile | null>(null)
   const [loading, setLoading] = useState(true)
-  const supabaseRef = useRef(createClient())
   const router = useRouter()
 
   useEffect(() => {
-    supabaseRef.current.auth.getSession().then(async ({ data: { session } }) => {
-      if (!session) { setLoading(false); return }
-      const { data } = await supabaseRef.current.from("profiles").select("*").eq("id", session.user.id).single()
-      if (data && data.role === "admin") {
-        setAuthed(true); setAdmin({ id: data.id, name: data.name, email: session.user.email || "", role: data.role })
+    let cancelled = false
+
+    // First try Supabase SSR cookie (if set properly)
+    const supabase = createClient()
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
+      if (cancelled) return
+      if (session?.user) {
+        const { data } = await supabase.from("profiles").select("*").eq("id", session.user.id).single()
+        if (data && data.role === "admin") {
+          setAuthed(true)
+          setAdmin({ id: data.id, name: data.name, email: session.user.email || "", role: data.role })
+          setLoading(false)
+          return
+        }
       }
-      setLoading(false)
+
+      // Fallback: try reading the access_token from cookie directly
+      const cookies = document.cookie.split("; ").reduce((acc, c) => {
+        const [k, v] = c.split("=", 2)
+        acc[k.trim()] = v
+        return acc
+      }, {} as Record<string, string>)
+
+      const authCookie = cookies["sb-qyvokpribmbrosafntqa-auth-token"]
+      if (authCookie) {
+        try {
+          // Try to decode as base64 JSON (SSR format)
+          const parsed = JSON.parse(atob(authCookie))
+          const accessToken = parsed.access_token || parsed
+
+          // Verify with me endpoint using Authorization header
+          const res = await fetch("/api/auth", {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "Authorization": `Bearer ${accessToken}` },
+            body: JSON.stringify({ action: "me" }),
+          })
+          const data = await res.json()
+          if (res.ok && data.ok && data.user?.role === "admin") {
+            setAuthed(true)
+            setAdmin(data.user)
+            setLoading(false)
+            return
+          }
+        } catch { /* cookie not parseable */ }
+      }
+
+      if (!cancelled) setLoading(false)
     })
+
+    return () => { cancelled = true }
   }, [router])
 
   return { authed, admin, loading }
@@ -59,19 +100,13 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex min-h-screen bg-[#0a0a0b]">
-      {/* Mobile menu backdrop */}
       {mobileMenu && (
         <div className="fixed inset-0 z-40 bg-black/60 lg:hidden" onClick={() => setMobileMenu(false)} />
       )}
-
-      {/* Sidebar */}
       <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-[#0f0f10] border-r border-zinc-800/60 transform transition-transform duration-200 lg:relative lg:translate-x-0 ${mobileMenu ? 'translate-x-0' : '-translate-x-full'}`}>
         <AdminSidebar onNavigate={() => setMobileMenu(false)} />
       </div>
-
-      {/* Main area */}
       <div className="flex-1 flex flex-col min-w-0">
-        {/* Top bar */}
         <header className="sticky top-0 z-30 bg-[#0f0f10]/80 backdrop-blur-xl border-b border-zinc-800/60">
           <div className="flex items-center justify-between px-4 sm:px-6 h-14">
             <div className="flex items-center gap-3">
@@ -83,7 +118,6 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
                 <span className="text-sm font-semibold text-white">El Viajero</span>
               </div>
             </div>
-
             <div className="flex items-center gap-2">
               <Link href="/" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/60 transition-all">
                 <ExternalLink className="w-3.5 h-3.5" />
@@ -101,8 +135,6 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
             </div>
           </div>
         </header>
-
-        {/* Page content */}
         <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">
           {children}
         </main>
