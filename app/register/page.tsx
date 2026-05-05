@@ -34,9 +34,7 @@ function RegisterForm() {
     setLoading(true)
     const res = await register(name, email, password, phone)
     setLoading(false)
-    if (res.ok) {
-      setSuccess(true)
-    } else setError(res.error || "Error al registrarse")
+    if (res.ok) { setSuccess(true) } else setError(res.error || "Error al registrarse")
   }
 
   const strength = getStrength(password)

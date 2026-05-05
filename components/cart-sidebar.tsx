@@ -2,6 +2,7 @@
 import { useCart } from "@/lib/cart-context"
 import { CartEmptyState } from "@/components/ui"
 import { useState, useEffect } from "react"
+import Link from "next/link"
 
 export function CartSidebar({ open, onClose }: { open: boolean; onClose: () => void }) {
   useEffect(() => {
@@ -79,14 +80,12 @@ export function CartSidebar({ open, onClose }: { open: boolean; onClose: () => v
         {items.length > 0 && (
           <div className="border-t bg-white px-4 py-4">
             <p className="mb-3 text-lg font-bold text-foreground">Total: {formatGs(total)}</p>
-            <a
-              href={`https://wa.me/595981234567?text=${whatsappMsg}`}
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              href="/checkout"
               className="flex w-full items-center justify-center rounded-lg bg-primary py-3 font-semibold text-primary-foreground transition-all hover:bg-primary/90"
             >
-              Pedir por WhatsApp
-            </a>
+              Ir al checkout
+            </Link>
             <button
               onClick={clearCart}
               className="mt-2 w-full text-center text-sm text-muted-foreground hover:text-foreground"

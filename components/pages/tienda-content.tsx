@@ -15,11 +15,12 @@ import content from "@/content/es.json"
 import Image from "next/image"
 import Link from "next/link"
 import { useState, useEffect } from "react"
+import { createClient } from "@/lib/supabase/client"
 
 const c = content as any
+const cats = c.home?.productCatalog?.categories || []
 const cat = c.home?.productCatalog || {}
-const cats = cat.categories || []
-const allProducts = cat.products || []
+const staticProducts = cat.products || []
 const showOutOfStock = c.home?.showOutOfStock !== false
 
 function slugify(s: string) { return s.toLowerCase().replace(/[^a-z0-9áéíóúñü]+/g, "-").replace(/-+$/, "") }
@@ -88,11 +89,25 @@ function TiendaContent() {
   const [selectedProduct, setSelectedProduct] = useState<any>(null)
   const [filtered, setFiltered] = useState<any[] | null>(null)
   const [showOOS, setShowOOS] = useState(false)
+  const [dbProducts, setDbProducts] = useState<any[]>([])
+  const supabase = createClient()
 
-  // Filter out OOS products by default
+  useEffect(() => {
+    supabase.from("ej_products").select("*").order("name").then(({ data }) => {
+      if (data && data.length > 0) {
+        setDbProducts(data.map(p => ({
+          name: p.name, category: p.category, price: p.price,
+          priceBefore: p.price_before, description: p.description,
+          brand: p.brand, specs: p.specs, stock: p.stock,
+          weight: p.weight, imageUrl: p.image_url, isNew: p.is_new, featured: p.featured,
+        })))
+      }
+    })
+  }, [supabase])
+
+  const allProducts = dbProducts.length > 0 ? dbProducts : staticProducts
   const visibleProducts = showOOS ? allProducts : allProducts.filter((p: any) => (p.stock ?? 0) > 0)
   const displayProducts = filtered ?? visibleProducts
-
   const handleClick = (p: any) => { addRecent(p.name); setSelectedProduct(p) }
   const groupedCats = cats.filter((cat: string) => displayProducts.some((p: any) => p.category === cat))
 

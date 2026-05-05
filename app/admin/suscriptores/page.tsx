@@ -1,20 +1,16 @@
 "use client"
 import { AdminShell, useAdminAuth } from "@/components/admin/admin-layout"
 import { useState, useEffect } from "react"
-import { createClient } from "@/lib/supabase/client"
 
 export default function AdminSubscribers() {
   const { authed } = useAdminAuth()
-  const supabase = createClient()
   const [subs, setSubs] = useState<any[]>([])
   const [copied, setCopied] = useState(false)
 
   useEffect(() => {
     if (!authed) return
-    supabase.from("ej_subscribers").select("*").order("created_at", { ascending: false }).then(({ data }) => {
-      if (data) setSubs(data)
-    })
-  }, [authed, supabase])
+    fetch("/api/admin/subscribers").then(r => r.json()).then(data => { if (Array.isArray(data)) setSubs(data) })
+  }, [authed])
 
   const copyAll = () => {
     navigator.clipboard.writeText(subs.map(s => s.email).join("\n")).then(() => { setCopied(true); setTimeout(() => setCopied(false), 2000) })
@@ -31,7 +27,7 @@ export default function AdminSubscribers() {
       <div className="rounded-xl border border-gray-800">
         <div className="max-h-96 overflow-y-auto">
           {subs.length === 0 ? (
-            <div className="px-4 py-8 text-center text-sm text-gray-500">Sin suscriptores</div>
+            <div className="flex flex-col items-center justify-center py-16 text-gray-500"><svg className="w-12 h-12 mb-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg><p className="text-sm text-gray-500">Sin suscriptores todavía</p></div>
           ) : (
             subs.map((s, i) => (
               <div key={i} className="border-b border-gray-800 px-4 py-3 text-sm text-gray-300 hover:bg-gray-800 transition-all">{s.email}</div>

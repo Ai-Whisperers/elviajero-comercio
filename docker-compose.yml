@@ -12,6 +12,16 @@ services:
       - NEXT_PUBLIC_SUPABASE_URL=https://qyvokpribmbrosafntqa.supabase.co
       - NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF5dm9rcHJpYm1icm9zYWZudHFhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ5MzU0OTQsImV4cCI6MjA2MDUxMTQ5NH0.cV8yF7fuylgLCLR4Hn3O2gQ8OAOhS7B7JmPUPw4SXRg
       - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY}
+      - NEXT_PUBLIC_BASE_URL=https://el-viajero.paragu-ai.com
+      - PYG_PAYMENT_GATEWAY=pagopar
+      # Payment keys — set these to activate real payments
+      - PAGOPAR_PUBLIC_KEY=${PAGOPAR_PUBLIC_KEY}
+      - PAGOPAR_PRIVATE_KEY=${PAGOPAR_PRIVATE_KEY}
+      - BANCARD_PUBLIC_KEY=${BANCARD_PUBLIC_KEY}
+      - BANCARD_PRIVATE_KEY=${BANCARD_PRIVATE_KEY}
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+      # Email
+      - RESEND_API_KEY=${RESEND_API_KEY}
     deploy:
       mode: replicated
       replicas: 2

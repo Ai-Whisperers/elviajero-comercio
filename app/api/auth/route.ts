@@ -29,6 +29,8 @@ export async function POST(req: NextRequest) {
       const { email, password } = body
       const { error } = await supabase.auth.signInWithPassword({ email, password })
       if (error) return NextResponse.json({ ok: false, error: 'Credenciales incorrectas' }, { status: 401 })
+      // Force refresh session to ensure cookies are set
+      await supabase.auth.getSession()
       return NextResponse.json({ ok: true })
     }
 

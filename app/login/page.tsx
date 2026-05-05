@@ -6,11 +6,9 @@ import { Footer } from "@/components/footer"
 import { CookieConsent } from "@/components/cookie-consent"
 import { useState } from "react"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
 
 function LoginForm() {
   const { login, loginWithGoogle, loginWithFacebook } = useAuth()
-  const router = useRouter()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
@@ -20,10 +18,30 @@ function LoginForm() {
     e.preventDefault()
     setError("")
     setLoading(true)
-    const res = await login(email, password)
+    try {
+      const res = await fetch("/api/auth", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "login", email, password }),
+      })
+      const data = await res.json()
+      if (data.ok) {
+        // Check if they're admin — redirect to admin
+        const me = await fetch("/api/auth", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ action: "me" }),
+        }).then(r => r.json())
+        const params = new URLSearchParams(window.location.search)
+        const redirectTo = params.get("redirect") || (me?.user?.role === "admin" ? "/admin" : "/mi-cuenta")
+        window.location.assign(redirectTo)
+        return
+      }
+      setError(data.error || "Error al iniciar sesión")
+    } catch {
+      setError("Error de conexión")
+    }
     setLoading(false)
-    if (res.ok) router.push("/mi-cuenta")
-    else setError(res.error || "Error al iniciar sesión")
   }
 
   return (

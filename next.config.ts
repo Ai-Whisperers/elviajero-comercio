@@ -26,6 +26,10 @@ const config: NextConfig = {
     { source: "/s/:path*", destination: "/", permanent: true },
     { source: "/ofertas", destination: "/promociones", permanent: true },
     { source: "/carrito", destination: "/tienda", permanent: true },
+    { source: "/cuenta", destination: "/mi-cuenta", permanent: true },
+    { source: "/perfil", destination: "/mi-cuenta", permanent: true },
+    { source: "/orden/:id", destination: "/pedido/buscar?id=:id", permanent: true },
+    { source: "/productos/:slug", destination: "/producto/:slug", permanent: true },
   ] },
 }
 export default config

@@ -1,39 +1,63 @@
 "use client"
 import { AdminShell, useAdminAuth } from "@/components/admin/admin-layout"
 import { useState, useEffect } from "react"
-import { createClient } from "@/lib/supabase/client"
 
 export default function AdminUsers() {
   const { authed } = useAdminAuth()
-  const supabase = createClient()
   const [users, setUsers] = useState<any[]>([])
+  const [search, setSearch] = useState("")
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     if (!authed) return
-    supabase.from("profiles").select("id, name, email, phone, role, created_at").order("created_at", { ascending: false }).then(({ data }) => {
-      if (data) setUsers(data)
-    })
-  }, [authed, supabase])
+    setLoading(true)
+    fetch("/api/admin/users").then(r => r.json()).then(data => { if (Array.isArray(data)) setUsers(data); setLoading(false) })
+  }, [authed])
+
+  const filtered = search
+    ? users.filter(u =>
+        (u.name || "").toLowerCase().includes(search.toLowerCase()) ||
+        (u.role || "").toLowerCase().includes(search.toLowerCase()))
+    : users
 
   if (!authed) return null
 
   return (
     <>
-      <h1 className="mb-6 text-xl font-bold text-white">Usuarios ({users.length})</h1>
+      <div className="mb-6 flex items-center justify-between">
+        <h1 className="text-xl font-bold text-white">Usuarios ({filtered.length})</h1>
+        <input type="text" value={search} onChange={e => setSearch(e.target.value)}
+          placeholder="Buscar por nombre, email, rol..."
+          className="w-64 rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-sm text-white outline-none focus:border-green-500" />
+      </div>
       <div className="overflow-x-auto rounded-xl border border-gray-800">
         <table className="w-full text-sm">
-          <thead className="border-b border-gray-800 bg-gray-900 text-left">
-            <tr><th className="px-4 py-3 text-gray-400">Nombre</th><th className="px-4 py-3 text-gray-400">Email</th><th className="px-4 py-3 text-gray-400">Rol</th><th className="px-4 py-3 text-gray-400">Registro</th></tr>
+          <thead className="sticky top-0 z-10 border-b border-gray-800 bg-gray-900 text-left">
+            <tr><th className="px-4 py-3 text-gray-400">Nombre</th><th className="px-4 py-3 text-gray-400">Rol</th><th className="px-4 py-3 text-gray-400">Registro</th></tr>
           </thead>
           <tbody className="divide-y divide-gray-800">
-            {users.map((u, i) => (
-              <tr key={i} className="text-white hover:bg-gray-800/50">
-                <td className="px-4 py-3">{u.name || "—"}</td>
-                <td className="px-4 py-3 text-gray-400">{u.email || "—"}</td>
-                <td className="px-4 py-3"><span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${u.role === "admin" ? "bg-green-900/30 text-green-400" : "bg-gray-800 text-gray-400"}`}>{u.role || "customer"}</span></td>
-                <td className="px-4 py-3 text-gray-400">{u.created_at ? new Date(u.created_at).toLocaleDateString("es") : "—"}</td>
-              </tr>
-            ))}
+            {loading ? (
+              Array.from({ length: 5 }).map((_, i) => (
+                <tr key={i} className="animate-pulse">
+                  <td className="px-4 py-3"><div className="h-4 w-32 rounded bg-gray-800" /></td>
+                  <td className="px-4 py-3"><div className="h-5 w-16 rounded-full bg-gray-800" /></td>
+                  <td className="px-4 py-3"><div className="h-4 w-24 rounded bg-gray-800" /></td>
+                </tr>
+              ))
+            ) : filtered.length === 0 ? (
+              <tr><td colSpan={3} className="px-4 py-12 text-center text-sm text-gray-500">
+                <svg className="mx-auto w-10 h-10 mb-3 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" /></svg>
+                {search ? "No se encontraron usuarios con ese filtro" : "Sin usuarios registrados"}
+              </td></tr>
+            ) : (
+              filtered.map((u, i) => (
+                <tr key={i} className="text-white hover:bg-gray-800/50">
+                  <td className="px-4 py-3">{u.name || "—"}</td>
+                  <td className="px-4 py-3"><span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${u.role === "admin" ? "bg-green-900/30 text-green-400" : "bg-gray-800 text-gray-400"}`}>{u.role || "customer"}</span></td>
+                  <td className="px-4 py-3 text-gray-400">{u.created_at ? new Date(u.created_at).toLocaleDateString("es") : "—"}</td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { notifyStatusChange } from '@/lib/whatsapp'
 import { createClient } from '@/lib/supabase/server'
 
 async function getUser(supabase: any) {

@@ -1,11 +1,9 @@
 "use client"
 import { AdminShell, useAdminAuth } from "@/components/admin/admin-layout"
 import { useState } from "react"
-import { createClient } from "@/lib/supabase/client"
 
 export default function AdminImport() {
   const { authed } = useAdminAuth()
-  const supabase = createClient()
   const [result, setResult] = useState("")
   const [importing, setImporting] = useState(false)
 
@@ -26,8 +24,8 @@ export default function AdminImport() {
         return obj
       })
 
-      const { error } = await supabase.from("ej_products").insert(products)
-      if (error) setResult("Error: " + error.message)
+      const res = await fetch("/api/admin/products", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(products[0]) })
+      if (!res.ok) { const err = await res.json(); setResult("Error: " + (err.error || "unknown")) }
       else setResult(`Importados ${products.length} productos.`)
       setImporting(false)
     }

@@ -1,269 +1,285 @@
 "use client"
 export const dynamic = "force-dynamic"
-import { useAuth, AuthProvider } from "@/lib/auth-context"
-import { useCart } from "@/lib/cart-context"
-import { CartProvider } from "@/lib/cart-context"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { CookieConsent } from "@/components/cookie-consent"
-import { CartToastListener } from "@/components/cart-toast-listener"
-import { CheckoutStepper } from "@/components/checkout-stepper"
+import { useAuth, AuthProvider } from "@/lib/auth-context"
+import { useCart } from "@/lib/cart-context"
+import { CartProvider } from "@/lib/cart-context"
 import { ToastProvider } from "@/components/toast"
-import { validatePromo, applyPromo, usePromo, getPromoCodes } from "@/lib/promo-codes"
-import { validateEmail, validatePhone, validateRequired } from "@/lib/validation"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import Link from "next/link"
-import content from "@/content/es.json"
+import { createClient } from "@/lib/supabase/client"
 
-const c = content as any
-
-const paymentMethods = [
-  { id: "transferencia", name: "Transferencia Bancaria", icon: "🏦", desc: "Depósito o transferencia a cuenta bancaria" },
-  { id: "mercadopago", name: "Mercado Pago", icon: "💳", desc: "Tarjeta de crédito/débito" },
-  { id: "efectivo", name: "Efectivo", icon: "💵", desc: "Pago en efectivo contra entrega" },
-  { id: "whatsapp", name: "WhatsApp", icon: "\ud83d\udcac", desc: "Te contactamos para coordinar el pago" },
-  { id: "stripe", name: "Tarjeta internacional", icon: "\ud83c\udf10", desc: "Visa, Mastercard, PayPal (USD)" },
+const SHIPPING_ZONES = [
+  { id: "asu", name: "Asunción", fee: 15000, freeFrom: 300000 },
+  { id: "central", name: "Área Metropolitana", fee: 25000, freeFrom: 400000 },
+  { id: "interior", name: "Interior del país", fee: 40000, freeFrom: 500000 },
+  { id: "pickup", name: "Retiro en tienda", fee: 0, freeFrom: 0 },
 ]
 
-// City → shipping cost (Gs.)
-const shippingRates: Record<string, number> = {
-  "asuncion": 10000, "mariano roque alonso": 12000, "lambar": 12000,
-  "fernando de la mora": 15000, "san lorenzo": 15000, "luque": 15000,
-  "capiatá": 18000, "itau guazú": 18000, "villa elisa": 15000,
-  "ñemby": 18000, "limpio": 18000, "san antonio": 18000,
-}
-
-const defaultShipping = 25000
-
 function CheckoutForm() {
-  const { user, addresses, addOrder } = useAuth()
+  const { user, addresses } = useAuth()
   const { items, total, clearCart } = useCart()
   const router = useRouter()
+  const supabase = createClient()
+  const [step, setStep] = useState(1)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("")
+  const [shippingZone, setShippingZone] = useState("asu")
+  const [paymentMethod, setPaymentMethod] = useState("whatsapp")
+  const [customer, setCustomer] = useState({
+    name: user?.name || "",
+    email: user?.email || "",
+    phone: user?.phone || "",
+  })
+  const [selectedAddress, setSelectedAddress] = useState("")
+  const [addressForm, setAddressForm] = useState({ street: "", city: "", phone: "" })
 
-  const [name, setName] = useState(user?.name || "")
-  const [email, setEmail] = useState(user?.email || "")
-  const [phone, setPhone] = useState(user?.phone || "")
-  const [addressId, setAddressId] = useState("")
-  const [guestCity, setGuestCity] = useState("")
-  const [guestStreet, setGuestStreet] = useState("")
-  const [paymentMethod, setPaymentMethod] = useState("")
-  const [note, setNote] = useState("")
-  const [promoInput, setPromoInput] = useState("")
-  const [promoCode, setPromoCode] = useState<any>(null)
-  const [promoError, setPromoError] = useState("")
-  const [submitting, setSubmitting] = useState(false)
-  const [done, setDone] = useState(false)
+  const zone = SHIPPING_ZONES.find(z => z.id === shippingZone)!
+  const shipping = total >= zone.freeFrom ? 0 : zone.fee
+  const grandTotal = total + shipping
 
-  const formatPrice = (n: number) => "Gs. " + n.toLocaleString("es-PY")
-
-  // Determine shipping
-  const city = addresses.find(a => a.id === addressId)?.city?.toLowerCase() || guestCity.toLowerCase()
-  const shippingCost = shippingRates[city.trim()] || defaultShipping
-  const promoDiscount = promoCode ? total - applyPromo(total, promoCode) : 0
-  const totalAfterPromo = total - promoDiscount
-  const finalTotal = totalAfterPromo + shippingCost
-
-  const handlePromo = () => {
-    setPromoError("")
-    const result = validatePromo(promoInput, total)
-    if (!result.ok) { setPromoError(result.error || ""); setPromoCode(null) }
-    else { setPromoCode(result.promo); setPromoError("") }
-  }
-
-  const handleSubmit = async () => {
-    if (submitting) return
-    setSubmitting(true)
-
-    // Use promo
-    if (promoCode) usePromo(promoCode)
-
-    const orderData = {
-      items: items.map(i => ({ name: i.name, price: formatPrice(i.priceGs * i.quantity), quantity: i.quantity, imageUrl: i.imageUrl })),
-      total: formatPrice(finalTotal),
-      customer: { name, email, phone },
-      delivery: user ? addresses.find(a => a.id === addressId) : { city: guestCity, street: guestStreet },
-      payment: paymentMethods.find(p => p.id === paymentMethod)?.name || paymentMethod,
-      notes: note,
-      coupon: promoCode?.code || null,
-      discount: promoDiscount,
+  useEffect(() => {
+    if (user) {
+      setCustomer({ name: user.name, email: user.email, phone: user.phone })
     }
+  }, [user])
 
-    // Save order via API (works for guests too)
-    let orderId = ""
-    try {
-      const res = await fetch("/api/orders", {
+  const placeOrder = async () => {
+    setLoading(true)
+    setError("")
+
+    const orderId = "ORD-" + Date.now().toString(36).toUpperCase() + Math.random().toString(36).slice(2, 6).toUpperCase()
+
+    // Save order via API route (handles WhatsApp notification to admin)
+    const res = await fetch("/api/admin/orders", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        id: orderId,
+        user_id: user?.id || null,
+        items: items.map(i => ({ name: i.name, price: i.price, quantity: i.quantity })),
+        total: "Gs. " + grandTotal.toLocaleString("es-PY"),
+        status: "pendiente",
+        address_id: selectedAddress || addressForm.street,
+        payment_method: paymentMethod,
+        note: "Zona: " + zone.name,
+        customer_name: customer.name,
+        customer_phone: customer.phone || addressForm.phone || user?.phone || "",
+        customer_email: customer.email,
+      }),
+    })
+
+    if (paymentMethod === "whatsapp") {
+      const msg = encodeURIComponent(
+        "¡Hola! Quiero confirmar mi pedido:\n" +
+        items.map(i => `- ${i.name} x${i.quantity}: ${i.price}`).join("\n") +
+        `\n\nSubtotal: Gs. ${total.toLocaleString("es-PY")}` +
+        `\nEnvío: Gs. ${shipping.toLocaleString("es-PY")} (${zone.name})` +
+        `\nTotal: Gs. ${grandTotal.toLocaleString("es-PY")}` +
+        `\n\nCliente: ${customer.name}` +
+        `\nTel: ${customer.phone}` +
+        `\nDirección: ${addressForm.street}, ${addressForm.city}`
+      )
+      clearCart()
+      window.location.href = `https://wa.me/595981234567?text=${msg}`
+    } else {
+      // Call unified checkout API
+      const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(orderData),
+        body: JSON.stringify({
+          method: paymentMethod,
+          order: { id: orderId },
+          items,
+          total: "Gs. " + grandTotal.toLocaleString("es-PY"),
+          customer,
+        }),
       })
       const data = await res.json()
-      if (data.success) orderId = data.order.id
-    } catch {}
-
-    // Also save to user's orders if logged in
-    if (user) {
-      const localId = await addOrder({
-        items: orderData.items,
-        total: orderData.total,
-        addressId: addressId || "guest",
-        paymentMethod: orderData.payment,
-      })
-      if (!orderId) orderId = localId
+      if (data.ok && data.redirectUrl) {
+        clearCart()
+        router.push(data.redirectUrl)
+      } else {
+        setError(data.error || "Error al procesar el pago")
+      }
     }
-
-    // Track purchase
-    try { if (typeof window !== "undefined" && (window as any).gtag) { const tn = finalTotal || 0; (window as any).gtag("event", "purchase", { transaction_id: orderId || Date.now().toString(36), value: tn / 7400, currency: "USD", items: items.map((i: any) => ({ item_id: i.name, item_name: i.name, price: (i.priceGs || 0) / 7400, quantity: i.quantity })) }); if ((window as any).fbq) (window as any).fbq("track", "Purchase", { value: tn / 7400, currency: "USD" }) } } catch {}
-
-    // Redirect to payment gateway if applicable
-    if (paymentMethod === "mercadopago" || paymentMethod === "transferencia") {
-      try {
-        const res = await fetch("/api/checkout/" + (paymentMethod === "mercadopago" ? "pagopar" : "bancard"), {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            order: { id: orderId },
-            items: items.map(i => ({ name: i.name, priceGs: i.priceGs * i.quantity, quantity: i.quantity })),
-            total: finalTotal,
-            customer: { name, email, phone },
-          }),
-        })
-        const data = await res.json()
-        if (data.ok && data.redirectUrl) {
-          clearCart()
-          window.location.href = data.redirectUrl
-          return
-        }
-      } catch {}
-    }
-
-    setSubmitting(false)
-    setDone(true)
-    clearCart()
-    setTimeout(() => router.push(`/pedido/confirmado?id=${orderId}`), 1500)
+    setLoading(false)
   }
 
-  if (done) {
+  if (items.length === 0) {
     return (
-      <section className="flex min-h-[70vh] items-center justify-center bg-background px-4">
-        <div className="text-center max-w-sm">
-          <div className="text-6xl mb-4">✅</div>
-          <h1 className="text-2xl font-bold text-foreground mb-2">Pedido confirmado</h1>
-          <p className="text-muted-foreground mb-6">Te contactaremos por WhatsApp para coordinar</p>
-          <Link href="/mi-cuenta/pedidos" className="inline-block rounded-lg bg-primary px-6 py-3 font-semibold text-primary-foreground hover:bg-primary/90">Ver mis pedidos</Link>
-        </div>
-      </section>
+      <>
+        <Header />
+        <section className="flex min-h-[50vh] items-center justify-center bg-background px-4">
+          <div className="text-center">
+            <div className="text-5xl mb-4">🛒</div>
+            <h1 className="text-2xl font-bold text-foreground mb-2">Tu carrito está vacío</h1>
+            <p className="text-muted-foreground mb-6">Agregá productos para iniciar el checkout</p>
+            <button onClick={() => router.push("/tienda")} className="rounded-lg bg-primary px-6 py-3 font-semibold text-primary-foreground hover:bg-primary/90">
+              Ir a la tienda
+            </button>
+          </div>
+        </section>
+        <Footer /><CookieConsent />
+      </>
     )
   }
 
   return (
     <>
       <Header />
-      <CartToastListener />
-      <section className="min-h-[70vh] bg-muted/30 pb-20 pt-8">
+      <section className="bg-background py-12">
         <div className="mx-auto max-w-3xl px-4">
-          <h1 className="mb-6 text-2xl font-bold text-foreground">Checkout</h1>
-          <CheckoutStepper current="info" />
-
-          <div className="grid gap-8 lg:grid-cols-5">
-            <div className="lg:col-span-3 space-y-6">
-              {/* Contact info */}
-              <div className="rounded-xl border border-border bg-surface p-5">
-                <h2 className="mb-4 text-lg font-bold text-foreground">1. Contacto</h2>
-                <div className="space-y-3">
-                  <input value={name} onChange={e => setName(e.target.value)} placeholder="Nombre completo" className="w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm outline-none focus:border-ring" />
-                  <div className="grid grid-cols-2 gap-3">
-                    <input value={email} onChange={e => setEmail(e.target.value)} placeholder="Email" type="email" className="rounded-lg border border-input bg-background px-4 py-2.5 text-sm outline-none focus:border-ring" />
-                    <input value={phone} onChange={e => setPhone(e.target.value)} placeholder="Teléfono" type="tel" className="rounded-lg border border-input bg-background px-4 py-2.5 text-sm outline-none focus:border-ring" />
-                  </div>
-                  {!user && <p className="text-xs text-muted-foreground">Podés comprar sin cuenta · <Link href="/register" className="text-primary hover:underline">Crear cuenta</Link></p>}
+          {/* Progress */}
+          <div className="mb-8 flex items-center justify-center gap-4">
+            {[1, 2, 3].map((s) => (
+              <div key={s} className="flex items-center gap-2">
+                <div className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold ${step >= s ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'}`}>
+                  {s}
                 </div>
+                <span className={`text-sm ${step >= s ? 'text-foreground font-medium' : 'text-muted-foreground'}`}>
+                  {s === 1 ? 'Datos' : s === 2 ? 'Envío' : 'Pago'}
+                </span>
+                {s < 3 && <div className={`h-0.5 w-8 ${step > s ? 'bg-primary' : 'bg-muted'}`} />}
               </div>
-
-              {/* Address */}
-              <div className="rounded-xl border border-border bg-surface p-5">
-                <h2 className="mb-4 text-lg font-bold text-foreground">2. Envío</h2>
-                {user && addresses.length > 0 ? (
-                  <div className="space-y-2">
-                    {addresses.map(addr => (
-                      <label key={addr.id} className={`flex cursor-pointer items-start gap-3 rounded-lg border p-3 ${addressId === addr.id ? "border-primary bg-primary/5" : "border-border"}`}>
-                        <input type="radio" name="address" checked={addressId === addr.id} onChange={() => setAddressId(addr.id)} className="mt-1" />
-                        <div className="text-sm"><p className="font-medium text-foreground">{addr.label} — {addr.street}, {addr.city}</p></div>
-                      </label>
-                    ))}
-                    <p className="text-xs text-muted-foreground">Envío: {formatPrice(shippingCost)} a {(addresses.find(a => a.id === addressId)?.city || "")}</p>
-                  </div>
-                ) : (
-                  <div className="space-y-3">
-                    <input value={guestCity} onChange={e => setGuestCity(e.target.value)} placeholder="Ciudad" className="w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm outline-none focus:border-ring" />
-                    <input value={guestStreet} onChange={e => setGuestStreet(e.target.value)} placeholder="Dirección (calle, número, barrio)" className="w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm outline-none focus:border-ring" />
-                    {guestCity && <p className="text-xs text-muted-foreground">Envío estimado: {formatPrice(shippingCost)}</p>}
-                  </div>
-                )}
-              </div>
-
-              {/* Payment */}
-              <div className="rounded-xl border border-border bg-surface p-5">
-                <h2 className="mb-4 text-lg font-bold text-foreground">3. Pago</h2>
-                <div className="space-y-2">
-                  {paymentMethods.map(pm => (
-                    <label key={pm.id} className={`flex cursor-pointer items-start gap-3 rounded-lg border p-3 ${paymentMethod === pm.id ? "border-primary bg-primary/5" : "border-border"}`}>
-                      <input type="radio" name="payment" checked={paymentMethod === pm.id} onChange={() => setPaymentMethod(pm.id)} className="mt-1" />
-                      <div className="text-sm"><p className="font-medium text-foreground">{pm.icon} {pm.name}</p><p className="text-muted-foreground">{pm.desc}</p></div>
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              {/* Note */}
-              <div className="rounded-xl border border-border bg-surface p-5">
-                <h2 className="mb-2 text-lg font-bold text-foreground">Nota (opcional)</h2>
-                <textarea value={note} onChange={e => setNote(e.target.value)} rows={2} placeholder="Instrucciones..." className="w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm outline-none focus:border-ring resize-none" />
-              </div>
-            </div>
-
-            {/* Summary */}
-            <div className="lg:col-span-2">
-              <div className="sticky top-24 rounded-xl border border-border bg-surface p-5">
-                <h2 className="mb-4 text-lg font-bold text-foreground">Resumen</h2>
-                <div className="divide-y divide-border max-h-60 overflow-y-auto">
-                  {items.map((item, i) => (
-                    <div key={i} className="flex items-center gap-3 py-2">
-                      {item.imageUrl && <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-muted"><img src={item.imageUrl} alt="" className="h-8 w-8 object-contain" /></div>}
-                      <div className="min-w-0 flex-1"><p className="truncate text-sm font-medium text-foreground">{item.name}</p><p className="text-xs text-muted-foreground">x{item.quantity}</p></div>
-                      <p className="text-sm font-bold text-foreground">{formatPrice(item.priceGs * item.quantity)}</p>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Promo code */}
-                <div className="mt-4 border-t border-border pt-4">
-                  <div className="flex gap-2">
-                    <input value={promoInput} onChange={e => setPromoInput(e.target.value)} placeholder="Código promocional" className="flex-1 rounded-lg border border-input bg-background px-3 py-2 text-sm outline-none focus:border-ring" />
-                    <button onClick={handlePromo} className="rounded-lg border border-primary px-3 py-2 text-sm font-semibold text-primary hover:bg-primary/5">Aplicar</button>
-                  </div>
-                  {promoError && <p className="mt-1 text-xs text-destructive">{promoError}</p>}
-                  {promoCode && <p className="mt-1 text-xs text-success">✓ {promoCode.type === "percentage" ? `${promoCode.value}%` : formatPrice(promoCode.value)} de descuento</p>}
-                  <div className="mt-2 space-y-1.5 text-sm">
-                    <div className="flex justify-between text-muted-foreground"><span>Subtotal</span><span>{formatPrice(total)}</span></div>
-                    {promoDiscount > 0 && <div className="flex justify-between text-success"><span>Descuento</span><span>-{formatPrice(promoDiscount)}</span></div>}
-                    <div className="flex justify-between text-muted-foreground"><span>Envío</span><span>{formatPrice(shippingCost)}</span></div>
-                    <div className="flex justify-between border-t border-border pt-1.5 text-base font-bold text-foreground"><span>Total</span><span>{formatPrice(finalTotal)}</span></div>
-                  </div>
-                </div>
-
-                <button onClick={handleSubmit} disabled={!name || !paymentMethod || (!city && !guestStreet) || submitting || items.length === 0}
-                  className="mt-6 w-full rounded-lg bg-primary py-3 font-semibold text-primary-foreground hover:bg-primary/90 disabled:opacity-50 active:scale-[0.98]">
-                  {submitting ? "Procesando..." : "Confirmar pedido"}
-                </button>
-                <p className="mt-3 text-center text-xs text-muted-foreground">Te contactaremos por WhatsApp para confirmar</p>
-              </div>
-            </div>
+            ))}
           </div>
+
+          {error && <div className="mb-4 rounded-lg bg-destructive/10 p-3 text-sm text-destructive">{error}</div>}
+
+          {/* Step 1: Customer data */}
+          {step === 1 && (
+            <div className="rounded-xl border border-border bg-surface p-6">
+              <h2 className="text-xl font-bold text-foreground mb-4">Tus datos</h2>
+              <div className="space-y-4">
+                <input type="text" value={customer.name} onChange={e => setCustomer({...customer, name: e.target.value})}
+                  placeholder="Nombre completo" className="w-full rounded-lg border border-input bg-background px-4 py-3 text-sm outline-none focus:border-ring" required />
+                <input type="email" value={customer.email} onChange={e => setCustomer({...customer, email: e.target.value})}
+                  placeholder="Email" className="w-full rounded-lg border border-input bg-background px-4 py-3 text-sm outline-none focus:border-ring" required />
+                <input type="tel" value={customer.phone} onChange={e => setCustomer({...customer, phone: e.target.value})}
+                  placeholder="Teléfono" className="w-full rounded-lg border border-input bg-background px-4 py-3 text-sm outline-none focus:border-ring" required />
+              </div>
+              <div className="mt-6 flex justify-end">
+                <button onClick={() => setStep(2)} className="rounded-lg bg-primary px-8 py-3 font-semibold text-primary-foreground hover:bg-primary/90">
+                  Continuar
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Step 2: Shipping */}
+          {step === 2 && (
+            <div className="rounded-xl border border-border bg-surface p-6">
+              <h2 className="text-xl font-bold text-foreground mb-4">Envío</h2>
+              <div className="space-y-3 mb-6">
+                {SHIPPING_ZONES.map((z) => (
+                  <label key={z.id} className={`flex cursor-pointer items-center justify-between rounded-lg border p-4 transition-all ${shippingZone === z.id ? 'border-primary bg-primary/5' : 'border-border hover:border-primary/50'}`}>
+                    <div className="flex items-center gap-3">
+                      <input type="radio" name="zone" checked={shippingZone === z.id} onChange={() => setShippingZone(z.id)} className="text-primary" />
+                      <div>
+                        <p className="font-medium text-foreground">{z.name}</p>
+                        {z.fee > 0 && <p className="text-xs text-muted-foreground">
+                          {total >= z.freeFrom ? '¡Envío gratis!' : `Gs. ${z.fee.toLocaleString('es-PY')}`}
+                          {total < z.freeFrom && ` (gratis desde Gs. ${z.freeFrom.toLocaleString('es-PY')})`}
+                        </p>}
+                        {z.id === "pickup" && <p className="text-xs text-muted-foreground">Coronel Felipe Toledo, Mariano Roque Alonso</p>}
+                      </div>
+                    </div>
+                    <span className="text-sm font-bold text-foreground">{z.fee === 0 ? 'Gratis' : 'Gs. ' + z.fee.toLocaleString('es-PY')}</span>
+                  </label>
+                ))}
+              </div>
+
+              {shippingZone !== "pickup" && (
+                <div className="space-y-4">
+                  <h3 className="font-semibold text-foreground">Dirección de entrega</h3>
+                  {addresses.length > 0 && (
+                    <div className="flex flex-wrap gap-2 mb-3">
+                      {addresses.map(a => (
+                        <button key={a.id} onClick={() => setSelectedAddress(a.id)}
+                          className={`rounded-lg border px-3 py-2 text-xs transition-all ${selectedAddress === a.id ? 'border-primary bg-primary/5 text-primary' : 'border-border text-muted-foreground hover:border-primary/50'}`}>
+                          {a.label || a.street}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                  <input type="text" value={addressForm.street} onChange={e => setAddressForm({...addressForm, street: e.target.value})}
+                    placeholder="Calle y número" className="w-full rounded-lg border border-input bg-background px-4 py-3 text-sm outline-none focus:border-ring" />
+                  <input type="text" value={addressForm.city} onChange={e => setAddressForm({...addressForm, city: e.target.value})}
+                    placeholder="Ciudad" className="w-full rounded-lg border border-input bg-background px-4 py-3 text-sm outline-none focus:border-ring" />
+                  <input type="tel" value={addressForm.phone} onChange={e => setAddressForm({...addressForm, phone: e.target.value})}
+                    placeholder="Teléfono de contacto" className="w-full rounded-lg border border-input bg-background px-4 py-3 text-sm outline-none focus:border-ring" />
+                </div>
+              )}
+
+              <div className="mt-6 flex justify-between">
+                <button onClick={() => setStep(1)} className="rounded-lg border border-border px-6 py-3 text-sm font-medium text-foreground hover:bg-surface-light">Atrás</button>
+                <button onClick={() => setStep(3)} className="rounded-lg bg-primary px-8 py-3 font-semibold text-primary-foreground hover:bg-primary/90">Continuar</button>
+              </div>
+            </div>
+          )}
+
+          {/* Step 3: Payment */}
+          {step === 3 && (
+            <div className="rounded-xl border border-border bg-surface p-6">
+              <h2 className="text-xl font-bold text-foreground mb-4">Método de pago</h2>
+              <div className="space-y-3 mb-6">
+                {[
+                  { id: "whatsapp", label: "WhatsApp / Transferencia", desc: "Te contactamos para coordinar el pago", icon: "💬" },
+                  { id: "pagopar", label: "Pagopar", desc: "Tarjetas de crédito/débito, transferencia, pagaré", icon: "💳" },
+                  { id: "bancard", label: "Bancard", desc: "Visa, Mastercard — 3, 6 y 12 cuotas", icon: "💳" },
+                ].map((pm) => (
+                  <label key={pm.id} className={`flex cursor-pointer items-center justify-between rounded-lg border p-4 transition-all ${paymentMethod === pm.id ? 'border-primary bg-primary/5' : 'border-border hover:border-primary/50'}`}>
+                    <div className="flex items-center gap-3">
+                      <input type="radio" name="payment" checked={paymentMethod === pm.id} onChange={() => setPaymentMethod(pm.id)} className="text-primary" />
+                      <div>
+                        <p className="font-medium text-foreground">{pm.icon} {pm.label}</p>
+                        <p className="text-xs text-muted-foreground">{pm.desc}</p>
+                      </div>
+                    </div>
+                  </label>
+                ))}
+              </div>
+
+              {/* Order summary */}
+              <div className="rounded-lg bg-muted p-4 mb-6">
+                <h3 className="font-semibold text-foreground mb-3">Resumen del pedido</h3>
+                {items.map(i => (
+                  <div key={i.name} className="flex justify-between text-sm mb-2">
+                    <span className="text-muted-foreground">{i.name} x{i.quantity}</span>
+                    <span className="text-foreground font-medium">Gs. {(i.priceGs * i.quantity).toLocaleString('es-PY')}</span>
+                  </div>
+                ))}
+                <div className="border-t border-border mt-3 pt-3">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Subtotal</span>
+                    <span className="text-foreground">Gs. {total.toLocaleString('es-PY')}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Envío ({zone.name})</span>
+                    <span className="text-foreground">{shipping === 0 ? 'Gratis' : 'Gs. ' + shipping.toLocaleString('es-PY')}</span>
+                  </div>
+                  <div className="flex justify-between text-lg font-bold mt-2">
+                    <span className="text-foreground">Total</span>
+                    <span className="text-primary">Gs. {grandTotal.toLocaleString('es-PY')}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex justify-between">
+                <button onClick={() => setStep(2)} className="rounded-lg border border-border px-6 py-3 text-sm font-medium text-foreground hover:bg-surface-light">Atrás</button>
+                <button onClick={placeOrder} disabled={loading}
+                  className="rounded-lg bg-primary px-8 py-3 font-semibold text-primary-foreground hover:bg-primary/90 disabled:opacity-50">
+                  {loading ? 'Procesando...' : 'Confirmar pedido'}
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </section>
-      <Footer />
-      <CookieConsent />
+      <Footer /><CookieConsent />
     </>
   )
 }

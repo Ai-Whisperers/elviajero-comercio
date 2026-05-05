@@ -1938,7 +1938,7 @@
   },
   "supabase": {
     "url": "https://qyvokpribmbrosafntqa.supabase.co",
-    "anonKey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF5dm9rcHJpYm1icm9zYWZudHFhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ5MzU0OTQsImV4cCI6MjA2MDUxMTQ5NH0.cV8yF7fuylgLCLR4Hn3O2gQ8OAOhS7B7JmPUPw4SXRg",
+    "anonKey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF5dm9rcHJpYm1icm9zYWZudHFhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYzMTgxNTUsImV4cCI6MjA5MTg5NDE1NX0.ww_-gt4beuTcr_HbUCv0HmuKCw-J-HWTAI441yDSXRg",
     "tables": {
       "products": "products",
       "orders": "orders",

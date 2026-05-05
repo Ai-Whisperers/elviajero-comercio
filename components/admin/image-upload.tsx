@@ -1,20 +1,37 @@
-
 "use client"
-export function AdminImageUpload({ currentImage, onImageChange }: { currentImage?: string; onImageChange: (url: string) => void }) {
+import { useState } from "react"
+import { createClient } from "@/lib/supabase/client"
+
+interface ImageUploadProps {
+  onUpload: (url: string) => void
+  currentUrl?: string
+}
+
+export function ImageUpload({ onUpload, currentUrl }: ImageUploadProps) {
+  const [uploading, setUploading] = useState(false)
+  const [preview, setPreview] = useState(currentUrl || "")
+  const supabase = createClient()
+
+  const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setUploading(true)
+    const ext = file.name.split(".").pop()
+    const fileName = `products/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`
+    const { error } = await supabase.storage.from("ej_images").upload(fileName, file)
+    if (error) { setUploading(false); console.error(error); return }
+    const { data: { publicUrl } } = supabase.storage.from("ej_images").getPublicUrl(fileName)
+    setPreview(publicUrl)
+    onUpload(publicUrl)
+    setUploading(false)
+  }
+
   return (
-    <div className="flex items-center gap-4">
-      <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-lg bg-gray-800">
-        {currentImage ? <img src={currentImage} alt="" className="h-full w-full object-contain p-1" /> : <span className="text-2xl text-gray-600">📷</span>}
-      </div>
-      <label className="cursor-pointer rounded-lg border border-gray-700 px-4 py-2 text-sm text-gray-400 hover:text-white transition-all">
-        Subir imagen
-        <input type="file" accept="image/*" className="hidden" onChange={e => {
-          const file = e.target.files?.[0]
-          if (!file) return
-          const reader = new FileReader()
-          reader.onload = () => onImageChange(reader.result as string)
-          reader.readAsDataURL(file)
-        }} />
+    <div className="flex items-center gap-3">
+      {preview && <img src={preview} alt="" className="h-14 w-14 rounded-lg border border-gray-700 object-cover" />}
+      <label className="cursor-pointer rounded-lg bg-gray-800 border border-gray-700 px-3 py-2 text-xs text-gray-300 hover:bg-gray-700 transition-colors">
+        {uploading ? "Subiendo..." : "Elegir imagen"}
+        <input type="file" accept="image/*" onChange={handleFile} className="hidden" disabled={uploading} />
       </label>
     </div>
   )

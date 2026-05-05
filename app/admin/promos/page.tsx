@@ -1,35 +1,30 @@
 "use client"
 import { AdminShell, useAdminAuth } from "@/components/admin/admin-layout"
 import { useState, useEffect } from "react"
-import { createClient } from "@/lib/supabase/client"
 
 export default function AdminPromos() {
   const { authed } = useAdminAuth()
-  const supabase = createClient()
   const [promos, setPromos] = useState<any[]>([])
   const [showForm, setShowForm] = useState(false)
+  const [search, setSearch] = useState("")
+  const [loading, setLoading] = useState(true)
   const [form, setForm] = useState({ code: "", type: "percentage", value: 10, minPurchase: 0, maxUses: 100 })
 
   useEffect(() => {
-    if (authed) supabase.from("ej_promo_codes").select("*").then(({ data }) => {
-      if (data) setPromos(data)
-    })
-  }, [authed, supabase])
+    if (!authed) return
+    setLoading(true)
+    fetch("/api/admin/promos").then(r => r.json()).then(data => { if (Array.isArray(data)) setPromos(data); setLoading(false) })
+  }, [authed])
+
+  const filtered = search ? promos.filter(p => p.code.toLowerCase().includes(search.toLowerCase())) : promos
 
   const add = async () => {
-    const { data, error } = await supabase.from("ej_promo_codes").insert({
-      code: form.code, type: form.type, value: form.value,
-      min_purchase: form.minPurchase, max_uses: form.maxUses,
-    }).select().single()
-    if (!error && data) {
-      setPromos([...promos, data])
-      setShowForm(false)
-      setForm({ code: "", type: "percentage", value: 10, minPurchase: 0, maxUses: 100 })
-    }
+    const res = await fetch("/api/admin/promos", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ code: form.code, type: form.type, value: form.value, min_purchase: form.minPurchase, max_uses: form.maxUses }) })
+    if (res.ok) { const data = await res.json(); setPromos([...promos, data]); setShowForm(false); setForm({ code: "", type: "percentage", value: 10, minPurchase: 0, maxUses: 100 }) }
   }
 
   const remove = async (code: string) => {
-    await supabase.from("ej_promo_codes").delete().eq("code", code)
+    await fetch("/api/admin/promos?code=" + code, { method: "DELETE" })
     setPromos(promos.filter(p => p.code !== code))
   }
 
@@ -38,8 +33,13 @@ export default function AdminPromos() {
   return (
     <>
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-xl font-bold text-white">Códigos Promocionales</h1>
-        <button onClick={() => setShowForm(!showForm)} className="rounded-lg bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-500">{showForm ? "Cancelar" : "+ Nuevo"}</button>
+        <h1 className="text-xl font-bold text-white">Códigos Promocionales ({promos.length})</h1>
+        <div className="flex items-center gap-3">
+          <input type="text" value={search} onChange={e => setSearch(e.target.value)}
+            placeholder="Buscar código..."
+            className="w-48 rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-sm text-white outline-none focus:border-green-500" />
+          <button onClick={() => setShowForm(!showForm)} className="rounded-lg bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-500">{showForm ? "Cancelar" : "+ Nuevo"}</button>
+        </div>
       </div>
       {showForm && (
         <div className="mb-6 rounded-xl border border-gray-800 bg-gray-900 p-4 space-y-3">
@@ -55,14 +55,30 @@ export default function AdminPromos() {
           <button onClick={add} className="rounded-lg bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-500">Guardar</button>
         </div>
       )}
-      <div className="space-y-2">
-        {promos.map((p: any) => (
-          <div key={p.code} className="flex items-center justify-between rounded-xl border border-gray-800 bg-gray-900 p-4">
-            <div><p className="font-bold text-white">{p.code}</p><p className="text-xs text-gray-500">{p.type === "percentage" ? `${p.value}%` : `Gs. ${(p.value || 0).toLocaleString("es-PY")}`} · min Gs. {(p.min_purchase || 0).toLocaleString("es-PY")} · {p.used_count || 0}/{p.max_uses || 100}</p></div>
-            <button onClick={() => remove(p.code)} className="text-xs text-red-400 hover:underline">Eliminar</button>
-          </div>
-        ))}
-      </div>
+      {loading ? (
+        <div className="space-y-2">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <div key={i} className="animate-pulse rounded-xl border border-gray-800 bg-gray-900 p-4">
+              <div className="h-4 w-24 rounded bg-gray-800 mb-2" />
+              <div className="h-3 w-48 rounded bg-gray-800" />
+            </div>
+          ))}
+        </div>
+      ) : filtered.length === 0 ? (
+        <div className="flex flex-col items-center justify-center py-16 text-gray-500">
+          <svg className="w-12 h-12 mb-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" /></svg>
+          <p className="text-sm">{search ? "Sin resultados" : "Sin códigos promocionales"}</p>
+        </div>
+      ) : (
+        <div className="space-y-2">
+          {filtered.map((p: any) => (
+            <div key={p.code} className="flex items-center justify-between rounded-xl border border-gray-800 bg-gray-900 p-4">
+              <div><p className="font-bold text-white">{p.code}</p><p className="text-xs text-gray-500">{p.type === "percentage" ? `${p.value}%` : `Gs. ${(p.value || 0).toLocaleString("es-PY")}`} · min Gs. {(p.min_purchase || 0).toLocaleString("es-PY")} · {p.used_count || 0}/{p.max_uses || 100}</p></div>
+              <button onClick={() => remove(p.code)} className="text-xs text-red-400 hover:underline">Eliminar</button>
+            </div>
+          ))}
+        </div>
+      )}
     </>
   )
 }

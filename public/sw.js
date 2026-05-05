@@ -1,24 +1,48 @@
-const CACHE = "viajero-v1"
-const urls = ["/", "/tienda", "/login", "/register", "/mi-cuenta", "/faq", "/contacto", "/nosotros", "/blog"]
+const CACHE_NAME = 'elviajero-v2';
+const urlsToCache = ['/', '/tienda', '/login', '/register'];
 
-self.addEventListener("install", (e) => {
-  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(urls)))
+self.addEventListener('install', (event) => {
   self.skipWaiting()
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(urlsToCache))
+  );
+});
+
+self.addEventListener('fetch', (event) => {
+  if (event.request.method !== 'GET') {
+    event.respondWith(fetch(event.request))
+    return
+  }
+  event.respondWith(
+    caches.match(event.request).then((response) => {
+      return response || fetch(event.request).then((fetchResponse) => {
+        if (event.request.url.startsWith(self.location.origin) &&
+            event.request.url.includes('/_next/static/')) {
+          return fetchResponse
+        }
+        return caches.open(CACHE_NAME).then((cache) => {
+          try {
+            if (event.request.url.startsWith(self.location.origin)) {
+              cache.put(event.request, fetchResponse.clone())
+            }
+          } catch (e) {
+            // silently ignore unsupported request methods
+          }
+          return fetchResponse
+        })
+      })
+    })
+  )
 })
 
-self.addEventListener("activate", (e) => {
-  e.waitUntil(caches.keys().then((ks) => Promise.all(ks.filter((k) => k !== CACHE).map((k) => caches.delete(k)))))
-  self.clients.claim()
-})
-
-self.addEventListener("fetch", (e) => {
-  e.respondWith(
-    caches.match(e.request).then((r) => r || fetch(e.request).then((res) => {
-      if (e.request.url.startsWith(self.location.origin) && e.request.method === "GET") {
-        const clone = res.clone()
-        caches.open(CACHE).then((c) => c.put(e.request, clone))
-      }
-      return res
-    }))
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames
+          .filter((name) => name !== CACHE_NAME)
+          .map((name) => caches.delete(name))
+      )
+    })
   )
 })

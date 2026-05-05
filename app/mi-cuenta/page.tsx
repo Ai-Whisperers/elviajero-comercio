@@ -5,6 +5,7 @@ import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { CookieConsent } from "@/components/cookie-consent"
 import { WhatsAppFloat } from "@/components/whatsapp-float"
+import { MobileBottomNav } from "@/components/mobile-bottom-nav"
 import Link from "next/link"
 import content from "@/content/es.json"
 
