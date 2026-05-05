@@ -11,14 +11,14 @@ export default function AdminCategories() {
 
   useEffect(() => {
     if (!authed) return
-    supabase.from("categories").select("*").order("name").then(({ data }) => {
+    supabase.from("ej_categories").select("*").order("name").then(({ data }) => {
       if (data) setCats(data)
     })
   }, [authed, supabase])
 
   const add = async () => {
     if (!newCat.trim()) return
-    const { data, error } = await supabase.from("categories").insert({ name: newCat.trim() }).select().single()
+    const { data, error } = await supabase.from("ej_categories").insert({ name: newCat.trim() }).select().single()
     if (!error && data) {
       setCats([...cats, data])
       setNewCat("")
@@ -26,7 +26,7 @@ export default function AdminCategories() {
   }
 
   const remove = async (id: string) => {
-    await supabase.from("categories").delete().eq("id", id)
+    await supabase.from("ej_categories").delete().eq("id", id)
     setCats(cats.filter(c => c.id !== id))
   }
 

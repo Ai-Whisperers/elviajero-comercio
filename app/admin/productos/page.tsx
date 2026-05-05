@@ -2,6 +2,7 @@
 import { AdminShell, useAdminAuth } from "@/components/admin/admin-layout"
 import { useState, useEffect } from "react"
 import { createClient } from "@/lib/supabase/client"
+import { ImageUpload } from "@/components/image-upload"
 
 export default function AdminProducts() {
   const { authed } = useAdminAuth()
@@ -14,7 +15,7 @@ export default function AdminProducts() {
 
   useEffect(() => {
     if (!authed) return
-    supabase.from("products").select("*").order("name").then(({ data }) => {
+    supabase.from("ej_products").select("*").order("name").then(({ data }) => {
       if (data) setItems(data)
     })
   }, [authed, supabase])
@@ -22,7 +23,7 @@ export default function AdminProducts() {
   const save = async () => {
     if (editing === null) return
     const item = items[editing]
-    const { error } = await supabase.from("products").update(form).eq("id", item.id)
+    const { error } = await supabase.from("ej_products").update(form).eq("id", item.id)
     if (!error) {
       items[editing] = { ...item, ...form }
       setItems([...items])
@@ -32,7 +33,7 @@ export default function AdminProducts() {
 
   const add = async () => {
     if (!newForm.name) return
-    const { data, error } = await supabase.from("products").insert([newForm]).select()
+    const { data, error } = await supabase.from("ej_products").insert([newForm]).select()
     if (!error && data) {
       setItems([...items, ...data])
       setShowNew(false)
@@ -41,7 +42,7 @@ export default function AdminProducts() {
   }
 
   const remove = async (id: string) => {
-    await supabase.from("products").delete().eq("id", id)
+    await supabase.from("ej_products").delete().eq("id", id)
     setItems(items.filter(p => p.id !== id))
   }
 
@@ -62,6 +63,7 @@ export default function AdminProducts() {
             <input value={newForm.category || ""} onChange={e => setNewForm({...newForm, category: e.target.value})} placeholder="Categoría" className="rounded bg-gray-800 px-2 py-1 text-sm text-white border border-gray-700" />
             <input type="number" value={newForm.stock ?? 0} onChange={e => setNewForm({...newForm, stock: parseInt(e.target.value) || 0})} placeholder="Stock" className="rounded bg-gray-800 px-2 py-1 text-sm text-white border border-gray-700" />
           </div>
+          <ImageUpload onUpload={(url) => setNewForm({...newForm, image_url: url})} />
           <button onClick={add} className="rounded-lg bg-green-600 px-4 py-1.5 text-xs font-semibold text-white hover:bg-green-500">Guardar</button>
         </div>
       )}
@@ -69,13 +71,14 @@ export default function AdminProducts() {
       <div className="overflow-x-auto rounded-xl border border-gray-800">
         <table className="w-full text-sm">
           <thead className="border-b border-gray-800 bg-gray-900 text-left">
-            <tr><th className="px-4 py-3 text-gray-400">Nombre</th><th className="px-4 py-3 text-gray-400">Precio</th><th className="px-4 py-3 text-gray-400">Stock</th><th className="px-4 py-3 text-gray-400">Cat.</th><th className="px-4 py-3 text-gray-400">Acción</th></tr>
+            <tr><th className="px-4 py-3 text-gray-400">Img</th><th className="px-4 py-3 text-gray-400">Nombre</th><th className="px-4 py-3 text-gray-400">Precio</th><th className="px-4 py-3 text-gray-400">Stock</th><th className="px-4 py-3 text-gray-400">Cat.</th><th className="px-4 py-3 text-gray-400">Acción</th></tr>
           </thead>
           <tbody className="divide-y divide-gray-800">
             {items.map((p, i) => (
               <tr key={p.id || i} className="text-white hover:bg-gray-800/50">
                 {editing === i ? (
                   <>
+                    <td className="px-4 py-2"><ImageUpload onUpload={(url) => setForm({...form, image_url: url})} currentUrl={form.image_url || p.image_url} /></td>
                     <td className="px-4 py-2"><input value={form.name || p.name} onChange={e => setForm({...form, name: e.target.value})} className="w-full rounded bg-gray-800 px-2 py-1 text-sm text-white border border-gray-700" /></td>
                     <td className="px-4 py-2"><input value={form.price || p.price} onChange={e => setForm({...form, price: e.target.value})} className="w-full rounded bg-gray-800 px-2 py-1 text-sm text-white border border-gray-700" /></td>
                     <td className="px-4 py-2"><input type="number" value={form.stock ?? p.stock} onChange={e => setForm({...form, stock: parseInt(e.target.value) || 0})} className="w-20 rounded bg-gray-800 px-2 py-1 text-sm text-white border border-gray-700" /></td>
@@ -84,6 +87,13 @@ export default function AdminProducts() {
                   </>
                 ) : (
                   <>
+                    <td className="px-4 py-3">
+                      {p.image_url ? (
+                        <img src={p.image_url} alt="" className="h-10 w-10 rounded border border-gray-700 object-cover" />
+                      ) : (
+                        <div className="h-10 w-10 rounded border border-gray-700 bg-gray-800 flex items-center justify-center text-gray-600 text-xs">—</div>
+                      )}
+                    </td>
                     <td className="px-4 py-3">{p.name}</td>
                     <td className="px-4 py-3">{p.price}</td>
                     <td className="px-4 py-3"><span className={`${(p.stock || 0) > 5 ? "text-green-400" : (p.stock || 0) > 0 ? "text-yellow-400" : "text-red-400"}`}>{p.stock ?? 0}</span></td>

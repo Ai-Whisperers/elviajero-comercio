@@ -26,7 +26,7 @@ export default function AdminImport() {
         return obj
       })
 
-      const { error } = await supabase.from("products").insert(products)
+      const { error } = await supabase.from("ej_products").insert(products)
       if (error) setResult("Error: " + error.message)
       else setResult(`Importados ${products.length} productos.`)
       setImporting(false)

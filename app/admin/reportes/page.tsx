@@ -12,7 +12,7 @@ export default function SalesReport() {
 
   useEffect(() => {
     if (!authed) return
-    supabase.from("orders").select("*").order("created_at", { ascending: true }).then(({ data }) => {
+    supabase.from("ej_orders").select("*").order("created_at", { ascending: true }).then(({ data }) => {
       if (data) setOrders(data.map((o: any) => ({ ...o, items: typeof o.items === "string" ? JSON.parse(o.items) : o.items, date: o.created_at || o.date })))
     })
   }, [authed, supabase])

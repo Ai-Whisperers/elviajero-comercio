@@ -11,13 +11,13 @@ export default function AdminPromos() {
   const [form, setForm] = useState({ code: "", type: "percentage", value: 10, minPurchase: 0, maxUses: 100 })
 
   useEffect(() => {
-    if (authed) supabase.from("promo_codes").select("*").then(({ data }) => {
+    if (authed) supabase.from("ej_promo_codes").select("*").then(({ data }) => {
       if (data) setPromos(data)
     })
   }, [authed, supabase])
 
   const add = async () => {
-    const { data, error } = await supabase.from("promo_codes").insert({
+    const { data, error } = await supabase.from("ej_promo_codes").insert({
       code: form.code, type: form.type, value: form.value,
       min_purchase: form.minPurchase, max_uses: form.maxUses,
     }).select().single()
@@ -29,7 +29,7 @@ export default function AdminPromos() {
   }
 
   const remove = async (code: string) => {
-    await supabase.from("promo_codes").delete().eq("code", code)
+    await supabase.from("ej_promo_codes").delete().eq("code", code)
     setPromos(promos.filter(p => p.code !== code))
   }
 

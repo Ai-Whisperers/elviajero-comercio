@@ -1,9 +1,9 @@
-import { registerGateway, PaymentRequest } from "."
+import { registerGateway } from "./factory"
 
 registerGateway({
   name: "paypal",
-  processPayment: async ({ order, total }: PaymentRequest) => {
-    const orderId = order.id || Date.now().toString(36)
-    return { ok: true, sandbox: true, redirectUrl: `/pedido/confirmado?id=${order.id}` }
+  processPayment: async () => {
+    const orderId = Date.now().toString(36)
+    return { ok: true, sandbox: true, redirectUrl: `/pedido/confirmado?id=${orderId}` }
   },
 })

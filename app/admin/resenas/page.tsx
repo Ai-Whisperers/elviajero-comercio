@@ -11,13 +11,13 @@ export default function AdminReviews() {
 
   useEffect(() => {
     if (!authed) return
-    supabase.from("reviews").select("*").order("created_at", { ascending: false }).then(({ data }) => {
+    supabase.from("ej_reviews").select("*").order("created_at", { ascending: false }).then(({ data }) => {
       if (data) setReviews(data)
     })
   }, [authed, supabase])
 
   const remove = async (id: string) => {
-    await supabase.from("reviews").delete().eq("id", id)
+    await supabase.from("ej_reviews").delete().eq("id", id)
     setReviews(reviews.filter(r => r.id !== id))
   }
 

@@ -11,7 +11,7 @@ export default function AdminSubscribers() {
 
   useEffect(() => {
     if (!authed) return
-    supabase.from("subscribers").select("*").order("created_at", { ascending: false }).then(({ data }) => {
+    supabase.from("ej_subscribers").select("*").order("created_at", { ascending: false }).then(({ data }) => {
       if (data) setSubs(data)
     })
   }, [authed, supabase])
