@@ -41,7 +41,7 @@ export function Header({ onCartClick }: { onCartClick?: () => void }) {
 
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2">
-              <img src="/images/logo.png" alt="El Viajero" className="h-8 w-8 rounded-full" />
+              <img src="/images/logo-v2.png" alt="El Viajero" className="h-8 w-8 rounded-full" />
             </Link>
 
             {/* Desktop nav */}
