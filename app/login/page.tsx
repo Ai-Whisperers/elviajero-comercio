@@ -19,27 +19,14 @@ function LoginForm() {
     setError("")
     setLoading(true)
     try {
-      const res = await fetch("/api/auth", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "login", email, password }),
-      })
-      const data = await res.json()
-      if (data.ok) {
-        // Store full session in localStorage for admin layout
-        if (data.session) {
-          localStorage.setItem("elviajero_admin_session", JSON.stringify(data.session))
-        }
-        // Also set a simple auth token cookie as fallback
-        if (data.session?.access_token) {
-          document.cookie = "elviajero_admin_token=" + data.session.access_token + "; path=/; max-age=34560000; SameSite=lax; Secure"
-        }
+      const result = await login(email, password)
+      if (result.ok) {
         const params = new URLSearchParams(window.location.search)
         const redirectTo = params.get("redirect") || "/mi-cuenta"
         window.location.assign(redirectTo)
         return
       }
-      setError(data.error || "Error al iniciar sesión")
+      setError(result.error || "Error al iniciar sesión")
     } catch {
       setError("Error de conexión")
     }

@@ -68,8 +68,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => { if (user) { loadAddresses(); refreshOrders(); initFavorites(user) } else { initFavorites(null) } }, [user])
 
   const login = useCallback(async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({ email, password })
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password })
     if (error) return { ok: false, error: error.message === "Invalid login credentials" ? "Credenciales incorrectas" : error.message }
+    // Store session in localStorage for admin layout fallback
+    if (data?.session) {
+      localStorage.setItem("elviajero_admin_session", JSON.stringify({
+        access_token: data.session.access_token,
+        refresh_token: data.session.refresh_token,
+      }))
+    }
     return { ok: true }
   }, [supabase])
 
