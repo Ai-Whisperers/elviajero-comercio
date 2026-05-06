@@ -1,6 +1,31 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 267">
-  <rect width="400" height="267" fill="#F0F7F0"/>
-  <text x="200" y="120" font-family="sans-serif" font-size="64" text-anchor="middle">🚗</text>
-  <text x="200" y="180" font-family="sans-serif" font-size="16" fill="#1B5E20" text-anchor="middle" font-weight="600">Automoviles</text>
-  <text x="200" y="200" font-family="sans-serif" font-size="11" fill="#6B7B6B" text-anchor="middle">Próximamente</text>
+  <defs>
+    <linearGradient id="ag1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ECEFF1"/>
+      <stop offset="100%" stop-color="#CFD8DC"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="267" fill="url(#ag1)"/>
+  <!-- Road -->
+  <rect x="0" y="160" width="400" height="107" fill="#616161" opacity="0.15"/>
+  <line x1="0" y1="210" x2="400" y2="210" stroke="white" stroke-width="1" opacity="0.15" stroke-dasharray="20,15"/>
+  <!-- Car body -->
+  <path d="M60 160 L80 120 L140 110 L260 110 L320 120 L340 160Z" fill="#1B5E20" opacity="0.85"/>
+  <!-- Car roof -->
+  <path d="M130 110 L160 60 L240 60 L270 110Z" fill="#1B5E20" opacity="0.8"/>
+  <!-- Windows -->
+  <path d="M135 108 L158 65 L195 65 L195 108Z" fill="#B3E5FC" opacity="0.5"/>
+  <path d="M200 108 L200 65 L235 65 L265 108Z" fill="#B3E5FC" opacity="0.5"/>
+  <!-- Headlights -->
+  <ellipse cx="335" cy="140" rx="8" ry="5" fill="#FFD54F" opacity="0.6"/>
+  <ellipse cx="65" cy="140" rx="6" ry="4" fill="#F44336" opacity="0.4"/>
+  <!-- Wheels -->
+  <circle cx="130" cy="165" r="18" fill="#212121"/>
+  <circle cx="130" cy="165" r="10" fill="#424242"/>
+  <circle cx="130" cy="165" r="4" fill="#757575"/>
+  <circle cx="270" cy="165" r="18" fill="#212121"/>
+  <circle cx="270" cy="165" r="10" fill="#424242"/>
+  <circle cx="270" cy="165" r="4" fill="#757575"/>
+  <!-- Headlight beams -->
+  <path d="M340 140 L390 130 L390 150Z" fill="#FFD54F" opacity="0.08"/>
 </svg>

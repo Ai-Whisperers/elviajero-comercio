@@ -1,1 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64"><rect width="64" height="64" rx="12" fill="#1B5E20"/><text x="32" y="40" text-anchor="middle" fill="white" font-size="28" font-family="sans-serif" font-weight="bold">EV</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="favmount" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2E7D32"/>
+      <stop offset="100%" stop-color="#1B5E20"/>
+    </linearGradient>
+  </defs>
+  <!-- Base rounded square -->
+  <rect width="64" height="64" rx="14" fill="url(#favmount)"/>
+  <!-- Mountain peak (bold, simple) -->
+  <path d="M14 52 L24 22 L34 52Z" fill="white" opacity="0.95"/>
+  <!-- Snow -->
+  <path d="M24 22 L22 30 L26 30Z" fill="#C8E6C9"/>
+  <!-- Trail (orange stripe, thin) -->
+  <path d="M26 30 Q28 34 27 38 Q26 42 28 46 Q28 48 27 52" stroke="#FFB300" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.8"/>
+  <!-- Star hint -->
+  <circle cx="44" cy="20" r="2" fill="white" opacity="0.4"/>
+</svg>

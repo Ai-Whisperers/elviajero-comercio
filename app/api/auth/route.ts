@@ -32,9 +32,8 @@ let _adminSvcClient: ReturnType<typeof createClient> | null = null
 function getServiceClient() {
   if (!_adminSvcClient) {
     const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || ''
-    _adminSvcClient = createClient(supabaseUrl, supabaseAnonKey, {
+    _adminSvcClient = createClient(supabaseUrl, serviceKey, {
       auth: { persistSession: false },
-      global: { headers: { apikey: supabaseAnonKey, Authorization: `Bearer ${serviceKey}` } },
     })
   }
   return _adminSvcClient
@@ -61,15 +60,18 @@ export async function POST(req: NextRequest) {
 
       let user = session?.user
 
-      // Fallback to token-based auth
+      // Fallback to token-based auth — call Supabase REST API directly
       if (!user && bearerToken) {
-        // Use service role client to verify the JWT (works with any valid Supabase JWT)
-        const svc = getServiceClient()
-        const { data: tokenUser, error } = await svc.auth.getUser(bearerToken)
-        if (!error && tokenUser?.user) {
-          user = tokenUser.user
-        } else {
-          console.error('Token auth error:', error?.message)
+        try {
+          const resp = await fetch(`${supabaseUrl}/auth/v1/user`, {
+            headers: { apikey: supabaseAnonKey, Authorization: `Bearer ${bearerToken}` },
+          })
+          if (resp.ok) {
+            const supaUser = await resp.json()
+            if (supaUser?.id) user = supaUser
+          }
+        } catch (e) {
+          console.error('Direct token verify error:', e)
         }
       }
 
@@ -77,9 +79,11 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ ok: false, error: 'No hay sesión' }, { status: 401 })
       }
 
-      // Use service client to read profile
+      // Use service role to read profile (bypasses RLS)
       const svc = getServiceClient()
-      const { data: profile } = await svc.from('profiles').select('*').eq('id', user.id).single()
+      const { data: profileRow } = await svc.from('profiles').select('name,phone,role,created_at').eq('id', user.id).single()
+      const profile = (profileRow || {}) as { name?: string; phone?: string; role?: string; created_at?: string }
+      console.error('PROFILE QUERY:', JSON.stringify({ userId: user.id, profileRow, supaUserKeys: Object.keys(user) }))
       return NextResponse.json({
         ok: true,
         user: {

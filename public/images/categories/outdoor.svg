@@ -1,6 +1,32 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 267">
-  <rect width="400" height="267" fill="#F0F7F0"/>
-  <text x="200" y="120" font-family="sans-serif" font-size="64" text-anchor="middle">🎒</text>
-  <text x="200" y="180" font-family="sans-serif" font-size="16" fill="#1B5E20" text-anchor="middle" font-weight="600">Accesorios</text>
-  <text x="200" y="200" font-family="sans-serif" font-size="11" fill="#6B7B6B" text-anchor="middle">Próximamente</text>
+  <defs>
+    <linearGradient id="og1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFF3E0"/>
+      <stop offset="100%" stop-color="#FFE0B2"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="267" fill="url(#og1)"/>
+  <!-- Backpack body -->
+  <rect x="140" y="70" width="120" height="130" rx="12" fill="#FF6F00" opacity="0.85"/>
+  <!-- Backpack flap -->
+  <path d="M140 85 Q200 60 260 85" fill="#E65100" opacity="0.7"/>
+  <!-- Backpack pocket -->
+  <rect x="160" y="105" width="80" height="60" rx="6" fill="#FF8F00" opacity="0.5"/>
+  <!-- Backpack straps -->
+  <path d="M150 80 Q145 130 155 170" stroke="#5D4037" stroke-width="4" fill="none" opacity="0.4"/>
+  <path d="M250 80 Q255 130 245 170" stroke="#5D4037" stroke-width="4" fill="none" opacity="0.4"/>
+  <!-- Water bottle side -->
+  <rect x="262" y="100" width="20" height="50" rx="4" fill="#0288D1" opacity="0.7"/>
+  <rect x="262" y="100" width="20" height="10" rx="3" fill="#01579B" opacity="0.5"/>
+  <!-- Compass -->
+  <circle cx="210" cy="130" r="15" fill="white" opacity="0.4"/>
+  <circle cx="210" cy="130" r="12" fill="#E0E0E0" opacity="0.5"/>
+  <path d="M210 120 L210 140 M200 130 L220 130" stroke="#F44336" stroke-width="1.5" opacity="0.4"/>
+  <!-- Ground shadow -->
+  <ellipse cx="200" cy="200" rx="100" ry="10" fill="#5D4037" opacity="0.08"/>
+  <!-- Pine trees background -->
+  <polygon points="50,200 65,140 80,200" fill="#388E3C" opacity="0.3"/>
+  <polygon points="320,200 338,120 356,200" fill="#2E7D32" opacity="0.25"/>
+  <rect x="60" y="140" width="4" height="30" fill="#5D4037" opacity="0.2"/>
+  <rect x="334" y="120" width="4" height="40" fill="#5D4037" opacity="0.2"/>
 </svg>
