@@ -1,5 +1,5 @@
 {
-  "name": "elviajero-comercio",
+  "name": "elviajero",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -10,6 +10,14 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
+    "@ai-whisperers/admin": "file:./packages/admin",
+    "@ai-whisperers/auth": "file:./packages/auth",
+    "@ai-whisperers/commerce": "file:./packages/commerce",
+    "@ai-whisperers/i18n": "file:./packages/i18n",
+    "@ai-whisperers/seo": "file:./packages/seo",
+    "@ai-whisperers/theme": "file:./packages/theme",
+    "@ai-whisperers/ui": "file:./packages/ui",
+    "@ai-whisperers/whatsapp": "file:./packages/whatsapp",
     "@radix-ui/react-dialog": "^1.1.15",
     "@radix-ui/react-dropdown-menu": "^2.1.16",
     "@radix-ui/react-popover": "^1.1.15",

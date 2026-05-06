@@ -9,10 +9,10 @@
 
 **Build & Deploy:**
 ```bash
-cd /tmp/elviajero-comercio
+cd /tmp/elviajero
 npm run build
-docker build -t elviajero-comercio:prod .
-docker service update --force elviajero-comercio_web
+docker build -t elviajero:prod .
+docker service update --force elviajero_web
 ```
 
 ---

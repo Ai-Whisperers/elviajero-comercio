@@ -9,7 +9,7 @@ const ga = c.analytics?.ga4 || {}
 // Extend Window type
 declare global {
   interface Window {
-    dataLayer?: any[]
+    dataLayer: any[]
   }
 }
 

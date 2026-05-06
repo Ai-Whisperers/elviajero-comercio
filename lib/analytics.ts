@@ -1,18 +1,10 @@
-
 "use client"
 import { useEffect } from "react"
-
-declare global {
-  interface Window { gtag?: any; fbq?: any; dataLayer?: any[] }
-}
 
 export function trackEvent(event: string, data?: Record<string, any>) {
   try {
     if (typeof window !== "undefined" && "gtag" in window) {
-      window.gtag?.("event", event, data)
-    }
-    if (typeof window !== "undefined" && "fbq" in window) {
-      window.fbq?.("track", event, data)
+      ;(window as any).gtag?.("event", event, data)
     }
   } catch {}
 }

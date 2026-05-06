@@ -1,0 +1,51 @@
+// Color palettes for Ai-Whisperers client sites
+export const colors = {
+  // Storefront: Outdoor/green theme
+  storefront: {
+    primary: '#1B5E20',
+    primaryForeground: '#FFFFFF',
+    secondary: '#37474F',
+    accent: '#E65100',
+    background: '#FAFAFA',
+    foreground: '#1A1A2E',
+    muted: '#F0F7F0',
+    mutedForeground: '#6B7280',
+    border: '#E0E0E0',
+    card: '#FFFFFF',
+    ring: '#1B5E20',
+    destructive: '#C62828',
+    success: '#2E7D32',
+    warning: '#EF6C00',
+  },
+  // Admin: Emerald/zinc dark theme
+  admin: {
+    primary: '#10B981',
+    primaryForeground: '#FFFFFF',
+    background: '#0A0A0B',
+    foreground: '#FAFAFA',
+    muted: '#27272A',
+    mutedForeground: '#A1A1AA',
+    border: '#27272A',
+    card: '#18181B',
+    ring: '#10B981',
+    destructive: '#EF4444',
+    success: '#22C55E',
+    warning: '#F59E0B',
+  },
+  // Light/dark mode variants
+  dark: {
+    primary: '#4CAF50',
+    primaryForeground: '#0A0A0A',
+    secondary: '#607D8B',
+    background: '#0A0A0A',
+    foreground: '#EAEAEA',
+    muted: '#1A1A2E',
+    mutedForeground: '#A0A0B0',
+    border: '#2A2A3E',
+    card: '#1A1A2E',
+    ring: '#4CAF50',
+    destructive: '#EF5350',
+    success: '#66BB6A',
+    warning: '#FFA726',
+  },
+}

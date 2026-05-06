@@ -1,5 +1,5 @@
 #!/bin/bash
-SERVICES="elviajero-comercio_web"
+SERVICES="elviajero_web"
 for svc in $SERVICES; do
   REPLICAS=$(docker service ls --filter name=$svc --format "{{.Replicas}}" 2>/dev/null)
   READY=$(echo "$REPLICAS" | cut -d'/' -f1)

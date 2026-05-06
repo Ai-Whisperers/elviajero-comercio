@@ -2,7 +2,7 @@ version: '3.8'
 services:
   web:
     build: .
-    image: elviajero-comercio:prod
+    image: elviajero:prod
     ports:
       - "3000"
     networks:
@@ -27,9 +27,6 @@ services:
       replicas: 2
       restart_policy:
         condition: any
-        delay: 5s
-        max_attempts: 3
-        window: 120s
       resources:
         limits:
           cpus: '0.5'

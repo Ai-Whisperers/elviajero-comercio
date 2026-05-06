@@ -56,14 +56,14 @@ Run this SQL in the Supabase Dashboard SQL Editor:
 https://supabase.com/dashboard/project/qyvokpribmbrosafntqa/sql/new
 ```
 
-SQL file: `/root/elviajero-comercio/supabase/migrations/001_elviajero_schema.sql`
+SQL file: `/root/elviajero/supabase/migrations/001_elviajero_schema.sql`
 
 This creates all 10 tables + RLS policies + auto-profile trigger.
 
 ### WP6: Seed Data
 After tables are created, run:
 ```bash
-cd /root/elviajero-comercio
+cd /root/elviajero
 npx tsx scripts/seed.ts
 ```
 This seeds products from content/es.json and creates an admin user.
@@ -78,9 +78,9 @@ In Supabase Dashboard:
 
 ### WP7: Deploy
 ```bash
-cd /root/elviajero-comercio
-docker build -t elviajero-comercio:prod .
-docker stack deploy -c docker-compose.yml elviajero-comercio
+cd /root/elviajero
+docker build -t elviajero:prod .
+docker stack deploy -c docker-compose.yml elviajero
 ```
 
 ## Files Changed

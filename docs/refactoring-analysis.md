@@ -1,7 +1,7 @@
 # El Viajero — Refactoring Targets & Abstractions
 
 Date: 2026-05-04
-Repo: /root/elviajero-comercio
+Repo: /root/elviajero
 
 ---
 
