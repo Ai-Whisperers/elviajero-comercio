@@ -1,5 +1,5 @@
 type Lang = "es" | "en" | "gn"
-import { STORAGE_KEYS } from "@/lib/storage-keys"
+import { STORAGE_KEYS } from "@ai-whisperers/auth/storage-keys"
 
 let currentLang: Lang = "es"
 

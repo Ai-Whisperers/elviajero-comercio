@@ -1,6 +1,6 @@
 "use client"
 import { useState } from "react"
-import { createClient } from "@/lib/supabase/client"
+import { createClient } from "@ai-whisperers/auth/supabase/client"
 
 interface ImageUploadProps {
   onUpload: (url: string) => void

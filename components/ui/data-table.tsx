@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useMemo } from "react"
-import { cn } from "@/lib/utils"
+import { cn } from "@ai-whisperers/ui/cn"
 import { ChevronUp, ChevronDown, ChevronsUpDown, Search } from "lucide-react"
 
 interface Column<T> {

@@ -5,7 +5,7 @@ import { Footer } from "@/components/footer"
 import { CookieConsent } from "@/components/cookie-consent"
 import { useState } from "react"
 import Link from "next/link"
-import { createClient } from "@/lib/supabase/client"
+import { createClient } from "@ai-whisperers/auth/supabase/client"
 
 function ForgotForm() {
   const [email, setEmail] = useState("")

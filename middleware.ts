@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import { updateSession } from '@/lib/supabase/middleware'
+import { createServerClient } from '@supabase/ssr'
 
 export async function middleware(request: NextRequest) {
   const { pathname } = new URL(request.url)
@@ -21,14 +21,29 @@ export async function middleware(request: NextRequest) {
 
   const isProtected = protectedPaths.some(p => pathname === p || pathname.startsWith(p))
 
-  if (isPublic) {
-    const res = await updateSession(request)
-    return res
-  }
+  // Always refresh session cookies
+  let supabaseResponse = NextResponse.next({ request })
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() { return request.cookies.getAll() },
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
+          supabaseResponse = NextResponse.next({ request })
+          cookiesToSet.forEach(({ name, value, options }) =>
+            supabaseResponse.cookies.set(name, value, options)
+          )
+        },
+      },
+    }
+  )
+  await supabase.auth.getUser()
+
+  if (isPublic) return supabaseResponse
 
   if (isProtected) {
-    const supabaseResponse = NextResponse.next()
-    const supabase = createMiddlewareClient(request, supabaseResponse)
     const { data: { session } } = await supabase.auth.getSession()
 
     if (!session) {
@@ -50,37 +65,14 @@ export async function middleware(request: NextRequest) {
       }
     }
 
-    // Return response with refreshed cookies
     return supabaseResponse
   }
 
-  const res = await updateSession(request)
-  return res
+  return supabaseResponse
 }
 
 export const config = {
   matcher: [
     '/((?!_next/static|_next/image|favicon\\.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
-}
-
-// Helper: create middleware-aware Supabase client
-import { createServerClient } from '@supabase/ssr'
-
-function createMiddlewareClient(req: NextRequest, res: NextResponse) {
-  return createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() { return req.cookies.getAll() },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value }) => req.cookies.set(name, value))
-          cookiesToSet.forEach(({ name, value, options }) =>
-            res.cookies.set(name, value, options)
-          )
-        },
-      },
-    }
-  )
 }

@@ -1,6 +1,6 @@
 "use client"
 import { useEffect, useState } from "react"
-import { useCart } from "@/lib/cart-context"
+import { useCart } from "@ai-whisperers/commerce/cart/cart-context"
 import content from "@/content/es.json"
 import Link from "next/link"
 import Image from "next/image"

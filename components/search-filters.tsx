@@ -1,7 +1,7 @@
 "use client"
 import { useState, useMemo } from "react"
 import content from "@/content/es.json"
-import { useCart } from "@/lib/cart-context"
+import { useCart } from "@ai-whisperers/commerce/cart/cart-context"
 import { ProductModal } from "@/components/product-modal"
 
 const c = content as any

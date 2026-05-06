@@ -1,5 +1,5 @@
 // Promo codes — serialized in localStorage so admin can add them
-import { STORAGE_KEYS } from "@/lib/storage-keys"
+import { STORAGE_KEYS } from "@ai-whisperers/auth/storage-keys"
 
 export interface PromoCode {
   code: string

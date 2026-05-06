@@ -1,7 +1,7 @@
 
 "use client"
 import { useState, useEffect } from "react"
-import { useAuth } from "@/lib/auth-context"
+import { useAuth } from "@ai-whisperers/auth/auth-context"
 
 interface QA { id: string; productName: string; userName: string; question: string; answer?: string; answerDate?: string; date: string }
 

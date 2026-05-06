@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { notifyStatusChange } from '@/lib/whatsapp'
-import { getAdminClient } from '@/lib/supabase/admin'
+import { createAdminClient } from '@ai-whisperers/auth/supabase/admin'
 
 export async function GET() {
   try {
-    const supabase = getAdminClient()
+    const supabase = createAdminClient()
     const { data } = await supabase.from('ej_orders').select('*').order('created_at', { ascending: false })
     return NextResponse.json({ orders: data || [] })
   } catch (err) { return NextResponse.json({ error: String(err) }, { status: 500 }) }
@@ -13,7 +13,7 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     const { action, order } = await req.json()
-    const supabase = getAdminClient()
+    const supabase = createAdminClient()
     if (action === 'create') {
       await supabase.from('ej_orders').insert({ id: order.id, user_id: order.userId || null, items: JSON.stringify(order.items), total: order.total, address_id: order.addressId || '', payment_method: order.paymentMethod || '', note: order.note || '' })
       return NextResponse.json({ ok: true, id: order.id })

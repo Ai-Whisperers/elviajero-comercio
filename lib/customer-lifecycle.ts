@@ -2,7 +2,7 @@
 // 1. Orders delivered > 3 days ago that haven't received a review request
 // 2. Abandoned carts > 1 hour that haven't been reminded
 
-import { getAdminClient } from "@/lib/supabase/admin"
+import { createAdminClient } from "@ai-whisperers/auth/supabase/admin"
 import { sendWhatsApp } from "@/lib/whatsapp"
 
 const SITE_URL = "https://el-viajero.paragu-ai.com"
@@ -55,7 +55,7 @@ Válido por 24 horas ⏰`
 }
 
 export async function processReviewRequests() {
-  const supabase = getAdminClient()
+  const supabase = createAdminClient()
   const threeDaysAgo = new Date(Date.now() - 3 * 86400000).toISOString()
 
   // Find orders delivered > 3 days ago that haven't had review request
@@ -82,7 +82,7 @@ export async function processReviewRequests() {
 }
 
 export async function processAbandonedCarts() {
-  const supabase = getAdminClient()
+  const supabase = createAdminClient()
   const oneHourAgo = new Date(Date.now() - 3600000).toISOString()
   const twentyFourHoursAgo = new Date(Date.now() - 86400000).toISOString()
 

@@ -1,5 +1,5 @@
 "use client"
-import { useCart } from "@/lib/cart-context"
+import { useCart } from "@ai-whisperers/commerce/cart/cart-context"
 
 export function CartBadge({ onClick }: { onClick?: () => void }) {
   const { itemCount } = useCart()

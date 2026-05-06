@@ -1,7 +1,7 @@
 "use client"
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { createClient } from "@/lib/supabase/client"
+import { createClient } from "@ai-whisperers/auth/supabase/client"
 
 export function AuthMenu() {
   const [user, setUser] = useState<any>(null)

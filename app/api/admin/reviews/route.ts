@@ -1,18 +1,18 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getAdminClient } from "@/lib/supabase/admin"
+import { createAdminClient } from "@ai-whisperers/auth/supabase/admin"
 
 const TABLE = "ej_reviews"
 const ORDER_BY = "created_at"
 
 export async function GET() {
-  const supabase = getAdminClient()
+  const supabase = createAdminClient()
   const { data, error } = await supabase.from(TABLE).select("*").order(ORDER_BY, { ascending: false })
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
   return NextResponse.json(data ?? [])
 }
 
 export async function DELETE(req: NextRequest) {
-  const supabase = getAdminClient()
+  const supabase = createAdminClient()
   const { searchParams } = new URL(req.url)
   const id = searchParams.get("id")
   if (!id) return NextResponse.json({ error: "id required" }, { status: 400 })

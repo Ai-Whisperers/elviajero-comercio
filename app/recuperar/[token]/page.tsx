@@ -5,7 +5,7 @@ import { Footer } from "@/components/footer"
 import { CookieConsent } from "@/components/cookie-consent"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { createClient } from "@/lib/supabase/client"
+import { createClient } from "@ai-whisperers/auth/supabase/client"
 
 function ResetForm() {
   const [password, setPassword] = useState("")

@@ -1,6 +1,6 @@
-import { CartProvider } from "@/lib/cart-context"
+import { CartProvider } from "@ai-whisperers/commerce/cart/cart-context"
 import { ToastProvider } from "@/components/toast"
-import { AuthProvider } from "@/lib/auth-context"
+import { AuthProvider } from "@ai-whisperers/auth/auth-context"
 import ProductContent from "@/components/pages/product-content"
 
 export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {

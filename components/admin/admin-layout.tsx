@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { createClient } from "@/lib/supabase/client"
+import { createClient } from "@ai-whisperers/auth/supabase/client"
 import { AdminSidebar } from "./sidebar"
 import { Package, LogOut, ExternalLink, Menu, User } from "lucide-react"
 

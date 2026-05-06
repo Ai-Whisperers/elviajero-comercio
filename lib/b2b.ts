@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
-import { createClient as createSupaClient } from '@/lib/supabase/server'
+import { createClient as createSupaClient } from '@ai-whisperers/auth/supabase/server'
 
 export interface B2BCustomer {
   id: string

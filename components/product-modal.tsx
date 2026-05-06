@@ -1,6 +1,6 @@
 "use client"
 import { useState } from "react"
-import { useCart } from "@/lib/cart-context"
+import { useCart } from "@ai-whisperers/commerce/cart/cart-context"
 
 interface ProductModalProps {
   product: any
@@ -58,10 +58,12 @@ export function ProductModal({ product: p, onClose }: ProductModalProps) {
             onClick={() => {
               for (let i = 0; i < qty; i++) {
                 addItem({
+                  id: p.id || p.slug || p.name,
+                  productId: p.id || p.slug || p.name,
                   name: p.name,
                   price: p.price,
                   priceGs: parseGs(p.price),
-                  imageUrl: p.imageUrl,
+                  image: p.imageUrl,
                   category: p.category,
                   priceBefore: p.priceBefore,
                 })

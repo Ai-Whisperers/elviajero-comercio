@@ -1,11 +1,11 @@
 "use client"
-import { useAuth, AuthProvider } from "@/lib/auth-context"
+import { useAuth, AuthProvider } from "@ai-whisperers/auth/auth-context"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { CookieConsent } from "@/components/cookie-consent"
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { createClient } from "@/lib/supabase/client"
+import { createClient } from "@ai-whisperers/auth/supabase/client"
 
 const TIERS = [
   { name: "Bronce", minPoints: 0, multiplier: 1, color: "bg-amber-700" },

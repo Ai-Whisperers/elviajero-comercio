@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { notifyStatusChange } from '@/lib/whatsapp'
-import { createClient } from '@/lib/supabase/server'
+import { createClient } from '@ai-whisperers/auth/supabase/server'
 
 async function getUser(supabase: any) {
   const { data: { session } } = await supabase.auth.getSession()

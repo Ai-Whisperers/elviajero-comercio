@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getAdminClient } from "@/lib/supabase/admin"
+import { createAdminClient } from "@ai-whisperers/auth/supabase/admin"
 
 export async function GET() {
-  const supabase = getAdminClient()
+  const supabase = createAdminClient()
   const { data, error } = await supabase
     .from("profiles")
     .select("id, name, phone, role, created_at")

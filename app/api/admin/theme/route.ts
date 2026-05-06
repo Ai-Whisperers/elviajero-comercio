@@ -1,16 +1,16 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getAdminClient } from "@/lib/supabase/admin"
+import { createAdminClient } from "@ai-whisperers/auth/supabase/admin"
 
 const TABLE = "ej_admin_themes"
 
 export async function GET() {
-  const supabase = getAdminClient()
+  const supabase = createAdminClient()
   const { data } = await supabase.from(TABLE).select("*").maybeSingle()
   return NextResponse.json(data ?? null)
 }
 
 export async function POST(req: NextRequest) {
-  const supabase = getAdminClient()
+  const supabase = createAdminClient()
   const body = await req.json()
   const { data: existing } = await supabase.from(TABLE).select("id").maybeSingle()
   if (existing) {

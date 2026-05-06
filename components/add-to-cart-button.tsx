@@ -1,5 +1,5 @@
 "use client"
-import { useCart } from "@/lib/cart-context"
+import { useCart } from "@ai-whisperers/commerce/cart/cart-context"
 import { trackAddToCart } from "@/components/analytics"
 import { useState } from "react"
 
@@ -10,7 +10,7 @@ export function AddToCartButton({ product }: { product: any }) {
   const parseGs = (s: string) => parseInt(s.replace(/[^\d]/g, ""), 10) || 0
 
   const handleAdd = () => {
-    addItem({ name: product.name, price: product.price, priceGs: parseGs(product.price), imageUrl: product.imageUrl, category: product.category, priceBefore: product.priceBefore })
+    addItem({ id: product.id, productId: product.id, name: product.name, price: product.price, priceGs: parseGs(product.price), image: product.imageUrl, category: product.category, priceBefore: product.priceBefore })
     trackAddToCart(product.name, parseGs(product.price), 1)
   }
 

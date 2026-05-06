@@ -1,6 +1,6 @@
 
 "use client"
-import { useAuth } from "@/lib/auth-context"
+import { useAuth } from "@ai-whisperers/auth/auth-context"
 import { useEffect, useState } from "react"
 
 const KEY = "viajero_cart_merged"

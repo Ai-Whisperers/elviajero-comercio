@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server"
-import { getAdminClient } from "@/lib/supabase/admin"
+import { createAdminClient } from "@ai-whisperers/auth/supabase/admin"
 
 export async function GET() {
-  const supabase = getAdminClient()
+  const supabase = createAdminClient()
   const [usersRes, prodsRes, ordersRes] = await Promise.all([
     supabase.from("profiles").select("*", { count: "exact", head: true }),
     supabase.from("ej_products").select("*", { count: "exact", head: true }),

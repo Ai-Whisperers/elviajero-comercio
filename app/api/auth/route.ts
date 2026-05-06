@@ -8,7 +8,7 @@ const supabaseUrl = c.supabase.url
 const supabaseAnonKey = c.supabase.anonKey
 
 // Admin client with service role — can read all profiles
-function getAdminClient() {
+function createAdminClient() {
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
   return createClient(supabaseUrl, supabaseAnonKey, {
     auth: { persistSession: false },

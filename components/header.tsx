@@ -8,7 +8,7 @@ import { MobileNav } from "@/components/header/mobile-nav"
 import { SearchOverlay } from "@/components/header/search-overlay"
 import { DarkModeToggle } from "@/components/dark-mode-toggle"
 import { LanguageSwitcher } from "@/components/language-switcher"
-import { CurrencySwitcher } from "@/components/currency-switcher"
+import { CurrencySwitcher } from "@ai-whisperers/commerce/currency-switcher"
 import content from "@/content/es.json"
 
 const c = content as any

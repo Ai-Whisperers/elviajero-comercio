@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getAdminClient } from "@/lib/supabase/admin"
+import { createAdminClient } from "@ai-whisperers/auth/supabase/admin"
 
 // Content overrides live in a single row in ej_site_config
 // Key: "content_overrides" — JSONB object that gets merged over content/es.json
@@ -8,7 +8,7 @@ import { getAdminClient } from "@/lib/supabase/admin"
 const CONFIG_KEY = "content_overrides"
 
 export async function GET() {
-  const supabase = getAdminClient()
+  const supabase = createAdminClient()
   const { data, error } = await supabase
     .from("ej_site_config")
     .select("value")
@@ -23,7 +23,7 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
-  const supabase = getAdminClient()
+  const supabase = createAdminClient()
   const body = await req.json()
   
   // Upsert: replace entire overrides object

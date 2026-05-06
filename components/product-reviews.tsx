@@ -1,6 +1,6 @@
 "use client"
 import { getReviews, addReview } from "@/lib/reviews"
-import { useAuth } from "@/lib/auth-context"
+import { useAuth } from "@ai-whisperers/auth/auth-context"
 import { useState, useEffect } from "react"
 
 export function ProductReviews({ productName }: { productName: string }) {

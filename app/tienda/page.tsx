@@ -1,4 +1,4 @@
-import { CartProvider } from "@/lib/cart-context"
+import { CartProvider } from "@ai-whisperers/commerce/cart/cart-context"
 import { ToastProvider } from "@/components/toast"
 import TiendaContent from "@/components/pages/tienda-content"
 

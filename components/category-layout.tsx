@@ -5,7 +5,7 @@ import { CookieConsent } from "@/components/cookie-consent"
 import content from "@/content/es.json"
 import Link from "next/link"
 import Image from "next/image"
-import { CartProvider } from "@/lib/cart-context"
+import { CartProvider } from "@ai-whisperers/commerce/cart/cart-context"
 
 const c = content as any
 const products = c.home?.productCatalog?.products || []

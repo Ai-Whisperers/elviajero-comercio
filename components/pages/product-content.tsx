@@ -1,5 +1,5 @@
 "use client"
-import { useCart } from "@/lib/cart-context"
+import { useCart } from "@ai-whisperers/commerce/cart/cart-context"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { CartSidebar } from "@/components/cart-sidebar"
@@ -17,7 +17,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { notFound } from "next/navigation"
 import content from "@/content/es.json"
-import { createClient } from "@/lib/supabase/client"
+import { createClient } from "@ai-whisperers/auth/supabase/client"
 
 const c = content as any
 const staticProducts = c.home?.productCatalog?.products || []
@@ -57,8 +57,8 @@ export default function ProductPageContent({ slug }: { slug: string }) {
   const specLines = (product.specs || "").split("|").map((s: string) => s.trim()).filter(Boolean)
 
   const handleAdd = () => {
-    addItem({ name: product.name, price: product.price, priceGs: parseNum(product.price), imageUrl: product.imageUrl, category: product.category, priceBefore: product.priceBefore })
-    Array.from({ length: qty - 1 }).forEach(() => addItem({ name: product.name, price: product.price, priceGs: parseNum(product.price), imageUrl: product.imageUrl, category: product.category }))
+    addItem({ id: product.id || product.slug || product.name, productId: product.id || product.slug || product.name, name: product.name, price: product.price, priceGs: parseNum(product.price), image: product.imageUrl, category: product.category, priceBefore: product.priceBefore })
+    Array.from({ length: qty - 1 }).forEach(() => addItem({ id: product.id || product.slug || product.name, productId: product.id || product.slug || product.name, name: product.name, price: product.price, priceGs: parseNum(product.price), image: product.imageUrl, category: product.category }))
     setAdded(true)
     setTimeout(() => setAdded(false), 2000)
   }

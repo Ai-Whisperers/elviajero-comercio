@@ -3,13 +3,13 @@ export const dynamic = "force-dynamic"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { CookieConsent } from "@/components/cookie-consent"
-import { useAuth, AuthProvider } from "@/lib/auth-context"
-import { useCart } from "@/lib/cart-context"
-import { CartProvider } from "@/lib/cart-context"
+import { useAuth, AuthProvider } from "@ai-whisperers/auth/auth-context"
+import { useCart } from "@ai-whisperers/commerce/cart/cart-context"
+import { CartProvider } from "@ai-whisperers/commerce/cart/cart-context"
 import { ToastProvider } from "@/components/toast"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { createClient } from "@/lib/supabase/client"
+import { createClient } from "@ai-whisperers/auth/supabase/client"
 
 const SHIPPING_ZONES = [
   { id: "asu", name: "Asunción", fee: 15000, freeFrom: 300000 },
@@ -249,7 +249,7 @@ function CheckoutForm() {
                 {items.map(i => (
                   <div key={i.name} className="flex justify-between text-sm mb-2">
                     <span className="text-muted-foreground">{i.name} x{i.quantity}</span>
-                    <span className="text-foreground font-medium">Gs. {(i.priceGs * i.quantity).toLocaleString('es-PY')}</span>
+                    <span className="text-foreground font-medium">Gs. {((i.priceGs ?? 0) * i.quantity).toLocaleString('es-PY')}</span>
                   </div>
                 ))}
                 <div className="border-t border-border mt-3 pt-3">

@@ -19,7 +19,7 @@ export default function AdminPhotos() {
     setUploading(productId)
     const ext = file.name.split(".").pop()
     const fileName = `products/${productId}-${Date.now()}.${ext}`
-    const { createClient } = await import("@/lib/supabase/client")
+    const { createClient } = await import("@ai-whisperers/auth/supabase/client")
     const supabase = createClient()
 
     const { error } = await supabase.storage.from("ej_images").upload(fileName, file)

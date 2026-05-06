@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getAdminClient } from "@/lib/supabase/admin"
+import { createAdminClient } from "@ai-whisperers/auth/supabase/admin"
 
 const TABLE = "ej_products"
 
 export async function POST(req: NextRequest) {
-  const supabase = getAdminClient()
+  const supabase = createAdminClient()
   try {
     const { products } = await req.json()
     if (!Array.isArray(products) || products.length === 0) {

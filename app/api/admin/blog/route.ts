@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getAdminClient } from "@/lib/supabase/admin"
+import { createAdminClient } from "@ai-whisperers/auth/supabase/admin"
 
 // Blog posts stored in ej_site_config under key "blog_posts"
 const KEY = "blog_posts"
 
 export async function GET() {
-  const supabase = getAdminClient()
+  const supabase = createAdminClient()
   const { data, error } = await supabase
     .from("ej_site_config")
     .select("value")
@@ -21,7 +21,7 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
-  const supabase = getAdminClient()
+  const supabase = createAdminClient()
   const body = await req.json()
   
   // Get existing posts, add new one
@@ -59,7 +59,7 @@ export async function POST(req: NextRequest) {
 }
 
 export async function PATCH(req: NextRequest) {
-  const supabase = getAdminClient()
+  const supabase = createAdminClient()
   const body = await req.json()
   const slug = body.original_slug || body.slug
   
@@ -84,7 +84,7 @@ export async function PATCH(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
-  const supabase = getAdminClient()
+  const supabase = createAdminClient()
   const slug = new URL(req.url).searchParams.get("slug")
   if (!slug) return NextResponse.json({ error: "slug required" }, { status: 400 })
   

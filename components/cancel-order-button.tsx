@@ -1,7 +1,7 @@
 
 "use client"
 import { useState } from "react"
-import { useAuth } from "@/lib/auth-context"
+import { useAuth } from "@ai-whisperers/auth/auth-context"
 
 export function CancelOrderButton({ orderId }: { orderId: string }) {
   const { orders } = useAuth()

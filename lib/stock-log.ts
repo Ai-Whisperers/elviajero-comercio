@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server'
+import { createClient } from '@ai-whisperers/auth/supabase/server'
 
 export async function logStockMovement(productId: string, productName: string, quantityChange: number, reason: string, referenceId?: string) {
   const supabase = await createClient()

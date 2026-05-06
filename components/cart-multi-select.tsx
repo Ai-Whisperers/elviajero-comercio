@@ -1,6 +1,6 @@
 "use client"
 import { useState } from "react"
-import { useCart } from "@/lib/cart-context"
+import { useCart } from "@ai-whisperers/commerce/cart/cart-context"
 
 export function CartMultiSelect() {
   const { items, removeItem } = useCart()

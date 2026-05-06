@@ -1,6 +1,6 @@
 "use client"
 import { createContext, useContext, useState, useEffect, ReactNode } from "react"
-import { STORAGE_KEYS } from "@/lib/storage-keys"
+import { STORAGE_KEYS } from "@ai-whisperers/auth/storage-keys"
 import es from "@/content/es.json"
 
 type Currency = "PYG" | "USD"

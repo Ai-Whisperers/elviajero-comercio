@@ -1,5 +1,5 @@
 "use client"
-import type { Order } from "@/lib/auth-context"
+import type { Order } from "@ai-whisperers/commerce/types"
 
 const steps = [
   { key: "pendiente", label: "Pendiente", icon: "📋" },

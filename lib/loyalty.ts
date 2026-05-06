@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server'
+import { createClient } from '@ai-whisperers/auth/supabase/server'
 
 export const LOYALTY_POINTS_PER_GS = 0.01 // 1 point per Gs. 100 spent
 export const LOYALTY_GS_PER_POINT = 50    // 50 points = Gs. 1 discount

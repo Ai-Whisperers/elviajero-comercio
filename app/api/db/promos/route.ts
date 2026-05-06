@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getAdminClient } from '@/lib/supabase/admin'
+import { createAdminClient } from '@ai-whisperers/auth/supabase/admin'
 
 export async function GET() {
   try {
-    const supabase = getAdminClient()
+    const supabase = createAdminClient()
     const { data } = await supabase.from('ej_promo_codes').select('*')
     return NextResponse.json({ promos: data || [] })
   } catch (err) { return NextResponse.json({ error: String(err) }, { status: 500 }) }
@@ -12,7 +12,7 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     const { action, promo } = await req.json()
-    const supabase = getAdminClient()
+    const supabase = createAdminClient()
     if (action === 'create') {
       await supabase.from('ej_promo_codes').insert({ code: promo.code, type: promo.type, value: promo.value, min_purchase: promo.minPurchase || 0, max_uses: promo.maxUses || 100 })
       return NextResponse.json({ ok: true })

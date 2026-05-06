@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { getAdminClient } from "@/lib/supabase/admin"
+import { createAdminClient } from "@ai-whisperers/auth/supabase/admin"
 import { sendWhatsApp } from "@/lib/whatsapp"
 
 const SITE_URL = "https://el-viajero.paragu-ai.com"
@@ -20,7 +20,7 @@ async function sendCartReminder(cart: any) {
 }
 
 export async function GET() {
-  const supabase = getAdminClient()
+  const supabase = createAdminClient()
   const results: any = {}
 
   // 1. Review requests for delivered orders > 3 days

@@ -1,5 +1,5 @@
-// Re-export from new modular structure (backward compatibility)
+// Re-export from @ai-whisperers/auth (backward compatibility)
 "use client"
-export { AuthProvider } from "./auth/auth-context"
-export { useAuth } from "./auth/auth-context"
-export type { User, Address, Order, OrderItem } from "./auth/types"
+export { AuthProvider } from "@ai-whisperers/auth/auth-context"
+export { useAuth } from "@ai-whisperers/auth/auth-context"
+export type { User, Address, Order, OrderItem } from "@ai-whisperers/auth/types"

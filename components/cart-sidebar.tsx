@@ -1,5 +1,5 @@
 "use client"
-import { useCart } from "@/lib/cart-context"
+import { useCart } from "@ai-whisperers/commerce/cart/cart-context"
 import { CartEmptyState } from "@/components/ui"
 import { useState, useEffect } from "react"
 import Link from "next/link"
@@ -21,7 +21,7 @@ export function CartSidebar({ open, onClose }: { open: boolean; onClose: () => v
 
   const whatsappMsg = encodeURIComponent(
     "¡Hola! Quiero hacer un pedido:\n" +
-      items.map((i) => `- ${i.name} x${i.quantity}: ${formatGs(i.priceGs * i.quantity)}`).join("\n") +
+      items.map((i) => `- ${i.name} x${i.quantity}: ${formatGs((i.priceGs ?? 0) * i.quantity)}`).join("\n") +
       `\n\nTotal: ${formatGs(total)}\n\n¿Formas de pago y envío?`
   )
 
@@ -48,7 +48,7 @@ export function CartSidebar({ open, onClose }: { open: boolean; onClose: () => v
                   {item.priceBefore && (
                     <p className="text-xs text-muted-foreground line-through">{item.priceBefore}</p>
                   )}
-                  <p className="text-primary font-bold">{formatGs(item.priceGs * item.quantity)}</p>
+                  <p className="text-primary font-bold">{formatGs((item.priceGs ?? 0) * item.quantity)}</p>
                 </div>
                 <button
                   onClick={() => removeItem(item.name)}

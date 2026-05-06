@@ -1,6 +1,6 @@
 "use client"
 import { useState, useEffect } from "react"
-import { useAuth } from "@/lib/auth-context"
+import { useAuth } from "@ai-whisperers/auth/auth-context"
 interface C { id: string; postSlug: string; userName: string; text: string; date: string }
 const KEY = "viajero_blog_comments"
 export function BlogComments({ postSlug }: { postSlug: string }) {
