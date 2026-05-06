@@ -1,15 +1,20 @@
 "use client"
 import { AdminShell, useAdminAuth } from "@/components/admin/admin-layout"
 import { useState, useEffect } from "react"
+import { PageHeader, EmptyState, TableSkeleton } from "@/components/admin/ui"
 
 export default function AdminSubscribers() {
   const { authed } = useAdminAuth()
   const [subs, setSubs] = useState<any[]>([])
   const [copied, setCopied] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     if (!authed) return
-    fetch("/api/admin/subscribers").then(r => r.json()).then(data => { if (Array.isArray(data)) setSubs(data) })
+    setLoading(true)
+    fetch("/api/admin/subscribers").then(r => r.json()).then(data => {
+      if (Array.isArray(data)) setSubs(data); setLoading(false)
+    })
   }, [authed])
 
   const copyAll = () => {
@@ -20,17 +25,32 @@ export default function AdminSubscribers() {
 
   return (
     <>
-      <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-white">Suscriptores ({subs.length})</h1>
-        <button onClick={copyAll} className="rounded-lg border border-zinc-700/60 px-3 py-1.5 text-xs text-zinc-400 hover:text-white transition-all">{copied ? "Copiado!" : "Copiar todos"}</button>
-      </div>
+      <PageHeader title={"Suscriptores (" + subs.length + ")"} actions={
+        subs.length > 0 && (
+          <button onClick={copyAll} className="rounded-lg border border-zinc-700/60 px-3 py-1.5 text-xs text-zinc-400 hover:text-white transition-all">
+            {copied ? "Copiado!" : "Copiar todos los emails"}
+          </button>
+        )
+      } />
       <div className="rounded-xl border border-zinc-800/60">
         <div className="max-h-96 overflow-y-auto">
-          {subs.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-16 text-zinc-500"><svg className="w-12 h-12 mb-4 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg><p className="text-sm text-zinc-500">Sin suscriptores todavía</p></div>
+          {loading ? (
+            <div className="p-4"><TableSkeleton rows={6} cols={1} /></div>
+          ) : subs.length === 0 ? (
+            <EmptyState
+              icon={
+                <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+              }
+              title="Sin suscriptores todavía"
+            />
           ) : (
             subs.map((s, i) => (
-              <div key={i} className="border-b border-zinc-800/60 px-4 py-3 text-sm text-zinc-300 hover:bg-zinc-800 transition-all">{s.email}</div>
+              <div key={i} className="border-b border-zinc-800/60 px-4 py-3 text-sm text-zinc-300 hover:bg-zinc-800 transition-all flex items-center justify-between">
+                <span>{s.email}</span>
+                <span className="text-xs text-zinc-600">{s.created_at ? new Date(s.created_at).toLocaleDateString("es") : ""}</span>
+              </div>
             ))
           )}
         </div>

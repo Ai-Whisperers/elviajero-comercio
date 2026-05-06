@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://el-viajero.paragu-ai.com"),
   title: "El Viajero — Tu Aventura Empieza Acá",
   description: "Camping, pesca, accesorios para auto y moto, equipo outdoor. Todo para tu aventura en Paraguay.",
-  icons: { icon: "/images/favicon.svg", apple: "/images/favicon.svg" },
+  icons: { icon: "/images/favicon.png", apple: "/images/favicon.png" },
   manifest: "/manifest.json",
   appleWebApp: { capable: true, statusBarStyle: "black-translucent" },
   themeColor: "#1B5E20",

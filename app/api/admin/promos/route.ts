@@ -18,6 +18,18 @@ export async function POST(req: NextRequest) {
   return NextResponse.json(data?.[0] ?? null)
 }
 
+export async function PATCH(req: NextRequest) {
+  const supabase = getAdminClient()
+  const body = await req.json()
+  const { original_code, ...updates } = body
+  const query = supabase.from(TABLE).update(updates)
+  const code = original_code || body.code
+  if (code) query.eq("code", code)
+  const { data, error } = await query.select()
+  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  return NextResponse.json(data?.[0] ?? null)
+}
+
 export async function DELETE(req: NextRequest) {
   const supabase = getAdminClient()
   const { searchParams } = new URL(req.url)

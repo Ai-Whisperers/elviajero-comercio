@@ -1,6 +1,7 @@
 'use client'
 import { AdminShell, useAdminAuth } from "@/components/admin/admin-layout"
 import { useState, useEffect } from "react"
+import { StatsGridSkeleton } from "@/components/admin/ui"
 function DashboardContent() {
   const { authed } = useAdminAuth()
   const [stats, setStats] = useState({ users: 0, orders: 0, revenue: 0, products: 0, monthOrders: 0, monthRevenue: 0 })
@@ -22,6 +23,10 @@ function DashboardContent() {
     <>
       <h1 className="mb-8 text-2xl font-bold text-white">Dashboard</h1>
 
+      {stats.products === 0 && stats.users === 0 ? (
+        <StatsGridSkeleton count={5} />
+      ) : (
+      <>
       {/* Quick Actions */}
       <div className="mb-8">
         <h2 className="mb-3 text-xs font-semibold text-zinc-500 uppercase tracking-wider">Acciones rápidas</h2>
@@ -82,6 +87,8 @@ function DashboardContent() {
           </div>
         </>
       )}
+      </>
+    )}
     </>
   )
 }

@@ -1,10 +1,9 @@
 "use client"
 import { AdminShell, useAdminAuth } from "@/components/admin/admin-layout"
 import { useState, useEffect } from "react"
-import Link from "next/link"
 import {
   PageHeader, SearchInput, FilterBar, SummaryBar, OrderCard,
-  CardSkeleton, EmptyState, Badge,
+  CardSkeleton, EmptyState,
 } from "@/components/admin/ui"
 
 const statusOptions = [
@@ -16,6 +15,8 @@ const statusOptions = [
   { key: "cancelado", label: "Cancelado", icon: "❌" },
 ]
 
+const PER_PAGE = 20
+
 export default function AdminOrders() {
   const { authed } = useAdminAuth()
   const [orders, setOrders] = useState<any[]>([])
@@ -24,7 +25,7 @@ export default function AdminOrders() {
   const [loading, setLoading] = useState(true)
   const [noteInput, setNoteInput] = useState<string | null>(null)
   const [noteText, setNoteText] = useState("")
-  const [statusUpdating, setStatusUpdating] = useState<string | null>(null)
+  const [page, setPage] = useState(1)
 
   useEffect(() => {
     if (!authed) return
@@ -36,10 +37,8 @@ export default function AdminOrders() {
   }, [authed])
 
   const update = async (orderId: string, newStatus: string) => {
-    setStatusUpdating(orderId)
     await fetch("/api/admin/orders", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: orderId, status: newStatus }) })
     setOrders(orders.map(o => o.id === orderId ? { ...o, status: newStatus } : o))
-    setStatusUpdating(null)
   }
 
   const saveNote = async (orderId: string) => {
@@ -67,6 +66,9 @@ export default function AdminOrders() {
     const n = parseInt((o.total || "0").replace(/[^0-9]/g, ""), 10) || 0
     return s + n
   }, 0)
+
+  const totalPages = Math.ceil(filtered.length / PER_PAGE)
+  const paged = filtered.slice((page - 1) * PER_PAGE, page * PER_PAGE)
 
   return (
     <>
@@ -102,34 +104,38 @@ export default function AdminOrders() {
           }
           title={search ? "No se encontraron pedidos" : "No hay pedidos todavía"}
           description={search ? "Probá con otros términos de búsqueda" : "Los pedidos aparecerán aquí cuando los clientes compren"}
-          actions={
-            <>
-              <Link href="/admin/productos" className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-700 bg-zinc-800/50 px-4 py-2 text-xs font-medium text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 hover:border-zinc-600 transition-all">
-                Ver productos
-              </Link>
-              <Link href="/tienda" className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 px-4 py-2 text-xs font-semibold text-white hover:bg-emerald-500 transition-all shadow-sm shadow-emerald-600/20">
-                Ir a la tienda
-                <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
-              </Link>
-            </>
-          }
         />
       ) : (
-        <div className="grid gap-3 lg:grid-cols-2">
-          {filtered.map(o => (
-            <OrderCard
-              key={o.id}
-              order={o}
-              onStatusChange={(id, s) => update(id, s)}
-              onNoteToggle={(id) => { setNoteInput(id); setNoteText(o.note || "") }}
-              noteInput={noteInput}
-              noteText={noteText}
-              onNoteChange={setNoteText}
-              onNoteSave={saveNote}
-              onNoteClose={() => setNoteInput(null)}
-            />
-          ))}
-        </div>
+        <>
+          <div className="grid gap-3 lg:grid-cols-2">
+            {paged.map(o => (
+              <OrderCard
+                key={o.id}
+                order={o}
+                onStatusChange={(id, s) => update(id, s)}
+                onNoteToggle={(id) => { setNoteInput(id); setNoteText(o.note || "") }}
+                noteInput={noteInput}
+                noteText={noteText}
+                onNoteChange={setNoteText}
+                onNoteSave={saveNote}
+                onNoteClose={() => setNoteInput(null)}
+              />
+            ))}
+          </div>
+          {totalPages > 1 && (
+            <div className="mt-6 flex items-center justify-between text-sm">
+              <span className="text-zinc-500">
+                Mostrando {(page - 1) * PER_PAGE + 1}-{Math.min(page * PER_PAGE, filtered.length)} de {filtered.length} pedidos
+              </span>
+              <div className="flex gap-2">
+                <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1}
+                  className="rounded-lg border border-zinc-700/60 px-3 py-1.5 text-xs text-zinc-400 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed">Anterior</button>
+                <button onClick={() => setPage(p => p + 1)} disabled={page >= totalPages}
+                  className="rounded-lg border border-zinc-700/60 px-3 py-1.5 text-xs text-zinc-400 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed">Siguiente</button>
+              </div>
+            </div>
+          )}
+        </>
       )}
     </>
   )
