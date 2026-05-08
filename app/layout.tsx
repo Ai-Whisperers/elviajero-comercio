@@ -2,6 +2,7 @@ import { ErrorBoundary } from "@/components/error-boundary"
 import type { Metadata } from "next"
 import "./globals.css"
 import { CurrencyProvider } from "@/lib/currency"
+import { AnalyticsProvider } from "@/components/analytics"
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://el-viajero.paragu-ai.com"),
@@ -24,6 +25,9 @@ export const metadata: Metadata = {
     title: "El Viajero",
     description: "Tu aventura empieza acá",
     images: ["https://el-viajero.paragu-ai.com/images/og-viajero.png"],
+  },
+  verification: {
+    google: process.env.NEXT_PUBLIC_GSC_VERIFICATION || "",
   },
   other: {
     "facebook-domain-verification": process.env.NEXT_PUBLIC_FB_VERIFICATION || "",
@@ -72,6 +76,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ErrorBoundary>
           <CurrencyProvider>{children}</CurrencyProvider>
         </ErrorBoundary>
+        <AnalyticsProvider />
       </body>
     </html>
   )

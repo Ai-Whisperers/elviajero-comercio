@@ -1,0 +1,38 @@
+{
+  "name": "@ai-whisperers/auth",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./supabase/server": {
+      "import": "./supabase/server.ts",
+      "types": "./supabase/server.ts"
+    },
+    "./supabase/client": {
+      "import": "./supabase/client.ts",
+      "types": "./supabase/client.ts"
+    },
+    "./supabase/admin": {
+      "import": "./supabase/admin.ts",
+      "types": "./supabase/admin.ts"
+    },
+    "./auth-context": {
+      "import": "./auth-context.tsx",
+      "types": "./auth-context.tsx"
+    },
+    "./types": {
+      "import": "./types.ts",
+      "types": "./types.ts"
+    },
+    "./storage-keys": {
+      "import": "./storage-keys.ts",
+      "types": "./storage-keys.ts"
+    }
+  },
+  "dependencies": {
+    "@supabase/ssr": "*",
+    "@supabase/supabase-js": "*",
+    "react": "*",
+    "next": "*"
+  }
+}

@@ -1,5 +1,7 @@
 "use client"
 export const dynamic = "force-dynamic"
+export const fetchCache = "force-no-store"
+export const runtime = "edge"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { CookieConsent } from "@/components/cookie-consent"

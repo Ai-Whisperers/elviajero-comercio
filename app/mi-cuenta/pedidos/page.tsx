@@ -1,5 +1,7 @@
 "use client"
 export const dynamic = "force-dynamic"
+export const fetchCache = "force-no-store"
+export const runtime = "edge"
 import { useAuth, AuthProvider } from "@ai-whisperers/auth/auth-context"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
@@ -75,7 +77,7 @@ function OrdersForm() {
                     </span>
                   </div>
                   <div className="divide-y divide-border">
-                    {order.items.map((item, i) => (
+                    {order.items.map((item: any, i: number) => (
                       <div key={i} className="flex items-center gap-3 py-2">
                         {item.imageUrl && (
                           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-muted">

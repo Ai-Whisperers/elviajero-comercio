@@ -7,21 +7,12 @@ services:
       - "3000"
     networks:
       - agent-net
+    env_file:
+      - .env
     environment:
       - NODE_ENV=production
       - NEXT_PUBLIC_SUPABASE_URL=https://qyvokpribmbrosafntqa.supabase.co
       - NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF5dm9rcHJpYm1icm9zYWZudHFhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYzMTgxNTUsImV4cCI6MjA5MTg5NDE1NX0.ww_-gt4beuTcr_HbUCv0HmuKCw-J-HWTAI441yDSXRg
-      - SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF5dm9rcHJpYm1icm9zYWZudHFhIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NjMxODE1NSwiZXhwIjoyMDkxODk0MTU1fQ.rphBsAVMuI_2X8RCU7D0JiGd8pqqdpcQ7vpUrirU06g
-      - NEXT_PUBLIC_BASE_URL=https://el-viajero.paragu-ai.com
-      - PYG_PAYMENT_GATEWAY=pagopar
-      # Payment keys — set these to activate real payments
-      - PAGOPAR_PUBLIC_KEY=${PAGOPAR_PUBLIC_KEY}
-      - PAGOPAR_PRIVATE_KEY=${PAGOPAR_PRIVATE_KEY}
-      - BANCARD_PUBLIC_KEY=${BANCARD_PUBLIC_KEY}
-      - BANCARD_PRIVATE_KEY=${BANCARD_PRIVATE_KEY}
-      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
-      # Email
-      - RESEND_API_KEY=${RESEND_API_KEY}
     deploy:
       mode: replicated
       replicas: 2

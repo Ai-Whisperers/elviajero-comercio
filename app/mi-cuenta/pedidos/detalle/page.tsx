@@ -1,6 +1,8 @@
 
 "use client"
 export const dynamic = "force-dynamic"
+export const fetchCache = "force-no-store"
+export const runtime = "edge"
 import { useAuth, AuthProvider } from "@ai-whisperers/auth/auth-context"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
@@ -56,7 +58,7 @@ function OrderDetailContent() {
             <div className="rounded-xl border border-border bg-surface p-5">
               <h2 className="mb-3 text-sm font-semibold text-foreground">Artículos</h2>
               <div className="divide-y divide-border">
-                {order.items.map((item, i) => (
+                {order.items.map((item: any, i: number) => (
                   <div key={i} className="flex items-center justify-between py-2">
                     <div>
                       <p className="text-sm text-foreground">{item.name}</p>

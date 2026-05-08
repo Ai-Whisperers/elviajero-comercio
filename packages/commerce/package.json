@@ -1,0 +1,27 @@
+{
+  "name": "@ai-whisperers/commerce",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./cart/cart-context": {
+      "import": "./dist/cart/cart-context.js",
+      "types": "./dist/cart/cart-context.d.ts"
+    },
+    "./currency-switcher": {
+      "import": "./dist/currency-switcher.js",
+      "types": "./dist/currency-switcher.d.ts"
+    },
+    "./types": {
+      "import": "./dist/types.js",
+      "types": "./dist/types.d.ts"
+    }
+  },
+  "dependencies": {
+    "sonner": "^2.0.7"
+  }
+}
