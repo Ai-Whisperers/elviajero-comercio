@@ -1,9 +1,0 @@
-import { registerGateway } from "./factory";
-registerGateway({
-    name: "stripe",
-    processPayment: async () => {
-        const orderId = Date.now().toString(36);
-        return { ok: true, sandbox: true, redirectUrl: `/pedido/confirmado?id=${orderId}` };
-    },
-});
-//# sourceMappingURL=stripe.js.map

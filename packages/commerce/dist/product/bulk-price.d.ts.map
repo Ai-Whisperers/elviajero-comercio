@@ -1,1 +1,0 @@
-{"version":3,"file":"bulk-price.d.ts","sourceRoot":"","sources":["../../src/product/bulk-price.tsx"],"names":[],"mappings":"AAEA,wBAAgB,YAAY,CAAC,SAAS,EAAE,MAAM,EAAE,QAAQ,EAAE,MAAM,GAAG,MAAM,CAKxE;AAED,wBAAgB,gBAAgB,CAAC,EAAE,SAAS,EAAE,QAAQ,EAAE,EAAE;IAAE,SAAS,EAAE,MAAM,CAAC;IAAC,QAAQ,EAAE,MAAM,CAAA;CAAE,kDAWhG"}
