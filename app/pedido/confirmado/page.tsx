@@ -13,7 +13,7 @@ import { Suspense } from "react"
 function ConfirmedContent() {
   const sp = useSearchParams()
   const orderId = sp.get("id") || ""
-  const { orders } = useAuth()
+  const { orders = [] } = useAuth()
   const order = orders.find(o => o.id === orderId)
 
   return (

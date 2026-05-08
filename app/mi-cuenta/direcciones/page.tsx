@@ -12,7 +12,7 @@ import Link from "next/link"
 const emptyAddr = { label: "", name: "", street: "", city: "", state: "", zip: "", phone: "", isDefault: false }
 
 function AddressesForm() {
-  const { addresses, addAddress, updateAddress, removeAddress } = useAuth()
+  const { addresses = [], addAddress, updateAddress, removeAddress } = useAuth()
   const [editing, setEditing] = useState<string | null>(null)
   const [showForm, setShowForm] = useState(false)
   const [form, setForm] = useState(emptyAddr)

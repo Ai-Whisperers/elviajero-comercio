@@ -20,7 +20,7 @@ const statusLabels: Record<string, string> = {
 }
 
 function OrdersForm() {
-  const { orders } = useAuth()
+  const { orders = [] } = useAuth()
   const [filter, setFilter] = useState("todos")
 
   const filtered = filter === "todos" ? orders : orders.filter(o => o.status === filter)
