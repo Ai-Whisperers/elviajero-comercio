@@ -12,8 +12,6 @@ import { ExitIntentPopup } from "@/components/exit-intent"
 import { NewsletterForm } from "@/components/newsletter-form"
 import { NewsletterSuccess } from "@/components/ui"
 import { WhatsAppFloat } from "@/components/whatsapp-float"
-import { CartProvider } from "@ai-whisperers/commerce/cart/cart-context"
-import { ToastProvider } from "@/components/toast"
 import content from "@/content/es.json"
 import Link from "next/link"
 import Image from "next/image"
@@ -364,10 +362,6 @@ function HomePage() {
 
 export default function Page() {
   return (
-    <CartProvider>
-      <ToastProvider>
-        <HomePage />
-      </ToastProvider>
-    </CartProvider>
+    <HomePage />
   )
 }

@@ -3,6 +3,8 @@ import type { Metadata } from "next"
 import "./globals.css"
 import { CurrencyProvider } from "@/lib/currency"
 import { AnalyticsProvider } from "@/components/analytics"
+import { CartProvider } from "@ai-whisperers/commerce/cart/cart-context"
+import { ToastProvider } from "@/components/toast"
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://el-viajero.paragu-ai.com"),
@@ -74,7 +76,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className="antialiased overflow-x-hidden">
         <ErrorBoundary>
-          <CurrencyProvider>{children}</CurrencyProvider>
+          <CurrencyProvider>
+            <CartProvider>
+              <ToastProvider>
+                {children}
+              </ToastProvider>
+            </CartProvider>
+          </CurrencyProvider>
         </ErrorBoundary>
         <AnalyticsProvider />
       </body>

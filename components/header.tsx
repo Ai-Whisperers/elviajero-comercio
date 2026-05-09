@@ -16,7 +16,6 @@ const submenu = c.categoryMenu || {}
 const NAV_ITEMS = [
   { href: "/", label: "Inicio" },
   { href: "/tienda", label: "Tienda" },
-  { href: "/productos", label: "Productos" },
   { href: "/blog", label: "Blog" },
   { href: "/nosotros", label: "Nosotros" },
   { href: "/promociones", label: "Ofertas" },

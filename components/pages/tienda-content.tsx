@@ -6,7 +6,6 @@ import { ProductModal } from "@/components/product-modal"
 import { CookieConsent } from "@/components/cookie-consent"
 import { SearchAndFilters } from "@/components/search-filters"
 import { CartProvider, useCart } from "@ai-whisperers/commerce/cart/cart-context"
-import { ToastProvider } from "@/components/toast"
 import { CartToastListener } from "@/components/cart-toast-listener"
 import { useWishlist, useRecentlyViewed } from "@/lib/wishlist"
 import { PriceUSD } from "@/components/price-usd"
@@ -164,9 +163,7 @@ function TiendaContent() {
 export default function TiendaPage() {
   return (
     <CartProvider>
-      <ToastProvider>
         <TiendaContent />
-      </ToastProvider>
     </CartProvider>
   )
 }
