@@ -3,14 +3,13 @@ import { createClient } from "@supabase/supabase-js"
 
 function getAdminClient() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL || ""
-  // Use the JWT for anon key — this has 3 parts (header.payload.signature)
-  const anonJwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF5dm9rcHJpYm1icm9zYWZudHFhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYzMTgxNTUsImV4cCI6MjA5MTg5NDE1NX0.ww_-gt4beuTcr_HbUCv0HmuKCw-J-HWTAI441yDSXRg"
+  // Use the service role key directly as both apikey and auth bearer
+  // The sb_secret format works when passed as the second arg to createClient
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || ""
-  return createClient(url, anonJwt, {
+  if (!url) throw new Error("NEXT_PUBLIC_SUPABASE_URL not set")
+  // Works with both old JWT and new sb_secret format
+  return createClient(url, serviceKey, {
     auth: { persistSession: false },
-    global: serviceKey
-      ? { headers: { Authorization: `Bearer ${serviceKey}` } }
-      : {},
   })
 }
 
