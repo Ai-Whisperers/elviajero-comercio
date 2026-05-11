@@ -1,4 +1,4 @@
-type Lang = "es" | "en" | "gn"
+type Lang = "es" | "gn"
 import { STORAGE_KEYS } from "@ai-whisperers/auth/storage-keys"
 
 let currentLang: Lang = "es"
@@ -7,9 +7,9 @@ export function getLang(): Lang {
   if (typeof window === "undefined") return "es"
   try {
     const saved = localStorage.getItem(STORAGE_KEYS.LANG) as Lang | null
-    if (saved && ["es", "en", "gn"].includes(saved)) return saved
+    if (saved && ["es", "gn"].includes(saved)) return saved
     const urlLang = new URLSearchParams(window.location.search).get("lang") as Lang | null
-    if (urlLang && ["es", "en", "gn"].includes(urlLang)) return urlLang
+    if (urlLang && ["es", "gn"].includes(urlLang)) return urlLang
   } catch {}
   return "es"
 }
