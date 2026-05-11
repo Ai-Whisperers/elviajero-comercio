@@ -53,9 +53,14 @@ CREATE TABLE IF NOT EXISTS public.ej_promo_codes (
   code TEXT PRIMARY KEY,
   type TEXT NOT NULL DEFAULT 'percentage' CHECK (type IN ('percentage', 'fixed')),
   value INTEGER NOT NULL DEFAULT 0,
+  title TEXT DEFAULT '',
+  description TEXT DEFAULT '',
   min_purchase INTEGER DEFAULT 0,
   max_uses INTEGER DEFAULT 100,
   used_count INTEGER DEFAULT 0,
+  active BOOLEAN DEFAULT true,
+  valid_from TIMESTAMPTZ,
+  valid_until TIMESTAMPTZ,
   expires_at TIMESTAMPTZ,
   created_at TIMESTAMPTZ DEFAULT now()
 );
@@ -83,6 +88,8 @@ CREATE TABLE IF NOT EXISTS public.ej_b2b_customers (
   email TEXT DEFAULT '',
   ruc TEXT DEFAULT '',
   status TEXT DEFAULT 'active' CHECK (status IN ('active', 'suspended')),
+  credit_limit INTEGER DEFAULT 0,
+  payment_terms TEXT DEFAULT 'contado',
   created_at TIMESTAMPTZ DEFAULT now()
 );
 
@@ -131,6 +138,43 @@ CREATE TABLE IF NOT EXISTS public.ej_customers (
 );
 
 ALTER TABLE public.ej_customers ENABLE ROW LEVEL SECURITY;
+
+-- ============================================================
+-- ADDITIONAL TABLES FOR ADMIN (ej_site_config, ej_admin_themes)
+-- ============================================================
+
+CREATE TABLE IF NOT EXISTS public.ej_site_config (
+  key TEXT PRIMARY KEY,
+  value JSONB NOT NULL DEFAULT '{}'::jsonb
+);
+
+ALTER TABLE public.ej_site_config ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "ej_config_select_anon" ON public.ej_site_config
+  FOR SELECT USING (true);
+CREATE POLICY "ej_config_insert_auth" ON public.ej_site_config
+  FOR INSERT WITH CHECK (auth.role() = 'authenticated');
+CREATE POLICY "ej_config_update_auth" ON public.ej_site_config
+  FOR UPDATE USING (auth.role() = 'authenticated');
+
+CREATE TABLE IF NOT EXISTS public.ej_admin_themes (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  primary_color TEXT DEFAULT '#1B5E20',
+  accent_color TEXT DEFAULT '#1565C0',
+  dark_mode BOOLEAN DEFAULT false,
+  logo_url TEXT,
+  favicon_url TEXT,
+  updated_at TIMESTAMPTZ DEFAULT now()
+);
+
+ALTER TABLE public.ej_admin_themes ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "ej_themes_select_anon" ON public.ej_admin_themes
+  FOR SELECT USING (true);
+CREATE POLICY "ej_themes_insert_auth" ON public.ej_admin_themes
+  FOR INSERT WITH CHECK (auth.role() = 'authenticated');
+CREATE POLICY "ej_themes_update_auth" ON public.ej_admin_themes
+  FOR UPDATE USING (auth.role() = 'authenticated');
 
 -- ============================================================
 -- RLS POLICIES for ej_ tables
