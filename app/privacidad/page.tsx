@@ -24,7 +24,7 @@ function renderLegal(text: string) {
 export default function PrivacidadPage() {
   const lang = getLang()
   const data = lang === "gn" ? (c.pages?.privacidad || c.pages?.privacidad) : (c.pages?.privacidad || {})
-  const [md, setMd] = React.useState("")
+  const [md, setMd] = useState("")
   
   return (
     <>
