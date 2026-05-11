@@ -1,10 +1,14 @@
 "use client"
+import content from "@/content/es.json"
+
+const c = content as any
+const ch = c.checkout || {}
 
 const steps = [
-  { id: "info", label: "Tus datos" },
-  { id: "entrega", label: "Entrega" },
-  { id: "pago", label: "Pago" },
-  { id: "confirmar", label: "Confirmar" },
+  { id: "info", label: ch.yourData || "Tus datos" },
+  { id: "entrega", label: ch.delivery || "Entrega" },
+  { id: "pago", label: ch.payment || "Pago" },
+  { id: "confirmar", label: ch.confirm || "Confirmar" },
 ]
 
 export function CheckoutStepper({ current }: { current: string }) {

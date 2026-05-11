@@ -40,6 +40,36 @@
         "label": "Contacto",
         "href": "/contacto"
       }
+    ],
+    "ui": [
+      {
+        "label": "Inicio",
+        "href": "/"
+      },
+      {
+        "label": "Tienda",
+        "href": "/tienda"
+      },
+      {
+        "label": "Blog",
+        "href": "/blog"
+      },
+      {
+        "label": "Nosotros",
+        "href": "/nosotros"
+      },
+      {
+        "label": "Ofertas",
+        "href": "/promociones"
+      },
+      {
+        "label": "FAQ",
+        "href": "/faq"
+      },
+      {
+        "label": "Contacto",
+        "href": "/contacto"
+      }
     ]
   },
   "home": {
@@ -1987,5 +2017,144 @@
     "enabled": true,
     "notificationMethod": "whatsapp",
     "maxAlerts": 3
+  },
+  "ui": {
+    "search": "Buscar",
+    "menu": "Menú",
+    "close": "Cerrar",
+    "openMenu": "Abrir menú",
+    "cart": "Carrito",
+    "login": "Ingresar",
+    "register": "Registrarse",
+    "logout": "Cerrar sesión",
+    "myAccount": "Mi cuenta",
+    "admin": "Admin",
+    "favorites": "Favoritos",
+    "orders": "Pedidos",
+    "addresses": "Direcciones",
+    "settings": "Configuración"
+  },
+  "store": {
+    "title": "Tienda Online",
+    "viewAll": "Ver todo",
+    "noProducts": "No encontramos productos con esos filtros.",
+    "showOutOfStock": "Mostrar agotados",
+    "of": "de",
+    "visible": "productos visibles",
+    "noImage": "Sin imagen",
+    "new": "NUEVO",
+    "sale": "OFERTA",
+    "add": "Agregar",
+    "added": "✓ Agregado",
+    "soldOut": "Agotado",
+    "lastUnits": "Últimos",
+    "remaining": "quedan",
+    "inStock": "En stock",
+    "specifications": "Especificaciones",
+    "weight": "Peso",
+    "description": "Descripción",
+    "shipping": "Envío",
+    "relatedProducts": "Productos relacionados",
+    "addToCart": "Agregar al carrito",
+    "inquiry": "Consultar via WhatsApp",
+    "quantity": "Cantidad"
+  },
+  "shipping": {
+    "title": "Opciones de envío",
+    "delivery": "Envío a domicilio",
+    "pickup": "Retiro en tienda",
+    "free": "Gratis",
+    "timing": "Tiempo de entrega",
+    "deliveryTime": "2-5 días hábiles",
+    "fullCountry": "Envío a todo PY",
+    "quality": "Garantía de calidad",
+    "whatsapp": "Soporte WhatsApp",
+    "selectZone": "Seleccioná tu zona"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "yourData": "Tus datos",
+    "delivery": "Entrega",
+    "payment": "Pago",
+    "confirm": "Confirmar",
+    "completeOrder": "Completar pedido",
+    "orderSummary": "Resumen del pedido",
+    "subtotal": "Subtotal",
+    "total": "Total",
+    "shippingCost": "Costo de envío",
+    "discount": "Descuento",
+    "emptyCart": "Tu carrito está vacío",
+    "continueShopping": "Seguir comprando",
+    "goToCheckout": "Ir al checkout",
+    "name": "Nombre completo",
+    "email": "Correo electrónico",
+    "phone": "Teléfono / WhatsApp",
+    "address": "Dirección",
+    "city": "Ciudad",
+    "notes": "Notas del pedido"
+  },
+  "cancelOrder": {
+    "title": "Cancelar pedido",
+    "selectReason": "Seleccioná un motivo",
+    "reasons": [
+      "Cambié de opinión",
+      "Encontré mejor precio",
+      "Demora en la entrega",
+      "No necesito el producto",
+      "Otro motivo"
+    ],
+    "confirm": "Confirmar cancelación",
+    "cancelConfirm": "Sí, cancelar pedido",
+    "cancelled": "Pedido cancelado"
+  },
+  "account": {
+    "dashboard": "Mi cuenta",
+    "orders": "Mis pedidos",
+    "orderDetail": "Detalle del pedido",
+    "addresses": "Mis direcciones",
+    "favorites": "Mis favoritos",
+    "settings": "Configuración",
+    "benefits": "Beneficios",
+    "cancel": "Cancelar cuenta",
+    "savedAddresses": "Direcciones guardadas",
+    "noOrders": "Aún no realizaste ningún pedido"
+  },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Consejos, guías y novedades sobre camping, pesca y outdoor",
+    "readMore": "Leer más",
+    "categories": "Categorías",
+    "allPosts": "Todos los artículos",
+    "noPosts": "No hay artículos disponibles"
+  },
+  "layoutMetadata": {
+    "title": "El Viajero — Tu Aventura Empieza Acá",
+    "description": "Camping, pesca, accesorios para auto y moto, equipo outdoor. Todo para tu aventura en Paraguay.",
+    "ogTitle": "El Viajero",
+    "ogDescription": "Tu aventura empieza acá",
+    "ogImage": "/images/og-viajero.png",
+    "schemaName": "El Viajero",
+    "schemaDescription": "Tienda de camping, pesca, accesorios outdoor y más en Paraguay.",
+    "schemaTelephone": "+595****4567",
+    "schemaEmail": "info@tiendaelviajero.com.py",
+    "schemaPriceRange": "Gs. 35.000 - Gs. 2.000.000"
+  },
+  "auth": {
+    "login": "Iniciar sesión",
+    "register": "Crear cuenta",
+    "email": "Correo",
+    "password": "Contraseña",
+    "forgotPassword": "Olvidé mi contraseña",
+    "resetPassword": "Restablecer contraseña",
+    "newPassword": "Nueva contraseña",
+    "loginButton": "Iniciar sesión",
+    "registerButton": "Crear cuenta",
+    "loginSuccess": "Sesión iniciada correctamente",
+    "registerSuccess": "Cuenta creada correctamente",
+    "or": "o",
+    "loginWithWhatsApp": "Ingresar con WhatsApp"
+  },
+  "breadcrumbs": {
+    "home": "Inicio"
   }
 }

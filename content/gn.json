@@ -40,6 +40,36 @@
         "label": "Ñe'ẽmondo",
         "href": "/contacto"
       }
+    ],
+    "ui": [
+      {
+        "label": "Hógape",
+        "href": "/"
+      },
+      {
+        "label": "Ñemuhápe",
+        "href": "/tienda"
+      },
+      {
+        "label": "Blog",
+        "href": "/blog"
+      },
+      {
+        "label": "Ñande rehegua",
+        "href": "/nosotros"
+      },
+      {
+        "label": "Oferta",
+        "href": "/promociones"
+      },
+      {
+        "label": "Porandu",
+        "href": "/faq"
+      },
+      {
+        "label": "Ñe'ẽmondo",
+        "href": "/contacto"
+      }
     ]
   },
   "home": {
@@ -1180,5 +1210,147 @@
     "enabled": true,
     "notificationMethod": "whatsapp",
     "maxAlerts": 3
+  },
+  "ui": {
+    "search": "Hecha",
+    "menu": "Menú",
+    "close": "Mboty",
+    "openMenu": "Embojuruja menú",
+    "cart": "Mba'ejogua",
+    "login": "Eike",
+    "register": "Eñemboheraguy",
+    "logout": "Esẽ",
+    "myAccount": "Che cuenta",
+    "favorites": "Ajeguerohoryva",
+    "orders": "Che mboguata",
+    "addresses": "Che dirección",
+    "settings": "Configuración",
+    "addFav": "Embojuaju ajeguerohoryvape",
+    "removeFav": "Emboyke ajeguerohoryvape"
+  },
+  "store": {
+    "title": "Ñemuhápe",
+    "viewAll": "Ehecha opa",
+    "noProducts": "Ndorojuhúi mba'eapohapy umi filtro ndive.",
+    "showOutOfStock": "Ehechauka opa",
+    "of": "gui",
+    "visible": "mba'eapohapy",
+    "noImage": "Ta'anga'y",
+    "new": "PYAHU",
+    "sale": "OFERTA",
+    "add": "Embojuaju",
+    "added": "✓ Ojejuajúma",
+    "soldOut": "Opáma",
+    "lastUnits": "Ipaháva",
+    "remaining": "opytáva",
+    "inStock": "Oĩ",
+    "specifications": "Tembiapo",
+    "weight": "Pohýi",
+    "description": "Tembiasakue",
+    "shipping": "Ñemu",
+    "relatedProducts": "Mba'eapohapy jojaha",
+    "addToCart": "Embojuaju mba'ejoguápe",
+    "quantity": "Papy",
+    "shippingFullCountry": "Ñemu Paraguái pukukue",
+    "qualityGuarantee": "Garantía calidad rehegua",
+    "whatsappSupport": "Pytyvõ WhatsApp rupive"
+  },
+  "shipping": {
+    "title": "Ñemu poravopyre",
+    "delivery": "Ñemu ógápe",
+    "pickup": "Ereraha orendápe",
+    "free": "Reñemói",
+    "timing": "Aravo",
+    "deliveryTime": "2-5 ára",
+    "fullCountry": "Ñemu Paraguái pukukue",
+    "quality": "Garantía calidad rehegua",
+    "whatsapp": "Pytyvõ WhatsApp rupive",
+    "selectZone": "Eiporavo nde zona",
+    "perCity": "táva rehe",
+    "businessDays": "ára"
+  },
+  "checkout": {
+    "title": "Mba'ejogua",
+    "yourData": "Nde marandu",
+    "delivery": "Ñemu",
+    "payment": "Pago",
+    "confirm": "Confirmá",
+    "completeOrder": "Mba'ejogua paha",
+    "orderSummary": "Mba'ejogua pukukué",
+    "subtotal": "Subtotal",
+    "total": "Total",
+    "shippingCost": "Tapo'ã",
+    "discount": "Descuento",
+    "emptyCart": "Nde mba'ejogua oĩ'ỹ",
+    "continueShopping": "Esegi mba'e jogua",
+    "goToCheckout": "Eho mba'ejoguápe",
+    "name": "Téra",
+    "email": "Correo",
+    "phone": "Pumbyry",
+    "address": "Dirección",
+    "city": "Táva",
+    "notes": "Mba'emba'e"
+  },
+  "cancelOrder": {
+    "title": "Embojevy mba'ejogua",
+    "selectReason": "Eiporavo mba'ére",
+    "reasons": [
+      "Aikambýma che apytu'ũ",
+      "Ajuhu precio iporãveva",
+      "Aravo tuicha",
+      "Ndaikotevéima",
+      "Ambue mba'e"
+    ],
+    "confirm": "Confirmá",
+    "cancelConfirm": "Hé, embojevy",
+    "cancelled": "Mba'ejogua ojejovyma"
+  },
+  "account": {
+    "dashboard": "Che cuenta",
+    "orders": "Che mba'ejogua",
+    "orderDetail": "Mba'ejogua pukukue",
+    "addresses": "Che dirección",
+    "favorites": "Ajeguerohoryva",
+    "settings": "Configuración",
+    "benefits": "Porãngué",
+    "cancel": "Embojevy",
+    "savedAddresses": "Dirección ñongatupyre",
+    "noOrders": "Nerajapói mba'ejogua ko'ãga peve"
+  },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Tembiasakue ha mba'e pyahu camping, pesca ha outdoor rehegua",
+    "readMore": "Emoñe'ẽve",
+    "categories": "Tembiapo aty",
+    "allPosts": "Opavave",
+    "noPosts": "Ndaipóri mba'e moñe'ẽrã"
+  },
+  "layoutMetadata": {
+    "title": "El Viajero — Tu Aventura Empieza Acá",
+    "description": "Camping, pesca, accesorios para auto y moto, equipo outdoor. Todo para tu aventura en Paraguay.",
+    "ogTitle": "El Viajero",
+    "ogDescription": "Tu aventura empieza acá",
+    "ogImage": "/images/og-viajero.png",
+    "schemaName": "El Viajero",
+    "schemaDescription": "Tienda de camping, pesca, accesorios outdoor y más en Paraguay.",
+    "schemaTelephone": "+595****4567",
+    "schemaEmail": "info@tiendaelviajero.com.py",
+    "schemaPriceRange": "Gs. 35.000 - Gs. 2.000.000"
+  },
+  "auth": {
+    "login": "Eike",
+    "register": "Eñemboheraguy",
+    "email": "Correo",
+    "password": "Contraseña",
+    "forgotPassword": "Che reseváma",
+    "resetPassword": "Emoambue contraseña",
+    "newPassword": "Contraseña pyahu",
+    "loginButton": "Eike",
+    "registerButton": "Eñemboheraguy",
+    "or": "térã",
+    "loginWithWhatsApp": "Eike WhatsApp rupive"
+  },
+  "breadcrumbs": {
+    "home": "Hógape"
   }
 }

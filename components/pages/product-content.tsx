@@ -20,8 +20,11 @@ import content from "@/content/es.json"
 import { createClient } from "@ai-whisperers/auth/supabase/client"
 
 const c = content as any
+const s = c.store || {}
 const staticProducts = c.home?.productCatalog?.products || []
 const categories = c.home?.productCatalog?.categories || []
+const bc = c.breadcrumbs || {}
+const ui = c.ui || {}
 
 function slugify(s: string) { return s.toLowerCase().replace(/[^a-z0-9áéíóúñü]+/g, "-").replace(/-+$/, "") }
 
@@ -66,14 +69,14 @@ export default function ProductPageContent({ slug }: { slug: string }) {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify({"@context":"https://schema.org/","@type":"Product","name": product.name,"description": product.description || product.name,"image": product.imageUrl,offers: {"@type":"Offer","priceCurrency":"PYG","price": priceNum,"availability": (product.stock ?? 0) > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock","url": "https://el-viajero.paragu-ai.com/producto/" + slug}})}} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify({"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement": [{"@type":"ListItem","position":1,"name":"Inicio","item":"https://el-viajero.paragu-ai.com/"},{"@type":"ListItem","position":2,"name":"Tienda","item":"https://el-viajero.paragu-ai.com/tienda"},{"@type":"ListItem","position":3,"name":product.name,"item":"https://el-viajero.paragu-ai.com/producto/" + slug}]})}} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify({"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement": [{"@type":"ListItem","position":1,"name": bc.home || "Inicio","item":"https://el-viajero.paragu-ai.com/"},{"@type":"ListItem","position":2,"name": s.title || "Tienda","item":"https://el-viajero.paragu-ai.com/tienda"},{"@type":"ListItem","position":3,"name":product.name,"item":"https://el-viajero.paragu-ai.com/producto/" + slug}]})}} />
       <Header onCartClick={() => setCartOpen(true)} />
       <CartToastListener />
       <section className="bg-background py-8">
         <div className="mx-auto max-w-6xl px-4">
           <nav className="mb-6 flex items-center gap-2 text-xs text-muted-foreground">
-            <Link href="/" className="hover:text-primary">Inicio</Link><span>/</span>
-            <Link href="/tienda" className="hover:text-primary">Tienda</Link><span>/</span>
+            <Link href="/" className="hover:text-primary">{bc.home || "Inicio"}</Link><span>/</span>
+            <Link href="/tienda" className="hover:text-primary">{s.title || "Tienda"}</Link><span>/</span>
             {product.category && <><span className="hover:text-primary">{product.category}</span><span>/</span></>}
             <span className="text-foreground">{product.name}</span>
           </nav>
@@ -90,19 +93,19 @@ export default function ProductPageContent({ slug }: { slug: string }) {
               </div>
               {specLines.length > 0 && (
                 <div className="mt-6 rounded-xl border border-border bg-surface p-4">
-                  <h3 className="mb-2 text-sm font-semibold text-foreground">Especificaciones</h3>
+                  <h3 className="mb-2 text-sm font-semibold text-foreground">{s.specifications || "Especificaciones"}</h3>
                   <div className="grid grid-cols-2 gap-2">
                     {specLines.map((spec: string, i: number) => (
                       <div key={i} className="flex items-center gap-2 text-sm text-muted-foreground"><div className="h-1.5 w-1.5 rounded-full bg-primary" />{spec}</div>
                     ))}
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground"><div className="h-1.5 w-1.5 rounded-full bg-primary" />Peso: {product.weight || "—"}</div>
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground"><div className="h-1.5 w-1.5 rounded-full bg-primary" />{(s.weight || "Peso")}: {product.weight || "—"}</div>
                   </div>
                 </div>
               )}
               <div className="mt-4 flex items-center gap-2">
-                {product.stock > 5 ? <span className="flex items-center gap-1 text-sm font-medium text-success">● En stock ({product.stock} un.)</span>
-                  : product.stock > 0 ? <span className="flex items-center gap-1 text-sm font-medium text-warning">● Últimas {product.stock} unidades</span>
-                  : <span className="flex items-center gap-1 text-sm font-medium text-destructive">● Agotado</span>}
+                {product.stock > 5 ? <span className="flex items-center gap-1 text-sm font-medium text-success">● {(s.inStock || "En stock")} ({product.stock} un.)</span>
+                  : product.stock > 0 ? <span className="flex items-center gap-1 text-sm font-medium text-warning">● {(s.lastUnits || "Últimas")} {product.stock} {(s.remaining || "unidades")}</span>
+                  : <span className="flex items-center gap-1 text-sm font-medium text-destructive">● {s.soldOut || "Agotado"}</span>}
               </div>
               <div className="mt-6 flex items-center gap-4">
                 <div className="flex items-center rounded-lg border border-input">
@@ -112,39 +115,39 @@ export default function ProductPageContent({ slug }: { slug: string }) {
                 </div>
                 <button onClick={handleAdd} disabled={!product.stock || added}
                   className="flex-1 rounded-lg bg-primary py-3 font-semibold text-primary-foreground hover:bg-primary/90 active:scale-[0.98] disabled:opacity-50">
-                  {added ? "✓ Agregado" : !product.stock ? "Agotado" : "Agregar al carrito"}
+                  {added ? (s.added || "✓ Agregado") : !product.stock ? (s.soldOut || "Agotado") : (s.addToCart || "Agregar al carrito")}
                 </button>
               </div>
-              {!product.stock && <div className="mt-4"><p className="mb-2 text-sm font-medium text-muted-foreground">Producto agotado. ¿Querés que te avisemos?</p><BackInStockForm productName={product.name} /></div>}
+              {!product.stock && <div className="mt-4"><p className="mb-2 text-sm font-medium text-muted-foreground">{c.backInStock?.cta || "Producto agotado. ¿Querés que te avisemos?"}</p><BackInStockForm productName={product.name} /></div>}
               <div className="mt-8 grid grid-cols-3 gap-3 rounded-xl border border-border bg-surface p-4">
-                <div className="text-center"><div className="text-lg mb-1">🚚</div><p className="text-xs font-medium text-foreground">Envío a todo PY</p></div>
-                <div className="text-center"><div className="text-lg mb-1">🛡</div><p className="text-xs font-medium text-foreground">Garantía de calidad</p></div>
-                <div className="text-center"><div className="text-lg mb-1">💬</div><p className="text-xs font-medium text-foreground">Soporte WhatsApp</p></div>
+                <div className="text-center"><div className="text-lg mb-1">🚚</div><p className="text-xs font-medium text-foreground">{s.shippingFullCountry || "Envío a todo PY"}</p></div>
+                <div className="text-center"><div className="text-lg mb-1">🛡</div><p className="text-xs font-medium text-foreground">{s.qualityGuarantee || "Garantía de calidad"}</p></div>
+                <div className="text-center"><div className="text-lg mb-1">💬</div><p className="text-xs font-medium text-foreground">{s.whatsappSupport || "Soporte WhatsApp"}</p></div>
               </div>
               <ShareWhatsApp productName={product.name} productUrl={typeof window !== 'undefined' ? window.location.href : ''} />
             </div>
           </div>
 
           <ProductTabs tabs={[
-            { id: "desc", label: "Descripción", content: <p className="text-muted-foreground">{product.description}</p> },
-            { id: "specs", label: "Especificaciones", content: (
+            { id: "desc", label: s.description || "Descripción", content: <p className="text-muted-foreground">{product.description}</p> },
+            { id: "specs", label: s.specifications || "Especificaciones", content: (
               <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
                 {specLines.map((spec: string, i: number) => (
                   <div key={i} className="rounded-lg border border-border bg-surface p-3">
-                    <p className="text-xs text-muted-foreground mb-1">Especificación</p>
+                    <p className="text-xs text-muted-foreground mb-1">{s.specifications || "Especificación"}</p>
                     <p className="text-sm font-medium text-foreground">{spec}</p>
                   </div>
                 ))}
-                <div className="rounded-lg border border-border bg-surface p-3"><p className="text-xs text-muted-foreground mb-1">Peso</p><p className="text-sm font-medium text-foreground">{product.weight || "—"}</p></div>
+                <div className="rounded-lg border border-border bg-surface p-3"><p className="text-xs text-muted-foreground mb-1">{s.weight || "Peso"}</p><p className="text-sm font-medium text-foreground">{product.weight || "—"}</p></div>
               </div>
             )},
-            { id: "shipping", label: "Envío", content: (
+            { id: "shipping", label: s.shipping || "Envío", content: (
               <div className="rounded-xl border border-border bg-surface p-6">
-                <h3 className="font-semibold text-foreground mb-3">Opciones de envío</h3>
+                <h3 className="font-semibold text-foreground mb-3">{c.shipping?.title || "Opciones de envío"}</h3>
                 <div className="space-y-3 text-sm text-muted-foreground">
-                  <p>📦 Envío a domicilio: Gs. 10.000 - Gs. 25.000 según ciudad</p>
-                  <p>🏪 Retiro en tienda: Gratis</p>
-                  <p>⏱ Tiempo de entrega: 2-5 días hábiles</p>
+                  <p>📦 {(c.shipping?.delivery || "Envío a domicilio")}: Gs. 10.000 - Gs. 25.000 {c.shipping?.perCity || "según ciudad"}</p>
+                  <p>🏪 {(c.shipping?.pickup || "Retiro en tienda")}: {c.shipping?.free || "Gratis"}</p>
+                  <p>⏱ {(c.shipping?.timing || "Tiempo de entrega")}: 2-5 {(c.shipping?.businessDays || "días hábiles")}</p>
                 </div>
               </div>
             )},
@@ -154,7 +157,7 @@ export default function ProductPageContent({ slug }: { slug: string }) {
           <ProductReviews productName={product.name} />
           {allProducts.filter((p: any) => p.category === product.category && p.name !== product.name).length > 0 && (
             <section className="mt-16">
-              <h2 className="mb-6 text-xl font-bold text-foreground">Productos relacionados</h2>
+              <h2 className="mb-6 text-xl font-bold text-foreground">{s.relatedProducts || "Productos relacionados"}</h2>
               <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
                 {allProducts.filter((p: any) => p.category === product.category && p.name !== product.name).slice(0, 4).map((p: any, i: number) => (
                   <Link key={i} href={"/producto/" + slugify(p.name)} className="group rounded-xl border border-border bg-surface p-3 transition-all hover:-translate-y-1 hover:shadow-md">

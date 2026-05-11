@@ -5,28 +5,33 @@ import { CurrencyProvider } from "@/lib/currency"
 import { AnalyticsProvider } from "@/components/analytics"
 import { CartProvider } from "@ai-whisperers/commerce/cart/cart-context"
 import { ToastProvider } from "@/components/toast"
+import content from "@/content/es.json"
+
+const c = content as any
+const m = c.layoutMetadata || {}
+const base = "https://el-viajero.paragu-ai.com"
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://el-viajero.paragu-ai.com"),
-  title: "El Viajero — Tu Aventura Empieza Acá",
-  description: "Camping, pesca, accesorios para auto y moto, equipo outdoor. Todo para tu aventura en Paraguay.",
+  metadataBase: new URL(base),
+  title: m.title || "El Viajero — Tu Aventura Empieza Acá",
+  description: m.description || "Camping, pesca, accesorios para auto y moto, equipo outdoor.",
   icons: { icon: "/favicon.svg", apple: "/favicon.svg" },
   manifest: "/manifest.json",
   appleWebApp: { capable: true, statusBarStyle: "black-translucent" },
   themeColor: "#1B5E20",
   openGraph: {
-    title: "El Viajero",
-    description: "Tu aventura empieza acá",
-    images: [{ url: "/images/og-viajero.png", width: 1200, height: 630 }],
+    title: m.ogTitle || "El Viajero",
+    description: m.ogDescription || "Tu aventura empieza acá",
+    images: [{ url: m.ogImage || "/images/og-viajero.png", width: 1200, height: 630 }],
     type: "website",
     locale: "es_PY",
-    siteName: "El Viajero",
+    siteName: m.schemaName || "El Viajero",
   },
   twitter: {
     card: "summary_large_image",
-    title: "El Viajero",
-    description: "Tu aventura empieza acá",
-    images: ["https://el-viajero.paragu-ai.com/images/og-viajero.png"],
+    title: m.ogTitle || "El Viajero",
+    description: m.ogDescription || "Tu aventura empieza acá",
+    images: [`${base}${m.ogImage || "/images/og-viajero.png"}`],
   },
   verification: {
     google: process.env.NEXT_PUBLIC_GSC_VERIFICATION || "",
@@ -39,11 +44,11 @@ export const metadata: Metadata = {
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Store",
-  "name": "El Viajero",
-  "description": "Tienda de camping, pesca, accesorios outdoor y más en Paraguay.",
-  "url": "https://el-viajero.paragu-ai.com",
-  "telephone": "+595****4567",
-  "email": "info@tiendaelviajero.com.py",
+  "name": m.schemaName || "El Viajero",
+  "description": m.schemaDescription || "Tienda de camping, pesca, accesorios outdoor y más en Paraguay.",
+  "url": base,
+  "telephone": m.schemaTelephone || "+595981234567",
+  "email": m.schemaEmail || "info@tiendaelviajero.com.py",
   "address": {
     "@type": "PostalAddress",
     "streetAddress": "Coronel Felipe Toledo",
@@ -52,7 +57,7 @@ const jsonLd = {
     "addressCountry": "PY"
   },
   "openingHours": "Mo-Fr 08:00-19:00, Sa 08:00-17:00, Su 09:00-13:00",
-  "priceRange": "Gs. 35.000 - Gs. 2.000.000",
+  "priceRange": m.schemaPriceRange || "Gs. 35.000 - Gs. 2.000.000",
   "currenciesAccepted": "PYG, USD",
   "paymentAccepted": "Efectivo, Transferencia, Tarjeta de crédito/débito",
   "sameAs": [
