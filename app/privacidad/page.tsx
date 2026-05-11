@@ -5,6 +5,7 @@ import { CookieConsent } from "@/components/cookie-consent"
 import { Breadcrumbs } from "@/components/ui"
 import content from "@/content/es.json"
 import { getLang } from "@/lib/i18n"
+import { useState } from "react"
 
 const c = content as any
 const bc = c.breadcrumbs || {}
