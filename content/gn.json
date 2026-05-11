@@ -1352,5 +1352,17 @@
   },
   "breadcrumbs": {
     "home": "Hógape"
+  },
+  "pages": {
+    "privacidad": {
+      "title": "Marandu ñemigua rehegua",
+      "updated": "Ojeguerohory jey: Abril 2026",
+      "content": "Ko'ápe roikuave'ẽ marandu ore políticas privacidad rehegua."
+    },
+    "terminos": {
+      "title": "Término ha Condición",
+      "updated": "Ojeguerohory jey: Abril 2026",
+      "content": "Ko'ápe roikuave'ẽ término ha condición ore sitio web rehegua."
+    }
   }
 }
