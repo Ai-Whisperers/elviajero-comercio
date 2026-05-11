@@ -18,6 +18,7 @@ import { createClient } from "@ai-whisperers/auth/supabase/client"
 
 const c = content as any
 const s = c.store || {}
+const ui = c.ui || {}
 const cats = c.home?.productCatalog?.categories || []
 const cat = c.home?.productCatalog || {}
 const staticProducts = cat.products || []
