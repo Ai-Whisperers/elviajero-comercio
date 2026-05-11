@@ -1,60 +1,1184 @@
 {
   "siteName": "El Viajero",
   "businessName": "El Viajero",
+  "tagline": "Nembiaporã ko'ápe oñepyrũ",
+  "founded": "2018",
   "navigation": {
+    "businessName": "El Viajero",
+    "ctaText": "Mba'e reipota WhatsApp rupive",
+    "ctaHref": "https://wa.me/595981234567?text=Hola!%20Quisiera%20informacion%20sobre%20productos",
     "items": [
-      { "label": "Hógape", "href": "/" },
-      { "label": "Ñemuhápe", "href": "/tienda" },
-      { "label": "Promociones", "href": "/promociones" },
-      { "label": "Ñane rehegua", "href": "/nosotros" },
-      { "label": "Contacto", "href": "/contacto" },
-      { "label": "Blog", "href": "/blog" },
-      { "label": "FAQ", "href": "/faq" }
-    ],
-    "ctaText": "Mba'e reipota?",
-    "ctaHref": "https://wa.me/595981234567"
+      {
+        "label": "Hógape",
+        "href": "/"
+      },
+      {
+        "label": "Ñemuhápe",
+        "href": "/tienda"
+      },
+      {
+        "label": "Mba'eapohapy",
+        "href": "/productos"
+      },
+      {
+        "label": "Blog",
+        "href": "/blog"
+      },
+      {
+        "label": "Ñande rehegua",
+        "href": "/nosotros"
+      },
+      {
+        "label": "Oferta",
+        "href": "/promociones"
+      },
+      {
+        "label": "Porandu",
+        "href": "/faq"
+      },
+      {
+        "label": "Ñe'ẽmondo",
+        "href": "/contacto"
+      }
+    ]
   },
   "home": {
-    "seo": { "title": "El Viajero — Nembiaporã ko'ápe oñepyrũ", "description": "Camping, pesca, accesorio automóvil ha moto pegua. Opamba'e ne mba'e'apópe g̃uarã Paraguáipe." },
-    "heroCarousel": {
-      "slides": [
-        { "title": "Nembiaporã ko'ápe oñepyrũ", "subtitle": "Camping, pesca, ha hetave", "ctaText": "Ehecha", "ctaHref": "/tienda" }
-      ]
+    "seo": {
+      "title": "El Viajero — Camping, Pesca ha Mbovy Paraguáipe",
+      "description": "Opamba'e ne mba'e'apópe g̃uarã: camping, pesca, accesorio automóvil ha moto pegua. Eike oré rógope Mariano Roque Alonso-pe térã emba'ejerure WhatsApp rupive."
+    },
+    "hero": {
+      "headline": "El Viajero — Nembiaporã ko'ápe oñepyrũ",
+      "subheadline": "Camping, pesca, accesorio automóvil ha moto pegua. Opamba'e reikotevẽva ne mba'e'apópe g̃uarã.",
+      "ctaPrimaryText": "Ehecha Catálogo",
+      "ctaPrimaryHref": "#catalogo",
+      "ctaSecondaryText": "Emba'ejerure WhatsApp rupive",
+      "ctaSecondaryHref": "https://wa.me/595981234567?text=Hola!%20Quisiera%20informacion%20sobre%20productos%20de%20El%20Viajero%20Comercio"
     },
     "stats": {
+      "title": "El Viajero papapýpe",
       "items": [
-        { "value": "7", "label": "Categoría" },
-        { "value": "500+", "label": "Producto" },
-        { "value": "10", "label": "Año" },
-        { "value": "100%", "label": "Garantía" }
+        {
+          "value": "7",
+          "label": "Categoría"
+        },
+        {
+          "value": "200+",
+          "label": "Mba'eapohapy"
+        },
+        {
+          "value": "+100",
+          "label": "Ñemuhára"
+        },
+        {
+          "value": "🇵🇾",
+          "label": "Paraguái"
+        }
       ]
     },
     "features": {
       "title": "Mba'ére eiporavo El Viajero",
       "items": [
-        { "title": "Envío Paraguái pópe", "description": "Oguata opárupi.", "icon": "truck" },
-        { "title": "Garantía", "description": "Opamba'e oreko garantía.", "icon": "shield" },
-        { "title": "Soporte WhatsApp", "description": "Nepyrũrã ore WhatsApp rupive.", "icon": "message-circle" }
+        {
+          "title": "Opamba'e Peteĩ Tendápe",
+          "description": "Camping, pesca, auto, moto ha hetave — na'ikotevẽi tereho tenda hetápe.",
+          "icon": "package"
+        },
+        {
+          "title": "Mba'e Porã",
+          "description": "Roñeha'ã marcas confiables rupive nde equipo ipukúta g̃uarã.",
+          "icon": "shield"
+        },
+        {
+          "title": "Ne'ẽra Asesoramiento",
+          "description": "Ropytyvõ nehe'ẽ nde equipo porãvévare opa mba'e'apópe g̃uarã.",
+          "icon": "message-circle"
+        },
+        {
+          "title": "Emba'ejerure WhatsApp rupive",
+          "description": "Eporandu disponibilidad, ejuajúke ne pedido ha tome'ẽ nde rógape.",
+          "icon": "phone"
+        },
+        {
+          "title": "Ñemu Paraguáipe",
+          "description": "Rojevyta Paraguái ha yvy jerére.",
+          "icon": "truck"
+        },
+        {
+          "title": "Precio Accesible",
+          "description": "Precio- calidad porã nde mba'e'apo ñepyrũrã.",
+          "icon": "wallet"
+        }
       ]
     },
-    "newsletter": { "title": "Eguenohẽ novedades", "description": "Ñe'ẽmondo roguerohoryvéva", "buttonText": "Añemboheraguy" }
+    "newsletter": {
+      "title": "Eguenohẽ Novedades",
+      "description": "Eñemboheraguy rezombiapy oferta, mba'eapohapy pyahu ha consejo aventura rehegua.",
+      "buttonText": "Añemboheraguy"
+    },
+    "testimonials": {
+      "title": "Mba'e he'i ore kliente",
+      "items": [
+        {
+          "text": "Servicio porã ha precio iporãva. Ajuhu opamba'e aikotevẽva che aventure camping g̃uarã San Bernardino-pe.",
+          "author": "Carlos Mendoza",
+          "rating": 5
+        },
+        {
+          "text": "Chepytyvõ porã ajapo porã hag̃ua elección caña pesca. Chevolveréna duda'ỹre.",
+          "author": "Maria Gonzalez",
+          "rating": 5
+        },
+        {
+          "text": "Ajoguá che carpa ha accesorio moto. Opamba'e calidad porã ha precio justo. Recomendado.",
+          "author": "Luis Ramirez",
+          "rating": 4
+        },
+        {
+          "text": "Oreko mba'apohapy na'erejuhúi ambue tendápe. Picana eléctrica chepytyvõ tape Caacupé-pe.",
+          "author": "Ana Benitez",
+          "rating": 5
+        }
+      ]
+    },
+    "storeLocation": {
+      "title": "Eike Orekórpe",
+      "description": "Roja'árō Mariano Roque Alonso-pe emba'ehecha hag̃ua opamba'e ore productokuéra.",
+      "address": "Coronel Felipe Toledo, Barrio La Concordia",
+      "hours": "Lun-Vie 08:00-19:00 | Sáb 08:00-17:00 | Dom 09:00-13:00",
+      "mapUrl": ""
+    },
+    "productCatalog": {
+      "title": "Ore Mba'eapohapy",
+      "subtitle": "Opamba'e ne mba'e'apópe g̃uarã",
+      "whatsappPhone": "595981234567",
+      "orderButtonText": "Eporandu WhatsApp rupive",
+      "orderMessageTemplate": "Mba'e! Aipota cháke {{productName}} ({{productPrice}}). Aikuaase disponibilidad ha pagopago réra.",
+      "categories": [
+        "Camping",
+        "Pesca",
+        "Playa y Pesca",
+        "Acc. Personales",
+        "Automóviles",
+        "Motos",
+        "Campo"
+      ],
+      "products": [
+        {
+          "name": "Karpa 4 Tapicha",
+          "category": "Camping",
+          "price": "Gs. 450.000",
+          "description": "Yruru, ijetu'úi ojapo hag̃ua, oreko bolsa transporte. Iporã hogayguakuéra g̃uarã.",
+          "imageUrl": "/images/marketing/products/carpa-4p.png",
+          "brand": "OutdoorPro",
+          "specs": "4 pers | 3 kg | 210x210x130cm | Impermeable 2000mm",
+          "stock": 8,
+          "weight": "3.0 kg",
+          "featured": true,
+          "isNew": true
+        },
+        {
+          "name": "Bolsa Ke'ẽ 0°C",
+          "category": "Camping",
+          "price": "Gs. 180.000",
+          "description": "0°C temperatura confort, relleno sintético, michĩ ha ijetu'úi.",
+          "imageUrl": "/images/marketing/products/bolsa-dormir.png",
+          "brand": "SleepWell",
+          "specs": "Relleno sintético | 1.8 kg | 220x80cm | Compresión incluida",
+          "stock": 15,
+          "weight": "1.8 kg",
+          "featured": true,
+          "isNew": true
+        },
+        {
+          "name": "Silla Plegable Pirakutú",
+          "category": "Camping",
+          "price": "Gs. 85.000",
+          "description": "Con posavasos y bolsillo lateral. Soporto hasta 120kg.",
+          "imageUrl": "/images/marketing/products/silla-plegable.png",
+          "brand": "CampMaster",
+          "specs": "120kg máx | Aluminio | 2.5 kg | Posavasos + bolsillo",
+          "stock": 20,
+          "weight": "2.5 kg",
+          "featured": false,
+          "isNew": true
+        },
+        {
+          "name": "Linterna LED 1000lm",
+          "category": "Camping",
+          "price": "Gs. 65.000",
+          "description": "USB recargable, 3 modo luz, IPX4 y reraha.",
+          "imageUrl": "/images/marketing/products/linterna-led.png",
+          "brand": "BrightLight",
+          "specs": "1000 lúmenes | USB recargable | IPX4 | 3 modos",
+          "stock": 25,
+          "weight": "0.3 kg",
+          "featured": true,
+          "isNew": true
+        },
+        {
+          "name": "Caña Telescópica 3m",
+          "category": "Pesca",
+          "price": "Gs. 140.000",
+          "description": "Fibra de vidrio, anillos ceramicos, mango de corcho. Ideal para principiantes y expertos.",
+          "imageUrl": "/images/marketing/products/cana-pesca.png",
+          "brand": "FishMaster",
+          "specs": "3m | Fibra de vidrio | Anillos cerámicos | 6 tramos",
+          "stock": 12,
+          "weight": "0.6 kg",
+          "featured": false,
+          "isNew": true
+        },
+        {
+          "name": "Chaleco Salvavidas",
+          "category": "Pesca",
+          "price": "Gs. 110.000",
+          "description": "Aprobado por autoridad maritima, talles M a XXL, ajustable.",
+          "imageUrl": "/images/marketing/products/chaleco.png",
+          "brand": "SafeFloat",
+          "specs": "Talle M a XXL | Aprobado autoridad marítima | Ajustable",
+          "stock": 10,
+          "weight": "0.8 kg",
+          "featured": false,
+          "isNew": true
+        },
+        {
+          "name": "Mochila 60L Yruru",
+          "category": "Acc. Personales",
+          "price": "Gs. 220.000",
+          "description": "Costuras selladas, multiple compartimentos, correas acolchadas.",
+          "imageUrl": "/images/marketing/products/mochila-60l.png",
+          "brand": "TrailPro",
+          "specs": "60L | Costuras selladas | 1.5 kg | Correas acolchadas",
+          "stock": 7,
+          "weight": "1.5 kg",
+          "featured": true,
+          "isNew": false
+        },
+        {
+          "name": "Kuchillo Multiuso",
+          "category": "Acc. Personales",
+          "price": "Gs. 75.000",
+          "description": "15 herramienta, acero inoxidable, oreko funda nylon.",
+          "imageUrl": "/images/marketing/products/cuchillo.png",
+          "brand": "ToolMaster",
+          "specs": "15 herramientas | Acero inoxidable | Funda nylon",
+          "stock": 30,
+          "weight": "0.35 kg",
+          "featured": false,
+          "isNew": false
+        },
+        {
+          "name": "Camara Dashcam HD",
+          "category": "Automoviles",
+          "price": "Gs. 280.000",
+          "description": "1080p, vision nocturna, deteccion de movimiento, tarjeta SD incluida.",
+          "imageUrl": "/images/marketing/products/camara-dashcam.png",
+          "brand": "AutoVue",
+          "specs": "1080p | Visión nocturna | SD 32GB incluida",
+          "stock": 6,
+          "weight": "0.2 kg",
+          "featured": false,
+          "isNew": false
+        },
+        {
+          "name": "Inflador 12V Pguá",
+          "category": "Automoviles",
+          "price": "Gs. 95.000",
+          "description": "Compresor digital, apagado automatico, incluye adaptadores.",
+          "imageUrl": "/images/marketing/products/inflador.png",
+          "brand": "AirGo",
+          "specs": "12V | Digital | Apagado automático | Adaptadores",
+          "stock": 18,
+          "weight": "0.5 kg",
+          "featured": false,
+          "isNew": false
+        },
+        {
+          "name": "Casco Integral Moto",
+          "category": "Motos",
+          "price": "Gs. 320.000",
+          "description": "Certificado DOT, visor antihumedad, sistema de ventilacion multiple.",
+          "imageUrl": "/images/marketing/products/casco.png",
+          "brand": "SafeRide",
+          "specs": "DOT certificado | Visor antihumedad | Talle M-XL",
+          "stock": 5,
+          "weight": "1.4 kg",
+          "featured": true,
+          "isNew": false
+        },
+        {
+          "name": "Conservadora 20L",
+          "category": "Camping",
+          "price": "Gs. 180.000",
+          "description": "Omonde ro'ysã 24h peve, asa reforzada, cierre hermético. Iporã paseo g̃uarã.",
+          "imageUrl": "/images/marketing/products/conservadora.png",
+          "brand": "CoolKing",
+          "specs": "20L | 24h frío | Asa reforzada | Cierre hermético",
+          "stock": 14,
+          "weight": "2.0 kg",
+          "featured": false,
+          "isNew": false
+        },
+        {
+          "name": "Parrilla Pguá Doble",
+          "category": "Camping",
+          "price": "Gs. 250.000",
+          "description": "Doble parrilla, pata plegable, bolsa transporte. Acero cromado.",
+          "imageUrl": "/images/marketing/products/parrilla.png",
+          "brand": "GrillGo",
+          "specs": "Doble parrilla | Acero cromado | Plegable | Bolsa incluida",
+          "stock": 9,
+          "weight": "3.5 kg",
+          "featured": false,
+          "isNew": false
+        },
+        {
+          "name": "Hamaka 2m",
+          "category": "Camping",
+          "price": "Gs. 95.000",
+          "description": "Nylon reforzado, soporta 150kg, cuerda ha bolsa. Color oĩva.",
+          "imageUrl": "/images/marketing/products/hamaca.png",
+          "brand": "NaturRest",
+          "specs": "2m | Nylon reforzado | 150kg máx | Cuerdas + bolsa",
+          "stock": 22,
+          "weight": "0.8 kg",
+          "featured": false,
+          "isNew": false
+        },
+        {
+          "name": "Toldo Sombrá 3x3",
+          "category": "Camping",
+          "price": "Gs. 320.000",
+          "description": "Protección UV 50+, ijyky, poste ha estaca. Ijetu'úi ojapo hag̃ua.",
+          "imageUrl": "/images/marketing/products/toldo.png",
+          "priceBefore": "Gs. 380.000",
+          "brand": "SunBlock",
+          "specs": "3x3m | UV 50+ | Impermeable | Postes + estacas",
+          "stock": 4,
+          "weight": "2.8 kg",
+          "featured": false,
+          "isNew": false
+        },
+        {
+          "name": "Ventilador Recargable",
+          "category": "Camping",
+          "price": "Gs. 65.000",
+          "description": "USB recargable, 3 velocidad, luz LED. 8h autonomía.",
+          "imageUrl": "/images/marketing/products/ventilador.png",
+          "brand": "BreezeGo",
+          "specs": "USB recargable | 3 velocidades | LED | 8h autonomía",
+          "stock": 16,
+          "weight": "0.4 kg",
+          "featured": false,
+          "isNew": false
+        },
+        {
+          "name": "Caja Herramienta Pirakutú",
+          "category": "Pesca",
+          "price": "Gs. 120.000",
+          "description": "Organizador bandeja extraíble, ijyky. Iporã señuelo ha accesorio g̃uarã.",
+          "imageUrl": "/images/marketing/products/caja-pesca.png",
+          "brand": "FishMate",
+          "specs": "Bandejas extraíbles | Impermeable | Organizador",
+          "stock": 11,
+          "weight": "1.2 kg",
+          "featured": false,
+          "isNew": false
+        },
+        {
+          "name": "Señuelo Surtido (10u)",
+          "category": "Pesca",
+          "price": "Gs. 85.000",
+          "description": "Surtido color ha tamaño. Cucharita, spinner ha vinilo.",
+          "imageUrl": "/images/marketing/products/senuelos.png",
+          "brand": "LureKing",
+          "specs": "10 unidades | Colores surtidos | Cucharitas + spinner + vinilo",
+          "stock": 40,
+          "weight": "0.15 kg",
+          "featured": false,
+          "isNew": false
+        },
+        {
+          "name": "Red Pirakutú 3m",
+          "category": "Pesca",
+          "price": "Gs. 60.000",
+          "description": "Nylon trenzado, mango telescópico. Iporã pesca deportiva g̃uarã.",
+          "imageUrl": "/images/marketing/products/red-pesca.png",
+          "brand": "NetPro",
+          "specs": "3m | Nylon trenzado | Mango telescópico",
+          "stock": 8,
+          "weight": "0.5 kg",
+          "featured": false,
+          "isNew": false
+        },
+        {
+          "name": "Boyas Flotante (6u)",
+          "category": "Pesca",
+          "price": "Gs. 35.000",
+          "description": "Surtido color, alta visibilidad. Brocheta plástica.",
+          "imageUrl": "/images/marketing/products/boyas.png",
+          "brand": "FloatLine",
+          "specs": "6 unidades | Alta visibilidad | Brochetas incluidas",
+          "stock": 50,
+          "weight": "0.1 kg",
+          "featured": false,
+          "isNew": false
+        },
+        {
+          "name": "Bota Montaña",
+          "category": "Acc. Personales",
+          "price": "Gs. 350.000",
+          "description": "Vakapi ijyky, suela vibram, puntera reforzada. Talle 38 44 peve.",
+          "imageUrl": "/images/marketing/products/botas.png",
+          "priceBefore": "Gs. 400.000",
+          "brand": "TrekStep",
+          "specs": "Cuero impermeable | Suela vibram | Talle 38-44",
+          "stock": 3,
+          "weight": "1.2 kg",
+          "featured": false,
+          "isNew": false
+        },
+        {
+          "name": "Termo Acero 1L",
+          "category": "Acc. Personales",
+          "price": "Gs. 70.000",
+          "description": "Acero inoxidable doble pared. Omonde hakú 12h / ro'ysã 24h.",
+          "imageUrl": "/images/marketing/products/termo.png",
+          "brand": "ThermoKing",
+          "specs": "1L | Doble pared | 12h caliente / 24h frío",
+          "stock": 20,
+          "weight": "0.4 kg",
+          "featured": true,
+          "isNew": false
+        },
+        {
+          "name": "Mochila Térmica",
+          "category": "Acc. Personales",
+          "price": "Gs. 120.000",
+          "description": "Aislamiento térmico, 20L, correa ajustable. Iporã vianda ha paseo g̃uarã.",
+          "imageUrl": "/images/marketing/products/mochila-termica.png",
+          "brand": "CoolPack",
+          "specs": "20L | Aislamiento térmico | Correas ajustables",
+          "stock": 13,
+          "weight": "0.5 kg",
+          "featured": false,
+          "isNew": false
+        },
+        {
+          "name": "Kit Botikín",
+          "category": "Acc. Personales",
+          "price": "Gs. 55.000",
+          "description": "Venda, gasa, apósito, tijera, pinza, alcohol, yodo. Estuche compacto.",
+          "imageUrl": "/images/marketing/products/botiquin.png",
+          "brand": "SafeCare",
+          "specs": "Vendas + gasa + apósitos + tijera + pinza + alcohol + yodo",
+          "stock": 25,
+          "weight": "0.3 kg",
+          "featured": false,
+          "isNew": false
+        },
+        {
+          "name": "Eslinga Amarre 5t",
+          "category": "Automóviles",
+          "price": "Gs. 90.000",
+          "description": "Par eslinga 5m x 5t, gancho forjado. Iporã carga fija hag̃ua.",
+          "imageUrl": "/images/marketing/products/eslingas.png",
+          "brand": "TowMaster",
+          "specs": "Par 5m x 5t | Ganchos forjados",
+          "stock": 10,
+          "weight": "2.0 kg",
+          "featured": false,
+          "isNew": false
+        },
+        {
+          "name": "Extintor 2kg ABC",
+          "category": "Automóviles",
+          "price": "Gs. 110.000",
+          "description": "Polvo químico seco ABC, soporte auto. Recargable.",
+          "imageUrl": "/images/marketing/products/extintor.png",
+          "brand": "FireStop",
+          "specs": "2kg | Polvo químico ABC | Soporte auto | Recargable",
+          "stock": 7,
+          "weight": "2.5 kg",
+          "featured": true,
+          "isNew": false
+        },
+        {
+          "name": "Tira Rémolque 4m",
+          "category": "Automóviles",
+          "price": "Gs. 75.000",
+          "description": "Nylon alta resistencia, gancho extremo. Capacidad 3.500kg.",
+          "imageUrl": "/images/marketing/products/tiras.png",
+          "brand": "TowMaster",
+          "specs": "4m | Nylon alta resistencia | 3.500kg capacidad",
+          "stock": 9,
+          "weight": "1.0 kg",
+          "featured": false,
+          "isNew": false
+        },
+        {
+          "name": "Guante Moto",
+          "category": "Motos",
+          "price": "Gs. 95.000",
+          "description": "Vakapi sintético, protección articulación, talle S-XL. Transpirable.",
+          "imageUrl": "/images/marketing/products/guantes.png",
+          "brand": "GripPro",
+          "specs": "Cuero sintético | Protecciones | Talle S-XL",
+          "stock": 15,
+          "weight": "0.3 kg",
+          "featured": false,
+          "isNew": false
+        },
+        {
+          "name": "Rastreador GPS",
+          "category": "Motos",
+          "price": "Gs. 450.000",
+          "description": "GPS antirrobo, app móvil, alertas en tiempo real. Batería recargable.",
+          "imageUrl": "/images/marketing/products/rastreador.png",
+          "priceBefore": "Gs. 520.000",
+          "brand": "TrackSafe",
+          "specs": "GPS antirrobo | App móvil | Alertas tiempo real",
+          "stock": 4,
+          "weight": "0.1 kg",
+          "featured": false,
+          "isNew": false
+        },
+        {
+          "name": "Sombrilla Playa 1.8m",
+          "category": "Playa y Pesca",
+          "price": "Gs. 130.000",
+          "description": "Antiviento, protección UV 50+, incluye bolsa de transporte.",
+          "imageUrl": "/images/marketing/products/sombrilla.png",
+          "brand": "SunBlock",
+          "specs": "1.8m | Antiviento | UV 50+ | Bolsa transporte",
+          "stock": 6,
+          "weight": "1.8 kg",
+          "featured": false,
+          "isNew": false
+        },
+        {
+          "name": "Silla Playa Plegable",
+          "category": "Playa y Pesca",
+          "price": "Gs. 85.000",
+          "description": "Aluminio ligero, respaldo reclinable, soporta 120kg.",
+          "imageUrl": "/images/marketing/products/silla-playa.png",
+          "brand": "BeachRest",
+          "specs": "Aluminio | Respaldo reclinable | 120kg máx",
+          "stock": 12,
+          "weight": "1.5 kg",
+          "featured": false,
+          "isNew": false
+        },
+        {
+          "name": "Bebedero Automático",
+          "category": "Campo",
+          "price": "Gs. 85.000",
+          "description": "Acero inoxidable, flotador automático. Capacidad 10L.",
+          "imageUrl": "/images/marketing/products/bebedero.png",
+          "brand": "FarmLife",
+          "specs": "Acero inoxidable | Flotador automático | 10L",
+          "stock": 8,
+          "weight": "0.8 kg",
+          "featured": false,
+          "isNew": false
+        },
+        {
+          "name": "Comedero Acero",
+          "category": "Campo",
+          "price": "Gs. 65.000",
+          "description": "Dos bandejas, patas reforzadas, desarmable para limpieza.",
+          "imageUrl": "/images/marketing/products/comedero.png",
+          "brand": "FarmLife",
+          "specs": "Dos bandejas | Patas reforzadas | Desarmable",
+          "stock": 10,
+          "weight": "1.0 kg",
+          "featured": false,
+          "isNew": false
+        },
+        {
+          "name": "Kit Herramientas Campo",
+          "category": "Campo",
+          "price": "Gs. 160.000",
+          "description": "Pala, azada, rastrillo desarmables con mango ergonomico.",
+          "imageUrl": "/images/marketing/products/kit-campo.png",
+          "brand": "AgriTool",
+          "specs": "Pala + azada + rastrillo | Mango ergonómico",
+          "stock": 8,
+          "weight": "2.2 kg",
+          "featured": false,
+          "isNew": false
+        }
+      ]
+    }
+  },
+  "about": {
+    "seo": {
+      "title": "Sobre El Viajero | Tu Tienda Outdoor en Paraguay",
+      "description": "Conocé El Viajero. Apasionados por la aventura y el aire libre en Mariano Roque Alonso, Paraguay."
+    },
+    "story": {
+      "title": "Ore Tembiasakue",
+      "paragraphs": [
+        "Ñande ha'e peteĩ tienda paraguaya orekóva 7 año pukukue experiencia camping, pesca, automóvil ha moto rubro-pe.",
+        "Oñepyrũva'ekue michĩ Mariano Roque Alonso-pe ha okakuaa ore kliente kuatiavore reheve oikovéva producto calidad.",
+        "Ko'ág̃a roguereko producto heta: karpa, bolsa ke'ẽ, caña pesca, casco moto, ha tembiporu campo g̃uarã. Opamba'e peteĩ tendápe.",
+        "Ore misión ijetu'úi: ropytyvõ nde rejuhu hag̃ua equipo porãvéva eikundaha hag̃ua opa mba'e'apópe vy'ápe."
+      ]
+    },
+    "mission": {
+      "title": "Misión",
+      "text": "Rogueraha producto calidad ore kliente acompañá hag̃ua opa mba'e'apópe, asesoramiento experto ha servicio personalizado ndive."
+    },
+    "vision": {
+      "title": "Visión",
+      "text": "Ja'eva'erã tienda referencia outdoor, camping ha aventura Paraguáipe."
+    },
+    "values": {
+      "title": "Valor",
+      "items": [
+        {
+          "title": "Calidad",
+          "description": "Rojeporavo producto marcas confiables-gui eikuaávo nde equipo oservitáta reikotevẽvove."
+        },
+        {
+          "title": "Jerovia",
+          "description": "Roikuave'ẽ ne'ẽra consejo. Producto naiporãirõ ndeve, ro'eróta ndeve."
+        },
+        {
+          "title": "Añete",
+          "description": "Rojerohory opa kliente peteĩ amígonte. Ne vy'apavẽ ningo ore prioridad."
+        },
+        {
+          "title": "Mborayhu",
+          "description": "Jaikuaa aventura ha teko libre. Upe mborayhu omomýi opamba'e rojapóva."
+        }
+      ]
+    },
+    "contactInfo": {
+      "address": "Coronel Felipe Toledo, Barrio La Concordia, Mariano Roque Alonso",
+      "phone": "+595 981 234 567",
+      "email": "info@tiendaelviajero.com.py",
+      "hours": "Lun-Vie 08:00-19:00 | Sáb 08:00-17:00 | Dom 09:00-13:00"
+    },
+    "team": {
+      "items": [
+        {
+          "name": "Carlos Mendoza",
+          "role": "Fundador ha Gerente",
+          "description": "10 año pukukue experiencia negocio equipo outdoor-pe. Oguerohory camping ha deporte aventura."
+        },
+        {
+          "name": "Maria Gonzalez",
+          "role": "Venta ha Servicio Cliente",
+          "description": "Oikuaa porã equipo pesca. Oïrõguare oipytyvõta nde rejapo hag̃ua elección."
+        },
+        {
+          "name": "Luis Ramirez",
+          "role": "Especialista Producto",
+          "description": "Moto ha automóvil entusiasta. Oikuaa opa producto detalle-pe."
+        }
+      ]
+    }
+  },
+  "productos": {
+    "seo": {
+      "title": "Mba'eapohapy - El Viajero | Catálogo Paraguáipe",
+      "description": "Ehecha ore catálogo: karpa, bolsa ke'ẽ, caña pesca, casco moto ha hetave. Calidad producto Paraguái pukukue."
+    }
+  },
+  "contacto": {
+    "seo": {
+      "title": "Ñe'ẽmondo - El Viajero | Ropytyvõsénte",
+      "description": "Eñe'ẽ ore ndive. Eike orerópe Mariano Roque Alonso-pe, terei térã emomarangatu WhatsApp rupive."
+    },
+    "formSection": {
+      "title": "Emomarangatu ñe'ẽmondo",
+      "namePlaceholder": "Nde réra",
+      "emailPlaceholder": "Nde email",
+      "phonePlaceholder": "Nde pumbyry",
+      "messagePlaceholder": "Nde marandu",
+      "submitText": "Emondo",
+      "successMessage": "Aguyje nde marandu rehe! Ropytáta ndeve pya'e.",
+      "errorMessage": "Ojehasa'asy emondo jave. Eha'ãjey."
+    },
+    "contactInfo": {
+      "title": "Marandu Ñe'ẽmondo",
+      "address": "Coronel Felipe Toledo, Barrio La Concordia, Mariano Roque Alonso",
+      "hours": "Lun-Vie 08:00-19:00 | Sáb 08:00-17:00 | Dom 09:00-13:00",
+      "phone": "+595 981 234 567",
+      "email": "info@tiendaelviajero.com.py"
+    },
+    "mapSection": {
+      "title": "Ehecha ñande",
+      "embedUrl": ""
+    }
+  },
+  "faq": {
+    "seo": {
+      "title": "Porandu - El Viajero | Opamba'e reikuaaséva",
+      "description": "Mbohovái porandu jekuaáva ore producto, pedido, ñemu, pago ha devolución rehegua."
+    },
+    "items": [
+      {
+        "question": "Mba'éichapa añembo'ejerure?",
+        "answer": "Ikatu emba'ejerure WhatsApp rupive. Ehecha ore catálogo, eiporavo ne mba'eapohapy ha emomarangatu nde mensaje ne pedido ndive. Roconfirmáta disponibilidad ha roñongatúta entrega."
+      },
+      {
+        "question": "Mba'e pagopago rérape rejeapyta?",
+        "answer": "Rojeapyta píre, transferencia bancaria, Mercado Pago, Bancard ha tarjeta crédito/débito (Visa, Mastercard). Avei roguereko 3, 6 ha 12 cuota sin interés."
+      },
+      {
+        "question": "Pejegueraha Paraguái pukukue?",
+        "answer": "Hé! Rojegueraha área metropolitana ha Paraguái pukukue. Eñe'ẽ ore ndive roikuaa hag̃ua ñemu hepy ha llegada tiempore."
+      },
+      {
+        "question": "Mba'éichapa pejapo devolución?",
+        "answer": "Ikatu eregresá térã recambiá producto 7 día compra rire. Producto oïva'erã original packaging-pe ha ojepurúva'ekue. Eñe'ẽ ore ndive arreglo g̃uarã."
+      },
+      {
+        "question": "Pejovasa garantía?",
+        "answer": "Hé, opa ore producto oreko garantía. Garantía tiempore oiko producto ha marca rehe. Eñe'ẽ ore ndive informacion específica g̃uarã."
+      },
+      {
+        "question": "Ikatúpa aikepáta orerópe?",
+        "answer": "Upéichante! Roï Mariano Roque Alonso-pe, Coronel Felipe Toledo calle, Barrio La Concordia-pe. Ore hora Lun-Vie 08:00-19:00, Sáb 08:00-17:00, Dom 09:00-13:00."
+      },
+      {
+        "question": "Mba'éichapa aikuaa producto disponibilidad?",
+        "answer": "Emomarangatu WhatsApp mensaje producto réra ndive roikuaa hag̃ua stock oĩpa."
+      },
+      {
+        "question": "Pejovasa descuento compra heta vove?",
+        "answer": "Hé, rogweróta precio especial compra heta vove. Eñe'ẽ ore ndive rombohapy hag̃ua cotización."
+      }
+    ]
+  },
+  "whatsapp": {
+    "defaultMessage": "Hola! Quisiera informacion sobre productos de El Viajero",
+    "serviceMessage": "Hola! Quisiera consultar por {{productName}}",
+    "businessNumber": "595981234567",
+    "businessLink": "https://wa.me/595981234567"
+  },
+  "tienda": {
+    "seo": {
+      "title": "Ñemuhápe - El Viajero | Camping, Pesca ha Outdoor",
+      "description": "Ehecha ore tienda: equipo camping, pesca, automóvil ha moto accesorio. Calidad producto precio porãvéva Paraguáipe."
+    }
+  },
+  "promociones": {
+    "seo": {
+      "title": "Oferta - El Viajero | Oferta Especial",
+      "description": "Ehecha ore oferta ha promoción pyahu camping, pesca ha outdoor g̃uarã. Tiempore limitado."
+    },
+    "items": [
+      {
+        "title": "Kit Camping Completo",
+        "description": "Karpa 4 tapicha + 2 bolsa ke'ẽ + colchón inflable. Eñongatu Gs. 80.000!",
+        "discount": "-15%",
+        "code": "CAMPING15",
+        "endDate": "2026-06-30",
+        "active": true
+      },
+      {
+        "title": "Combo Pesca",
+        "description": "Caña + Carrete + Caja Herramienta. Precio especial.",
+        "discount": "-10%",
+        "code": "PESCA10",
+        "endDate": "2026-06-30",
+        "active": true
+      },
+      {
+        "title": "Ñemu Reñemói",
+        "description": "Ñe'ẽmondo reñemói Gs. 500.000 vende área metropolitana-pe.",
+        "discount": "Reñemói",
+        "code": "ENVIOGRATIS",
+        "endDate": "2026-06-30",
+        "active": true
+      }
+    ]
+  },
+  "reviews": {
+    "_meta": {
+      "total": 4,
+      "averageRating": 4.8,
+      "lastUpdated": "2026-05-11"
+    },
+    "title": "Kliente Ñe'ẽ",
+    "subtitle": "Mba'e he'i ore kliente",
+    "items": [
+      {
+        "id": "rev-1",
+        "author": "Carlos Mendoza",
+        "rating": 5,
+        "text": "Servicio porã ha precio iporãva. Ajuhu opamba'e aikotevẽva che aventure camping g̃uarã San Bernardino-pe.",
+        "date": "2026-04-15"
+      },
+      {
+        "id": "rev-2",
+        "author": "Maria Gonzalez",
+        "rating": 5,
+        "text": "Chepytyvõ porã ajapo porã hag̃ua elección caña pesca. Chevolveréna.",
+        "date": "2026-04-02"
+      },
+      {
+        "id": "rev-3",
+        "author": "Luis Ramirez",
+        "rating": 4,
+        "text": "Ajoguá che carpa ha accesorio moto. Opamba'e calidad porã ha precio justo.",
+        "date": "2026-03-20"
+      },
+      {
+        "id": "rev-4",
+        "author": "Ana Benitez",
+        "rating": 5,
+        "text": "Oreko mba'apohapy na'erejuhúi ambue tendápe. Picana eléctrica chepytyvõ tape Caacupé-pe.",
+        "date": "2026-03-10"
+      }
+    ]
   },
   "footer": {
     "columns": [
-      { "title": "Navegación", "links": [
-        { "label": "Hógape", "href": "/" },
-        { "label": "Ñemuhápe", "href": "/tienda" },
-        { "label": "Ñane rehegua", "href": "/nosotros" },
-        { "label": "Contacto", "href": "/contacto" }
-      ]}
+      {
+        "title": "EL VIAJERO",
+        "links": [
+          {
+            "label": "Hógape",
+            "href": "/"
+          },
+          {
+            "label": "Ñemuhápe",
+            "href": "/tienda"
+          },
+          {
+            "label": "Blog",
+            "href": "/blog"
+          },
+          {
+            "label": "Ñande rehegua",
+            "href": "/nosotros"
+          },
+          {
+            "label": "Ñe'ẽmondo",
+            "href": "/contacto"
+          }
+        ]
+      },
+      {
+        "title": "PYTYVÕ",
+        "links": [
+          {
+            "label": "FAQ",
+            "href": "/faq"
+          },
+          {
+            "label": "Ñemu",
+            "href": "/faq"
+          },
+          {
+            "label": "Devolución ha Cambio",
+            "href": "/faq"
+          },
+          {
+            "label": "Pagopago",
+            "href": "/faq"
+          }
+        ]
+      },
+      {
+        "title": "LEGAL",
+        "links": [
+          {
+            "label": "Privacidad",
+            "href": "/privacidad"
+          },
+          {
+            "label": "Término",
+            "href": "/terminos"
+          }
+        ]
+      },
+      {
+        "title": "ORE RUPIVE",
+        "links": [
+          {
+            "label": "Instagram",
+            "href": "https://instagram.com/elviajero_py"
+          },
+          {
+            "label": "Facebook",
+            "href": "https://facebook.com/elviajeropy"
+          },
+          {
+            "label": "TikTok",
+            "href": "https://tiktok.com/@elviajero_py"
+          },
+          {
+            "label": "YouTube",
+            "href": "https://youtube.com/@elviajero_py"
+          }
+        ]
+      }
     ],
-    "social": [
-      { "name": "Instagram", "url": "https://instagram.com/elviajero_py", "icon": "instagram" },
-      { "name": "Facebook", "url": "https://facebook.com/elviajeropy", "icon": "facebook" },
-      { "name": "TikTok", "url": "https://tiktok.com/@elviajero_py", "icon": "tiktok" }
+    "aboutSection": {
+      "title": "El Viajero",
+      "text": "Nde tienda aventura Paraguáipe. Camping, pesca, auto ha moto equipo. Eike orerópe Mariano Roque Alonso-pe."
+    },
+    "contactSection": {
+      "address": "Coronel Felipe Toledo, Barrio La Concordia",
+      "hours": "Lun-Vie 08:00-19:00 | Sáb 08:00-17:00 | Dom 09:00-13:00",
+      "phone": "+595 981 234 567",
+      "email": "info@tiendaelviajero.com.py"
+    },
+    "socialLinks": {
+      "instagram": "https://instagram.com/elviajero_py",
+      "facebook": "https://facebook.com/elviajeropy",
+      "tiktok": "https://tiktok.com/@elviajero_py",
+      "youtube": "https://youtube.com/@elviajero_py",
+      "whatsapp": "https://wa.me/595981234567"
+    },
+    "copyright": "© 2026 El Viajero. Derecho reservado."
+  },
+  "cookieConsent": {
+    "title": "Roipuru cookie",
+    "description": "Roipuru cookie nde experiencia iporãve hag̃ua ore sitiope. Eseguíramo, reacepta política.",
+    "acceptText": "Acepta",
+    "moreInfoText": "Hetave información"
+  },
+  "newsletter": {
+    "title": "Eguenohẽ Novedades",
+    "description": "Eñemboheraguy rezombiapy oferta, mba'eapohapy pyahu ha consejo aventura.",
+    "emailPlaceholder": "nde@email.com",
+    "buttonText": "Añemboheraguy",
+    "successMessage": "Aguyje eñemboheraguyhague rehe! Reseguiséta novedades."
+  },
+  "paymentMethods": {
+    "title": "Pagopago",
+    "subtitle": "Rojeapyta",
+    "methods": [
+      {
+        "name": "Visa",
+        "icon": "visa"
+      },
+      {
+        "name": "Mastercard",
+        "icon": "mastercard"
+      },
+      {
+        "name": "Mercado Pago",
+        "icon": "mercado-pago"
+      },
+      {
+        "name": "Bancard",
+        "icon": "bancard"
+      },
+      {
+        "name": "Pire",
+        "icon": "cash"
+      },
+      {
+        "name": "Transferencia",
+        "icon": "transfer"
+      }
+    ],
+    "installments": "3, 6 ha 12 cuota interés'ÿre"
+  },
+  "storeLocator": {
+    "title": "Visitá Nuestro Local",
+    "description": "Te esperamos en Mariano Roque Alonso para que conozcas todos nuestros productos en persona.",
+    "address": "Coronel Felipe Toledo, Barrio La Concordia",
+    "hours": "Lun-Vie 08:00-19:00 | Sáb 08:00-17:00 | Dom 09:00-13:00",
+    "googleMapsUrl": "https://maps.google.com/?q=Coronel+Felipe+Toledo+Mariano+Roque+Alonso+Paraguay",
+    "whatsappText": "Pedí dirección por WhatsApp",
+    "whatsappNumber": "595981234567"
+  },
+  "categoryMenu": {
+    "camping": [
+      "Carpas y Carpas",
+      "Bolsas de Dormir",
+      "Sillas y Mesas",
+      "Linternas y Faroles",
+      "Coolers y Conservadoras",
+      "Cocinas y Parrillas",
+      "Hamacas y Chinchorros"
+    ],
+    "pesca": [
+      "Cañas y Carretes",
+      "Señuelos y Artificiales",
+      "Cajas y Herramientas",
+      "Redes y Accesorios",
+      "Chalecos Salvavidas"
+    ],
+    "outdoor": [
+      "Mochilas y Bolsos",
+      "Cuchillos y Navajas",
+      "Botas y Calzado",
+      "Termos y Cantimploras",
+      "Botiquines"
+    ],
+    "autos": [
+      "Dashcams",
+      "Infladores 12V",
+      "Eslingas y Amarre",
+      "Extintores"
+    ],
+    "motos": [
+      "Cascos",
+      "Guantes",
+      "GPS y Rastreadores"
+    ],
+    "campo": [
+      "Herramientas",
+      "Bebederos",
+      "Comederos"
     ]
   },
-  "whatsapp": { "defaultMessage": "Mba'épa reipota? Ajuaju WhatsApp rupive" },
-  "paymentMethods": { "icons": ["visa", "mastercard", "mercadopago", "pagopar", "bancard", "efectivo", "transferencia"], "installments": "3, 6 ha 12 cuota" },
-  "cookieConsent": { "message": "Jaipuru cookie'i ne remiandu porãve hag̃ua", "acceptText": "Ajuave" }
+  "deliveryZones": [
+    {
+      "zone": "Mariano Roque Alonso",
+      "fee": 0,
+      "minForFree": 0,
+      "days": "Mismo día"
+    },
+    {
+      "zone": "Asunción",
+      "fee": 15000,
+      "minForFree": 300000,
+      "days": "24h"
+    },
+    {
+      "zone": "Fernando de la Mora",
+      "fee": 15000,
+      "minForFree": 300000,
+      "days": "24h"
+    },
+    {
+      "zone": "San Lorenzo",
+      "fee": 15000,
+      "minForFree": 300000,
+      "days": "24h"
+    },
+    {
+      "zone": "Lambaré",
+      "fee": 20000,
+      "minForFree": 300000,
+      "days": "24-48h"
+    },
+    {
+      "zone": "Luque",
+      "fee": 20000,
+      "minForFree": 300000,
+      "days": "24-48h"
+    },
+    {
+      "zone": "Capiatá",
+      "fee": 25000,
+      "minForFree": 300000,
+      "days": "24-48h"
+    },
+    {
+      "zone": "Limpio",
+      "fee": 25000,
+      "minForFree": 300000,
+      "days": "24-48h"
+    },
+    {
+      "zone": "Ñemby",
+      "fee": 25000,
+      "minForFree": 300000,
+      "days": "24-48h"
+    },
+    {
+      "zone": "Interior (encomienda)",
+      "fee": 0,
+      "minForFree": 0,
+      "days": "3-7 días",
+      "note": "Consultar costo según destino"
+    }
+  ],
+  "coupons": {
+    "enabled": true,
+    "list": [
+      {
+        "code": "VIAJERO10",
+        "type": "percent",
+        "value": 10,
+        "minPurchase": 200000,
+        "description": "10% de descuento en compras desde Gs. 200.000",
+        "active": true
+      },
+      {
+        "code": "ENVIOGRATIS",
+        "type": "free_shipping",
+        "value": 0,
+        "minPurchase": 0,
+        "description": "Envío gratis sin mínimo",
+        "active": true
+      },
+      {
+        "code": "BIENVENIDO",
+        "type": "percent",
+        "value": 15,
+        "minPurchase": 100000,
+        "description": "15% off para compradores nuevos",
+        "active": true,
+        "maxUses": 50
+      }
+    ]
+  },
+  "analytics": {
+    "ga4": {
+      "measurementId": "G-XXXXXXXX",
+      "enabled": true
+    },
+    "events": {
+      "view_item": true,
+      "add_to_cart": true,
+      "begin_checkout": true,
+      "purchase": true,
+      "whatsapp_click": true
+    }
+  },
+  "paymentGateway": {
+    "provider": "pagopar",
+    "mode": "live",
+    "publicKey": "pk_live_xxxxxxxxxxxxxxxxxxxx",
+    "secretKey": "sk_live_xxxxxxxxxxxxxxxxxxxx",
+    "currency": "PYG",
+    "installments": [
+      3,
+      6,
+      12
+    ],
+    "minInstallmentAmount": 50000,
+    "sandboxUrl": "https://sandbox.pagopar.com/api",
+    "liveUrl": "https://api.pagopar.com"
+  },
+  "supabase": {
+    "url": "https://qyvokpribmbrosafntqa.supabase.co",
+    "anonKey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF5dm9rcHJpYm1icm9zYWZudHFhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYzMTgxNTUsImV4cCI6MjA5MTg5NDE1NX0.ww_-gt4beuTcr_HbUCv0HmuKCw-J-HWTAI441yDSXRg",
+    "tables": {
+      "products": "products",
+      "orders": "orders",
+      "customers": "customers",
+      "stock_alerts": "stock_alerts"
+    }
+  },
+  "email": {
+    "from": "El Viajero <no-reply@tiendaelviajero.com.py>",
+    "orderConfirmation": true,
+    "orderSubject": "📦 Confirmación de pedido - El Viajero",
+    "whatsappConfirmation": true
+  },
+  "abandonedCart": {
+    "enabled": true,
+    "reminderDelayMinutes": 60,
+    "reminderMessage": "¡Hola! Te recordamos que tenés productos en tu carrito en El Viajero. ¿Necesitás ayuda para completar tu compra?",
+    "maxReminders": 2
+  },
+  "backInStock": {
+    "enabled": true,
+    "notificationMethod": "whatsapp",
+    "maxAlerts": 3
+  }
 }
