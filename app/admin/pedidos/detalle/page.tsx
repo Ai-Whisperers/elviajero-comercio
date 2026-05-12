@@ -1,5 +1,4 @@
 "use client"
-import { AdminShell } from "@/components/admin/admin-layout"
 import { useState, useEffect } from "react"
 import { useSearchParams } from "next/navigation"
 import Link from "next/link"
@@ -127,14 +126,12 @@ function OrderDetailInner() {
 
 export default function AdminOrderDetail() {
   return (
-    <AdminShell>
-      <Suspense fallback={
+    <Suspense fallback={
         <div className="flex items-center justify-center py-20">
           <div className="h-8 w-8 animate-spin rounded-full border-2 border-emerald-500 border-t-transparent" />
         </div>
       }>
         <OrderDetailInner />
       </Suspense>
-    </AdminShell>
   )
 }

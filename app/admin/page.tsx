@@ -1,5 +1,5 @@
 'use client'
-import { AdminShell, useAdminAuth } from "@/components/admin/admin-layout"
+import { useAdminAuth } from "@/components/admin/admin-layout"
 import { useState, useEffect } from "react"
 import { PageHeader, StatCard, StatsGridSkeleton, Badge } from "@/components/admin/ui"
 import Link from "next/link"
@@ -84,4 +84,4 @@ function DashboardContent() {
   )
 }
 
-export default function AdminPage() { return <AdminShell><DashboardContent /></AdminShell> }
+export default function AdminPage() { return <DashboardContent /> }

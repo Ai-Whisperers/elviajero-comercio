@@ -1,5 +1,5 @@
 "use client"
-import { AdminShell, useAdminAuth } from "@/components/admin/admin-layout"
+import { useAdminAuth } from "@/components/admin/admin-layout"
 import { useState } from "react"
 import { PageHeader, EmptyState } from "@/components/admin/ui"
 

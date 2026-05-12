@@ -1,6 +1,6 @@
 "use client"
 import { useState, useEffect, useRef } from "react"
-import { AdminShell, useAdminAuth } from "@/components/admin/admin-layout"
+import { useAdminAuth } from "@/components/admin/admin-layout"
 import { PageHeader, EmptyState, CardSkeleton } from "@/components/admin/ui"
 
 export default function AdminPhotos() {

@@ -1,5 +1,5 @@
 "use client"
-import { AdminShell, useAdminAuth } from "@/components/admin/admin-layout"
+import { useAdminAuth } from "@/components/admin/admin-layout"
 import { useState, useEffect } from "react"
 import defaultContentRaw from "@/content/es.json"
 import { SectionNav, SECTIONS } from "@/components/admin/section-nav"
@@ -304,5 +304,5 @@ function ContentEditor() {
 }
 
 export default function ContentPage() {
-  return <AdminShell><ContentEditor /></AdminShell>
+  return <ContentEditor />
 }
