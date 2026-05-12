@@ -13,8 +13,9 @@ export function generateStaticParams() {
   return Object.keys(CATEGORIES).map(slug => ({ slug }))
 }
 
-export default function CategoryPage({ params }: { params: { slug: string } }) {
-  const cat = CATEGORIES[params.slug]
+export default async function CategoryPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
+  const cat = CATEGORIES[slug]
   if (!cat) return null
-  return <CategoryContent slug={params.slug} name={cat.name} emoji={cat.emoji} description={cat.description} heroImage={cat.heroImage} />
+  return <CategoryContent slug={slug} name={cat.name} emoji={cat.emoji} description={cat.description} heroImage={cat.heroImage} />
 }
