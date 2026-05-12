@@ -1,63 +1,63 @@
 "use client"
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
-import { CookieConsent } from "@/components/cookie-consent"
-import { FaqJsonLd } from "@/components/faq-json-ld"
-import content from "@/content/es.json"
-import { useState, useEffect } from "react"
-const c = content as any
-const faqs = c.faq?.items || []
+import { useContent } from "@/lib/content-provider"
+import Link from "next/link"
 
-export default function FAQPage() {
-  const [open, setOpen] = useState<number | null>(null)
+function Input({ label, value, onChange, multiline, placeholder }: { label: string; value: string; onChange: (v: string) => void; multiline?: boolean; placeholder?: string }) {
+  const id = label.replace(/\s+/g, "-").toLowerCase()
+  return (
+    <div className="mb-3">
+      <label htmlFor={id} className="mb-1 block text-xs font-medium text-zinc-400">{label}</label>
+      {multiline ? (
+        <textarea id={id} value={value} onChange={e => onChange(e.target.value)}
+          placeholder={placeholder}
+          className="w-full rounded-lg border border-zinc-700/60 bg-zinc-800 px-3 py-2 text-sm text-white outline-none focus:border-emerald-500/50 min-h-[80px]" />
+      ) : (
+        <input id={id} type="text" value={value} onChange={e => onChange(e.target.value)}
+          placeholder={placeholder}
+          className="w-full rounded-lg border border-zinc-700/60 bg-zinc-800 px-3 py-2 text-sm text-white outline-none focus:border-emerald-500/50" />
+      )}
+    </div>
+  )
+}
 
-  useEffect(() => {
-    const hash = window.location.hash.replace("#", "")
-    if (hash) {
-      const idx = faqs.findIndex((f: any) => f.id === hash)
-      if (idx >= 0) {
-        setOpen(idx)
-        setTimeout(() => {
-          document.getElementById(`faq-${hash}`)?.scrollIntoView({ behavior: "smooth", block: "center" })
-        }, 100)
-      }
-    }
-  }, [])
+export default function FaqPage() {
+  const { get } = useContent()
+  const faq = get("faq") || {}
+  const faqs: any[] = faq.items || []
+  const hero = faq.hero || {}
 
   return (
     <>
-      <FaqJsonLd />
-      <Header />
-      <section className="bg-primary py-12 text-center text-primary-foreground">
-        <h1 className="text-4xl font-bold">{c.faq?.hero?.headline || "FAQ"}</h1>
-        <p className="mt-2 text-primary-foreground/80">{c.faq?.hero?.subheadline}</p>
-      </section>
-      <section className="bg-background py-16">
-        <div className="mx-auto max-w-3xl px-4">
-          <div className="flex flex-col gap-3">
-            {faqs.map((f: any, i: number) => (
-              <div key={i} id={`faq-${f.id || i}`} className="scroll-mt-24 overflow-hidden rounded-xl border border-border bg-surface shadow-sm">
-                <button
-                  onClick={() => setOpen(open === i ? null : i)}
-                  className="flex w-full items-center justify-between px-6 py-4 text-left font-semibold text-foreground transition-colors hover:bg-surface-light"
-                >
-                  {f.question}
-                  <svg className={"h-5 w-5 shrink-0 text-muted-foreground transition-transform " + (open === i ? "rotate-180" : "")} xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="m6 9 6 6 6-6" />
-                  </svg>
-                </button>
-                {open === i && (
-                  <div className="border-t border-border px-6 py-4 text-sm text-muted-foreground leading-relaxed">
-                    {f.answer}
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
+      {/* Hero */}
+      <section className="relative flex items-center justify-center min-h-[250px] bg-gradient-to-br from-emerald-900 via-emerald-800 to-green-900">
+        <div className="relative z-10 text-center px-4">
+          <h1 className="text-4xl font-bold text-white">{hero.headline || "FAQ"}</h1>
+          <p className="mt-2 text-emerald-100/80">{hero.subheadline}</p>
         </div>
       </section>
-      <Footer />
-      <CookieConsent />
+
+      {/* FAQ items */}
+      <section className="mx-auto max-w-3xl px-4 py-16">
+        <div className="space-y-4">
+          {faqs.map((item: any, i: number) => (
+            <details key={i} className="group rounded-xl border border-zinc-700/60 bg-zinc-900/50 p-4 open:ring-1 open:ring-emerald-500/20 transition-all">
+              <summary className="flex cursor-pointer items-center justify-between text-sm font-medium text-white">
+                {item.question}
+                <svg className="h-4 w-4 shrink-0 text-zinc-400 transition-transform group-open:rotate-180" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9l6 6 6-6"/></svg>
+              </summary>
+              <p className="mt-3 text-sm text-zinc-400 leading-relaxed">{item.answer}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+
+      {/* Contact CTA */}
+      <section className="bg-zinc-900/50 py-16 text-center">
+        <p className="text-sm text-zinc-400">¿No encontraste lo que buscabas?</p>
+        <Link href="/contacto" className="mt-2 inline-block text-sm font-semibold text-emerald-400 hover:text-emerald-300">
+          Contactanos →
+        </Link>
+      </section>
     </>
   )
 }

@@ -1,13 +1,12 @@
 "use client"
 import { useState, useEffect, useCallback } from "react"
-import content from "@/content/es.json"
+import { useContent } from "@/lib/content-provider"
 import Link from "next/link"
 
-const c = content as any
-const carousel = c.home?.heroCarousel || {}
-const slides = carousel.slides || []
-
 export function HeroCarousel() {
+  const { get } = useContent()
+  const carousel = get("home.heroCarousel") || {}
+  const slides: any[] = carousel.slides || []
   const [current, setCurrent] = useState(0)
 
   const next = useCallback(() => setCurrent((p) => (p + 1) % slides.length), [slides.length])
@@ -24,49 +23,61 @@ export function HeroCarousel() {
   const slide = slides[current]
 
   return (
-    <div className="relative flex min-h-[70vh] items-center justify-center overflow-hidden">
-      {slides.map((s: any, i: number) => (
-        <div
-          key={i}
-          className="absolute inset-0 transition-opacity duration-700"
-          style={{
-            backgroundImage: `url(${s.image})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            opacity: i === current ? 1 : 0,
-          }}
-        >
-          <div className="absolute inset-0 bg-black/30" />
-        </div>
-      ))}
-      <div className="relative z-10 mx-auto max-w-4xl px-4 text-center">
-        <div className="rounded-2xl bg-white/10 p-8 backdrop-blur-md sm:p-12">
-          <h1 className="mb-4 text-4xl font-bold tracking-tight text-white sm:text-5xl">{slide.title}</h1>
-          <p className="mx-auto mb-8 max-w-2xl text-lg text-white/90">{slide.subtitle}</p>
-          <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-            <Link
-              href={slide.ctaHref || "/tienda"}
-              className="inline-flex h-12 items-center justify-center rounded-lg bg-white px-10 text-sm font-semibold text-primary shadow-sm transition-all hover:bg-white/90 hover:scale-105"
-            >
-              {slide.ctaText}
-            </Link>
+    <div className="relative h-[60vh] min-h-[400px] w-full overflow-hidden">
+      <div
+        className="absolute inset-0 bg-cover bg-center transition-all duration-700"
+        style={{ backgroundImage: `url(${slide.image || slide.bgImage})` }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
+      </div>
+      <div className="relative z-10 flex h-full items-center px-6 sm:px-12 lg:px-20">
+        <div className="max-w-xl">
+          <h1 className="text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl">
+            {slide.headline || slide.title}
+          </h1>
+          <p className="mt-4 text-lg text-zinc-200 sm:text-xl">
+            {slide.subheadline || slide.subtitle}
+          </p>
+          <div className="mt-8 flex flex-wrap gap-4">
+            {slide.ctaPrimaryText && (
+              <Link
+                href={slide.ctaPrimaryHref || "#"}
+                className="rounded-xl bg-emerald-600 px-8 py-3 text-sm font-semibold text-white shadow-lg shadow-emerald-600/30 hover:bg-emerald-500 transition-all"
+              >
+                {slide.ctaPrimaryText}
+              </Link>
+            )}
+            {slide.ctaSecondaryText && (
+              <Link
+                href={slide.ctaSecondaryHref || "#"}
+                className="rounded-xl border border-white/30 px-8 py-3 text-sm font-semibold text-white hover:bg-white/10 transition-all"
+              >
+                {slide.ctaSecondaryText}
+              </Link>
+            )}
           </div>
         </div>
       </div>
       {slides.length > 1 && (
         <>
-          <button onClick={prev} className="absolute left-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/20 p-2 text-white backdrop-blur-sm transition-all hover:bg-white/40">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m15 18-6-6 6-6"/></svg>
+          <button
+            onClick={prev}
+            className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-black/30 p-2 text-white hover:bg-black/50 transition-all"
+          >
+            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
           </button>
-          <button onClick={next} className="absolute right-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/20 p-2 text-white backdrop-blur-sm transition-all hover:bg-white/40">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m9 18 6-6-6-6"/></svg>
+          <button
+            onClick={next}
+            className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-black/30 p-2 text-white hover:bg-black/50 transition-all"
+          >
+            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
           </button>
-          <div className="absolute bottom-6 left-1/2 z-10 flex -translate-x-1/2 gap-2">
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
             {slides.map((_: any, i: number) => (
               <button
                 key={i}
                 onClick={() => setCurrent(i)}
-                className={`h-2 w-2 rounded-full transition-all ${i === current ? "w-6 bg-white" : "bg-white/40"}`}
+                className={`h-2 w-2 rounded-full transition-all ${i === current ? "bg-emerald-400 w-6" : "bg-white/50 hover:bg-white/80"}`}
               />
             ))}
           </div>

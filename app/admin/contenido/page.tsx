@@ -1,6 +1,6 @@
 "use client"
 import { useAdminAuth } from "@/components/admin/admin-layout"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import defaultContentRaw from "@/content/es.json"
 import { SectionNav, SECTIONS } from "@/components/admin/section-nav"
 import { PageHeader } from "@/components/admin/ui"
@@ -24,7 +24,6 @@ function Input({ label, value, onChange, multiline, placeholder }: { label: stri
   )
 }
 
-/** Deep get value from an object by dot path */
 function deepGet(obj: any, path: string): string {
   const parts = path.split(".")
   let cur = obj
@@ -35,7 +34,6 @@ function deepGet(obj: any, path: string): string {
   return typeof cur === "string" ? cur : typeof cur === "number" ? String(cur) : ""
 }
 
-/** Deep set value on a cloned object */
 function deepSet(obj: any, path: string, value: any): any {
   const parts = path.split(".")
   const clone = JSON.parse(JSON.stringify(obj))
@@ -55,13 +53,11 @@ function ContentEditor() {
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
 
-  // Load existing overrides from DB on mount
   useEffect(() => {
     if (!authed) return
     fetch("/api/admin/content").then(r => r.json()).then(d => { if (d) setOverrides(d) })
   }, [authed])
 
-  // Merge: overrides take priority, fallback to es.json defaults
   const merged = { ...defaultContent, ...overrides }
   const get = (path: string) => {
     const v = deepGet(overrides, path)
@@ -82,21 +78,22 @@ function ContentEditor() {
     setSaving(false)
   }
 
-  const addItem = (path: string, template: any) => {
-    const parts = path.split(".")
-    let cur = { ...overrides }
-    let obj = cur
-    for (let i = 0; i < parts.length - 1; i++) {
-      if (!obj[parts[i]]) obj[parts[i]] = {}
-      obj = obj[parts[i]]
-    }
-    const existing = deepGet(merged, path)
-    const arr = Array.isArray(merged[parts[parts.length - 1]] || existing) ? (merged[parts[parts.length - 1]] || existing) : []
-    obj[parts[parts.length - 1]] = [...arr, template]
-    setOverrides(cur)
+  const addArrayItem = (path: string, template: any) => {
+    setOverrides((prev: any) => {
+      const parts = path.split(".")
+      const clone = JSON.parse(JSON.stringify(prev))
+      let obj = clone
+      for (let i = 0; i < parts.length - 1; i++) {
+        if (!obj[parts[i]]) obj[parts[i]] = {}
+        obj = obj[parts[i]]
+      }
+      const arr = obj[parts[parts.length - 1]] || []
+      obj[parts[parts.length - 1]] = [...arr, template]
+      return clone
+    })
   }
 
-  const removeItem = (path: string, index: number) => {
+  const removeArrayItem = (path: string, index: number) => {
     setOverrides((prev: any) => {
       const parts = path.split(".")
       const clone = JSON.parse(JSON.stringify(prev))
@@ -135,7 +132,6 @@ function ContentEditor() {
     let cur = overrides
     for (const p of parts) {
       if (cur?.[p] === undefined) {
-        // Fall back to default content
         let def: any = defaultContent
         for (const pp of parts) {
           if (def?.[pp] === undefined) return []
@@ -173,6 +169,7 @@ function ContentEditor() {
           {section === "general" && (
             <div className="space-y-4">
               <Input label="Nombre del sitio" value={get("siteName")} onChange={v => set("siteName", v)} placeholder={deepGet(defaultContent, "siteName")} />
+              <Input label="Razón social" value={get("businessName")} onChange={v => set("businessName", v)} placeholder={deepGet(defaultContent, "businessName")} />
               <Input label="Tagline" value={get("tagline")} onChange={v => set("tagline", v)} placeholder={deepGet(defaultContent, "tagline")} />
               <Input label="WhatsApp number" value={get("whatsapp.number")} onChange={v => set("whatsapp.number", v)} placeholder={deepGet(defaultContent, "whatsapp.number") || "595981234567"} />
               <Input label="WhatsApp message" multiline value={get("whatsapp.message")} onChange={v => set("whatsapp.message", v)} />
@@ -180,13 +177,17 @@ function ContentEditor() {
           )}
 
           {section === "hero" && (
-            <div className="space-y-4">
-              <Input label="Título principal (H1)" value={get("home.hero.headline")} onChange={v => set("home.hero.headline", v)} placeholder={deepGet(defaultContent, "home.hero.headline")} />
-              <Input label="Subtítulo" multiline value={get("home.hero.subheadline")} onChange={v => set("home.hero.subheadline", v)} placeholder={deepGet(defaultContent, "home.hero.subheadline")} />
-              <Input label="Texto del botón primario" value={get("home.hero.ctaPrimaryText")} onChange={v => set("home.hero.ctaPrimaryText", v)} placeholder={deepGet(defaultContent, "home.hero.ctaPrimaryText")} />
-              <Input label="Link del botón primario" value={get("home.hero.ctaPrimaryHref")} onChange={v => set("home.hero.ctaPrimaryHref", v)} />
-              <Input label="Texto del botón secundario" value={get("home.hero.ctaSecondaryText")} onChange={v => set("home.hero.ctaSecondaryText", v)} placeholder={deepGet(defaultContent, "home.hero.ctaSecondaryText")} />
-              <Input label="Link del botón secundario" value={get("home.hero.ctaSecondaryHref")} onChange={v => set("home.hero.ctaSecondaryHref", v)} />
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-sm font-semibold text-white mb-3">Slide principal</h3>
+                <Input label="Título principal (H1)" value={get("home.heroCarousel.slides.0.headline")} onChange={v => set("home.heroCarousel.slides.0.headline", v)} placeholder={deepGet(defaultContent, "home.heroCarousel.slides.0.headline")} />
+                <Input label="Subtítulo" multiline value={get("home.heroCarousel.slides.0.subheadline")} onChange={v => set("home.heroCarousel.slides.0.subheadline", v)} placeholder={deepGet(defaultContent, "home.heroCarousel.slides.0.subheadline")} />
+                <Input label="Imagen de fondo (URL)" value={get("home.heroCarousel.slides.0.image")} onChange={v => set("home.heroCarousel.slides.0.image", v)} placeholder={deepGet(defaultContent, "home.heroCarousel.slides.0.image")} />
+                <Input label="Texto botón primario" value={get("home.heroCarousel.slides.0.ctaPrimaryText")} onChange={v => set("home.heroCarousel.slides.0.ctaPrimaryText", v)} placeholder={deepGet(defaultContent, "home.heroCarousel.slides.0.ctaPrimaryText")} />
+                <Input label="Link botón primario" value={get("home.heroCarousel.slides.0.ctaPrimaryHref")} onChange={v => set("home.heroCarousel.slides.0.ctaPrimaryHref", v)} />
+                <Input label="Texto botón secundario" value={get("home.heroCarousel.slides.0.ctaSecondaryText")} onChange={v => set("home.heroCarousel.slides.0.ctaSecondaryText", v)} placeholder={deepGet(defaultContent, "home.heroCarousel.slides.0.ctaSecondaryText")} />
+                <Input label="Link botón secundario" value={get("home.heroCarousel.slides.0.ctaSecondaryHref")} onChange={v => set("home.heroCarousel.slides.0.ctaSecondaryHref", v)} />
+              </div>
             </div>
           )}
 
@@ -194,9 +195,38 @@ function ContentEditor() {
             <div className="space-y-4">
               <Input label="Título" value={get("about.hero.title")} onChange={v => set("about.hero.title", v)} placeholder={deepGet(defaultContent, "about.hero.title")} />
               <Input label="Subtítulo" multiline value={get("about.hero.subtitle")} onChange={v => set("about.hero.subtitle", v)} placeholder={deepGet(defaultContent, "about.hero.subtitle")} />
-              <Input label="Historia (párrafo 1)" multiline value={get("about.story.p1")} onChange={v => set("about.story.p1", v)} placeholder={deepGet(defaultContent, "about.story.p1")} />
-              <Input label="Historia (párrafo 2)" multiline value={get("about.story.p2")} onChange={v => set("about.story.p2", v)} placeholder={deepGet(defaultContent, "about.story.p2")} />
-              <Input label="Historia (párrafo 3)" multiline value={get("about.story.p3")} onChange={v => set("about.story.p3", v)} placeholder={deepGet(defaultContent, "about.story.p3")} />
+              <div>
+                <p className="mb-2 text-xs font-medium text-zinc-400">Párrafos de la historia</p>
+                {(() => {
+                  const defaultParas = defaultContent.about?.story?.paragraphs || []
+                  const overrideParas = getArray("about.story.paragraphs")
+                  const paragraphs = overrideParas.length > 0 ? overrideParas : defaultParas
+                  return paragraphs.map((p: any, i: number) => (
+                    <div key={i} className="mb-2">
+                      <Input label={`Párrafo ${i + 1}`} multiline value={typeof p === 'string' ? p : p.text || ''} onChange={v => set(`about.story.paragraphs.${i}`, v)} placeholder="" />
+                      <button onClick={() => removeArrayItem("about.story.paragraphs", i)} className="text-xs text-red-400 hover:underline mt-1">Eliminar</button>
+                    </div>
+                  ))
+                })()}
+                <button onClick={() => addArrayItem("about.story.paragraphs", "")}
+                  className="mt-2 rounded-lg border border-dashed border-zinc-600 px-4 py-2 text-sm text-zinc-400 hover:text-white hover:border-zinc-600">
+                  + Agregar párrafo
+                </button>
+              </div>
+              <div>
+                <p className="mb-2 text-xs font-medium text-zinc-400">Valores de la empresa</p>
+                {(getArray("about.values").length > 0 ? getArray("about.values") : defaultContent.about?.values || []).map((v: any, i: number) => (
+                  <div key={i} className="mb-3 rounded-lg border border-zinc-700/60 bg-zinc-800 p-3">
+                    <Input label={`Título ${i + 1}`} value={v.title || ""} onChange={val => updateArrayItem("about.values", i, "title", val)} placeholder="" />
+                    <Input label={`Descripción ${i + 1}`} multiline value={v.description || ""} onChange={val => updateArrayItem("about.values", i, "description", val)} placeholder="" />
+                    <button onClick={() => removeArrayItem("about.values", i)} className="text-xs text-red-400 hover:underline">Eliminar</button>
+                  </div>
+                ))}
+                <button onClick={() => addArrayItem("about.values", { title: "", description: "" })}
+                  className="mt-2 rounded-lg border border-dashed border-zinc-600 px-4 py-2 text-sm text-zinc-400 hover:text-white hover:border-zinc-600">
+                  + Agregar valor
+                </button>
+              </div>
             </div>
           )}
 
@@ -220,18 +250,22 @@ function ContentEditor() {
 
           {section === "faq" && (
             <div>
-              <p className="mb-4 text-sm text-zinc-400">Preguntas frecuentes — se muestran en /faq</p>
-              {(getArray("faq.items").length > 0 ? getArray("faq.items") : defaultContent.faq?.items || []).map((item: any, i: number) => (
-                <div key={i} className="mb-4 rounded-lg border border-zinc-700/60 bg-zinc-800 p-4">
-                  <Input label={`Pregunta ${i + 1}`} value={item.question || ""} onChange={v => updateArrayItem("faq.items", i, "question", v)} placeholder={deepGet(defaultContent.faq?.items?.[i], "question")} />
-                  <Input label={`Respuesta ${i + 1}`} multiline value={item.answer || ""} onChange={v => updateArrayItem("faq.items", i, "answer", v)} placeholder={deepGet(defaultContent.faq?.items?.[i], "answer")} />
-                  <button onClick={() => removeItem("faq.items", i)} className="text-xs text-red-400 hover:underline">Eliminar</button>
-                </div>
-              ))}
-              <button onClick={() => addItem("faq.items", { question: "", answer: "" })}
-                className="mt-2 rounded-lg border border-dashed border-zinc-600 px-4 py-2 text-sm text-zinc-400 hover:text-white hover:border-zinc-600">
-                + Agregar pregunta
-              </button>
+              <Input label="Título de sección FAQ" value={get("faq.hero.headline")} onChange={v => set("faq.hero.headline", v)} placeholder={deepGet(defaultContent, "faq.hero.headline")} />
+              <Input label="Subtítulo FAQ" value={get("faq.hero.subheadline")} onChange={v => set("faq.hero.subheadline", v)} placeholder={deepGet(defaultContent, "faq.hero.subheadline")} />
+              <div className="mt-6">
+                <p className="mb-4 text-sm text-zinc-400">Preguntas frecuentes</p>
+                {(getArray("faq.items").length > 0 ? getArray("faq.items") : defaultContent.faq?.items || []).map((item: any, i: number) => (
+                  <div key={i} className="mb-4 rounded-lg border border-zinc-700/60 bg-zinc-800 p-4">
+                    <Input label={`Pregunta ${i + 1}`} value={item.question || ""} onChange={v => updateArrayItem("faq.items", i, "question", v)} placeholder={deepGet(defaultContent.faq?.items?.[i], "question")} />
+                    <Input label={`Respuesta ${i + 1}`} multiline value={item.answer || ""} onChange={v => updateArrayItem("faq.items", i, "answer", v)} placeholder={deepGet(defaultContent.faq?.items?.[i], "answer")} />
+                    <button onClick={() => removeArrayItem("faq.items", i)} className="text-xs text-red-400 hover:underline">Eliminar</button>
+                  </div>
+                ))}
+                <button onClick={() => addArrayItem("faq.items", { question: "", answer: "" })}
+                  className="mt-2 rounded-lg border border-dashed border-zinc-600 px-4 py-2 text-sm text-zinc-400 hover:text-white hover:border-zinc-600">
+                  + Agregar pregunta
+                </button>
+              </div>
             </div>
           )}
 
@@ -242,10 +276,10 @@ function ContentEditor() {
                 <div key={i} className="mb-4 rounded-lg border border-zinc-700/60 bg-zinc-800 p-4">
                   <Input label="Nombre" value={item.name || ""} onChange={v => updateArrayItem("home.testimonials.items", i, "name", v)} placeholder={deepGet(defaultContent.home?.testimonials?.items?.[i], "name")} />
                   <Input label="Texto" multiline value={item.text || ""} onChange={v => updateArrayItem("home.testimonials.items", i, "text", v)} placeholder={deepGet(defaultContent.home?.testimonials?.items?.[i], "text")} />
-                  <button onClick={() => removeItem("home.testimonials.items", i)} className="text-xs text-red-400 hover:underline">Eliminar</button>
+                  <button onClick={() => removeArrayItem("home.testimonials.items", i)} className="text-xs text-red-400 hover:underline">Eliminar</button>
                 </div>
               ))}
-              <button onClick={() => addItem("home.testimonials.items", { name: "", text: "", rating: 5 })}
+              <button onClick={() => addArrayItem("home.testimonials.items", { name: "", text: "", rating: 5 })}
                 className="mt-2 rounded-lg border border-dashed border-zinc-600 px-4 py-2 text-sm text-zinc-400 hover:text-white hover:border-zinc-600">
                 + Agregar testimonio
               </button>
@@ -260,10 +294,10 @@ function ContentEditor() {
                 <div key={i} className="mb-3 flex items-center gap-3 rounded-lg border border-zinc-700/60 bg-zinc-800 p-3">
                   <Input label={`Valor ${i + 1}`} value={item.value || ""} onChange={v => updateArrayItem("home.stats.items", i, "value", v)} placeholder={deepGet(defaultContent.home?.stats?.items?.[i], "value")} />
                   <Input label={`Etiqueta ${i + 1}`} value={item.label || ""} onChange={v => updateArrayItem("home.stats.items", i, "label", v)} placeholder={deepGet(defaultContent.home?.stats?.items?.[i], "label")} />
-                  <button onClick={() => removeItem("home.stats.items", i)} className="text-xs text-red-400 shrink-0">✕</button>
+                  <button onClick={() => removeArrayItem("home.stats.items", i)} className="text-xs text-red-400 shrink-0">✕</button>
                 </div>
               ))}
-              <button onClick={() => addItem("home.stats.items", { value: "", label: "" })}
+              <button onClick={() => addArrayItem("home.stats.items", { value: "", label: "" })}
                 className="mt-2 rounded-lg border border-dashed border-zinc-600 px-4 py-2 text-sm text-zinc-400 hover:text-white">
                 + Agregar estadística
               </button>
@@ -272,7 +306,7 @@ function ContentEditor() {
 
           {section === "seo" && (
             <div className="space-y-4">
-              <p className="text-sm text-zinc-400">Meta tags para SEO — aparecen en &lt;title&gt; y &lt;meta description&gt;</p>
+              <p className="text-sm text-zinc-400">Meta tags para SEO — aparecen en &lt;title&gt; y &lt;meta description&gt; (requiere rebuild para actualizar)</p>
               <Input label="Home: Title" value={get("home.seo.title")} onChange={v => set("home.seo.title", v)} placeholder={deepGet(defaultContent, "home.seo.title")} />
               <Input label="Home: Description" multiline value={get("home.seo.description")} onChange={v => set("home.seo.description", v)} placeholder={deepGet(defaultContent, "home.seo.description")} />
               <Input label="Tienda: Title" value={get("tienda.seo.title")} onChange={v => set("tienda.seo.title", v)} placeholder={deepGet(defaultContent, "tienda.seo.title")} />
@@ -288,10 +322,10 @@ function ContentEditor() {
                 <div key={i} className="mb-4 rounded-lg border border-zinc-700/60 bg-zinc-800 p-4">
                   <Input label={`Título ${i + 1}`} value={item.title || ""} onChange={v => updateArrayItem("home.features.items", i, "title", v)} placeholder={deepGet(defaultContent.home?.features?.items?.[i], "title")} />
                   <Input label={`Descripción ${i + 1}`} multiline value={item.description || ""} onChange={v => updateArrayItem("home.features.items", i, "description", v)} placeholder={deepGet(defaultContent.home?.features?.items?.[i], "description")} />
-                  <button onClick={() => removeItem("home.features.items", i)} className="text-xs text-red-400 hover:underline">Eliminar</button>
+                  <button onClick={() => removeArrayItem("home.features.items", i)} className="text-xs text-red-400 hover:underline">Eliminar</button>
                 </div>
               ))}
-              <button onClick={() => addItem("home.features.items", { title: "", description: "" })}
+              <button onClick={() => addArrayItem("home.features.items", { title: "", description: "" })}
                 className="mt-2 rounded-lg border border-dashed border-zinc-600 px-4 py-2 text-sm text-zinc-400 hover:text-white">
                 + Agregar característica
               </button>

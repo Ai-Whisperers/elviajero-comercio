@@ -1,9 +1,7 @@
 "use client"
-import content from "@/content/es.json"
+import { useContent } from "@/lib/content-provider"
 import Link from "next/link"
 
-const c = content as any
-const f = c.footer || {}
 const socialIcons: Record<string, string> = {
   instagram: "M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 5A3.6 3.6 0 0 0 4 10.6v2.8A3.6 3.6 0 0 0 7.6 17h2.8A3.6 3.6 0 0 0 14 13.4v-2.8A3.6 3.6 0 0 0 10.4 7H7.6Zm-.6 2a1.6 1.6 0 0 1 1.6-1.6h2.8A1.6 1.6 0 0 1 13 9v2.8a1.6 1.6 0 0 1-1.6 1.6H8.6A1.6 1.6 0 0 1 7 11.8V9Zm7.5 6.2a1 1 0 1 0 0 2 1 1 0 0 0 0-2ZM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z",
   facebook: "M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3V2Z",
@@ -12,10 +10,13 @@ const socialIcons: Record<string, string> = {
 }
 
 export function Footer() {
+  const { get } = useContent()
+  const f = get("footer") || {}
   const cols = f.columns || []
   const social = f.social || []
   const payments = f.paymentMethods || []
   const contactStrip = f.contactStrip || []
+  const businessName = get("businessName") || "El Viajero"
 
   return (
     <footer className="bg-secondary py-12 text-secondary-foreground relative">
@@ -76,7 +77,7 @@ export function Footer() {
 
         {/* Copyright */}
         <div className="mt-8 text-center text-xs text-white/50">
-          © {new Date().getFullYear()} {c.businessName}. Todos los derechos reservados.
+          © {new Date().getFullYear()} {businessName}. Todos los derechos reservados.
         </div>
       </div>
     </footer>

@@ -5,6 +5,7 @@ import { CurrencyProvider } from "@/lib/currency"
 import { AnalyticsProvider } from "@/components/analytics"
 import { CartProvider } from "@ai-whisperers/commerce/cart/cart-context"
 import { ToastProvider } from "@/components/toast"
+import { ClientProviders } from "@/components/client-providers"
 import content from "@/content/es.json"
 
 const c = content as any
@@ -81,13 +82,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className="antialiased overflow-x-hidden">
         <ErrorBoundary>
-          <CurrencyProvider>
-            <CartProvider>
-              <ToastProvider>
-                {children}
-              </ToastProvider>
-            </CartProvider>
-          </CurrencyProvider>
+          <ClientProviders>
+            {children}
+          </ClientProviders>
         </ErrorBoundary>
         <AnalyticsProvider />
       </body>

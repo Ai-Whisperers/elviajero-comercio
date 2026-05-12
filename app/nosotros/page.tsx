@@ -2,18 +2,20 @@
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { CookieConsent } from "@/components/cookie-consent"
-import content from "@/content/es.json"
-const c = content as any
-const story = c.about?.story?.paragraphs || []
-const vals = c.about?.values || []
+import { useContent } from "@/lib/content-provider"
 
 export default function NosotrosPage() {
+  const { get } = useContent()
+  const about = get("about") || {}
+  const story: string[] = about.story?.paragraphs || []
+  const vals: any[] = about.values || []
+
   return (
     <>
       <Header />
       <section className="bg-primary py-12 text-center text-primary-foreground">
-        <h1 className="text-4xl font-bold">{c.about?.hero?.headline || "Nosotros"}</h1>
-        <p className="mt-2 text-primary-foreground/80">{c.about?.hero?.subheadline}</p>
+        <h1 className="text-4xl font-bold">{about.hero?.headline || "Nosotros"}</h1>
+        <p className="mt-2 text-primary-foreground/80">{about.hero?.subheadline}</p>
       </section>
 
       {/* Owner photo placeholder + story */}
@@ -35,7 +37,7 @@ export default function NosotrosPage() {
                 <p key={i} className="mb-4 text-muted-foreground leading-relaxed">{p}</p>
               ))}
               <a
-                href={`https://wa.me/${c.home?.contact?.whatsapp || "595981234567"}`}
+                href={`https://wa.me/${get("home.contact.whatsapp") || "595981234567"}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-4 inline-flex h-10 items-center justify-center rounded-lg bg-primary px-6 text-sm font-semibold text-primary-foreground transition-all hover:bg-primary/90"
