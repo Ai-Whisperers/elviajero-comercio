@@ -1,7 +1,9 @@
 'use client'
 import { AdminShell, useAdminAuth } from "@/components/admin/admin-layout"
 import { useState, useEffect } from "react"
-import { StatsGridSkeleton } from "@/components/admin/ui"
+import { PageHeader, StatCard, StatsGridSkeleton, Badge } from "@/components/admin/ui"
+import Link from "next/link"
+
 function DashboardContent() {
   const { authed } = useAdminAuth()
   const [stats, setStats] = useState({ users: 0, orders: 0, revenue: 0, products: 0, monthOrders: 0, monthRevenue: 0 })
@@ -21,7 +23,7 @@ function DashboardContent() {
 
   return (
     <>
-      <h1 className="mb-8 text-2xl font-bold text-white">Dashboard</h1>
+      <PageHeader title="Dashboard" subtitle="Vista general de tu tienda" />
 
       {stats.products === 0 && stats.users === 0 ? (
         <StatsGridSkeleton count={5} />
@@ -50,45 +52,34 @@ function DashboardContent() {
       </div>
 
       <div className="grid grid-cols-2 gap-4 mb-8 lg:grid-cols-5">
-        {[
-          { label: 'Usuarios', value: stats.users.toString(), color: 'text-blue-400' },
-          { label: 'Productos', value: stats.products.toString(), color: 'text-purple-400' },
-          { label: 'Pedidos totales', value: stats.orders.toString(), color: 'text-emerald-400' },
-          { label: 'Pedidos del mes', value: stats.monthOrders.toString(), color: 'text-amber-400' },
-          { label: 'Ingresos del mes', value: format(stats.monthRevenue), color: 'text-emerald-400' },
-        ].map((s) => (
-          <div key={s.label} className="rounded-xl border border-zinc-800/60 bg-zinc-900/50 p-4">
-            <p className="text-xs text-zinc-500 font-medium">{s.label}</p>
-            <p className={'text-2xl font-bold mt-1.5 ' + s.color}>{s.value}</p>
-          </div>
-        ))}
+        <StatCard label="Usuarios" value={stats.users.toString()} color="blue" />
+        <StatCard label="Productos" value={stats.products.toString()} color="purple" />
+        <StatCard label="Pedidos totales" value={stats.orders.toString()} color="emerald" />
+        <StatCard label="Pedidos del mes" value={stats.monthOrders.toString()} color="amber" />
+        <StatCard label="Ingresos del mes" value={format(stats.monthRevenue)} color="emerald" />
       </div>
+
       {recentOrders.length > 0 && (
         <>
           <h2 className="mb-3 text-base font-bold text-white">Pedidos recientes</h2>
           <div className="space-y-2">
             {recentOrders.map((o) => (
-              <div key={o.id} className="flex items-center justify-between rounded-xl border border-zinc-800/60 bg-zinc-900/50 p-3">
+              <Link key={o.id} href={"/admin/pedidos/detalle?id=" + o.id}
+                className="flex items-center justify-between rounded-xl border border-zinc-800/60 bg-zinc-900/50 p-3 hover:border-zinc-700/60 transition-all">
                 <div>
                   <p className="text-sm font-medium text-white">#{o.id?.slice(0, 8)}</p>
                   <p className="text-xs text-zinc-500">{o.created_at ? new Date(o.created_at).toLocaleDateString('es') : ''}</p>
                 </div>
-                <div className="text-right">
+                <div className="text-right flex items-center gap-3">
                   <p className="text-sm font-bold text-white">{o.total}</p>
-                  <span className={'rounded-full px-2 py-0.5 text-xs font-semibold ' + (
-                    o.status === 'pendiente' ? 'bg-yellow-900/30 text-yellow-400' :
-                    o.status === 'confirmado' ? 'bg-emerald-900/30 text-emerald-400' :
-                    o.status === 'cancelado' ? 'bg-red-900/30 text-red-400' :
-                    'bg-blue-900/30 text-blue-400'
-                  )}>{o.status}</span>
+                  <Badge status={o.status}>{o.status}</Badge>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </>
       )}
-      </>
-    )}
+      </>)}
     </>
   )
 }

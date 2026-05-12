@@ -6,11 +6,11 @@ import { PageHeader } from "@/components/admin/ui"
 const THEME_KEY = "viajero_admin_theme"
 
 const PRESETS = [
-  { name: "Verde (default)", primary: "#1B5E20", bg: "#0A0A0A", card: "#1A1A2E" },
-  { name: "Azul", primary: "#1565C0", bg: "#0A0A1A", card: "#1A1A2E" },
-  { name: "Violeta", primary: "#6A1B9A", bg: "#0A001A", card: "#1A1A2E" },
-  { name: "Naranja", primary: "#E65100", bg: "#1A0A00", card: "#1A1A2E" },
-  { name: "Gris oscuro", primary: "#37474F", bg: "#0A0A0A", card: "#1A1A2E" },
+  { name: "Verde (default)", primary: "#1B5E20", bg: "#0A0A0A", card: "#1A1A2E", accent: "#4CAF50" },
+  { name: "Azul", primary: "#1565C0", bg: "#0A0A1A", card: "#1A1A2E", accent: "#42A5F5" },
+  { name: "Violeta", primary: "#6A1B9A", bg: "#0A001A", card: "#1A1A2E", accent: "#AB47BC" },
+  { name: "Naranja", primary: "#E65100", bg: "#1A0A00", card: "#1A1A2E", accent: "#FF7043" },
+  { name: "Gris oscuro", primary: "#37474F", bg: "#0A0A0A", card: "#1A1A2E", accent: "#78909C" },
 ]
 
 export default function AdminTheme() {
@@ -21,12 +21,10 @@ export default function AdminTheme() {
 
   useEffect(() => {
     if (!authed) return
-    // Load from localStorage first
     try {
       const local = JSON.parse(localStorage.getItem(THEME_KEY) || "null")
       if (local) setTheme(local)
     } catch {}
-    // Load from DB
     fetch("/api/admin/theme").then(r => r.json()).then(data => {
       if (data?.theme) {
         const t = JSON.parse(data.theme)
@@ -47,7 +45,6 @@ export default function AdminTheme() {
     setTheme(t)
     localStorage.setItem(THEME_KEY, JSON.stringify(t))
     applyTheme(t)
-    // Persist to DB
     setSaving(true)
     await fetch("/api/admin/theme", {
       method: "POST",
@@ -66,16 +63,15 @@ export default function AdminTheme() {
       <PageHeader
         title="Personalizar tema"
         subtitle="El tema se guarda en tu cuenta y persiste entre sesiones"
-        actions={
-          saved && <span className="text-xs text-emerald-400">✓ Guardado</span>
-        }
+        actions={saved && <span className="text-xs text-emerald-400 font-medium">✓ Guardado</span>}
       />
+
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5 mb-8">
         {PRESETS.map((p) => (
           <button key={p.name} onClick={() => apply(p)} disabled={saving}
-            className={"rounded-xl border-2 p-4 text-center transition-all " + (theme.name === p.name ? "border-emerald-500" : "border-zinc-700/60 hover:border-zinc-500")}>
+            className={"rounded-xl border-2 p-4 text-center transition-all hover:scale-[1.02] " + (theme.name === p.name ? "border-emerald-500 shadow-lg shadow-emerald-500/10" : "border-zinc-700/60 hover:border-zinc-500")}>
             <div className="mb-3 flex items-center justify-center gap-2">
-              <div className="h-8 w-8 rounded-full" style={{ backgroundColor: p.primary }} />
+              <div className="h-8 w-8 rounded-full ring-2 ring-white/10" style={{ backgroundColor: p.primary }} />
               <div className="h-8 w-8 rounded-lg" style={{ backgroundColor: p.card }} />
               <div className="h-8 w-8 rounded-lg" style={{ backgroundColor: p.bg }} />
             </div>
@@ -84,11 +80,35 @@ export default function AdminTheme() {
           </button>
         ))}
       </div>
+
+      {/* Realistic preview */}
       <div className="rounded-xl border border-zinc-800/60 bg-zinc-900/50 p-5">
-        <h2 className="mb-3 text-sm font-semibold text-zinc-300">Vista previa</h2>
-        <div className="rounded-xl p-4" style={{ backgroundColor: theme.card }}>
-          <div className="mb-2 h-3 w-24 rounded" style={{ backgroundColor: theme.primary }} />
-          <div className="h-3 w-48 rounded bg-zinc-700" />
+        <h2 className="mb-4 text-sm font-semibold text-zinc-300">Vista previa</h2>
+        <div className="rounded-xl p-6 space-y-4" style={{ backgroundColor: theme.bg }}>
+          {/* Mini hero */}
+          <div className="rounded-xl p-5" style={{ backgroundColor: theme.card }}>
+            <div className="mb-2 h-4 w-40 rounded" style={{ backgroundColor: theme.primary }} />
+            <div className="h-3 w-64 rounded bg-zinc-600/50 mb-1" />
+            <div className="h-3 w-48 rounded bg-zinc-600/50 mb-3" />
+            <div className="flex gap-2">
+              <div className="h-8 w-24 rounded-lg" style={{ backgroundColor: theme.accent }} />
+              <div className="h-8 w-24 rounded-lg bg-zinc-700/50" />
+            </div>
+          </div>
+          {/* Mini product cards */}
+          <div className="grid grid-cols-3 gap-3">
+            {[1, 2, 3].map(i => (
+              <div key={i} className="rounded-xl overflow-hidden" style={{ backgroundColor: theme.card }}>
+                <div className="h-20 flex items-center justify-center" style={{ backgroundColor: theme.primary + '20' }}>
+                  <div className="h-8 w-8 rounded" style={{ backgroundColor: theme.primary + '40' }} />
+                </div>
+                <div className="p-3">
+                  <div className="h-2.5 w-20 rounded bg-zinc-600/50 mb-2" />
+                  <div className="h-2 w-14 rounded" style={{ backgroundColor: theme.accent + '60' }} />
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </>

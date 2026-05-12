@@ -1,7 +1,7 @@
-const EVOLUTION_URL = process.env.EVOLUTION_API_URL || 'https://evolution.sunstein.cloud'
-const EVOLUTION_API_KEY = process.env.EVOLUTION_API_KEY || 'a53c007a1b2e4f3d8c9a0b1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1'
-const EVOLUTION_INSTANCE = process.env.EVOLUTION_INSTANCE || 'hermes-whatsapp'
-const ADMIN_NUMBER = process.env.ADMIN_WHATSAPP || '595981234567'
+const EVOLUTION_URL = process.env.EVOLUTION_API_URL || ''
+const EVOLUTION_API_KEY = process.env.EVOLUTION_API_KEY || ''
+const EVOLUTION_INSTANCE = process.env.EVOLUTION_INSTANCE || ''
+const ADMIN_NUMBER = process.env.ADMIN_WHATSAPP || ''
 
 function cleanNumber(number: string): string {
   return number.replace(/[^0-9]/g, '')

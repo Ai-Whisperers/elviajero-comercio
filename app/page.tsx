@@ -35,9 +35,9 @@ const testimonials = h.testimonials || []
 const features = h.features?.items || []
 const stats = h.stats?.items || []
 const promotions = c.promociones?.promotions || []
-const newArrivals = h.newArrivals?.products || []
-const featuredProducts = h.featuredProducts?.products || products.slice(0, 6)
-const bestSellers = h.bestSellers?.products || products.slice(0, 4)
+const newArrivals = products.filter((p: any) => p.isNew)
+const featuredProducts = products.filter((p: any) => p.featured)
+const bestSellers = products.filter((p: any) => p.featured).slice(0, 4)
 const storeLocator = c.storeLocator || {}
 
 function AnimatedStat({ value, label }: { value: string; label: string }) {

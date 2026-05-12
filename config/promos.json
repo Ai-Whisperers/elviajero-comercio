@@ -1,0 +1,14 @@
+{
+  "promoCodes": [
+    { "code": "BIENVENIDO10", "type": "percentage", "value": 10, "minPurchase": 100000, "maxUses": 100, "usedCount": 0, "expiresAt": null },
+    { "code": "ENVIOGRATIS", "type": "fixed", "value": 15000, "minPurchase": 500000, "maxUses": 50, "usedCount": 0, "expiresAt": null }
+  ],
+  "lifecycle": {
+    "promoCode": "VIAJERO10",
+    "promoLabel": "10% de descuento",
+    "promoValidFor": "Válido por 24 horas ⏰",
+    "reviewRequestDays": 3,
+    "abandonedCartFirstHour": 1,
+    "abandonedCartSecondHours": 24
+  }
+}

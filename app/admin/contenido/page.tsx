@@ -2,21 +2,9 @@
 import { AdminShell, useAdminAuth } from "@/components/admin/admin-layout"
 import { useState, useEffect } from "react"
 import defaultContentRaw from "@/content/es.json"
+import { SectionNav, SECTIONS } from "@/components/admin/section-nav"
+import { PageHeader } from "@/components/admin/ui"
 const defaultContent: any = defaultContentRaw
-
-type Section = { key: string; label: string }
-const SECTIONS: Section[] = [
-  { key: "general", label: "General" },
-  { key: "hero", label: "Hero / Portada" },
-  { key: "about", label: "Nosotros" },
-  { key: "contacto", label: "Contacto" },
-  { key: "footer", label: "Footer" },
-  { key: "faq", label: "FAQ" },
-  { key: "stats", label: "Estadísticas" },
-  { key: "features", label: "Características" },
-  { key: "testimonials", label: "Testimonios" },
-  { key: "seo", label: "SEO" },
-]
 
 function Input({ label, value, onChange, multiline, placeholder }: { label: string; value: string; onChange: (v: string) => void; multiline?: boolean; placeholder?: string }) {
   const id = label.replace(/\s+/g, "-").toLowerCase()
@@ -164,26 +152,22 @@ function ContentEditor() {
 
   return (
     <div className="flex gap-6">
-      <div className="w-48 flex-shrink-0 space-y-1">
-        {SECTIONS.map(s => (
-          <button key={s.key} onClick={() => setSection(s.key)}
-            className={`w-full rounded-lg px-3 py-2 text-left text-sm transition-all ${section === s.key ? "bg-emerald-600 text-white font-medium" : "text-zinc-400 hover:text-white hover:bg-zinc-800"}`}>
-            {s.label}
-          </button>
-        ))}
-      </div>
+      <SectionNav sections={SECTIONS} active={section} onChange={setSection} />
 
       <div className="flex-1">
-        <div className="mb-6 flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-white">{SECTIONS.find(s => s.key === section)?.label}</h1>
-          <div className="flex items-center gap-3">
-            {saved && <span className="text-xs text-emerald-400">✓ Guardado</span>}
-            <button onClick={save} disabled={saving}
-              className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-500 disabled:opacity-50">
-              {saving ? "Guardando..." : "Guardar Cambios"}
-            </button>
-          </div>
-        </div>
+        <PageHeader
+          title={SECTIONS.find(s => s.key === section)?.label || "Contenido"}
+          subtitle="Editá el contenido de tu sitio"
+          actions={
+            <div className="flex items-center gap-3">
+              {saved && <span className="text-xs text-emerald-400">✓ Guardado</span>}
+              <button onClick={save} disabled={saving}
+                className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-500 disabled:opacity-50 transition-all">
+                {saving ? "Guardando..." : "Guardar Cambios"}
+              </button>
+            </div>
+          }
+        />
 
         <div className="rounded-xl border border-zinc-800/60 bg-zinc-900/50 p-6">
           {section === "general" && (
