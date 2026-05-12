@@ -37,7 +37,7 @@ export default function NosotrosPage() {
                 <p key={i} className="mb-4 text-muted-foreground leading-relaxed">{p}</p>
               ))}
               <a
-                href={`https://wa.me/${get("home.contact.whatsapp") || "595981234567"}`}
+                href={`https://wa.me/${get("home.contact.whatsapp") || process.env.NEXT_PUBLIC_WHATSAPP || "595981234567"}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-4 inline-flex h-10 items-center justify-center rounded-lg bg-primary px-6 text-sm font-semibold text-primary-foreground transition-all hover:bg-primary/90"

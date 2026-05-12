@@ -18,13 +18,13 @@ import Image from "next/image"
 import { useState, useEffect, useRef } from "react"
 
 const ICON_MAP: Record<string, string> = {
-  camping: "/images/icons/camping.png",
-  pesca: "/images/icons/pesca.png",
-  playaypesca: "/images/icons/playa-pesca.png",
-  accpersonales: "/images/icons/accesorios.png",
-  automviles: "/images/icons/autos.png",
-  motos: "/images/icons/motos.png",
-  campo: "/images/icons/campo.png",
+  camping: "/images/icons/camping.webp",
+  pesca: "/images/icons/pesca.webp",
+  playaypesca: "/images/icons/playa-pesca.webp",
+  accpersonales: "/images/icons/accesorios.webp",
+  automviles: "/images/icons/autos.webp",
+  motos: "/images/icons/motos.webp",
+  campo: "/images/icons/campo.webp",
 }
 function catSlug(cat: string) { return cat.toLowerCase().replace(/[^a-z]/g, "") }
 
@@ -288,7 +288,7 @@ function HomePage() {
       <RecentlyViewed />
       <Footer />
       <CookieConsent />
-      <WhatsAppFloat phone={get("home.contact.whatsapp") || "595981234567"} message={get("whatsapp.defaultMessage") || "Hola! Quiero informacion"} />
+      <WhatsAppFloat phone={get("home.contact.whatsapp") || process.env.NEXT_PUBLIC_WHATSAPP || "595981234567"} message={get("whatsapp.defaultMessage") || "Hola! Quiero informacion"} />
       {h.contact?.map && (
         <ExitIntentPopup />
       )}

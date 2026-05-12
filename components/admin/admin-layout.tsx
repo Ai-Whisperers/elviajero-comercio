@@ -4,6 +4,7 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { createClient } from "@ai-whisperers/auth/supabase/client"
 import { AdminSidebar } from "./sidebar"
+import { NotificationBell } from "./notification-bell"
 import { Package, LogOut, ExternalLink, Menu, User } from "lucide-react"
 
 interface Profile { id: string; name: string; email: string; role: string }
@@ -126,6 +127,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
               </div>
             </div>
             <div className="flex items-center gap-2">
+              <NotificationBell />
               <Link href="/" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/60 transition-all">
                 <ExternalLink className="w-3.5 h-3.5" />
                 <span className="hidden sm:inline">Ver sitio</span>

@@ -1,9 +1,30 @@
 "use client"
 import { useAdminAuth } from "@/components/admin/admin-layout"
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect, useCallback, useRef } from "react"
 import { PageHeader, SearchInput } from "@/components/admin/ui"
 import { ImageUpload } from "@/components/admin/image-upload"
-import { Pencil, Copy, Trash2, Search, X, Plus, Package, Upload, ChevronLeft, ChevronRight, AlertCircle } from "lucide-react"
+import {
+  Pencil, Copy, Trash2, Search, X, Plus, Package, Upload,
+  ChevronLeft, ChevronRight, AlertCircle, Download, FileSpreadsheet,
+  BarChart3, History, PackagePlus, TrendingUp,
+} from "lucide-react"
+
+function formatPrice(s: string) {
+  const n = parseInt(s.replace(/[^0-9]/g, ""), 10)
+  if (!n) return s
+  return "Gs. " + n.toLocaleString("es-PY")
+}
+
+function parsePrice(s: string) {
+  return parseInt((s || "0").replace(/[^0-9]/g, ""), 10) || 0
+}
+
+function calcMargin(price: string, cost: string) {
+  const p = parsePrice(price)
+  const c = parsePrice(cost)
+  if (!p || !c) return null
+  return Math.round(((p - c) / p) * 100)
+}
 
 export default function AdminProducts() {
   const { authed } = useAdminAuth()
@@ -21,21 +42,18 @@ export default function AdminProducts() {
   const [search, setSearch] = useState("")
   const [previewImg, setPreviewImg] = useState<string | null>(null)
   const [notification, setNotification] = useState<{ type: "success" | "error"; text: string } | null>(null)
+  const [importing, setImporting] = useState(false)
+  const [showStockModal, setShowStockModal] = useState<number | null>(null)
+  const [stockForm, setStockForm] = useState({ type: "add", quantity: 1, note: "" })
+  const [priceHistory, setPriceHistory] = useState<any[] | null>(null)
+  const [priceHistoryProduct, setPriceHistoryProduct] = useState<string>("")
+  const fileRef = useRef<HTMLInputElement>(null)
   const PER_PAGE = 20
 
   const notify = useCallback((type: "success" | "error", text: string) => {
     setNotification({ type, text })
     setTimeout(() => setNotification(null), 3000)
   }, [])
-
-  useEffect(() => {
-    if (!authed) return
-    setLoading(true)
-    fetch(`/api/admin/products?page=${page}&perPage=${PER_PAGE}`)
-      .then(r => r.json())
-      .then(res => { if (res.data) { setItems(res.data); setTotal(res.total) }; setLoading(false) })
-      .catch(() => { setLoading(false); notify("error", "Error al cargar productos") })
-  }, [authed, page, notify])
 
   const load = useCallback(() => {
     setLoading(true)
@@ -44,6 +62,8 @@ export default function AdminProducts() {
       .then(res => { if (res.data) { setItems(res.data); setTotal(res.total) }; setLoading(false) })
       .catch(() => { setLoading(false); notify("error", "Error al cargar productos") })
   }, [page, notify])
+
+  useEffect(() => { if (authed) load() }, [authed, load])
 
   const save = async () => {
     if (editing === null) return
@@ -109,17 +129,64 @@ export default function AdminProducts() {
     if (!bulkCategory && !bulkPercent) return
     const target = bulkCategory ? items.filter(p => p.category === bulkCategory) : items
     for (const p of target) {
-      const priceNum = parseInt((p.price || "0").replace(/[^0-9]/g, ""), 10) || 0
+      const priceNum = parsePrice(p.price)
       const newPrice = Math.round(priceNum * (1 + bulkPercent / 100))
       await fetch("/api/admin/products", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id: p.id, price: "Gs. " + newPrice.toLocaleString("es-PY") })
+        body: JSON.stringify({ id: p.id, price: formatPrice(String(newPrice)) })
       })
     }
     load()
     setShowBulk(false)
     notify("success", `Precios actualizados (${target.length} productos)`)
+  }
+
+  const exportCsv = () => {
+    window.open("/api/admin/products/export", "_blank")
+    notify("success", "Descargando CSV...")
+  }
+
+  const importCsv = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setImporting(true)
+    const formData = new FormData()
+    formData.append("file", file)
+    const res = await fetch("/api/admin/products/import", { method: "POST", body: formData })
+    const data = await res.json()
+    setImporting(false)
+    if (data.ok) {
+      notify("success", data.message)
+      load()
+    } else {
+      notify("error", data.error || "Error al importar")
+    }
+    if (fileRef.current) fileRef.current.value = ""
+  }
+
+  const handleStock = async (productId: number) => {
+    const res = await fetch("/api/admin/stock-movements", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ product_id: productId, ...stockForm })
+    })
+    const data = await res.json()
+    if (data.ok) {
+      notify("success", `Stock actualizado: ${data.stock_before} → ${data.stock_after}`)
+      setShowStockModal(null)
+      setStockForm({ type: "add", quantity: 1, note: "" })
+      load()
+    } else {
+      notify("error", data.error || "Error al actualizar stock")
+    }
+  }
+
+  const showPriceHistory = async (product: any) => {
+    setPriceHistoryProduct(product.name)
+    const res = await fetch(`/api/admin/products/price-history?product_id=${product.id}`)
+    const data = await res.json()
+    setPriceHistory(Array.isArray(data) ? data : [])
   }
 
   const categories = [...new Set(items.map(p => p.category).filter(Boolean))].sort()
@@ -156,11 +223,26 @@ export default function AdminProducts() {
             {search && ` · ${filtered.length} resultados`}
           </p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
+          {/* Export */}
+          <button onClick={exportCsv}
+            className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-700/60 px-3 py-2 text-xs font-semibold text-zinc-300 hover:text-white hover:border-zinc-600 transition-all">
+            <Download className="w-3.5 h-3.5" />
+            Exportar
+          </button>
+          {/* Import */}
+          <button onClick={() => fileRef.current?.click()} disabled={importing}
+            className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-700/60 px-3 py-2 text-xs font-semibold text-zinc-300 hover:text-white hover:border-zinc-600 transition-all disabled:opacity-50">
+            <FileSpreadsheet className="w-3.5 h-3.5" />
+            {importing ? "Importando..." : "Importar"}
+          </button>
+          <input ref={fileRef} type="file" accept=".csv" onChange={importCsv} className="hidden" />
+          {/* Bulk price */}
           <button onClick={() => setShowBulk(!showBulk)}
             className="rounded-lg border border-zinc-700/60 px-3.5 py-2 text-xs font-semibold text-zinc-300 hover:text-white hover:border-zinc-600 transition-all">
             {showBulk ? "Cancelar" : "Actualización masiva"}
           </button>
+          {/* New product */}
           <button onClick={() => setShowNew(!showNew)}
             className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 px-3.5 py-2 text-xs font-semibold text-white hover:bg-emerald-500 transition-all shadow-sm shadow-emerald-600/20">
             <Plus className="w-3.5 h-3.5" />
@@ -172,10 +254,7 @@ export default function AdminProducts() {
       {/* Search bar */}
       <div className="relative max-w-md">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500 pointer-events-none" />
-        <input
-          type="text"
-          value={search}
-          onChange={e => { setSearch(e.target.value); setPage(1) }}
+        <input type="text" value={search} onChange={e => { setSearch(e.target.value); setPage(1) }}
           placeholder="Buscar por nombre, categoría, marca..."
           className="w-full rounded-xl border border-zinc-800 bg-zinc-900/50 pl-9 pr-9 py-2.5 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20 transition-all"
         />
@@ -225,6 +304,8 @@ export default function AdminProducts() {
               className="rounded-lg bg-zinc-800 px-3 py-2 text-sm text-white border border-zinc-700/60 focus:outline-none focus:border-emerald-500/50" />
             <input value={newForm.price || ""} onChange={e => setNewForm({...newForm, price: e.target.value})} placeholder="Precio (Gs.)"
               className="rounded-lg bg-zinc-800 px-3 py-2 text-sm text-white border border-zinc-700/60 focus:outline-none focus:border-emerald-500/50" />
+            <input value={newForm.cost_price || ""} onChange={e => setNewForm({...newForm, cost_price: e.target.value})} placeholder="Costo (Gs.)"
+              className="rounded-lg bg-zinc-800 px-3 py-2 text-sm text-white border border-zinc-700/60 focus:outline-none focus:border-emerald-500/50" />
             <input value={newForm.category || ""} onChange={e => setNewForm({...newForm, category: e.target.value})} placeholder="Categoría"
               className="rounded-lg bg-zinc-800 px-3 py-2 text-sm text-white border border-zinc-700/60 focus:outline-none focus:border-emerald-500/50" />
             <input type="number" value={newForm.stock ?? 0} onChange={e => setNewForm({...newForm, stock: parseInt(e.target.value) || 0})} placeholder="Stock"
@@ -245,6 +326,66 @@ export default function AdminProducts() {
         </div>
       )}
 
+      {/* Stock movement modal */}
+      {showStockModal !== null && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60" onClick={() => setShowStockModal(null)}>
+          <div className="bg-zinc-900 rounded-xl border border-zinc-700/60 p-6 w-full max-w-sm mx-4" onClick={e => e.stopPropagation()}>
+            <h3 className="text-sm font-semibold text-white mb-4">Movimiento de stock</h3>
+            <div className="space-y-3">
+              <select value={stockForm.type} onChange={e => setStockForm({...stockForm, type: e.target.value})}
+                className="w-full rounded-lg bg-zinc-800 px-3 py-2 text-sm text-white border border-zinc-700/60 focus:outline-none focus:border-emerald-500/50">
+                <option value="add">Ingreso</option>
+                <option value="remove">Retiro</option>
+                <option value="adjustment">Ajuste (cantidad = stock final)</option>
+                <option value="return">Devolución</option>
+              </select>
+              <input type="number" value={stockForm.quantity} onChange={e => setStockForm({...stockForm, quantity: parseInt(e.target.value) || 0})}
+                placeholder="Cantidad"
+                className="w-full rounded-lg bg-zinc-800 px-3 py-2 text-sm text-white border border-zinc-700/60 focus:outline-none focus:border-emerald-500/50" />
+              <input value={stockForm.note} onChange={e => setStockForm({...stockForm, note: e.target.value})}
+                placeholder="Nota / Referencia (ej: orden #123)"
+                className="w-full rounded-lg bg-zinc-800 px-3 py-2 text-sm text-white border border-zinc-700/60 focus:outline-none focus:border-emerald-500/50" />
+              <div className="flex gap-2 pt-2">
+                <button onClick={() => handleStock(showStockModal)}
+                  className="flex-1 rounded-lg bg-emerald-600 px-4 py-2 text-xs font-semibold text-white hover:bg-emerald-500 transition-all">Guardar</button>
+                <button onClick={() => setShowStockModal(null)}
+                  className="rounded-lg border border-zinc-700/60 px-4 py-2 text-xs font-semibold text-zinc-400 hover:text-white transition-all">Cancelar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Price history modal */}
+      {priceHistory !== null && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60" onClick={() => setPriceHistory(null)}>
+          <div className="bg-zinc-900 rounded-xl border border-zinc-700/60 p-6 w-full max-w-xl mx-4 max-h-[80vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-sm font-semibold text-white">Historial de precios: {priceHistoryProduct}</h3>
+              <button onClick={() => setPriceHistory(null)} className="text-zinc-500 hover:text-white">✕</button>
+            </div>
+            {priceHistory.length === 0 ? (
+              <p className="text-xs text-zinc-500">Sin cambios registrados</p>
+            ) : (
+              <div className="space-y-2">
+                {priceHistory.map((h: any) => (
+                  <div key={h.id} className="rounded-lg bg-zinc-800/50 p-3 text-xs">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-zinc-400 font-medium">{h.field}</span>
+                      <span className="text-zinc-600">{new Date(h.created_at).toLocaleString("es", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}</span>
+                    </div>
+                    <div className="text-zinc-300">
+                      {h.old_value || "—"} <span className="text-zinc-600">→</span> {h.new_value || "—"}
+                    </div>
+                    {h.reason && <div className="text-zinc-600 mt-1">Motivo: {h.reason}</div>}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Products table */}
       <div className="overflow-hidden rounded-xl border border-zinc-800/60 bg-zinc-900/30">
         <div className="overflow-x-auto">
@@ -254,9 +395,11 @@ export default function AdminProducts() {
                 <th className="w-12 px-3 py-3 text-left text-[10px] font-semibold text-zinc-500 uppercase tracking-wider">Img</th>
                 <th className="px-3 py-3 text-left text-[10px] font-semibold text-zinc-500 uppercase tracking-wider">Nombre</th>
                 <th className="w-28 px-3 py-3 text-left text-[10px] font-semibold text-zinc-500 uppercase tracking-wider">Precio</th>
-                <th className="w-16 px-3 py-3 text-left text-[10px] font-semibold text-zinc-500 uppercase tracking-wider">Stock</th>
+                <th className="w-24 px-3 py-3 text-left text-[10px] font-semibold text-zinc-500 uppercase tracking-wider">Costo</th>
+                <th className="w-16 px-3 py-3 text-left text-[10px] font-semibold text-zinc-500 uppercase tracking-wider">Margen</th>
+                <th className="w-24 px-3 py-3 text-left text-[10px] font-semibold text-zinc-500 uppercase tracking-wider">Stock</th>
                 <th className="w-28 px-3 py-3 text-left text-[10px] font-semibold text-zinc-500 uppercase tracking-wider">Categoría</th>
-                <th className="w-40 px-3 py-3 text-right text-[10px] font-semibold text-zinc-500 uppercase tracking-wider">Acciones</th>
+                <th className="w-56 px-3 py-3 text-right text-[10px] font-semibold text-zinc-500 uppercase tracking-wider">Acciones</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-zinc-800/40">
@@ -266,14 +409,16 @@ export default function AdminProducts() {
                     <td className="px-3 py-3"><div className="h-9 w-9 rounded-lg bg-zinc-800" /></td>
                     <td className="px-3 py-3"><div className="h-4 w-48 rounded bg-zinc-800" /></td>
                     <td className="px-3 py-3"><div className="h-4 w-20 rounded bg-zinc-800" /></td>
+                    <td className="px-3 py-3"><div className="h-4 w-14 rounded bg-zinc-800" /></td>
                     <td className="px-3 py-3"><div className="h-4 w-10 rounded bg-zinc-800" /></td>
+                    <td className="px-3 py-3"><div className="h-4 w-16 rounded bg-zinc-800" /></td>
                     <td className="px-3 py-3"><div className="h-4 w-20 rounded bg-zinc-800" /></td>
-                    <td className="px-3 py-3"><div className="h-4 w-32 rounded bg-zinc-800 ml-auto" /></td>
+                    <td className="px-3 py-3"><div className="h-4 w-40 rounded bg-zinc-800 ml-auto" /></td>
                   </tr>
                 ))
               ) : filtered.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-6 py-16 text-center">
+                  <td colSpan={8} className="px-6 py-16 text-center">
                     <Package className="w-8 h-8 text-zinc-600 mx-auto mb-3" />
                     <p className="text-sm text-zinc-500">
                       {search ? "No se encontraron productos con ese filtro" : "Sin productos todavía"}
@@ -301,6 +446,17 @@ export default function AdminProducts() {
                         <td className="px-3 py-2">
                           <input value={form.price || p.price} onChange={e => setForm({...form, price: e.target.value})}
                             className="w-full rounded-lg bg-zinc-800 px-2.5 py-1.5 text-sm text-white border border-zinc-700/60 focus:outline-none focus:border-emerald-500/50" />
+                        </td>
+                        <td className="px-3 py-2">
+                          <input value={form.cost_price ?? p.cost_price ?? ""} onChange={e => setForm({...form, cost_price: e.target.value})}
+                            className="w-full rounded-lg bg-zinc-800 px-2.5 py-1.5 text-sm text-white border border-zinc-700/60 focus:outline-none focus:border-emerald-500/50" />
+                        </td>
+                        <td className="px-3 py-2 text-xs text-zinc-500">
+                          {calcMargin(form.price || p.price, form.cost_price || p.cost_price) !== null
+                            ? <span className={calcMargin(form.price || p.price, form.cost_price || p.cost_price)! >= 30 ? "text-emerald-400" : "text-amber-400"}>
+                                {calcMargin(form.price || p.price, form.cost_price || p.cost_price)}%
+                              </span>
+                            : "—"}
                         </td>
                         <td className="px-3 py-2">
                           <input type="number" value={form.stock ?? p.stock} onChange={e => setForm({...form, stock: parseInt(e.target.value) || 0})}
@@ -343,18 +499,37 @@ export default function AdminProducts() {
                           )}
                         </td>
                         <td className="px-3 py-2.5">
-                          <span className={`inline-flex items-center gap-1 text-xs font-medium ${
-                            (p.stock || 0) > 10 ? "text-emerald-400" :
-                            (p.stock || 0) > 0 ? "text-amber-400" :
-                            "text-red-400"
-                          }`}>
-                            <span className={`w-1.5 h-1.5 rounded-full ${
-                              (p.stock || 0) > 10 ? "bg-emerald-400" :
-                              (p.stock || 0) > 0 ? "bg-amber-400" :
-                              "bg-red-400"
-                            }`} />
-                            {p.stock ?? 0}
-                          </span>
+                          <span className="text-sm text-zinc-400">{p.cost_price || <span className="text-zinc-600">—</span>}</span>
+                        </td>
+                        <td className="px-3 py-2.5">
+                          {(() => {
+                            const m = calcMargin(p.price, p.cost_price)
+                            return m !== null ? (
+                              <span className={`text-xs font-medium ${m >= 30 ? "text-emerald-400" : m >= 10 ? "text-amber-400" : "text-red-400"}`}>
+                                {m}%
+                              </span>
+                            ) : <span className="text-zinc-600 text-xs">—</span>
+                          })()}
+                        </td>
+                        <td className="px-3 py-2.5">
+                          <div className="flex items-center gap-1">
+                            <span className={`inline-flex items-center gap-1 text-xs font-medium ${
+                              (p.stock || 0) > 10 ? "text-emerald-400" :
+                              (p.stock || 0) > 0 ? "text-amber-400" :
+                              "text-red-400"
+                            }`}>
+                              <span className={`w-1.5 h-1.5 rounded-full ${
+                                (p.stock || 0) > 10 ? "bg-emerald-400" :
+                                (p.stock || 0) > 0 ? "bg-amber-400" :
+                                "bg-red-400"
+                              }`} />
+                              {p.stock ?? 0}
+                            </span>
+                            <button onClick={() => { setShowStockModal(p.id); setStockForm({...stockForm, note: ""}) }}
+                              className="p-1 text-zinc-600 hover:text-emerald-400 transition-colors" title="Movimiento de stock">
+                              <PackagePlus className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
                         </td>
                         <td className="px-3 py-2.5">
                           <span className="inline-block rounded-md bg-zinc-800/60 px-2 py-0.5 text-[11px] font-medium text-zinc-400">
@@ -363,7 +538,12 @@ export default function AdminProducts() {
                         </td>
                         <td className="px-3 py-2.5 text-right">
                           <div className="inline-flex items-center gap-1 opacity-70 group-hover:opacity-100 transition-opacity">
-                            <button onClick={() => { setForm({name: p.name, price: p.price, stock: p.stock, category: p.category, image_url: p.image_url}); setEditing(i) }}
+                            <button onClick={() => showPriceHistory(p)}
+                              className="rounded-lg p-1.5 text-zinc-500 hover:text-purple-400 hover:bg-purple-500/10 transition-all"
+                              title="Historial de precios">
+                              <History className="w-4 h-4" />
+                            </button>
+                            <button onClick={() => { setForm({name: p.name, price: p.price, cost_price: p.cost_price || "", stock: p.stock, category: p.category, image_url: p.image_url}); setEditing(i) }}
                               className="rounded-lg p-1.5 text-zinc-500 hover:text-blue-400 hover:bg-blue-500/10 transition-all"
                               title="Editar producto">
                               <Pencil className="w-4 h-4" />

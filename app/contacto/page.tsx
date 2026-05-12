@@ -7,7 +7,7 @@ import { useContent } from "@/lib/content-provider"
 export default function ContactoPage() {
   const { get } = useContent()
   const info = get("contacto.info") || {}
-  const waLink = "https://wa.me/" + (info.whatsapp || "595981234567")
+  const waLink = "https://wa.me/" + (info.whatsapp || process.env.NEXT_PUBLIC_WHATSAPP || "595981234567")
   const contacto = get("contacto") || {}
 
   return (
@@ -15,7 +15,7 @@ export default function ContactoPage() {
       <Header />
       <section className="relative overflow-hidden py-16 text-center text-primary-foreground">
         <div className="pointer-events-none absolute inset-0">
-          <Image src="/images/marketing/contact-hero-storefront.png" alt="" fill className="object-cover object-[center_35%]" sizes="100vw" priority />
+          <Image src="/images/marketing/contact-hero-storefront.webp" alt="" fill className="object-cover object-[center_35%]" sizes="100vw" priority />
           <div className="absolute inset-0 bg-primary/78" aria-hidden />
         </div>
         <div className="relative z-10 px-4">

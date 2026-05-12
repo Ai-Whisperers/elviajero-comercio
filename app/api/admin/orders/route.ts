@@ -47,6 +47,16 @@ export async function POST(req: NextRequest) {
     console.error("[whatsapp] Failed to notify admin:", e)
   }
 
+  // Create in-app notification
+  try {
+    await supabase.from("ej_notifications").insert({
+      type: "order",
+      title: "Nuevo pedido (admin)",
+      body: `Pedido #${(orderData.id || "").slice(0, 8)} — ${orderData.total}`,
+      link: `/admin/pedidos/detalle?id=${orderData.id}`,
+    })
+  } catch (_) { /* non-critical */ }
+
   return NextResponse.json(data?.[0] ?? null)
 }
 
@@ -55,17 +65,44 @@ export async function PATCH(req: NextRequest) {
   const body = await req.json()
   const { id, ...updates } = body
   if (!id) return NextResponse.json({ error: "id required" }, { status: 400 })
-  
-  const { data, error } = await supabase.from(TABLE).update(updates).eq("id", id).select()
+
+  updates.updated_at = new Date().toISOString()
+
+  const { data, error } = await supabase.from("ej_orders").update(updates).eq("id", id).select()
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
-  // If status changed AND we have customer phone, send WhatsApp notification
-  if (updates.status && data?.[0]?.customer_phone) {
-    try {
-      const { notifyStatusChange } = await import("@/lib/whatsapp")
-      await notifyStatusChange(id, data[0].customer_phone, updates.status)
-    } catch (e) {
-      console.error("[whatsapp] Failed to notify customer:", e)
+  // Log activity for status or tracking changes
+  if (updates.status || updates.tracking_number || updates.carrier) {
+    const order = data?.[0]
+    const changes: string[] = []
+    if (updates.status) changes.push(`Estado: ${order?.status}`)
+    if (updates.tracking_number) changes.push(`Tracking: ${updates.tracking_number}`)
+    if (updates.carrier) changes.push(`Transportista: ${updates.carrier}`)
+
+    await supabase.from("ej_activity_log").insert({
+      action: "order.update",
+      entity_type: "order",
+      entity_id: id,
+      summary: `Pedido #${id.slice(0, 8)} actualizado: ${changes.join(", ")}`,
+      details: { updates, order_name: order?.customer_name },
+    }).maybeSingle()
+
+    // If delivered, set delivered_at
+    if (updates.status === "entregado") {
+      await supabase.from("ej_orders").update({ delivered_at: new Date().toISOString() }).eq("id", id).maybeSingle()
+    }
+
+    // Send notifications
+    if (updates.tracking_number && order?.customer_phone) {
+      try {
+        const { sendWhatsApp } = await import("@/lib/whatsapp")
+        const carrierLabel = updates.carrier || "transportista"
+        await sendWhatsApp(order.customer_phone,
+          `📦 *Tu pedido #${id.slice(0, 8)} ya está en camino!*\n\nTransportista: ${carrierLabel}\nTracking: ${updates.tracking_number}\n\nGracias por confiar en El Viajero 🏕️`
+        )
+      } catch (e) {
+        console.error("[whatsapp] Failed to send tracking notification:", e)
+      }
     }
   }
 

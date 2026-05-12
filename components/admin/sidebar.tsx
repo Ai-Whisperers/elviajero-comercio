@@ -4,14 +4,14 @@ import { usePathname } from "next/navigation"
 import {
   LayoutDashboard, ShoppingBag, Users, BarChart3,
   Package, Tags, Wand2, Image, Upload, FileText,
-  Percent, Star, Briefcase,
+  Percent, Star, Briefcase, Activity,
   Settings, UserCog, Mail, Palette,
 } from "lucide-react"
 
 const iconMap: Record<string, any> = {
   LayoutDashboard, ShoppingBag, Users, BarChart3,
   Package, Tags, Wand2, Image, Upload, FileText,
-  Percent, Star, Briefcase,
+  Percent, Star, Briefcase, Activity,
   Settings, UserCog, Mail, Palette,
 }
 
@@ -29,6 +29,7 @@ const SECTIONS = [
     label: "Catálogo",
     items: [
       { href: "/admin/productos", label: "Productos", icon: "Package" },
+      { href: "/admin/stock", label: "Stock", icon: "Activity" },
       { href: "/admin/categorias", label: "Categorías", icon: "Tags" },
       { href: "/admin/enriquecer", label: "Enriquecer", icon: "Wand2" },
       { href: "/admin/fotos", label: "Fotos", icon: "Image" },
@@ -48,6 +49,7 @@ const SECTIONS = [
     label: "Configuración",
     items: [
       { href: "/admin/contenido", label: "Contenido", icon: "Settings" },
+      { href: "/admin/actividad", label: "Actividad", icon: "Activity" },
       { href: "/admin/usuarios", label: "Usuarios", icon: "UserCog" },
       { href: "/admin/suscriptores", label: "Suscriptores", icon: "Mail" },
       { href: "/admin/tema", label: "Tema", icon: "Palette" },

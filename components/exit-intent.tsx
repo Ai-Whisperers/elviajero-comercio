@@ -25,7 +25,7 @@ export function ExitIntentPopup() {
       <div className="relative max-w-sm rounded-2xl bg-surface p-8 text-center shadow-2xl" onClick={e => e.stopPropagation()}>
         <button onClick={close} className="absolute right-3 top-3 text-muted-foreground hover:text-foreground">✕</button>
         <div className="relative mx-auto mb-4 h-36 w-full max-w-[280px] overflow-hidden rounded-xl">
-          <Image src="/images/marketing/exit-intent-promo.png" alt="" fill className="object-cover" sizes="280px" />
+          <Image src="/images/marketing/exit-intent-promo.webp" alt="" fill className="object-cover" sizes="280px" />
         </div>
         <h2 className="text-xl font-bold text-foreground mb-2">¡No te vayas aún!</h2>
         <p className="text-sm text-muted-foreground mb-6">Usá el código <strong className="text-primary">BIENVENIDO10</strong> y obtené 10% de descuento en tu primera compra.</p>

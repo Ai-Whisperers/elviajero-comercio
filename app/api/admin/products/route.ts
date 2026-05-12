@@ -31,8 +31,55 @@ export async function PATCH(req: NextRequest) {
   const body = await req.json()
   const { id, ...updates } = body
   if (!id) return NextResponse.json({ error: "id required" }, { status: 400 })
+
+  // Track price/cost changes before updating
+  const priceFields = ["price", "cost_price", "price_before"]
+  const hasPriceChanges = priceFields.some(f => updates[f] !== undefined)
+  let oldValues: Record<string, string> = {}
+
+  if (hasPriceChanges) {
+    const { data: current } = await supabase
+      .from("ej_products")
+      .select("price, cost_price, price_before, name")
+      .eq("id", id)
+      .single()
+    if (current) {
+      oldValues = current
+      // Log each price field change
+      for (const field of priceFields) {
+        if (updates[field] !== undefined && String(updates[field]) !== String((current as any)[field])) {
+          await supabase.from("ej_price_history").insert({
+            product_id: id,
+            field,
+            old_value: String((current as any)[field] || ""),
+            new_value: String((updates as any)[field] || ""),
+          }).maybeSingle()
+        }
+      }
+    }
+  }
+
+  updates.updated_at = new Date().toISOString()
+
   const { data, error } = await supabase.from("ej_products").update(updates).eq("id", id).select()
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+
+  // Log activity
+  if (hasPriceChanges) {
+    const changed = priceFields
+      .filter(f => updates[f] !== undefined && String(updates[f]) !== String(oldValues[f] || ""))
+      .map(f => `${f}: ${oldValues[f] || "—"} → ${updates[f]}`)
+    if (changed.length > 0) {
+      await supabase.from("ej_activity_log").insert({
+        action: "product.price_update",
+        entity_type: "product",
+        entity_id: String(id),
+        summary: `Precio actualizado: ${data?.[0]?.name || "producto #" + id}`,
+        details: { changes: changed, old_values: oldValues, new_values: updates },
+      }).maybeSingle()
+    }
+  }
+
   return NextResponse.json(data?.[0] ?? null)
 }
 

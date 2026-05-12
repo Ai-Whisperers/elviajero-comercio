@@ -12,13 +12,13 @@ function categorySlug(cat: string) {
 }
 
 const CATEGORY_CARD_IMAGES: Record<string, string> = {
-  camping: "/images/marketing/category-camping.png",
-  pesca: "/images/marketing/category-pesca.png",
-  playaypesca: "/images/marketing/category-playa-pesca.png",
-  accpersonales: "/images/marketing/category-accesorios.png",
-  automviles: "/images/marketing/category-automoviles.png",
-  motos: "/images/marketing/category-motos.png",
-  campo: "/images/marketing/category-campo.png",
+  camping: "/images/marketing/category-camping.webp",
+  pesca: "/images/marketing/category-pesca.webp",
+  playaypesca: "/images/marketing/category-playa-pesca.webp",
+  accpersonales: "/images/marketing/category-accesorios.webp",
+  automviles: "/images/marketing/category-automoviles.webp",
+  motos: "/images/marketing/category-motos.webp",
+  campo: "/images/marketing/category-campo.webp",
 }
 
 export default function ProductosPage() {

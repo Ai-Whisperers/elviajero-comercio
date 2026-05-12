@@ -1,11 +1,9 @@
 import { ErrorBoundary } from "@/components/error-boundary"
 import type { Metadata } from "next"
 import "./globals.css"
-import { CurrencyProvider } from "@/lib/currency"
-import { AnalyticsProvider } from "@/components/analytics"
-import { CartProvider } from "@ai-whisperers/commerce/cart/cart-context"
 import { ToastProvider } from "@/components/toast"
 import { ClientProviders } from "@/components/client-providers"
+import { AnalyticsProvider } from "@/components/analytics"
 import content from "@/content/es.json"
 
 const c = content as any
@@ -23,7 +21,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: m.ogTitle || "El Viajero",
     description: m.ogDescription || "Tu aventura empieza acá",
-    images: [{ url: m.ogImage || "/images/og-viajero.png", width: 1200, height: 630 }],
+    images: [{ url: m.ogImage || "/images/og-viajero.webp", width: 1200, height: 630 }],
     type: "website",
     locale: "es_PY",
     siteName: m.schemaName || "El Viajero",
@@ -32,7 +30,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: m.ogTitle || "El Viajero",
     description: m.ogDescription || "Tu aventura empieza acá",
-    images: [`${base}${m.ogImage || "/images/og-viajero.png"}`],
+    images: [`${base}${m.ogImage || "/images/og-viajero.webp"}`],
   },
   verification: {
     google: process.env.NEXT_PUBLIC_GSC_VERIFICATION || "",

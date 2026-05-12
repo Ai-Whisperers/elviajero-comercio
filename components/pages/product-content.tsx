@@ -174,7 +174,7 @@ export default function ProductPageContent({ slug }: { slug: string }) {
         </div>
       </section>
       <Footer />
-      <WhatsAppFloat phone={c.home?.contact?.whatsapp || "595981234567"} message={c.whatsapp?.defaultMessage || "Hola! Quiero informacion"} />
+      <WhatsAppFloat phone={c.home?.contact?.whatsapp || process.env.NEXT_PUBLIC_WHATSAPP || "595981234567"} message={c.whatsapp?.defaultMessage || "Hola! Quiero informacion"} />
       <CartSidebar open={cartOpen} onClose={() => setCartOpen(false)} />
       <CookieConsent />
     </>

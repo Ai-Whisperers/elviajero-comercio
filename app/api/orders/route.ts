@@ -44,6 +44,26 @@ export async function POST(req: NextRequest) {
 
     if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 })
 
+    // Create in-app notification for admin
+    try {
+      const adminSupabase = await createClient()
+      await adminSupabase.from("ej_notifications").insert({
+        type: "order",
+        title: "Nuevo pedido",
+        body: `Pedido #${id.slice(0, 8)} — Gs. ${total}`,
+        link: `/admin/pedidos/detalle?id=${id}`,
+      })
+    } catch (_) { /* non-critical */ }
+
+    // Notify admin via WhatsApp
+    try {
+      const { notifyNewOrder } = await import("@/lib/whatsapp")
+      notifyNewOrder({
+        id, items, total, status: 'pendiente',
+        customer_name: user.email,
+      })
+    } catch (_) { /* non-critical */ }
+
     return NextResponse.json({
       ok: true,
       order: { id, items, total, status: 'pendiente', addressId: addressId || '', paymentMethod: paymentMethod || '' },

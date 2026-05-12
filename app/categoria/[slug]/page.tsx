@@ -1,12 +1,15 @@
 import { CategoryContent } from "@/components/category-layout"
 
 const CATEGORIES: Record<string, { name: string; emoji: string; description: string; heroImage?: string }> = {
-  campo: { name: "Campo", emoji: "🌾", description: "Herramientas agrícolas, bebederos, comederos y más.", heroImage: "/images/marketing/hero-campo.png" },
-  motos: { name: "Motos", emoji: "🏍️", description: "Cascos, guantes, rastreadores GPS y más.", heroImage: "/images/marketing/hero-motos.png" },
-  autos: { name: "Automóviles", emoji: "🚗", description: "Dashcams, infladores, eslingas, extintores y más.", heroImage: "/images/marketing/hero-autos.png" },
-  camping: { name: "Camping", emoji: "🏕️", description: "Carpas, bolsas de dormir, linternas, sillas, coolers y más.", heroImage: "/images/marketing/hero-camping.png" },
-  pesca: { name: "Pesca", emoji: "🎣", description: "Cañas, señuelos, cajas, redes y equipo de pesca.", heroImage: "/images/marketing/hero-pesca.png" },
-  accesorios: { name: "Acc. Personales", emoji: "🎒", description: "Mochilas, cuchillos, botas, termos, botiquines y más.", heroImage: "/images/marketing/hero-outdoor.png" },
+  campo: { name: "Campo", emoji: "🌾", description: "Herramientas agrícolas, bebederos, comederos y más.", heroImage: "/images/marketing/hero-campo.webp" },
+  motos: { name: "Motos", emoji: "🏍️", description: "Cascos, guantes, rastreadores GPS y más.", heroImage: "/images/marketing/hero-motos.webp" },
+  autos: { name: "Automóviles", emoji: "🚗", description: "Dashcams, infladores, eslingas, extintores y más.", heroImage: "/images/marketing/hero-autos.webp" },
+  automviles: { name: "Automóviles", emoji: "🚗", description: "Dashcams, infladores, eslingas, extintores y más.", heroImage: "/images/marketing/hero-autos.webp" },
+  camping: { name: "Camping", emoji: "🏕️", description: "Carpas, bolsas de dormir, linternas, sillas, coolers y más.", heroImage: "/images/marketing/hero-camping.webp" },
+  pesca: { name: "Pesca", emoji: "🎣", description: "Cañas, señuelos, cajas, redes y equipo de pesca.", heroImage: "/images/marketing/hero-pesca.webp" },
+  playaypesca: { name: "Playa y Pesca", emoji: "🌊", description: "Sombrillas, sillas de playa, conservadoras y equipo para jornadas de río.", heroImage: "/images/marketing/hero-playa.webp" },
+  accesorios: { name: "Acc. Personales", emoji: "🎒", description: "Mochilas, cuchillos, botas, termos, botiquines y más.", heroImage: "/images/marketing/hero-outdoor.webp" },
+  accpersonales: { name: "Acc. Personales", emoji: "🎒", description: "Mochilas, cuchillos, botas, termos, botiquines y más.", heroImage: "/images/marketing/hero-outdoor.webp" },
 }
 
 export function generateStaticParams() {
