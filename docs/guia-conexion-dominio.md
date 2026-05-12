@@ -17,10 +17,10 @@
 | 2. DNS configurado en Cloudflare | ✅ Completado |
 | 3. Cliente cambia NS en Max Domain | ⏳ Pendiente (cliente) |
 | 4. Propagación NS (24-48h) | ⏳ En espera |
-| 5. Actualizar Traefik | ⏳ Listo para ejecutar |
-| 6. Actualizar .env | ⏳ Listo para ejecutar |
-| 7. Redeploy Docker | ⏳ Listo para ejecutar |
-| 8. Verificar sitio | ⏳ Listo para ejecutar |
+| 5. Actualizar Traefik | ✅ Completado |
+| 6. Actualizar .env | ✅ Completado |
+| 7. Redeploy Docker | ✅ Completado |
+| 8. Verificar sitio | ✅ Completado (staging) |
 
 ---
 
