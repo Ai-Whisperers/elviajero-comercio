@@ -5,10 +5,14 @@ export function SearchAndFilters({
   products,
   categories,
   onFilteredProducts,
+  externalCategory,
+  onExternalCategory,
 }: {
   products: any[]
   categories: string[]
   onFilteredProducts: (products: any[]) => void
+  externalCategory?: string
+  onExternalCategory?: (cat: string) => void
 }) {
   const [search, setSearch] = useState("")
   const [categoryFilter, setCategoryFilter] = useState("")
@@ -18,6 +22,13 @@ export function SearchAndFilters({
   const [stockFilter, setStockFilter] = useState("")
   const [pricePreset, setPricePreset] = useState("")
   const [brandFilter, setBrandFilter] = useState("")
+
+  // Sync external category filter
+  useEffect(() => {
+    if (externalCategory !== undefined) {
+      setCategoryFilter(externalCategory)
+    }
+  }, [externalCategory])
 
   const parseGs = (s: string) => parseInt(s.replace(/[^\d]/g, ""), 10) || 0
 
@@ -111,7 +122,7 @@ export function SearchAndFilters({
           <label className="mb-1 block text-xs font-medium text-muted-foreground">Categoría</label>
           <select
             value={categoryFilter}
-            onChange={(e) => setCategoryFilter(e.target.value)}
+            onChange={(e) => { setCategoryFilter(e.target.value); onExternalCategory?.(e.target.value) }}
             className="w-full rounded-lg border border-input bg-background px-3 py-2.5 text-sm text-foreground outline-none transition-colors focus:border-ring focus:ring-1 focus:ring-ring/30"
           >
             <option value="">Todas</option>

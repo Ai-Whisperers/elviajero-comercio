@@ -165,6 +165,7 @@ function TiendaContent() {
   const [filtered, setFiltered] = useState<any[] | null>(null)
   const [showOOS, setShowOOS] = useState(false)
   const [dbProducts, setDbProducts] = useState<any[]>([])
+  const [externalCategory, setExternalCategory] = useState("")
 
   useEffect(() => {
     const supabase = createClient()
@@ -212,7 +213,7 @@ function TiendaContent() {
       {/* Filters */}
       <section className="bg-surface-light py-6">
         <div className="mx-auto max-w-7xl px-4">
-          <SearchAndFilters products={allProducts} categories={cats} onFilteredProducts={setFiltered} />
+          <SearchAndFilters products={allProducts} categories={cats} onFilteredProducts={setFiltered} externalCategory={externalCategory} onExternalCategory={setExternalCategory} />
           <div className="mt-3 flex items-center justify-between text-xs text-muted-foreground">
             <span className="font-medium">{displayProducts.length} {allProducts.length > 0 ? `${s.of || "de"} ${allProducts.length}` : ""} {(s.visible || "productos")}</span>
             <label className="flex cursor-pointer items-center gap-1.5 select-none">
@@ -238,12 +239,16 @@ function TiendaContent() {
             <div key={category} id={category.toLowerCase().replace(/[^a-z]/g, "")} className="mb-16 scroll-mt-28 last:mb-0">
               <div className="mb-6 flex items-center justify-between">
                 <h2 className="text-2xl font-bold text-foreground">{category}</h2>
-                <Link
-                  href={`/categoria/${category.toLowerCase().replace(/[^a-z]/g, "")}`}
-                  className="text-sm font-semibold text-primary hover:text-primary/80 hover:underline transition-colors"
+                <button
+                  onClick={() => setExternalCategory(externalCategory === category ? "" : category)}
+                  className={`text-sm font-semibold transition-colors ${
+                    externalCategory === category
+                      ? "text-muted-foreground"
+                      : "text-primary hover:text-primary/80 hover:underline"
+                  }`}
                 >
-                  {s.viewAll || "Ver todo"} &rarr;
-                </Link>
+                  {externalCategory === category ? (s.clearFilter || "Mostrar todo") : (s.viewAll || "Ver todo")} &rarr;
+                </button>
               </div>
               <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {displayProducts.filter((p: any) => p.category === category).map((p: any, i: number) => (
