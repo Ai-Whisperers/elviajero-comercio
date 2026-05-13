@@ -12,6 +12,7 @@ import { ExitIntentPopup } from "@/components/exit-intent"
 import { NewsletterForm } from "@/components/newsletter-form"
 import { NewsletterSuccess } from "@/components/ui"
 import { WhatsAppFloat } from "@/components/whatsapp-float"
+import { KitsCarousel } from "@/components/kits-carousel"
 import { useContent } from "@/lib/content-provider"
 import Link from "next/link"
 import Image from "next/image"
@@ -86,6 +87,9 @@ function HomePage() {
       <PromoCarousel />
       <HeroCarousel />
 
+      {/* Kits / Promos Carousel */}
+      <KitsCarousel items={h.kitsCarousel?.items || []} title={h.kitsCarousel?.title} whatsappPhone={h.productCatalog?.whatsappPhone} />
+
       {/* Animated Stats */}
       {stats.length > 0 && (
         <section className="bg-surface py-10">
@@ -135,7 +139,7 @@ function HomePage() {
           </FadeUp>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {categories.map((cat: any) => (
-              <Link key={cat} href={`/productos?categoria=${catSlug(cat)}`}
+                <Link key={cat} href={`/tienda#${catSlug(cat)}`}
                 className="group relative flex h-52 items-end overflow-hidden rounded-2xl bg-gradient-to-br from-primary/10 via-transparent to-primary/5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
               >
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent z-10" />
@@ -161,7 +165,7 @@ function HomePage() {
             </FadeUp>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {newArrivals.slice(0, 8).map((p: any) => (
-                <Link key={p.id} href={`/productos/${p.slug || p.id}`}
+                <Link key={p.id} href={`/producto/${p.slug || p.id}`}
                   className="group rounded-xl border border-border bg-white p-4 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md">
                   <div className="relative mb-3 flex h-44 items-center justify-center overflow-hidden rounded-lg bg-surface-light">
                     {p.image_url ? (
@@ -195,7 +199,7 @@ function HomePage() {
             </FadeUp>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {featuredProducts.slice(0, 8).map((p: any) => (
-                <Link key={p.id} href={`/productos/${p.slug || p.id}`}
+                <Link key={p.id} href={`/producto/${p.slug || p.id}`}
                   className="group rounded-xl border border-border bg-white p-4 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md">
                   <div className="relative mb-3 flex h-44 items-center justify-center overflow-hidden rounded-lg bg-surface-light">
                     {p.image_url ? (
@@ -277,7 +281,7 @@ function HomePage() {
           <div className="mx-auto max-w-2xl px-4 text-center">
             <h2 className="text-4xl font-bold text-foreground">{h.finalCta.title || "¿Listo para tu próxima aventura?"}</h2>
             <p className="mt-4 text-lg text-muted-foreground">{h.finalCta.description}</p>
-            <Link href={h.finalCta.buttonHref || "/productos"}
+            <Link href={h.finalCta.buttonHref || "/tienda"}
               className="mt-8 inline-flex h-12 items-center justify-center rounded-xl bg-primary px-8 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/30 transition-all hover:bg-primary/90">
               {h.finalCta.buttonText || "Ver Productos"}
             </Link>

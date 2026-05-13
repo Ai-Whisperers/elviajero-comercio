@@ -1,5 +1,5 @@
 import { ErrorBoundary } from "@/components/error-boundary"
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 import "./globals.css"
 import { ToastProvider } from "@/components/toast"
 import { ClientProviders } from "@/components/client-providers"
@@ -10,6 +10,12 @@ const c = content as any
 const m = c.layoutMetadata || {}
 const base = "https://el-viajero.paragu-ai.com"
 
+export const viewport: Viewport = {
+  themeColor: "#1B5E20",
+  width: "device-width",
+  initialScale: 1,
+}
+
 export const metadata: Metadata = {
   metadataBase: new URL(base),
   title: m.title || "El Viajero — Tu Aventura Empieza Acá",
@@ -17,7 +23,6 @@ export const metadata: Metadata = {
   icons: { icon: "/favicon.svg", apple: "/favicon.svg" },
   manifest: "/manifest.json",
   appleWebApp: { capable: true, statusBarStyle: "black-translucent" },
-  themeColor: "#1B5E20",
   openGraph: {
     title: m.ogTitle || "El Viajero",
     description: m.ogDescription || "Tu aventura empieza acá",

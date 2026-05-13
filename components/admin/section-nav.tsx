@@ -9,6 +9,7 @@ export const SECTIONS: Section[] = [
   { key: "contacto", label: "Contacto" },
   { key: "footer", label: "Footer" },
   { key: "faq", label: "FAQ" },
+  { key: "kits", label: "Kits / Promos" },
   { key: "stats", label: "Estadísticas" },
   { key: "features", label: "Características" },
   { key: "testimonials", label: "Testimonios" },

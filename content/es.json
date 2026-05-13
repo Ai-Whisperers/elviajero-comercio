@@ -17,10 +17,6 @@
         "href": "/tienda"
       },
       {
-        "label": "Productos",
-        "href": "/productos"
-      },
-      {
         "label": "Blog",
         "href": "/blog"
       },
@@ -84,6 +80,37 @@
       "ctaPrimaryHref": "#catalogo",
       "ctaSecondaryText": "Pedir por WhatsApp",
       "ctaSecondaryHref": "https://wa.me/595981234567?text=Hola!%20Quisiera%20informacion%20sobre%20productos%20de%20El%20Viajero%20Comercio"
+    },
+    "kitsCarousel": {
+      "title": "Kits y Promociones",
+      "items": [
+        {
+          "title": "Kit Camping Completo",
+          "description": "Carpa 4 pers + 2 bolsas de dormir + colchon inflable",
+          "price": "Gs. 420.000",
+          "priceBefore": "Gs. 500.000",
+          "image": "/images/marketing/promo-kit-camping.png",
+          "badge": "-15%",
+          "whatsappText": "Hola! Quiero info del Kit Camping Completo (Gs. 420.000)"
+        },
+        {
+          "title": "Combo Pesca Inicial",
+          "description": "Caña + caja de herramientas + señuelos. Ideal para empezar.",
+          "price": "Gs. 280.000",
+          "priceBefore": "Gs. 310.000",
+          "image": "/images/marketing/promo-combo-pesca.png",
+          "badge": "-10%",
+          "whatsappText": "Hola! Quiero info del Combo Pesca Inicial (Gs. 280.000)"
+        },
+        {
+          "title": "Kit Explorador",
+          "description": "Mochila 50L + cantimplora + brújula + linterna frontal",
+          "price": "Gs. 350.000",
+          "image": "/images/marketing/promo-envio-gratis.png",
+          "badge": "NUEVO",
+          "whatsappText": "Hola! Quiero info del Kit Explorador (Gs. 350.000)"
+        }
+      ]
     },
     "stats": {
       "title": "El Viajero en Numeros",
@@ -696,7 +723,7 @@
           "title": "Ruta y aventura",
           "subtitle": "Equipo outdoor, autos y moto — cargá tu próximo viaje",
           "ctaText": "Ver productos",
-          "ctaHref": "/productos"
+          "ctaHref": "/tienda"
         },
         {
           "image": "/images/marketing/hero-carousel-04-shop-warm.png",

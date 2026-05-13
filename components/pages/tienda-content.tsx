@@ -19,6 +19,7 @@ import { createClient } from "@ai-whisperers/auth/supabase/client"
 const c = content as any
 const s = c.store || {}
 const ui = c.ui || {}
+const bc = c.breadcrumbs || {}
 const cats = c.home?.productCatalog?.categories || []
 const cat = c.home?.productCatalog || {}
 const staticProducts = cat.products || []
@@ -111,46 +112,60 @@ function ProductCard({ p, onClick, addItem, isWished, toggleWish }: any) {
           </div>
         )}
 
-        {/* Quantity + Add to cart */}
-        <div className="mt-1 flex items-center gap-2">
-          {/* Quantity selector */}
-          {p.stock !== 0 && (
-            <div className="flex items-center rounded-lg border border-border bg-background">
+          {/* Quantity + Add to cart */}
+          <div className="mt-1 flex flex-col gap-1.5">
+            <div className="flex items-center gap-2">
+              {/* Quantity selector */}
+              {p.stock !== 0 && (
+                <div className="flex items-center rounded-lg border border-border bg-background">
+                  <button
+                    onClick={() => setQty(Math.max(1, qty - 1))}
+                    disabled={qty <= 1}
+                    className="flex h-9 w-8 items-center justify-center text-muted-foreground hover:text-foreground disabled:opacity-30 transition-colors"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14"/></svg>
+                  </button>
+                  <span className="flex h-9 w-8 items-center justify-center text-xs font-medium tabular-nums">{qty}</span>
+                  <button
+                    onClick={() => setQty(qty + 1)}
+                    disabled={p.stock !== undefined && qty >= p.stock}
+                    className="flex h-9 w-8 items-center justify-center text-muted-foreground hover:text-foreground disabled:opacity-30 transition-colors"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 5v14M5 12h14"/></svg>
+                  </button>
+                </div>
+              )}
+
+              {/* Add button */}
               <button
-                onClick={() => setQty(Math.max(1, qty - 1))}
-                disabled={qty <= 1}
-                className="flex h-9 w-8 items-center justify-center text-muted-foreground hover:text-foreground disabled:opacity-30 transition-colors"
+                disabled={p.stock === 0}
+                onClick={handleAdd}
+                className={`flex flex-1 items-center justify-center rounded-lg px-3 py-2.5 text-sm font-semibold transition-all duration-150 ${
+                  p.stock === 0
+                    ? "cursor-not-allowed bg-muted text-muted-foreground"
+                    : "bg-primary text-primary-foreground hover:bg-primary/90 active:scale-[0.97]"
+                }`}
               >
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14"/></svg>
-              </button>
-              <span className="flex h-9 w-8 items-center justify-center text-xs font-medium tabular-nums">{qty}</span>
-              <button
-                onClick={() => setQty(qty + 1)}
-                disabled={p.stock !== undefined && qty >= p.stock}
-                className="flex h-9 w-8 items-center justify-center text-muted-foreground hover:text-foreground disabled:opacity-30 transition-colors"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 5v14M5 12h14"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="mr-1.5 shrink-0">
+                  <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+                  <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                </svg>
+                {p.stock === 0 ? (s.soldOut || "Agotado") : (s.add || "Agregar")}
               </button>
             </div>
-          )}
-
-          {/* Add button */}
-          <button
-            disabled={p.stock === 0}
-            onClick={handleAdd}
-            className={`flex flex-1 items-center justify-center rounded-lg px-3 py-2.5 text-sm font-semibold transition-all duration-150 ${
-              p.stock === 0
-                ? "cursor-not-allowed bg-muted text-muted-foreground"
-                : "bg-primary text-primary-foreground hover:bg-primary/90 active:scale-[0.97]"
-            }`}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="mr-1.5 shrink-0">
-              <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
-              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-            </svg>
-            {p.stock === 0 ? (s.soldOut || "Agotado") : (s.add || "Agregar")}
-          </button>
-        </div>
+            {/* WhatsApp direct button */}
+            <a
+              href={`https://wa.me/${cat.whatsappPhone || "595981234567"}?text=${encodeURIComponent((cat.orderMessageTemplate || "Hola! Me interesa {{productName}} ({{productPrice}}). Quiero saber disponibilidad y formas de pago.").replace("{{productName}}", p.name).replace("{{productPrice}}", p.price))}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-1.5 rounded-lg border border-accent px-3 py-2 text-sm font-semibold text-accent hover:bg-accent/5 active:scale-[0.97] transition-all"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="shrink-0">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+              </svg>
+              {cat.orderButtonText || "Consultar por WhatsApp"}
+            </a>
+          </div>
       </div>
     </div>
   )
@@ -191,6 +206,12 @@ function TiendaContent() {
     <>
       <Header onCartClick={() => setCartOpen(true)} />
       <CartToastListener />
+
+      {/* Breadcrumbs */}
+      <nav className="mx-auto flex max-w-7xl items-center gap-2 px-4 py-3 text-xs text-muted-foreground">
+        <Link href="/" className="hover:text-primary">{bc.home || "Inicio"}</Link><span>/</span>
+        <span className="text-foreground">{s.title || "Tienda"}</span>
+      </nav>
 
       {/* Hero */}
       <section className="relative overflow-hidden bg-gradient-to-b from-primary/95 to-primary py-20 text-center text-primary-foreground">

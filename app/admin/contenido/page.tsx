@@ -178,16 +178,22 @@ function ContentEditor() {
 
           {section === "hero" && (
             <div className="space-y-6">
-              <div>
-                <h3 className="text-sm font-semibold text-white mb-3">Slide principal</h3>
-                <Input label="Título principal (H1)" value={get("home.heroCarousel.slides.0.headline")} onChange={v => set("home.heroCarousel.slides.0.headline", v)} placeholder={deepGet(defaultContent, "home.heroCarousel.slides.0.headline")} />
-                <Input label="Subtítulo" multiline value={get("home.heroCarousel.slides.0.subheadline")} onChange={v => set("home.heroCarousel.slides.0.subheadline", v)} placeholder={deepGet(defaultContent, "home.heroCarousel.slides.0.subheadline")} />
-                <Input label="Imagen de fondo (URL)" value={get("home.heroCarousel.slides.0.image")} onChange={v => set("home.heroCarousel.slides.0.image", v)} placeholder={deepGet(defaultContent, "home.heroCarousel.slides.0.image")} />
-                <Input label="Texto botón primario" value={get("home.heroCarousel.slides.0.ctaPrimaryText")} onChange={v => set("home.heroCarousel.slides.0.ctaPrimaryText", v)} placeholder={deepGet(defaultContent, "home.heroCarousel.slides.0.ctaPrimaryText")} />
-                <Input label="Link botón primario" value={get("home.heroCarousel.slides.0.ctaPrimaryHref")} onChange={v => set("home.heroCarousel.slides.0.ctaPrimaryHref", v)} />
-                <Input label="Texto botón secundario" value={get("home.heroCarousel.slides.0.ctaSecondaryText")} onChange={v => set("home.heroCarousel.slides.0.ctaSecondaryText", v)} placeholder={deepGet(defaultContent, "home.heroCarousel.slides.0.ctaSecondaryText")} />
-                <Input label="Link botón secundario" value={get("home.heroCarousel.slides.0.ctaSecondaryHref")} onChange={v => set("home.heroCarousel.slides.0.ctaSecondaryHref", v)} />
-              </div>
+              <p className="text-sm text-zinc-400">Carrusel principal del hero en la home. Se muestran hasta 5 slides.</p>
+              {(() => {
+                const defaultSlides = defaultContent.home?.heroCarousel?.slides || []
+                const overrideSlides = getArray("home.heroCarousel.slides")
+                const slides = overrideSlides.length > 0 ? overrideSlides : defaultSlides
+                return slides.map((_: any, i: number) => (
+                  <div key={i} className="rounded-lg border border-zinc-700/60 bg-zinc-800/50 p-4">
+                    <h3 className="text-sm font-semibold text-white mb-3">Slide {i + 1}</h3>
+                    <Input label="Título" value={deepGet(overrideSlides[i] || defaultSlides[i] || {}, "title")} onChange={v => set(`home.heroCarousel.slides.${i}.title`, v)} placeholder={deepGet(defaultContent, `home.heroCarousel.slides.${i}.title`)} />
+                    <Input label="Subtítulo" multiline value={deepGet(overrideSlides[i] || defaultSlides[i] || {}, "subtitle")} onChange={v => set(`home.heroCarousel.slides.${i}.subtitle`, v)} placeholder={deepGet(defaultContent, `home.heroCarousel.slides.${i}.subtitle`)} />
+                    <Input label="Imagen de fondo (URL)" value={deepGet(overrideSlides[i] || defaultSlides[i] || {}, "image")} onChange={v => set(`home.heroCarousel.slides.${i}.image`, v)} placeholder={deepGet(defaultContent, `home.heroCarousel.slides.${i}.image`)} />
+                    <Input label="Texto botón" value={deepGet(overrideSlides[i] || defaultSlides[i] || {}, "ctaText")} onChange={v => set(`home.heroCarousel.slides.${i}.ctaText`, v)} placeholder={deepGet(defaultContent, `home.heroCarousel.slides.${i}.ctaText`)} />
+                    <Input label="Link botón" value={deepGet(overrideSlides[i] || defaultSlides[i] || {}, "ctaHref")} onChange={v => set(`home.heroCarousel.slides.${i}.ctaHref`, v)} placeholder={deepGet(defaultContent, `home.heroCarousel.slides.${i}.ctaHref`)} />
+                  </div>
+                ))
+              })()}
             </div>
           )}
 
@@ -227,6 +233,29 @@ function ContentEditor() {
                   + Agregar valor
                 </button>
               </div>
+            </div>
+          )}
+
+          {section === "kits" && (
+            <div>
+              <p className="mb-4 text-sm text-zinc-400">Carrusel de kits y promociones en la home (debajo del hero)</p>
+              <Input label="Título de la sección" value={get("home.kitsCarousel.title")} onChange={v => set("home.kitsCarousel.title", v)} placeholder={deepGet(defaultContent, "home.kitsCarousel.title")} />
+              {(getArray("home.kitsCarousel.items").length > 0 ? getArray("home.kitsCarousel.items") : defaultContent.home?.kitsCarousel?.items || []).map((item: any, i: number) => (
+                <div key={i} className="mb-4 rounded-lg border border-zinc-700/60 bg-zinc-800 p-4">
+                  <Input label={`Título ${i + 1}`} value={item.title || ""} onChange={v => updateArrayItem("home.kitsCarousel.items", i, "title", v)} placeholder={deepGet(defaultContent.home?.kitsCarousel?.items?.[i], "title")} />
+                  <Input label={`Descripción ${i + 1}`} multiline value={item.description || ""} onChange={v => updateArrayItem("home.kitsCarousel.items", i, "description", v)} />
+                  <Input label={`Precio ${i + 1}`} value={item.price || ""} onChange={v => updateArrayItem("home.kitsCarousel.items", i, "price", v)} />
+                  <Input label={`Precio anterior ${i + 1}`} value={item.priceBefore || ""} onChange={v => updateArrayItem("home.kitsCarousel.items", i, "priceBefore", v)} />
+                  <Input label={`Badge ${i + 1}`} value={item.badge || ""} onChange={v => updateArrayItem("home.kitsCarousel.items", i, "badge", v)} placeholder="-15%, NUEVO, etc" />
+                  <Input label={`Imagen (URL) ${i + 1}`} value={item.image || ""} onChange={v => updateArrayItem("home.kitsCarousel.items", i, "image", v)} />
+                  <Input label={`WhatsApp text ${i + 1}`} value={item.whatsappText || ""} onChange={v => updateArrayItem("home.kitsCarousel.items", i, "whatsappText", v)} />
+                  <button onClick={() => removeArrayItem("home.kitsCarousel.items", i)} className="mt-2 text-xs text-red-400 hover:underline">Eliminar kit</button>
+                </div>
+              ))}
+              <button onClick={() => addArrayItem("home.kitsCarousel.items", { title: "", description: "", price: "", priceBefore: "", image: "", badge: "", whatsappText: "" })}
+                className="mt-2 rounded-lg border border-dashed border-zinc-600 px-4 py-2 text-sm text-zinc-400 hover:text-white">
+                + Agregar kit
+              </button>
             </div>
           )}
 

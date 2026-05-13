@@ -33,13 +33,7 @@ function OrderDetailInner() {
         setTrackingNum(data.tracking_number || "")
         setCarrier(data.carrier || "")
         setStatus(data.status || "pendiente")
-        if (data.user_id) {
-          fetch("/api/admin/customers?id=" + data.user_id).then(r => r.json()).then(profile => {
-            setCustomerName(profile?.full_name || profile?.name || "Invitado")
-          }).catch(() => setCustomerName("Invitado"))
-        } else {
-          setCustomerName("Invitado")
-        }
+        setCustomerName(data.customer_name || "Invitado")
       }
     })
   }, [orderId])
@@ -139,15 +133,9 @@ function OrderDetailInner() {
               <span className="text-zinc-500">Total</span>
               <span className="text-white font-bold text-lg">{order.total}</span>
             </div>
-            {order.address_id && (
-              <div className="flex justify-between">
-                <span className="text-zinc-500">Dirección</span>
-                <span className="text-white text-right max-w-[200px]">{order.address_id}</span>
-              </div>
-            )}
             {order.note && (
               <div className="flex justify-between">
-                <span className="text-zinc-500">Nota</span>
+                <span className="text-zinc-500">Dirección / Nota</span>
                 <span className="text-white text-right max-w-[200px]">{order.note}</span>
               </div>
             )}
@@ -226,9 +214,9 @@ function OrderDetailInner() {
               {order.tracking_number && <><span className="text-zinc-500">Tracking:</span> {order.tracking_number}</>}
               {order.carrier && <><span className="text-zinc-500 ml-3">Transportista:</span> {order.carrier}</>}
             </span>
-            {order.shipped_at && (
+            {order.delivered_at && (
               <span className="text-zinc-600 ml-auto">
-                Enviado: {new Date(order.shipped_at).toLocaleDateString("es")}
+                Entregado: {new Date(order.delivered_at).toLocaleDateString("es")}
               </span>
             )}
           </div>

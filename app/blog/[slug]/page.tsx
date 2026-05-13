@@ -1,8 +1,10 @@
 "use client"
+import { use } from "react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { CookieConsent } from "@/components/cookie-consent"
 import { Breadcrumbs } from "@/components/ui"
+import { ArticleJsonLd } from "@/components/article-json-ld"
 import content from "@/content/es.json"
 import Link from "next/link"
 import Image from "next/image"
@@ -84,16 +86,18 @@ const fullContent: Record<string, {
   }
 }
 
-export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params
+export default function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = use(params)
   const post = posts.find((p: any) => p.slug === slug)
   if (!post) notFound()
 
-  const content = fullContent[post.slug]
+  const postContent = fullContent[post.slug]
   const products = c.home?.productCatalog?.products || []
+  const whatsapp = c.home?.productCatalog?.whatsappPhone || "595981234567"
 
   return (
     <>
+      <ArticleJsonLd title={post.title} description={post.excerpt} image={post.image} date={post.date} author={post.author} />
       <Header />
       <Breadcrumbs items={[{ label: "Inicio", href: "/" }, { label: "Blog", href: "/blog" }, { label: post.title }]} />
       
@@ -112,9 +116,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             <Image src={post.image} alt={post.title} width={800} height={450} className="mb-8 w-full rounded-xl shadow-sm" />
           )}
 
-          {content ? (
+          {postContent ? (
             <div className="space-y-8">
-              {content.sections.map((section, i) => (
+              {postContent.sections.map((section, i) => (
                 <div key={i}>
                   <h2 className="text-xl font-bold text-foreground mb-3">{section.title}</h2>
                   <p className="text-muted-foreground leading-relaxed">{section.text}</p>
@@ -126,11 +130,11 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           )}
 
           {/* CTA */}
-          {content && (
+          {postContent && (
             <div className="mt-10 rounded-xl border border-primary/30 bg-primary/5 p-6 text-center">
-              <p className="text-foreground font-medium mb-4">{content.cta}</p>
+              <p className="text-foreground font-medium mb-4">{postContent.cta}</p>
               <a
-                href="https://wa.me/595981234567"
+                href={`https://wa.me/${whatsapp}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex h-10 items-center justify-center rounded-lg bg-primary px-6 text-sm font-semibold text-primary-foreground transition-all hover:bg-primary/90"
@@ -141,11 +145,11 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           )}
 
           {/* Related products */}
-          {content && content.relatedProducts.length > 0 && (
+          {postContent && postContent.relatedProducts.length > 0 && (
             <div className="mt-12">
               <h3 className="text-lg font-bold text-foreground mb-4">Productos relacionados</h3>
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {content.relatedProducts.map((name: string) => {
+                {postContent.relatedProducts.map((name: string) => {
                   const p = products.find((pr: any) => pr.name.toLowerCase().includes(name.toLowerCase()))
                   if (!p) return null
                   const slug = p.name.toLowerCase().replace(/[^a-z0-9]/g, "-").replace(/-+/g, "-")

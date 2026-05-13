@@ -1,17 +1,20 @@
 "use client"
 export const dynamic = "force-dynamic"
 export const fetchCache = "force-no-store"
-export const runtime = "edge"
+
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { CookieConsent } from "@/components/cookie-consent"
 import { useAuth, AuthProvider } from "@ai-whisperers/auth/auth-context"
 import { useCart } from "@ai-whisperers/commerce/cart/cart-context"
-import { CartProvider } from "@ai-whisperers/commerce/cart/cart-context"
-import { ToastProvider } from "@/components/toast"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
+import { CouponInput } from "@/components/coupon-input"
 import { useRouter } from "next/navigation"
 import { createClient } from "@ai-whisperers/auth/supabase/client"
+import content from "@/content/es.json"
+
+const c = content as any
+const WHATSAPP_NUMBER = c.home?.productCatalog?.whatsappPhone || c.home?.contact?.whatsapp || process.env.NEXT_PUBLIC_WHATSAPP || "595981234567"
 
 const SHIPPING_ZONES = [
   { id: "asu", name: "Asunción", fee: 15000, freeFrom: 300000 },
@@ -38,9 +41,17 @@ function CheckoutForm() {
   const [selectedAddress, setSelectedAddress] = useState("")
   const [addressForm, setAddressForm] = useState({ street: "", city: "", phone: "" })
 
+  const [discount, setDiscount] = useState(0)
+  const [discountCode, setDiscountCode] = useState("")
+
   const zone = SHIPPING_ZONES.find(z => z.id === shippingZone)!
   const shipping = total >= zone.freeFrom ? 0 : zone.fee
-  const grandTotal = total + shipping
+  const grandTotal = total + shipping - discount
+
+  const handleDiscount = useCallback((amount: number, code: string) => {
+    setDiscount(amount)
+    setDiscountCode(code)
+  }, [])
 
   useEffect(() => {
     if (user) {
@@ -72,6 +83,12 @@ function CheckoutForm() {
         customer_email: customer.email,
       }),
     })
+    const orderData = await res.json().catch(() => null)
+    if (!res.ok || !orderData) {
+      setError(orderData?.error || "Error al crear el pedido. Intentá de nuevo.")
+      setLoading(false)
+      return
+    }
 
     if (paymentMethod === "whatsapp") {
       const msg = encodeURIComponent(
@@ -79,13 +96,14 @@ function CheckoutForm() {
         items.map(i => `- ${i.name} x${i.quantity}: ${i.price}`).join("\n") +
         `\n\nSubtotal: Gs. ${total.toLocaleString("es-PY")}` +
         `\nEnvío: Gs. ${shipping.toLocaleString("es-PY")} (${zone.name})` +
+        (discount > 0 ? `\nDescuento (${discountCode}): -Gs. ${discount.toLocaleString("es-PY")}` : "") +
         `\nTotal: Gs. ${grandTotal.toLocaleString("es-PY")}` +
         `\n\nCliente: ${customer.name}` +
         `\nTel: ${customer.phone}` +
         `\nDirección: ${addressForm.street}, ${addressForm.city}`
       )
       clearCart()
-      window.location.href = `https://wa.me/595981234567?text=${msg}`
+      window.location.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`
     } else {
       // Call unified checkout API
       const res = await fetch("/api/checkout", {
@@ -245,6 +263,8 @@ function CheckoutForm() {
                 ))}
               </div>
 
+              <CouponInput subtotal={total} onDiscount={handleDiscount} />
+
               {/* Order summary */}
               <div className="rounded-lg bg-muted p-4 mb-6">
                 <h3 className="font-semibold text-foreground mb-3">Resumen del pedido</h3>
@@ -263,6 +283,12 @@ function CheckoutForm() {
                     <span className="text-muted-foreground">Envío ({zone.name})</span>
                     <span className="text-foreground">{shipping === 0 ? 'Gratis' : 'Gs. ' + shipping.toLocaleString('es-PY')}</span>
                   </div>
+                  {discount > 0 && (
+                    <div className="flex justify-between text-sm">
+                      <span className="text-green-600">Descuento ({discountCode})</span>
+                      <span className="text-green-600">-Gs. {discount.toLocaleString('es-PY')}</span>
+                    </div>
+                  )}
                   <div className="flex justify-between text-lg font-bold mt-2">
                     <span className="text-foreground">Total</span>
                     <span className="text-primary">Gs. {grandTotal.toLocaleString('es-PY')}</span>
@@ -288,12 +314,8 @@ function CheckoutForm() {
 
 export default function CheckoutPage() {
   return (
-    <CartProvider>
-      <ToastProvider>
-        <AuthProvider>
-          <CheckoutForm />
-        </AuthProvider>
-      </ToastProvider>
-    </CartProvider>
+    <AuthProvider>
+      <CheckoutForm />
+    </AuthProvider>
   )
 }

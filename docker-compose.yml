@@ -14,6 +14,10 @@ services:
       - NEXT_PUBLIC_SUPABASE_URL=https://qyvokpribmbrosafntqa.supabase.co
       - NEXT_PUBLIC_SUPABASE_ANON_KEY=sb_publishable_KQ-sFNr7r6AauoG0B4nyTg_vuPHmeCm
       - SUPABASE_SERVICE_ROLE_KEY=sb_secret_J7n1igQHaVSKn35OrMe93A_p-_FEBvH
+      - EVOLUTION_API_URL=http://evolution_evolution_api:8080
+      - EVOLUTION_API_KEY=${EVOLUTION_API_KEY}
+      - EVOLUTION_INSTANCE=elviajero
+      - ADMIN_WHATSAPP=595981234567
     deploy:
       mode: replicated
       replicas: 1

@@ -1,18 +1,15 @@
-"use client"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { CookieConsent } from "@/components/cookie-consent"
 import { Breadcrumbs } from "@/components/ui"
 import { renderLegalLines } from "@/components/legal-renderer"
 import content from "@/content/es.json"
-import { getLang } from "@/lib/i18n"
 
 const c = content as any
 const bc = c.breadcrumbs || {}
 
 export default function PrivacidadPage() {
-  const lang = getLang()
-  const data = lang === "gn" ? (c.pages?.privacidad || {}) : (c.pages?.privacidad || {})
+  const data = c.pages?.privacidad || {}
 
   return (
     <>

@@ -5,20 +5,20 @@
   "type": "module",
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "import": "./index.ts",
+      "types": "./index.ts"
     },
     "./cart/cart-context": {
-      "import": "./dist/cart/cart-context.js",
-      "types": "./dist/cart/cart-context.d.ts"
+      "import": "./cart/cart-context.tsx",
+      "types": "./cart/cart-context.tsx"
     },
     "./currency-switcher": {
-      "import": "./dist/currency-switcher.js",
-      "types": "./dist/currency-switcher.d.ts"
+      "import": "./currency-switcher.tsx",
+      "types": "./currency-switcher.tsx"
     },
     "./types": {
-      "import": "./dist/types.js",
-      "types": "./dist/types.d.ts"
+      "import": "./types.ts",
+      "types": "./types.ts"
     }
   },
   "dependencies": {

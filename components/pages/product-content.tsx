@@ -107,16 +107,29 @@ export default function ProductPageContent({ slug }: { slug: string }) {
                   : product.stock > 0 ? <span className="flex items-center gap-1 text-sm font-medium text-warning">● {(s.lastUnits || "Últimas")} {product.stock} {(s.remaining || "unidades")}</span>
                   : <span className="flex items-center gap-1 text-sm font-medium text-destructive">● {s.soldOut || "Agotado"}</span>}
               </div>
-              <div className="mt-6 flex items-center gap-4">
-                <div className="flex items-center rounded-lg border border-input">
-                  <button onClick={() => setQty(Math.max(1, qty - 1))} className="flex h-10 w-10 items-center justify-center text-foreground hover:bg-muted">−</button>
-                  <span className="flex h-10 w-12 items-center justify-center text-sm font-semibold text-foreground">{qty}</span>
-                  <button onClick={() => setQty(qty + 1)} className="flex h-10 w-10 items-center justify-center text-foreground hover:bg-muted">+</button>
+              <div className="mt-6 flex flex-col gap-3">
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center rounded-lg border border-input">
+                    <button onClick={() => setQty(Math.max(1, qty - 1))} className="flex h-10 w-10 items-center justify-center text-foreground hover:bg-muted">−</button>
+                    <span className="flex h-10 w-12 items-center justify-center text-sm font-semibold text-foreground">{qty}</span>
+                    <button onClick={() => setQty(qty + 1)} className="flex h-10 w-10 items-center justify-center text-foreground hover:bg-muted">+</button>
+                  </div>
+                  <button onClick={handleAdd} disabled={!product.stock || added}
+                    className="flex-1 rounded-lg bg-primary py-3 font-semibold text-primary-foreground hover:bg-primary/90 active:scale-[0.98] disabled:opacity-50">
+                    {added ? (s.added || "✓ Agregado") : !product.stock ? (s.soldOut || "Agotado") : (s.addToCart || "Agregar al carrito")}
+                  </button>
                 </div>
-                <button onClick={handleAdd} disabled={!product.stock || added}
-                  className="flex-1 rounded-lg bg-primary py-3 font-semibold text-primary-foreground hover:bg-primary/90 active:scale-[0.98] disabled:opacity-50">
-                  {added ? (s.added || "✓ Agregado") : !product.stock ? (s.soldOut || "Agotado") : (s.addToCart || "Agregar al carrito")}
-                </button>
+                <a
+                  href={`https://wa.me/${c.home?.productCatalog?.whatsappPhone || "595981234567"}?text=${encodeURIComponent((c.home?.productCatalog?.orderMessageTemplate || "Hola! Me interesa {{productName}} ({{productPrice}}). Quiero saber disponibilidad y formas de pago.").replace("{{productName}}", product.name).replace("{{productPrice}}", product.price))}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 rounded-lg border border-accent py-3 text-sm font-semibold text-accent hover:bg-accent/5 active:scale-[0.98] transition-all"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="shrink-0">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                  </svg>
+                  {c.home?.productCatalog?.orderButtonText || "Consultar por WhatsApp"}
+                </a>
               </div>
               {!product.stock && <div className="mt-4"><p className="mb-2 text-sm font-medium text-muted-foreground">{c.backInStock?.cta || "Producto agotado. ¿Querés que te avisemos?"}</p><BackInStockForm productName={product.name} /></div>}
               <div className="mt-8 grid grid-cols-3 gap-3 rounded-xl border border-border bg-surface p-4">

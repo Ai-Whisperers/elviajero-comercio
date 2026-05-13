@@ -1,6 +1,4 @@
 import type { Metadata } from "next"
-import { CartProvider } from "@ai-whisperers/commerce/cart/cart-context"
-import { ToastProvider } from "@/components/toast"
 import TiendaContent from "@/components/pages/tienda-content"
 
 export const dynamic = "force-dynamic"
@@ -26,11 +24,5 @@ export const metadata: Metadata = {
 }
 
 export default function TiendaPage() {
-  return (
-    <CartProvider>
-      <ToastProvider>
-        <TiendaContent />
-      </ToastProvider>
-    </CartProvider>
-  )
+  return <TiendaContent />
 }

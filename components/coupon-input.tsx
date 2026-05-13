@@ -1,17 +1,39 @@
 "use client"
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { createClient } from "@ai-whisperers/auth/supabase/client"
 import content from "@/content/es.json"
 
 const c = content as any
 const couponConfig = c.coupons || {}
-const coupons = couponConfig.list || []
+const staticCoupons: any[] = couponConfig.list || []
 
 export function CouponInput({ subtotal, onDiscount }: { subtotal: number; onDiscount: (amount: number, code: string) => void }) {
   const [code, setCode] = useState("")
   const [message, setMessage] = useState<{ text: string; type: string } | null>(null)
+  const [dbCoupons, setDbCoupons] = useState<any[]>([])
+
+  useEffect(() => {
+    const supabase = createClient()
+    supabase.from("ej_promo_codes").select("*").then(({ data }) => {
+      if (data) setDbCoupons(data)
+    })
+  }, [])
+
+  const allCoupons = [
+    ...staticCoupons,
+    ...dbCoupons.map(dbc => ({
+      code: dbc.code,
+      type: dbc.type === "percentage" ? "percent" : dbc.type === "fixed" ? "fixed" : "percent",
+      value: dbc.value,
+      minPurchase: dbc.min_purchase ?? 0,
+      description: dbc.description || dbc.title || "",
+      active: dbc.active !== false,
+      maxUses: dbc.max_uses ?? 100,
+    })),
+  ]
 
   const apply = () => {
-    const cpn = coupons.find((c: any) => c.code.toUpperCase() === code.toUpperCase() && c.active)
+    const cpn = allCoupons.find((c: any) => c.code.toUpperCase() === code.toUpperCase() && c.active !== false)
     if (!cpn) {
       setMessage({ text: "Código inválido o expirado", type: "error" })
       return
@@ -22,8 +44,8 @@ export function CouponInput({ subtotal, onDiscount }: { subtotal: number; onDisc
     }
     let discount = 0
     if (cpn.type === "percent") discount = Math.round(subtotal * cpn.value / 100)
-    else if (cpn.type === "free_shipping") discount = 0 // handled in delivery
-    setMessage({ text: `✅ Cupón aplicado: ${cpn.description}`, type: "success" })
+    else if (cpn.type === "fixed") discount = cpn.value
+    setMessage({ text: `✅ Cupón aplicado: ${cpn.description || cpn.code}`, type: "success" })
     onDiscount(discount, code.toUpperCase())
   }
 

@@ -4,7 +4,7 @@ import { createAdminClient } from "@ai-whisperers/auth/supabase/admin"
 export async function GET() {
   const supabase = createAdminClient()
   const [usersRes, prodsRes, ordersRes] = await Promise.all([
-    supabase.from("profiles").select("*", { count: "exact", head: true }),
+    supabase.from("ej_customers").select("*", { count: "exact", head: true }),
     supabase.from("ej_products").select("*", { count: "exact", head: true }),
     supabase.from("ej_orders").select("total, status, created_at").order("created_at", { ascending: false }),
   ])

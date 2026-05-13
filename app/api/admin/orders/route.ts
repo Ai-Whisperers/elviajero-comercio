@@ -71,7 +71,27 @@ export async function PATCH(req: NextRequest) {
   const { data, error } = await supabase.from("ej_orders").update(updates).eq("id", id).select()
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
-  // Log activity for status or tracking changes
+    if (updates.status === "confirmado") {
+      const orderItems = data?.[0]?.items || []
+      for (const item of orderItems) {
+        if (!item.name) continue
+        const qty = item.quantity || 1
+        const { data: product } = await supabase.from("ej_products").select("id, stock").eq("name", item.name).single()
+        if (product) {
+          const newStock = Math.max(0, (product.stock || 0) - qty)
+          await supabase.from("ej_products").update({ stock: newStock }).eq("id", product.id)
+          await supabase.from("ej_stock_movements").insert({
+            product_id: product.id,
+            product_name: item.name,
+            quantity_change: -qty,
+            reason: "sale",
+            reference_id: `Orden #${((data?.[0]?.id) || "").slice(0, 8)}`,
+          }).maybeSingle()
+        }
+      }
+    }
+
+    // Log activity for status or tracking changes
   if (updates.status || updates.tracking_number || updates.carrier) {
     const order = data?.[0]
     const changes: string[] = []
