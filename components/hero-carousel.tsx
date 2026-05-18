@@ -14,8 +14,9 @@ export function HeroCarousel() {
 
   useEffect(() => {
     if (slides.length <= 1) return
-    const t = setInterval(next, carousel.interval || 6000)
-    return () => clearInterval(t)
+    // Auto-rotation disabled per client request (manual navigation only)
+    // const t = setInterval(next, carousel.interval || 6000)
+    // return () => clearInterval(t)
   }, [next])
 
   if (slides.length === 0) return null

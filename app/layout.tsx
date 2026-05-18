@@ -8,7 +8,7 @@ import content from "@/content/es.json"
 
 const c = content as any
 const m = c.layoutMetadata || {}
-const base = "https://el-viajero.paragu-ai.com"
+const base = process.env.NEXT_PUBLIC_BASE_URL || "https://www.tiendaelviajero.com.py"
 
 export const viewport: Viewport = {
   themeColor: "#1B5E20",
