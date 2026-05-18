@@ -24,8 +24,8 @@ const SHIPPING_ZONES = [
 ]
 
 function CheckoutForm() {
-  const { user, addresses } = useAuth()
-  const { items, total, clearCart } = useCart()
+  const { user, addresses = [] } = useAuth()
+  const { items = [], total = 0, clearCart } = useCart()
   const router = useRouter()
   const supabase = createClient()
   const [step, setStep] = useState(1)
@@ -215,7 +215,7 @@ function CheckoutForm() {
               {shippingZone !== "pickup" && (
                 <div className="space-y-4">
                   <h3 className="font-semibold text-foreground">Dirección de entrega</h3>
-                  {addresses.length > 0 && (
+                  {addresses && addresses.length > 0 && (
                     <div className="flex flex-wrap gap-2 mb-3">
                       {addresses.map(a => (
                         <button key={a.id} onClick={() => setSelectedAddress(a.id)}
