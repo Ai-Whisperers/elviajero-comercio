@@ -5,6 +5,7 @@ export type Section = { key: string; label: string }
 export const SECTIONS: Section[] = [
   { key: "general", label: "General" },
   { key: "hero", label: "Hero / Portada" },
+  { key: "categories", label: "Categorías" },
   { key: "about", label: "Nosotros" },
   { key: "contacto", label: "Contacto" },
   { key: "footer", label: "Footer" },

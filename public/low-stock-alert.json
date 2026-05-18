@@ -1,0 +1,20 @@
+{
+  "timestamp": "2026-05-13T18:01:38.588Z",
+  "products": [
+    {
+      "name": "Toldo Sombra 3x3",
+      "stock": 4,
+      "category": "Camping"
+    },
+    {
+      "name": "Rastreador GPS",
+      "stock": 4,
+      "category": "Motos"
+    },
+    {
+      "name": "Botas Montaña",
+      "stock": 3,
+      "category": "Acc. Personales"
+    }
+  ]
+}

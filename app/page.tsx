@@ -21,11 +21,9 @@ import { useState, useEffect, useRef } from "react"
 const ICON_MAP: Record<string, string> = {
   camping: "/images/icons/camping.webp",
   pesca: "/images/icons/pesca.webp",
-  playaypesca: "/images/icons/playa-pesca.webp",
-  accpersonales: "/images/icons/accesorios.webp",
-  automviles: "/images/icons/autos.webp",
-  motos: "/images/icons/motos.webp",
-  campo: "/images/icons/campo.webp",
+  equipotacticexplorador: "/images/icons/campo.webp",
+  accesoriosparaviajeselectronicajuegosplaya: "/images/icons/accesorios.webp",
+  accesoriosparavehiculos: "/images/icons/autos.webp",
 }
 function catSlug(cat: string) { return cat.toLowerCase().replace(/[^a-z]/g, "") }
 

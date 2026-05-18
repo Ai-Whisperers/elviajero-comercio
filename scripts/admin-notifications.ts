@@ -4,7 +4,7 @@ import content from '@/content/es.json'
 const c = content as any
 const EVOLUTION_API_BASE = process.env.EVOLUTION_API_BASE || 'http://evolution_evolution_api:8080'
 const EVOLUTION_API_KEY = process.env.EVOLUTION_API_KEY || ''
-const ADMIN_NUMBER = process.env.ADMIN_WHATSAPP || '595981234567'
+const ADMIN_NUMBER = process.env.ADMIN_WHATSAPP || '595984009751'
 const INSTANCE = process.env.WHATSAPP_INSTANCE || 'elviajero'
 
 async function sendWhatsApp(to: string, message: string) {

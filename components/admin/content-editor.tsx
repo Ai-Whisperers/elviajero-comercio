@@ -70,7 +70,7 @@ export function EditableSection({
         <div className="space-y-4">
           <Input label="Nombre del sitio" value={get("siteName")} onChange={v => onChange("siteName", v)} placeholder={deepGet(defaultContent, "siteName")} />
           <Input label="Tagline" value={get("tagline")} onChange={v => onChange("tagline", v)} placeholder={deepGet(defaultContent, "tagline")} />
-          <Input label="WhatsApp number" value={get("whatsapp.number")} onChange={v => onChange("whatsapp.number", v)} placeholder={deepGet(defaultContent, "whatsapp.number") || "595981234567"} />
+          <Input label="WhatsApp number" value={get("whatsapp.number")} onChange={v => onChange("whatsapp.number", v)} placeholder={deepGet(defaultContent, "whatsapp.number") || process.env.NEXT_PUBLIC_WHATSAPP || "595984009751"} />
           <Input label="WhatsApp message" multiline value={get("whatsapp.message")} onChange={v => onChange("whatsapp.message", v)} />
         </div>
       )}

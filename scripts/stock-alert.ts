@@ -2,7 +2,7 @@ import { createClient } from '@supabase/supabase-js'
 import content from '@/content/es.json'
 
 const c = content as any
-const EVOLUTION_API_BASE = process.env.EVOLUTION_API_BASE || 'http://evolution_evolution_api:8080'
+const EVOLUTION_API_BASE = process.env.EVOLUTION_API_URL || "http://evolution_evolution_api:8080"
 const EVOLUTION_API_KEY = process.env.EVOLUTION_API_KEY || ''
 
 async function run() {
@@ -15,7 +15,7 @@ async function run() {
   const { data: products } = await supabase.from('ej_products').select('name, stock').lt('stock', 5).gt('stock', 0)
   if (!products || products.length === 0) { console.log('[stock-alert] No low stock products'); return }
 
-  const adminNumber = process.env.ADMIN_WHATSAPP || '595981234567'
+  const adminNumber = process.env.ADMIN_WHATSAPP || '595984009751'
   const msg = '⚠️ Productos con stock bajo:\n' + products.map((p: any) => `• ${p.name}: ${p.stock} unidades`).join('\n')
 
   if (EVOLUTION_API_KEY) {

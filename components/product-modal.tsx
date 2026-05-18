@@ -75,7 +75,7 @@ export function ProductModal({ product: p, onClose }: ProductModalProps) {
             Agregar al carrito
           </button>
           <a
-            href={`https://wa.me/595981234567?text=${encodeURIComponent("Hola! Me interesa " + p.name + " (" + p.price + ")")}`}
+            href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP || "595984009751"}?text=${encodeURIComponent("Hola! Me interesa " + p.name + " (" + p.price + ")")}`}
             target="_blank"
             rel="noopener noreferrer"
             className="flex flex-1 items-center justify-center rounded-lg border border-primary py-3 font-semibold text-primary transition-all hover:bg-primary/5"

@@ -51,7 +51,7 @@ const jsonLd = {
   "name": m.schemaName || "El Viajero",
   "description": m.schemaDescription || "Tienda de camping, pesca, accesorios outdoor y más en Paraguay.",
   "url": base,
-  "telephone": m.schemaTelephone || "+595981234567",
+  "telephone": m.schemaTelephone || process.env.NEXT_PUBLIC_WHATSAPP || "+595 984 009751",
   "email": m.schemaEmail || "info@tiendaelviajero.com.py",
   "address": {
     "@type": "PostalAddress",

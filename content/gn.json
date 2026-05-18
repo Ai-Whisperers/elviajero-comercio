@@ -6,7 +6,7 @@
   "navigation": {
     "businessName": "El Viajero",
     "ctaText": "Mba'e reipota WhatsApp rupive",
-    "ctaHref": "https://wa.me/595981234567?text=Hola!%20Quisiera%20informacion%20sobre%20productos",
+    "ctaHref": "https://wa.me/595984009751?text=Hola!%20Quisiera%20informacion%20sobre%20productos",
     "items": [
       {
         "label": "Hógape",
@@ -83,7 +83,7 @@
       "ctaPrimaryText": "Ehecha Catálogo",
       "ctaPrimaryHref": "#catalogo",
       "ctaSecondaryText": "Emba'ejerure WhatsApp rupive",
-      "ctaSecondaryHref": "https://wa.me/595981234567?text=Hola!%20Quisiera%20informacion%20sobre%20productos%20de%20El%20Viajero%20Comercio"
+      "ctaSecondaryHref": "https://wa.me/595984009751?text=Hola!%20Quisiera%20informacion%20sobre%20productos%20de%20El%20Viajero%20Comercio"
     },
     "stats": {
       "title": "El Viajero papapýpe",
@@ -181,17 +181,15 @@
     "productCatalog": {
       "title": "Ore Mba'eapohapy",
       "subtitle": "Opamba'e ne mba'e'apópe g̃uarã",
-      "whatsappPhone": "595981234567",
+      "whatsappPhone": "595984009751",
       "orderButtonText": "Eporandu WhatsApp rupive",
       "orderMessageTemplate": "Mba'e! Aipota cháke {{productName}} ({{productPrice}}). Aikuaase disponibilidad ha pagopago réra.",
       "categories": [
         "Camping",
         "Pesca",
-        "Playa y Pesca",
-        "Acc. Personales",
-        "Automóviles",
-        "Motos",
-        "Campo"
+        "Equipo táctico/explorador",
+        "Accesorios para viajes (electrónica, juegos, playa)",
+        "Accesorios para vehiculos"
       ],
       "products": [
         {
@@ -274,7 +272,7 @@
         },
         {
           "name": "Mochila 60L Yruru",
-          "category": "Acc. Personales",
+          "category": "Accesorios para viajes (electrónica, juegos, playa)",
           "price": "Gs. 220.000",
           "description": "Costuras selladas, multiple compartimentos, correas acolchadas.",
           "imageUrl": "/images/marketing/products/mochila-60l.png",
@@ -287,7 +285,7 @@
         },
         {
           "name": "Kuchillo Multiuso",
-          "category": "Acc. Personales",
+          "category": "Accesorios para viajes (electrónica, juegos, playa)",
           "price": "Gs. 75.000",
           "description": "15 herramienta, acero inoxidable, oreko funda nylon.",
           "imageUrl": "/images/marketing/products/cuchillo.png",
@@ -300,7 +298,7 @@
         },
         {
           "name": "Camara Dashcam HD",
-          "category": "Automoviles",
+          "category": "Accesorios para vehiculos",
           "price": "Gs. 280.000",
           "description": "1080p, vision nocturna, deteccion de movimiento, tarjeta SD incluida.",
           "imageUrl": "/images/marketing/products/camara-dashcam.png",
@@ -313,7 +311,7 @@
         },
         {
           "name": "Inflador 12V Pguá",
-          "category": "Automoviles",
+          "category": "Accesorios para vehiculos",
           "price": "Gs. 95.000",
           "description": "Compresor digital, apagado automatico, incluye adaptadores.",
           "imageUrl": "/images/marketing/products/inflador.png",
@@ -326,7 +324,7 @@
         },
         {
           "name": "Casco Integral Moto",
-          "category": "Motos",
+          "category": "Accesorios para vehiculos",
           "price": "Gs. 320.000",
           "description": "Certificado DOT, visor antihumedad, sistema de ventilacion multiple.",
           "imageUrl": "/images/marketing/products/casco.png",
@@ -457,7 +455,7 @@
         },
         {
           "name": "Bota Montaña",
-          "category": "Acc. Personales",
+          "category": "Accesorios para viajes (electrónica, juegos, playa)",
           "price": "Gs. 350.000",
           "description": "Vakapi ijyky, suela vibram, puntera reforzada. Talle 38 44 peve.",
           "imageUrl": "/images/marketing/products/botas.png",
@@ -471,7 +469,7 @@
         },
         {
           "name": "Termo Acero 1L",
-          "category": "Acc. Personales",
+          "category": "Accesorios para viajes (electrónica, juegos, playa)",
           "price": "Gs. 70.000",
           "description": "Acero inoxidable doble pared. Omonde hakú 12h / ro'ysã 24h.",
           "imageUrl": "/images/marketing/products/termo.png",
@@ -484,7 +482,7 @@
         },
         {
           "name": "Mochila Térmica",
-          "category": "Acc. Personales",
+          "category": "Accesorios para viajes (electrónica, juegos, playa)",
           "price": "Gs. 120.000",
           "description": "Aislamiento térmico, 20L, correa ajustable. Iporã vianda ha paseo g̃uarã.",
           "imageUrl": "/images/marketing/products/mochila-termica.png",
@@ -497,7 +495,7 @@
         },
         {
           "name": "Kit Botikín",
-          "category": "Acc. Personales",
+          "category": "Accesorios para viajes (electrónica, juegos, playa)",
           "price": "Gs. 55.000",
           "description": "Venda, gasa, apósito, tijera, pinza, alcohol, yodo. Estuche compacto.",
           "imageUrl": "/images/marketing/products/botiquin.png",
@@ -510,7 +508,7 @@
         },
         {
           "name": "Eslinga Amarre 5t",
-          "category": "Automóviles",
+          "category": "Accesorios para vehiculos",
           "price": "Gs. 90.000",
           "description": "Par eslinga 5m x 5t, gancho forjado. Iporã carga fija hag̃ua.",
           "imageUrl": "/images/marketing/products/eslingas.png",
@@ -523,7 +521,7 @@
         },
         {
           "name": "Extintor 2kg ABC",
-          "category": "Automóviles",
+          "category": "Accesorios para vehiculos",
           "price": "Gs. 110.000",
           "description": "Polvo químico seco ABC, soporte auto. Recargable.",
           "imageUrl": "/images/marketing/products/extintor.png",
@@ -536,7 +534,7 @@
         },
         {
           "name": "Tira Rémolque 4m",
-          "category": "Automóviles",
+          "category": "Accesorios para vehiculos",
           "price": "Gs. 75.000",
           "description": "Nylon alta resistencia, gancho extremo. Capacidad 3.500kg.",
           "imageUrl": "/images/marketing/products/tiras.png",
@@ -549,7 +547,7 @@
         },
         {
           "name": "Guante Moto",
-          "category": "Motos",
+          "category": "Accesorios para vehiculos",
           "price": "Gs. 95.000",
           "description": "Vakapi sintético, protección articulación, talle S-XL. Transpirable.",
           "imageUrl": "/images/marketing/products/guantes.png",
@@ -562,7 +560,7 @@
         },
         {
           "name": "Rastreador GPS",
-          "category": "Motos",
+          "category": "Accesorios para vehiculos",
           "price": "Gs. 450.000",
           "description": "GPS antirrobo, app móvil, alertas en tiempo real. Batería recargable.",
           "imageUrl": "/images/marketing/products/rastreador.png",
@@ -576,7 +574,7 @@
         },
         {
           "name": "Sombrilla Playa 1.8m",
-          "category": "Playa y Pesca",
+          "category": "Pesca",
           "price": "Gs. 130.000",
           "description": "Antiviento, protección UV 50+, incluye bolsa de transporte.",
           "imageUrl": "/images/marketing/products/sombrilla.png",
@@ -589,7 +587,7 @@
         },
         {
           "name": "Silla Playa Plegable",
-          "category": "Playa y Pesca",
+          "category": "Pesca",
           "price": "Gs. 85.000",
           "description": "Aluminio ligero, respaldo reclinable, soporta 120kg.",
           "imageUrl": "/images/marketing/products/silla-playa.png",
@@ -602,7 +600,7 @@
         },
         {
           "name": "Bebedero Automático",
-          "category": "Campo",
+          "category": "Equipo táctico/explorador",
           "price": "Gs. 85.000",
           "description": "Acero inoxidable, flotador automático. Capacidad 10L.",
           "imageUrl": "/images/marketing/products/bebedero.png",
@@ -615,7 +613,7 @@
         },
         {
           "name": "Comedero Acero",
-          "category": "Campo",
+          "category": "Equipo táctico/explorador",
           "price": "Gs. 65.000",
           "description": "Dos bandejas, patas reforzadas, desarmable para limpieza.",
           "imageUrl": "/images/marketing/products/comedero.png",
@@ -628,7 +626,7 @@
         },
         {
           "name": "Kit Herramientas Campo",
-          "category": "Campo",
+          "category": "Equipo táctico/explorador",
           "price": "Gs. 160.000",
           "description": "Pala, azada, rastrillo desarmables con mango ergonomico.",
           "imageUrl": "/images/marketing/products/kit-campo.png",
@@ -787,8 +785,8 @@
   "whatsapp": {
     "defaultMessage": "Hola! Quisiera informacion sobre productos de El Viajero",
     "serviceMessage": "Hola! Quisiera consultar por {{productName}}",
-    "businessNumber": "595981234567",
-    "businessLink": "https://wa.me/595981234567"
+    "businessNumber": "595984009751",
+    "businessLink": "https://wa.me/595984009751"
   },
   "tienda": {
     "seo": {
@@ -965,7 +963,7 @@
       "facebook": "https://facebook.com/elviajeropy",
       "tiktok": "https://tiktok.com/@elviajero_py",
       "youtube": "https://youtube.com/@elviajero_py",
-      "whatsapp": "https://wa.me/595981234567"
+      "whatsapp": "https://wa.me/595984009751"
     },
     "copyright": "© 2026 El Viajero. Derecho reservado."
   },
@@ -1020,7 +1018,7 @@
     "hours": "Lun-Vie 08:00-19:00 | Sáb 08:00-17:00 | Dom 09:00-13:00",
     "googleMapsUrl": "https://maps.google.com/?q=Coronel+Felipe+Toledo+Mariano+Roque+Alonso+Paraguay",
     "whatsappText": "Pedí dirección por WhatsApp",
-    "whatsappNumber": "595981234567"
+    "whatsappNumber": "595984009751"
   },
   "categoryMenu": {
     "camping": [

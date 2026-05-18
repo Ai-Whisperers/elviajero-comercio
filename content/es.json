@@ -6,7 +6,7 @@
   "navigation": {
     "businessName": "El Viajero",
     "ctaText": "Pedir por WhatsApp",
-    "ctaHref": "https://wa.me/595981234567?text=Hola!%20Quisiera%20informacion%20sobre%20productos",
+    "ctaHref": "https://wa.me/595984009751?text=Hola!%20Quisiera%20informacion%20sobre%20productos",
     "items": [
       {
         "label": "Inicio",
@@ -79,7 +79,7 @@
       "ctaPrimaryText": "Ver Catalogo",
       "ctaPrimaryHref": "#catalogo",
       "ctaSecondaryText": "Pedir por WhatsApp",
-      "ctaSecondaryHref": "https://wa.me/595981234567?text=Hola!%20Quisiera%20informacion%20sobre%20productos%20de%20El%20Viajero%20Comercio"
+      "ctaSecondaryHref": "https://wa.me/595984009751?text=Hola!%20Quisiera%20informacion%20sobre%20productos%20de%20El%20Viajero%20Comercio"
     },
     "kitsCarousel": {
       "title": "Kits y Promociones",
@@ -116,7 +116,7 @@
       "title": "El Viajero en Numeros",
       "items": [
         {
-          "value": "7",
+          "value": "5",
           "label": "Categorías"
         },
         {
@@ -171,17 +171,15 @@
     "productCatalog": {
       "title": "Nuestros Productos",
       "subtitle": "Todo para tu proxima aventura",
-      "whatsappPhone": "595981234567",
+      "whatsappPhone": "595984009751",
       "orderButtonText": "Consultar por WhatsApp",
       "orderMessageTemplate": "Hola! Me interesa {{productName}} ({{productPrice}}). Quiero saber disponibilidad y formas de pago.",
       "categories": [
         "Camping",
         "Pesca",
-        "Playa y Pesca",
-        "Acc. Personales",
-        "Automóviles",
-        "Motos",
-        "Campo"
+        "Equipo táctico/explorador",
+        "Accesorios para viajes (electrónica, juegos, playa)",
+        "Accesorios para vehiculos"
       ],
       "products": [
         {
@@ -264,7 +262,7 @@
         },
         {
           "name": "Mochila 60L Impermeable",
-          "category": "Acc. Personales",
+          "category": "Accesorios para viajes (electrónica, juegos, playa)",
           "price": "Gs. 220.000",
           "description": "Costuras selladas, multiple compartimentos, correas acolchadas.",
           "imageUrl": "/images/marketing/products/mochila-60l.png",
@@ -277,7 +275,7 @@
         },
         {
           "name": "Cuchillo Multiuso",
-          "category": "Acc. Personales",
+          "category": "Accesorios para viajes (electrónica, juegos, playa)",
           "price": "Gs. 75.000",
           "description": "15 herramientas, acero inoxidable, incluye funda de nylon.",
           "imageUrl": "/images/marketing/products/cuchillo.png",
@@ -290,7 +288,7 @@
         },
         {
           "name": "Camara Dashcam HD",
-          "category": "Automoviles",
+          "category": "Accesorios para vehiculos",
           "price": "Gs. 280.000",
           "description": "1080p, vision nocturna, deteccion de movimiento, tarjeta SD incluida.",
           "imageUrl": "/images/marketing/products/camara-dashcam.png",
@@ -303,7 +301,7 @@
         },
         {
           "name": "Inflador 12V Portatil",
-          "category": "Automoviles",
+          "category": "Accesorios para vehiculos",
           "price": "Gs. 95.000",
           "description": "Compresor digital, apagado automatico, incluye adaptadores.",
           "imageUrl": "/images/marketing/products/inflador.png",
@@ -316,7 +314,7 @@
         },
         {
           "name": "Casco Integral Moto",
-          "category": "Motos",
+          "category": "Accesorios para vehiculos",
           "price": "Gs. 320.000",
           "description": "Certificado DOT, visor antihumedad, sistema de ventilacion multiple.",
           "imageUrl": "/images/marketing/products/casco.png",
@@ -447,7 +445,7 @@
         },
         {
           "name": "Botas Montaña",
-          "category": "Acc. Personales",
+          "category": "Accesorios para viajes (electrónica, juegos, playa)",
           "price": "Gs. 350.000",
           "description": "Cuero impermeable, suela vibram, puntera reforzada. Talles 38 a 44.",
           "imageUrl": "/images/marketing/products/botas.png",
@@ -461,7 +459,7 @@
         },
         {
           "name": "Termo Acero 1L",
-          "category": "Acc. Personales",
+          "category": "Accesorios para viajes (electrónica, juegos, playa)",
           "price": "Gs. 70.000",
           "description": "Acero inoxidable doble pared. Mantiene 12h caliente / 24h frío.",
           "imageUrl": "/images/marketing/products/termo.png",
@@ -474,7 +472,7 @@
         },
         {
           "name": "Mochila Térmica",
-          "category": "Acc. Personales",
+          "category": "Accesorios para viajes (electrónica, juegos, playa)",
           "price": "Gs. 120.000",
           "description": "Aislamiento térmico, 20L, correas ajustables. Ideal para viandas y paseos.",
           "imageUrl": "/images/marketing/products/mochila-termica.png",
@@ -487,7 +485,7 @@
         },
         {
           "name": "Kit Botiquín",
-          "category": "Acc. Personales",
+          "category": "Accesorios para viajes (electrónica, juegos, playa)",
           "price": "Gs. 55.000",
           "description": "Vendas, gasa, apósitos, tijera, pinza, alcohol, yodo. Estuche compacto.",
           "imageUrl": "/images/marketing/products/botiquin.png",
@@ -500,7 +498,7 @@
         },
         {
           "name": "Eslingas Amarre 5t",
-          "category": "Automóviles",
+          "category": "Accesorios para vehiculos",
           "price": "Gs. 90.000",
           "description": "Par de eslingas 5m x 5t, ganchos forjados. Ideal para fijar carga.",
           "imageUrl": "/images/marketing/products/eslingas.png",
@@ -513,7 +511,7 @@
         },
         {
           "name": "Extintor 2kg ABC",
-          "category": "Automóviles",
+          "category": "Accesorios para vehiculos",
           "price": "Gs. 110.000",
           "description": "Polvo químico seco ABC, incluye soporte para auto. Recargable.",
           "imageUrl": "/images/marketing/products/extintor.png",
@@ -526,7 +524,7 @@
         },
         {
           "name": "Tiras Remolque 4m",
-          "category": "Automóviles",
+          "category": "Accesorios para vehiculos",
           "price": "Gs. 75.000",
           "description": "Nylon de alta resistencia, ganchos en ambos extremos. Capacidad 3.500kg.",
           "imageUrl": "/images/marketing/products/tiras.png",
@@ -539,7 +537,7 @@
         },
         {
           "name": "Guantes Moto",
-          "category": "Motos",
+          "category": "Accesorios para vehiculos",
           "price": "Gs. 95.000",
           "description": "Cuero sintético, protecciones articulaciones, talle S a XL. Transpirables.",
           "imageUrl": "/images/marketing/products/guantes.png",
@@ -552,7 +550,7 @@
         },
         {
           "name": "Rastreador GPS",
-          "category": "Motos",
+          "category": "Accesorios para vehiculos",
           "price": "Gs. 450.000",
           "description": "GPS antirrobo, app móvil, alertas en tiempo real. Batería recargable.",
           "imageUrl": "/images/marketing/products/rastreador.png",
@@ -566,7 +564,7 @@
         },
         {
           "name": "Sombrilla Playa 1.8m",
-          "category": "Playa y Pesca",
+          "category": "Pesca",
           "price": "Gs. 130.000",
           "description": "Antiviento, protección UV 50+, incluye bolsa de transporte.",
           "imageUrl": "/images/marketing/products/sombrilla.png",
@@ -579,7 +577,7 @@
         },
         {
           "name": "Silla Playa Plegable",
-          "category": "Playa y Pesca",
+          "category": "Pesca",
           "price": "Gs. 85.000",
           "description": "Aluminio ligero, respaldo reclinable, soporta 120kg.",
           "imageUrl": "/images/marketing/products/silla-playa.png",
@@ -592,7 +590,7 @@
         },
         {
           "name": "Bebedero Automático",
-          "category": "Campo",
+          "category": "Equipo táctico/explorador",
           "price": "Gs. 85.000",
           "description": "Acero inoxidable, flotador automático. Capacidad 10L.",
           "imageUrl": "/images/marketing/products/bebedero.png",
@@ -605,7 +603,7 @@
         },
         {
           "name": "Comedero Acero",
-          "category": "Campo",
+          "category": "Equipo táctico/explorador",
           "price": "Gs. 65.000",
           "description": "Dos bandejas, patas reforzadas, desarmable para limpieza.",
           "imageUrl": "/images/marketing/products/comedero.png",
@@ -618,7 +616,7 @@
         },
         {
           "name": "Kit Herramientas Campo",
-          "category": "Campo",
+          "category": "Equipo táctico/explorador",
           "price": "Gs. 160.000",
           "description": "Pala, azada, rastrillo desarmables con mango ergonomico.",
           "imageUrl": "/images/marketing/products/kit-campo.png",
@@ -665,7 +663,7 @@
       "title": "Listo para tu proxima aventura?",
       "description": "Contactanos por WhatsApp y te asesoramos sobre los productos que necesitas. Hacemos envíos en zona metropolitana y a todo Paraguay.",
       "buttonText": "Escribinos Ahora",
-      "buttonLink": "https://wa.me/595981234567?text=Hola!%20Quisiera%20informacion%20sobre%20productos",
+      "buttonLink": "https://wa.me/595984009751?text=Hola!%20Quisiera%20informacion%20sobre%20productos",
       "secondaryText": "Ver Catalogo",
       "secondaryLink": "#catalogo"
     },
@@ -679,8 +677,8 @@
       "title": "Contacto",
       "subtitle": "Escribinos o visitanos",
       "description": "Estamos en Coronel Felipe Toledo, M.R. Alonso. Consultanos por WhatsApp para cualquier consulta.",
-      "phone": "+595 981 234 567",
-      "whatsapp": "+595981234567",
+      "phone": "+595 984 009751",
+      "whatsapp": "595984009751",
       "email": "info@tiendaelviajero.com.py",
       "address": "Coronel Felipe Toledo, Barrio La Concordia (detrás de Mariam Lubricantes), Mariano Roque Alonso",
       "hours": "Lun-Vie 08:00-19:00 | Sáb 08:00-17:00 | Dom 09:00-13:00",
@@ -794,17 +792,15 @@
     "productCatalog": {
       "title": "Catalogo Completo",
       "subtitle": "Explora todas nuestras categorias",
-      "whatsappPhone": "595981234567",
+      "whatsappPhone": "595984009751",
       "orderButtonText": "Consultar por WhatsApp",
       "orderMessageTemplate": "Hola! Me interesa {{productName}} ({{productPrice}}). Quiero saber disponibilidad.",
       "categories": [
         "Camping",
         "Pesca",
-        "Playa y Pesca",
-        "Acc. Personales",
-        "Automóviles",
-        "Motos",
-        "Campo"
+        "Equipo táctico/explorador",
+        "Accesorios para viajes (electrónica, juegos, playa)",
+        "Accesorios para vehiculos"
       ]
     }
   },
@@ -819,8 +815,8 @@
     },
     "info": {
       "title": "Informacion de Contacto",
-      "phone": "+595 981 234 567",
-      "whatsapp": "+595981234567",
+      "phone": "+595 984 009751",
+      "whatsapp": "+595984009751",
       "email": "info@tiendaelviajero.com.py",
       "address": "Coronel Felipe Toledo, Barrio La Concordia (detrás de Mariam Lubricantes), Mariano Roque Alonso",
       "hours": "Lun-Vie 08:00-19:00 | Sáb 08:00-17:00 | Dom 09:00-13:00"
@@ -899,8 +895,8 @@
   "whatsapp": {
     "defaultMessage": "Hola! Quisiera informacion sobre productos de El Viajero",
     "serviceMessage": "Hola! Quisiera consultar por {{productName}}",
-    "businessNumber": "595981234567",
-    "businessLink": "https://wa.me/595981234567"
+    "businessNumber": "595984009751",
+    "businessLink": "https://wa.me/595984009751"
   },
   "tienda": {
     "seo": {
@@ -1044,7 +1040,7 @@
         "badge": "-15%",
         "image": "/images/marketing/promo-kit-camping.png",
         "ctaText": "Consultar por WhatsApp",
-        "ctaHref": "https://wa.me/595981234567?text=Hola!%20Quiero%20info%20del%20Kit%20Camping%20Completo"
+        "ctaHref": "https://wa.me/595984009751?text=Hola!%20Quiero%20info%20del%20Kit%20Camping%20Completo"
       },
       {
         "title": "Combo Pesca Inicial",
@@ -1052,7 +1048,7 @@
         "badge": "-10%",
         "image": "/images/marketing/promo-combo-pesca.png",
         "ctaText": "Consultar por WhatsApp",
-        "ctaHref": "https://wa.me/595981234567?text=Hola!%20Quiero%20info%20del%20Combo%20Pesca%20Inicial"
+        "ctaHref": "https://wa.me/595984009751?text=Hola!%20Quiero%20info%20del%20Combo%20Pesca%20Inicial"
       },
       {
         "title": "Envio Gratis",
@@ -1200,7 +1196,7 @@
       },
       {
         "icon": "📞",
-        "text": "+595 981 234 567"
+        "text": "+595 984 009751"
       },
       {
         "icon": "🕐",
@@ -1237,7 +1233,7 @@
     "hours": "Lun-Vie 08:00-19:00 | Sáb 08:00-17:00 | Dom 09:00-13:00",
     "googleMapsUrl": "https://maps.google.com/?q=Coronel+Felipe+Toledo+Mariano+Roque+Alonso+Paraguay",
     "whatsappText": "Pedí dirección por WhatsApp",
-    "whatsappNumber": "595981234567"
+    "whatsappNumber": "595984009751"
   },
   "categoryMenu": {
     "camping": [

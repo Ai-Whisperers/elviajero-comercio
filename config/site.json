@@ -4,9 +4,9 @@
   "businessType": "viajero_comercio",
   "vertical": "retail-local",
   "country": "Paraguay",
-  "domain": "el-viajero.paragu-ai.com",
+  "domain": "tiendaelviajero.com.py",
   "path": "/",
-  "publicUrl": "https://el-viajero.paragu-ai.com",
+  "publicUrl": "https://tiendaelviajero.com.py",
   "defaultLocale": "es",
   "locales": [
     "es"
@@ -54,9 +54,9 @@
     }
   ],
   "contact": {
-    "phone": "+595981234567",
+    "phone": "+595 984 009751",
     "email": "info@tiendaelviajero.com.py",
-    "whatsapp": "+595981234567",
+    "whatsapp": "+595 984 009751",
     "instagram": "@elviajero_py",
     "facebook": "elviajeropy",
     "tiktok": "@elviajero_py",

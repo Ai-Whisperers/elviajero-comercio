@@ -120,8 +120,12 @@ function ContentEditor() {
         obj = obj[parts[i]]
       }
       const arr = [...(obj[parts[parts.length - 1]] || [])]
-      if (!arr[index]) arr[index] = {}
-      arr[index] = { ...arr[index], [field]: value }
+      if (field === "") {
+        arr[index] = value
+      } else {
+        if (!arr[index]) arr[index] = {}
+        arr[index] = { ...arr[index], [field]: value }
+      }
       obj[parts[parts.length - 1]] = arr
       return clone
     })
@@ -171,7 +175,7 @@ function ContentEditor() {
               <Input label="Nombre del sitio" value={get("siteName")} onChange={v => set("siteName", v)} placeholder={deepGet(defaultContent, "siteName")} />
               <Input label="Razón social" value={get("businessName")} onChange={v => set("businessName", v)} placeholder={deepGet(defaultContent, "businessName")} />
               <Input label="Tagline" value={get("tagline")} onChange={v => set("tagline", v)} placeholder={deepGet(defaultContent, "tagline")} />
-              <Input label="WhatsApp number" value={get("whatsapp.number")} onChange={v => set("whatsapp.number", v)} placeholder={deepGet(defaultContent, "whatsapp.number") || "595981234567"} />
+              <Input label="WhatsApp number" value={get("whatsapp.number")} onChange={v => set("whatsapp.number", v)} placeholder={deepGet(defaultContent, "whatsapp.number") || process.env.NEXT_PUBLIC_WHATSAPP || "595984009751"} />
               <Input label="WhatsApp message" multiline value={get("whatsapp.message")} onChange={v => set("whatsapp.message", v)} />
             </div>
           )}
@@ -194,6 +198,28 @@ function ContentEditor() {
                   </div>
                 ))
               })()}
+            </div>
+          )}
+
+          {section === "categories" && (
+            <div>
+              <p className="mb-4 text-sm text-zinc-400">Categorías que aparecen en la home y en la tienda. El orden aquí es el orden en que se muestran.</p>
+              <p className="mb-4 text-xs text-zinc-500">Tip: usá nombres cortos para mejor visualización. Los productos se agrupan por estas categorías.</p>
+              {(getArray("home.productCatalog.categories").length > 0 ? getArray("home.productCatalog.categories") : defaultContent.home?.productCatalog?.categories || []).map((item: string, i: number) => (
+                <div key={i} className="mb-3 flex items-center gap-3 rounded-lg border border-zinc-700/60 bg-zinc-800 p-3">
+                  <span className="text-xs text-zinc-500 w-6">{i + 1}</span>
+                  <input
+                    value={item}
+                    onChange={e => updateArrayItem("home.productCatalog.categories", i, "", e.target.value)}
+                    className="flex-1 rounded bg-zinc-900 px-3 py-2 text-sm text-white border border-zinc-700/60 focus:outline-none focus:border-emerald-500/50"
+                  />
+                  <button onClick={() => removeArrayItem("home.productCatalog.categories", i)} className="text-xs text-red-400 shrink-0">✕</button>
+                </div>
+              ))}
+              <button onClick={() => addArrayItem("home.productCatalog.categories", "Nueva categoría")}
+                className="mt-2 rounded-lg border border-dashed border-zinc-600 px-4 py-2 text-sm text-zinc-400 hover:text-white">
+                + Agregar categoría
+              </button>
             </div>
           )}
 
