@@ -15,16 +15,15 @@ import { RecentlyViewedProducts } from "@/components/recently-viewed-products"
 import { ProductTabs } from "@/components/product-tabs"
 import { PriceUSD } from "@/components/price-usd"
 import { SafeImage } from "@/components/safe-image"
+import { getProductWhatsappUrl } from "@/lib/content-resolver"
 import { useState, useMemo, useEffect } from "react"
 import Link from "next/link"
 import { notFound } from "next/navigation"
-import content from "@/content/es.json"
 import { createClient } from "@ai-whisperers/auth/supabase/client"
 
-const c = content as any
-const s = c.store || {}
-const staticProducts = c.home?.productCatalog?.products || []
-const bc = c.breadcrumbs || {}
+// NOTE: JSON import removed - using Supabase only
+// Migration 008 created ej_site_config table as source of truth
+const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP || "595984009751"
 
 function slugify(s: string) {
   return s.toLowerCase().replace(/[^a-z0-9áéíóúñü]+/g, "-").replace(/-+$/, "")
@@ -115,7 +114,7 @@ export default function ProductPageContent({ slug }: { slug: string }) {
   const supabase = createClient()
 
   useEffect(() => {
-    ;(async () => {
+   ;(async () => {
       try {
         const { data, error } = await supabase.from("ej_products").select("*")
         if (error) {
@@ -139,7 +138,7 @@ export default function ProductPageContent({ slug }: { slug: string }) {
     })()
   }, [])
 
-  const allProducts = dbProducts.length > 0 ? dbProducts : staticProducts
+  const allProducts = dbProducts
   const product = useMemo(() => allProducts.find((p: any) => slugify(p.name) === slug), [slug, allProducts])
 
   /* Wait for DB before deciding 404 — avoids flash on first render */
@@ -237,8 +236,8 @@ export default function ProductPageContent({ slug }: { slug: string }) {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: bc.home || "Inicio", item: `${baseUrl}/` },
-      { "@type": "ListItem", position: 2, name: s.title || "Tienda", item: `${baseUrl}/tienda` },
+      { "@type": "ListItem", position: 1, name: "Inicio", item: `${baseUrl}/` },
+      { "@type": "ListItem", position: 2, name: "Tienda", item: `${baseUrl}/tienda` },
       { "@type": "ListItem", position: 3, name: product.name, item: `${baseUrl}/producto/${slug}` },
     ],
   }
@@ -256,9 +255,9 @@ export default function ProductPageContent({ slug }: { slug: string }) {
         <div className="mx-auto max-w-6xl px-4">
           {/* Breadcrumbs */}
           <nav className="mb-6 flex items-center gap-2 text-xs text-muted-foreground flex-wrap">
-            <Link href="/" className="hover:text-primary transition-colors">{bc.home || "Inicio"}</Link>
+            <Link href="/" className="hover:text-primary transition-colors">Inicio</Link>
             <span>/</span>
-            <Link href="/tienda" className="hover:text-primary transition-colors">{s.title || "Tienda"}</Link>
+            <Link href="/tienda" className="hover:text-primary transition-colors">Tienda</Link>
             {product.category && (
               <>
                 <span>/</span>
@@ -368,7 +367,7 @@ export default function ProductPageContent({ slug }: { slug: string }) {
               {/* Specs summary */}
               {specLines.length > 0 && (
                 <div className="mt-5 rounded-xl border border-border bg-surface p-4">
-                  <h3 className="mb-2 text-sm font-semibold text-foreground">{s.specifications || "Especificaciones"}</h3>
+                  <h3 className="mb-2 text-sm font-semibold text-foreground">Especificaciones</h3>
                   <div className="grid grid-cols-2 gap-x-4 gap-y-1.5">
                     {specLines.slice(0, 6).map((spec: string, i: number) => (
                       <div key={i} className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -379,7 +378,7 @@ export default function ProductPageContent({ slug }: { slug: string }) {
                     {product.weight && (
                       <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
-                        {s.weight || "Peso"}: {product.weight}
+                        Peso: {product.weight}
                       </div>
                     )}
                   </div>
@@ -391,18 +390,18 @@ export default function ProductPageContent({ slug }: { slug: string }) {
                 {(effectiveStock ?? 999) > 5 ? (
                   <span className="inline-flex items-center gap-1.5 text-sm font-medium text-success">
                     <span className="h-2 w-2 rounded-full bg-success" />
-                    {s.inStock || "En stock"}
+                    En stock
                     {effectiveStock !== undefined && <span className="text-muted-foreground font-normal">({effectiveStock} un.)</span>}
                   </span>
                 ) : (effectiveStock ?? 0) > 0 ? (
                   <span className="inline-flex items-center gap-1.5 text-sm font-medium text-warning">
                     <span className="h-2 w-2 rounded-full bg-warning animate-pulse" />
-                    {s.lastUnits || "Últimas"} {effectiveStock} {s.remaining || "unidades"}
+                    Últimas {effectiveStock} unidades
                   </span>
                 ) : (
                   <span className="inline-flex items-center gap-1.5 text-sm font-medium text-destructive">
                     <span className="h-2 w-2 rounded-full bg-destructive" />
-                    {s.soldOut || "Agotado"}
+                    Agotado
                   </span>
                 )}
               </div>
@@ -445,37 +444,37 @@ export default function ProductPageContent({ slug }: { slug: string }) {
                     {added ? (
                       <>
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 6 9 17l-5-5" /></svg>
-                        {s.added || "Agregado"}
+                        Agregado
                       </>
                     ) : !effectiveStock ? (
-                      s.soldOut || "Agotado"
+                      "Agotado"
                     ) : (
                       <>
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                           <circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" />
                           <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
                         </svg>
-                        {s.addToCart || "Agregar al carrito"}
+                        Agregar al carrito
                       </>
                     )}
                   </button>
                 </div>
 
-                {/* WhatsApp */}
+                {/* Comprar por WhatsApp */}
                 <a
-                  href={`https://wa.me/${c.home?.productCatalog?.whatsappPhone || "595984009751"}?text=${encodeURIComponent(
-                    (c.home?.productCatalog?.orderMessageTemplate || "Hola! Me interesa {{productName}} ({{productPrice}}). Quiero saber disponibilidad y formas de pago.")
-                      .replace("{{productName}}", product.name)
-                      .replace("{{productPrice}}", product.price)
-                  )}`}
+                  href={getProductWhatsappUrl(
+                    product.name,
+                    product.price,
+                    typeof window !== "undefined" ? window.location.href : "",
+                  )}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 rounded-lg border border-border py-3 text-sm font-semibold text-foreground transition-all hover:bg-muted active:scale-[0.98]"
+                  className="flex items-center justify-center gap-2 rounded-lg bg-green-600 py-3 text-sm font-semibold text-white transition-all hover:bg-green-700 active:scale-[0.98]"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-green-500">
-                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" className="shrink-0">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
                   </svg>
-                  {c.home?.productCatalog?.orderButtonText || "Consultar por WhatsApp"}
+                  Comprar por WhatsApp
                 </a>
               </div>
 
@@ -483,7 +482,7 @@ export default function ProductPageContent({ slug }: { slug: string }) {
               {!effectiveStock && (
                 <div className="mt-4 rounded-xl border border-border bg-surface p-4">
                   <p className="mb-3 text-sm font-medium text-muted-foreground">
-                    {c.backInStock?.cta || "Producto agotado. ¿Querés que te avisemos cuando vuelva?"}
+                    Producto agotado. ¿Querés que te avisemos cuando vuelva?
                   </p>
                   <BackInStockForm productName={product.name} />
                 </div>
@@ -497,7 +496,7 @@ export default function ProductPageContent({ slug }: { slug: string }) {
                       <rect x="1" y="4" width="22" height="16" rx="2" /><path d="M1 10h22" />
                     </svg>
                   }
-                  label={s.shippingFullCountry || "Envío a todo PY"}
+                  label="Envío a todo PY"
                 />
                 <TrustBadge
                   icon={
@@ -505,7 +504,7 @@ export default function ProductPageContent({ slug }: { slug: string }) {
                       <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                     </svg>
                   }
-                  label={s.qualityGuarantee || "Garantía de calidad"}
+                  label="Garantía de calidad"
                 />
                 <TrustBadge
                   icon={
@@ -513,7 +512,7 @@ export default function ProductPageContent({ slug }: { slug: string }) {
                       <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
                     </svg>
                   }
-                  label={s.whatsappSupport || "Soporte WhatsApp"}
+                  label="Soporte WhatsApp"
                 />
               </div>
 
@@ -529,23 +528,23 @@ export default function ProductPageContent({ slug }: { slug: string }) {
             tabs={[
               {
                 id: "desc",
-                label: s.description || "Descripción",
+                label: "Descripción",
                 content: <p className="text-sm leading-relaxed text-muted-foreground">{product.description || "Sin descripción disponible."}</p>,
               },
               {
                 id: "specs",
-                label: s.specifications || "Especificaciones",
+                label: "Especificaciones",
                 content: (
                   <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
                     {specLines.map((spec: string, i: number) => (
                       <div key={i} className="rounded-lg border border-border bg-surface p-3">
-                        <p className="text-xs text-muted-foreground">{s.specifications || "Especificación"}</p>
+                        <p className="text-xs text-muted-foreground">Especificación</p>
                         <p className="mt-0.5 text-sm font-medium text-foreground">{spec}</p>
                       </div>
                     ))}
                     {product.weight && (
                       <div className="rounded-lg border border-border bg-surface p-3">
-                        <p className="text-xs text-muted-foreground">{s.weight || "Peso"}</p>
+                        <p className="text-xs text-muted-foreground">Peso</p>
                         <p className="mt-0.5 text-sm font-medium text-foreground">{product.weight}</p>
                       </div>
                     )}
@@ -554,22 +553,22 @@ export default function ProductPageContent({ slug }: { slug: string }) {
               },
               {
                 id: "shipping",
-                label: s.shipping || "Envío",
+                label: "Envío",
                 content: (
                   <div className="rounded-xl border border-border bg-surface p-6">
-                    <h3 className="mb-3 font-semibold text-foreground">{c.shipping?.title || "Opciones de envío"}</h3>
+                    <h3 className="mb-3 font-semibold text-foreground">Opciones de envío</h3>
                     <div className="space-y-3 text-sm text-muted-foreground">
                       <div className="flex items-start gap-2">
                         <span className="mt-0.5 text-base">📦</span>
-                        <p>{c.shipping?.delivery || "Envío a domicilio"}: Gs. 10.000 - Gs. 25.000 {c.shipping?.perCity || "según ciudad"}</p>
+                        <p>Envío a domicilio: Gs. 10.000 - Gs. 25.000 según ciudad</p>
                       </div>
                       <div className="flex items-start gap-2">
                         <span className="mt-0.5 text-base">🏪</span>
-                        <p>{c.shipping?.pickup || "Retiro en tienda"}: {c.shipping?.free || "Gratis"}</p>
+                        <p>Retiro en tienda: Gratis</p>
                       </div>
                       <div className="flex items-start gap-2">
                         <span className="mt-0.5 text-base">⏱</span>
-                        <p>{c.shipping?.timing || "Tiempo de entrega"}: 2-5 {c.shipping?.businessDays || "días hábiles"}</p>
+                        <p>Tiempo de entrega: 2-5 días hábiles</p>
                       </div>
                     </div>
                   </div>
@@ -587,7 +586,7 @@ export default function ProductPageContent({ slug }: { slug: string }) {
           {/* Related products */}
           {related.length > 0 && (
             <section className="mt-12">
-              <h2 className="mb-6 text-xl font-bold text-foreground">{s.relatedProducts || "Productos relacionados"}</h2>
+              <h2 className="mb-6 text-xl font-bold text-foreground">Productos relacionados</h2>
               <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
                 {related.map((p: any, i: number) => (
                   <RelatedCard key={i} product={p} />
@@ -600,8 +599,8 @@ export default function ProductPageContent({ slug }: { slug: string }) {
 
       <Footer />
       <WhatsAppFloat
-        phone={c.home?.contact?.whatsapp || process.env.NEXT_PUBLIC_WHATSAPP || "595984009751"}
-        message={c.whatsapp?.defaultMessage || "Hola! Quiero informacion"}
+        phone={WHATSAPP_NUMBER}
+        message="Hola! Quiero informacion"
       />
       <CartSidebar open={cartOpen} onClose={() => setCartOpen(false)} />
       <CookieConsent />
