@@ -48,7 +48,9 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    const imageBuffer = Buffer.from(fileData)
+    // Handle both ArrayBuffer and Blob types
+    const arrayBuffer = fileData instanceof ArrayBuffer ? fileData : await fileData.arrayBuffer()
+    const imageBuffer = Buffer.from(arrayBuffer)
 
     // 3. Optimize with sharp - resize to max 800px width, convert to WebP, quality 80
     const optimized = await sharp(imageBuffer)

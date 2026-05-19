@@ -1,8 +1,9 @@
 FROM node:20-alpine AS deps
 WORKDIR /app
 RUN apk add --no-cache libc6-compat
-COPY package.json package-lock.json* ./
-COPY packages/ ./packages/
+# Install dependencies
+COPY --chown=nextjs:nodejs package.json package-lock.json* ./
+COPY --chown=nextjs:nodejs packages ./packages/
 RUN npm install --legacy-peer-deps
 
 FROM node:20-alpine AS builder

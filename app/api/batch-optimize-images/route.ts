@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
+// @ts-ignore - sharp has import issues in this TypeScript config
+import sharp from "sharp"
 
 /**
  * Batch optimize all existing product images in Supabase.
@@ -62,13 +64,9 @@ export async function POST(req: NextRequest) {
           continue
         }
 
-        // Supabase returns array-like object - handle properly
-        const fileBuffer = Array.isArray(fileData)
-          ? Buffer.from(fileData[0])
-          : Buffer.from(fileData as any)
-
-        // Import sharp dynamically (already installed)
-        const sharp = (await import('sharp')).default
+        // Handle both ArrayBuffer and Blob types
+        const arrayBuffer = fileData instanceof ArrayBuffer ? fileData : await fileData.arrayBuffer()
+        const fileBuffer = Buffer.from(arrayBuffer)
 
         // Optimize with sharp - resize to max 800px width, convert to WebP, quality 80
         const optimized = await sharp(fileBuffer)
