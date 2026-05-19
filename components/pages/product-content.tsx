@@ -137,7 +137,7 @@ export default function ProductPageContent({ slug }: { slug: string }) {
         setDbLoaded(true)
       }
     })()
-  }, [supabase])
+  }, [])
 
   const allProducts = dbProducts.length > 0 ? dbProducts : staticProducts
   const product = useMemo(() => allProducts.find((p: any) => slugify(p.name) === slug), [slug, allProducts])
