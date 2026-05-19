@@ -1,11 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createServerClient } from '@supabase/ssr'
 import { createClient } from '@supabase/supabase-js'
-import content from '@/content/es.json'
 
-const c = content as any
-const supabaseUrl = c.supabase.url
-const supabaseAnonKey = c.supabase.anonKey
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
 
 // Admin client with service role — can read all profiles
 function createAdminClient() {
@@ -16,12 +14,16 @@ function createAdminClient() {
   })
 }
 
-// SSR client for cookie-based auth
-function getSSRClient(req: NextRequest) {
+// SSR client for cookie-based auth — requires response object to set cookies
+function getSSRClient(req: NextRequest, res: NextResponse) {
   return createServerClient(supabaseUrl, supabaseAnonKey, {
     cookies: {
       getAll() { return req.cookies.getAll() },
-      setAll() {},
+      setAll(cookiesToSet: any[]) {
+        cookiesToSet.forEach(({ name, value, options }: any) => {
+          res.cookies.set(name, value, options)
+        })
+      }
     },
   })
 }
@@ -46,6 +48,8 @@ function getTokenClient(token: string) {
 }
 
 export async function POST(req: NextRequest) {
+  const response = NextResponse.next()
+  
   try {
     const authHeader = req.headers.get('authorization') || ''
     const bearerToken = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : ''
@@ -55,7 +59,7 @@ export async function POST(req: NextRequest) {
 
     if (action === 'me') {
       // Try cookie-based auth first
-      const ssr = getSSRClient(req)
+      const ssr = getSSRClient(req, response)
       const { data: { session } } = await ssr.auth.getSession()
 
       let user = session?.user
@@ -98,7 +102,7 @@ export async function POST(req: NextRequest) {
     }
 
     if (action === 'login') {
-      const supabase = getSSRClient(req)
+      const supabase = getSSRClient(req, response)
       const { email, password } = body
       const { data, error } = await supabase.auth.signInWithPassword({ email, password })
       if (error) return NextResponse.json({ ok: false, error: 'Credenciales incorrectas' }, { status: 401 })
@@ -112,7 +116,7 @@ export async function POST(req: NextRequest) {
     }
 
     if (action === 'register') {
-      const supabase = getSSRClient(req)
+      const supabase = getSSRClient(req, response)
       const { name, email, password, phone } = body
       const { error } = await supabase.auth.signUp({
         email, password,
@@ -126,7 +130,7 @@ export async function POST(req: NextRequest) {
     }
 
     if (action === 'logout') {
-      const supabase = getSSRClient(req)
+      const supabase = getSSRClient(req, response)
       await supabase.auth.signOut()
       return NextResponse.json({ ok: true })
     }
