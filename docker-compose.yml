@@ -1,7 +1,11 @@
 version: '3.8'
 services:
   web:
-    build: .
+    build:
+      context: .
+      args:
+        - NEXT_PUBLIC_SUPABASE_URL=https://qyvokpribmbrosafntqa.supabase.co
+        - NEXT_PUBLIC_SUPABASE_ANON_KEY=sb_publishable_KQ-sFNr7r6AauoG0B4nyTg_vuPHmeCm
     image: elviajero:prod
     # Traefik routes via overlay network — no host port needed
     ports: []

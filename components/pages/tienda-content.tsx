@@ -19,13 +19,8 @@ import { useState, useEffect, useMemo, useCallback } from "react"
 import { createClient } from "@ai-whisperers/auth/supabase/client"
 import { useSearchParams, useRouter, usePathname } from "next/navigation"
 
-import content from "@/content/es.json"
-const c = content as any
-const s = c.store || {}
-const bc = c.breadcrumbs || {}
-const cat = c.home?.productCatalog || {}
-const cats = c.home?.productCatalog?.categories || []
-const staticProducts: StoreProduct[] = cat.products || []
+// NOTE: JSON import removed - using Supabase only
+// Migration 008 created ej_site_config table as source of truth
 
 function parseGs(priceStr: string) {
   return parseInt(priceStr.replace(/[^\d]/g, ""), 10) || 0
@@ -115,7 +110,8 @@ export default function TiendaContent() {
       })
   }, [])
 
-  const allProducts = dbProducts.length > 0 ? dbProducts : staticProducts
+  // NOTE: No fallback to JSON - Supabase is source of truth
+  const allProducts = dbProducts
 
   /* --- URL state helpers --- */
   const readArr = (key: string) => {
@@ -139,7 +135,7 @@ export default function TiendaContent() {
 
   /* --- Compute price bounds from data --- */
   const priceBounds = useMemo(() => {
-    const prices = allProducts.map((p) => parseGs(p.price)).filter((p) => p > 0)
+    const prices = allProducts.map((p: StoreProduct) => parseGs(p.price)).filter((p) => p > 0)
     if (prices.length === 0) return { min: 0, max: 1000000 }
     return { min: Math.min(...prices), max: Math.max(...prices) }
   }, [allProducts])
@@ -249,7 +245,7 @@ export default function TiendaContent() {
     selectedBrands.forEach((b) => out.push({ label: b, onRemove: () => toggleBrand(b) }))
     if (priceMin > 0 || (priceMax > 0 && priceMax < priceBounds.max)) {
       const minLabel = priceMin > 0 ? `Gs. ${priceMin.toLocaleString("es-PY")}` : "Gs. 0"
-      const maxLabel = priceMax > 0 && priceMax < priceBounds.max ? `Gs. ${priceMax.toLocaleString("es-PY")}` : "+"
+      const maxLabel = priceMax > 0 && priceMax < priceBounds.max ? `Gs. ${priceMax.toLocaleString("es-PY")}` : "+∞"
       out.push({ label: `${minLabel} — ${maxLabel}`, onRemove: () => { setPriceMin(0); setPriceMax(0) } })
     }
     return out
@@ -292,24 +288,31 @@ export default function TiendaContent() {
   }
 
   /* --- Sidebar / drawer sections --- */
+  // Extract unique categories from products
+  const uniqueCats = useMemo(() => {
+    const catSet = new Set<string>()
+    allProducts.forEach((p) => {
+      if (p.category) catSet.add(p.category)
+    })
+    return Array.from(catSet).sort()
+  }, [allProducts])
+
   const filterSections = [
-    {
+    ...(uniqueCats.length > 0 ? [{
       title: "Categoría",
-      key: "category",
-      options: cats.map((c: string) => ({ label: c, value: c, count: catCounts[c] || 0 })),
+      key: "category" as const,
+      options: uniqueCats.map((c: string) => ({ label: c, value: c, count: catCounts[c] || 0 })),
       selected: selectedCats,
       onToggle: toggleCat,
-    },
+    }] : []),
     ...(brands.length > 0 ? [{
       title: "Marca",
-      key: "brand",
+      key: "brand" as const,
       options: brands.map((b: string) => ({ label: b, value: b, count: brandCounts[b] || 0 })),
       selected: selectedBrands,
       onToggle: toggleBrand,
     }] : []),
   ]
-
-  const heroImage = c.tienda?.hero?.backgroundImage || "/images/marketing/tienda-hero-bg.webp"
 
   return (
     <>
@@ -318,16 +321,16 @@ export default function TiendaContent() {
 
       {/* Breadcrumbs */}
       <nav className="mx-auto flex max-w-7xl items-center gap-2 px-4 py-3 text-xs text-muted-foreground">
-        <Link href="/" className="hover:text-primary">{bc.home || "Inicio"}</Link>
+        <Link href="/" className="hover:text-primary">Inicio</Link>
         <span>/</span>
-        <span className="text-foreground">{s.title || "Tienda"}</span>
+        <span className="text-foreground">Tienda</span>
       </nav>
 
       {/* Hero */}
       <section className="relative overflow-hidden bg-gradient-to-b from-primary/90 to-primary py-16 text-center text-primary-foreground sm:py-20">
         <div className="pointer-events-none absolute inset-0">
           <Image
-            src={heroImage}
+            src="/images/marketing/tienda-hero-bg.webp"
             alt=""
             fill
             className="object-cover object-center opacity-25"
@@ -336,9 +339,9 @@ export default function TiendaContent() {
           />
         </div>
         <div className="relative z-10 mx-auto max-w-2xl px-4">
-          <h1 className="text-3xl font-bold tracking-tight sm:text-5xl">{s.title || "Tienda Online"}</h1>
+          <h1 className="text-3xl font-bold tracking-tight sm:text-5xl">Tienda Online</h1>
           <p className="mt-3 text-base text-primary-foreground/70 sm:text-lg">
-            {c.tienda?.hero?.subheadline || "Equipamiento para camping, pesca y aventura en Paraguay."}
+            Equipamiento para camping, pesca y aventura en Paraguay.
           </p>
         </div>
       </section>
@@ -390,7 +393,7 @@ export default function TiendaContent() {
                   <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="mx-auto mb-4 text-muted-foreground/30">
                     <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/>
                   </svg>
-                  <p className="text-lg text-muted-foreground">{s.noProducts || "No encontramos productos con esos filtros."}</p>
+                  <p className="text-lg text-muted-foreground">No encontramos productos con esos filtros.</p>
                   <button onClick={clearAll} className="mt-3 text-sm font-medium text-primary hover:underline">
                     Limpiar filtros
                   </button>
@@ -442,23 +445,23 @@ export default function TiendaContent() {
             {[
               {
                 icon: <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-primary"><rect x="1" y="4" width="22" height="16" rx="2"/><path d="M1 10h22"/></svg>,
-                title: s.paymentMethods || "Medios de pago",
+                title: "Medios de pago",
                 desc: "Visa, Mastercard, Bancard\nTransferencia, Efectivo",
               },
               {
                 icon: <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-primary"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>,
-                title: s.freeShipping || "Envíos a todo PY",
-                desc: s.freeShippingDetail || "Consultá cobertura en tu zona",
+                title: "Envíos a todo PY",
+                desc: "Consultá cobertura en tu zona",
               },
               {
                 icon: <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-primary"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
-                title: s.warranty || "Garantía",
-                desc: s.warrantyDetail || "Todos los productos tienen garantía",
+                title: "Garantía",
+                desc: "Todos los productos tienen garantía",
               },
               {
                 icon: <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-primary"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>,
-                title: s.whatsappSupport || "WhatsApp directo",
-                desc: s.whatsappSupportDetail || "Respondemos en el día",
+                title: "WhatsApp directo",
+                desc: "Respondemos en el día",
               },
             ].map((item) => (
               <div key={item.title} className="flex flex-col items-center gap-2 text-center">
