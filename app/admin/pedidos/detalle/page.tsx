@@ -150,6 +150,7 @@ function OrderDetailInner() {
               <div key={i} className="flex items-center justify-between py-3">
                 <div>
                   <p className="text-sm text-white">{item.name}</p>
+                  {item.variant && <p className="text-xs text-zinc-500">{item.variant}</p>}
                   <p className="text-xs text-zinc-500">x{item.quantity || 1}</p>
                 </div>
                 <p className="text-sm font-medium text-white">{item.price || ""}</p>

@@ -1,9 +1,12 @@
 import { NextRequest, NextResponse } from "next/server"
 import { createAdminClient } from "@ai-whisperers/auth/supabase/admin"
+import { requireAdmin } from "@/lib/auth"
 
 const TABLE = "ej_promo_codes"
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+    const { error: authError } = await requireAdmin(req)
+  if (authError) return authError
   const supabase = createAdminClient()
   const { data, error } = await supabase.from(TABLE).select("*")
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
@@ -11,6 +14,8 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
+    const { error: authError } = await requireAdmin(req)
+  if (authError) return authError
   const supabase = createAdminClient()
   const body = await req.json()
   const { data, error } = await supabase.from(TABLE).insert(body).select()
@@ -19,6 +24,8 @@ export async function POST(req: NextRequest) {
 }
 
 export async function PATCH(req: NextRequest) {
+    const { error: authError } = await requireAdmin(req)
+  if (authError) return authError
   const supabase = createAdminClient()
   const body = await req.json()
   const { original_code, ...updates } = body
@@ -31,6 +38,8 @@ export async function PATCH(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
+    const { error: authError } = await requireAdmin(req)
+  if (authError) return authError
   const supabase = createAdminClient()
   const { searchParams } = new URL(req.url)
   const code = searchParams.get("code")

@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from "next/server"
 import { createAdminClient } from "@ai-whisperers/auth/supabase/admin"
+import { requireAdmin } from "@/lib/auth"
 
 export async function GET(req: NextRequest) {
+    const { error: authError } = await requireAdmin(req)
+  if (authError) return authError
   const supabase = createAdminClient()
   const { searchParams } = new URL(req.url)
   const limit = parseInt(searchParams.get("limit") || "50")
@@ -23,6 +26,8 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+    const { error: authError } = await requireAdmin(req)
+  if (authError) return authError
   const supabase = createAdminClient()
   const body = await req.json()
   const { action, entity_type, entity_id, summary, details } = body

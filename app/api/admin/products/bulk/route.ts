@@ -1,9 +1,12 @@
 import { NextRequest, NextResponse } from "next/server"
 import { createAdminClient } from "@ai-whisperers/auth/supabase/admin"
+import { requireAdmin } from "@/lib/auth"
 
 const TABLE = "ej_products"
 
 export async function POST(req: NextRequest) {
+    const { error: authError } = await requireAdmin(req)
+  if (authError) return authError
   const supabase = createAdminClient()
   try {
     const { products } = await req.json()

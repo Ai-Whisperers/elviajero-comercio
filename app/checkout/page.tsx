@@ -14,14 +14,15 @@ import { createClient } from "@ai-whisperers/auth/supabase/client"
 import content from "@/content/es.json"
 
 const c = content as any
-const WHATSAPP_NUMBER = c.home?.productCatalog?.whatsappPhone || c.home?.contact?.whatsapp || process.env.NEXT_PUBLIC_WHATSAPP || "595981234567"
+const WHATSAPP_NUMBER = c.home?.productCatalog?.whatsappPhone || c.home?.contact?.whatsapp || process.env.NEXT_PUBLIC_WHATSAPP || "595984009751"
 
-const SHIPPING_ZONES = [
-  { id: "asu", name: "Asunción", fee: 15000, freeFrom: 300000 },
-  { id: "central", name: "Área Metropolitana", fee: 25000, freeFrom: 400000 },
-  { id: "interior", name: "Interior del país", fee: 40000, freeFrom: 500000 },
-  { id: "pickup", name: "Retiro en tienda", fee: 0, freeFrom: 0 },
-]
+interface DeliveryZone {
+  id: string
+  name: string
+  cities: string[]
+  cost: string
+  free_threshold?: string
+}
 
 function CheckoutForm() {
   const { user, addresses = [] } = useAuth()
@@ -31,7 +32,8 @@ function CheckoutForm() {
   const [step, setStep] = useState(1)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
-  const [shippingZone, setShippingZone] = useState("asu")
+  const [shippingZone, setShippingZone] = useState("")
+  const [deliveryZones, setDeliveryZones] = useState<DeliveryZone[]>([])
   const [paymentMethod, setPaymentMethod] = useState("whatsapp")
   const [customer, setCustomer] = useState({
     name: user?.name || "",
@@ -44,9 +46,24 @@ function CheckoutForm() {
   const [discount, setDiscount] = useState(0)
   const [discountCode, setDiscountCode] = useState("")
 
-  const zone = SHIPPING_ZONES.find(z => z.id === shippingZone)!
-  const shipping = total >= zone.freeFrom ? 0 : zone.fee
-  const grandTotal = total + shipping - discount
+  // Fetch delivery zones from admin config
+  useEffect(() => {
+    fetch("/api/admin/delivery-zones")
+      .then(r => r.json())
+      .then((zones: DeliveryZone[]) => {
+        if (Array.isArray(zones) && zones.length > 0) {
+          setDeliveryZones(zones)
+          setShippingZone(zones[0].id)
+        }
+      })
+      .catch(() => {
+        // Fallback to hardcoded zones handled below
+      })
+  }, [])
+
+  const zone = deliveryZones.find(z => z.id === shippingZone)
+  const shippingCost = zone ? (total >= parseInt((zone.free_threshold || "0").replace(/[^0-9]/g, ""), 10) ? 0 : parseInt((zone.cost || "0").replace(/[^0-9]/g, ""), 10)) : 0
+  const grandTotal = total + shippingCost - discount
 
   const handleDiscount = useCallback((amount: number, code: string) => {
     setDiscount(amount)
@@ -72,15 +89,17 @@ function CheckoutForm() {
       body: JSON.stringify({
         id: orderId,
         user_id: user?.id || null,
-        items: items.map(i => ({ name: i.name, price: i.price, quantity: i.quantity })),
+        items: items.map(i => ({ name: i.name, price: i.price, quantity: i.quantity, variant: i.variant })),
         total: "Gs. " + grandTotal.toLocaleString("es-PY"),
         status: "pendiente",
         address_id: selectedAddress || addressForm.street,
         payment_method: paymentMethod,
-        note: "Zona: " + zone.name,
+        note: "Zona: " + (zone?.name || "Asunción"),
         customer_name: customer.name,
         customer_phone: customer.phone || addressForm.phone || user?.phone || "",
         customer_email: customer.email,
+        promo_code: discountCode || null,
+        discount_applied: discount > 0 ? String(discount) : "0",
       }),
     })
     const orderData = await res.json().catch(() => null)
@@ -93,9 +112,9 @@ function CheckoutForm() {
     if (paymentMethod === "whatsapp") {
       const msg = encodeURIComponent(
         "¡Hola! Quiero confirmar mi pedido:\n" +
-        items.map(i => `- ${i.name} x${i.quantity}: ${i.price}`).join("\n") +
+        items.map(i => `- ${i.name}${i.variant ? " (" + i.variant + ")" : ""} x${i.quantity}: ${i.price}`).join("\n") +
         `\n\nSubtotal: Gs. ${total.toLocaleString("es-PY")}` +
-        `\nEnvío: Gs. ${shipping.toLocaleString("es-PY")} (${zone.name})` +
+        `\nEnvío: Gs. ${shippingCost.toLocaleString("es-PY")} (${zone?.name || "Asunción"})` +
         (discount > 0 ? `\nDescuento (${discountCode}): -Gs. ${discount.toLocaleString("es-PY")}` : "") +
         `\nTotal: Gs. ${grandTotal.toLocaleString("es-PY")}` +
         `\n\nCliente: ${customer.name}` +
@@ -194,22 +213,29 @@ function CheckoutForm() {
             <div className="rounded-xl border border-border bg-surface p-6">
               <h2 className="text-xl font-bold text-foreground mb-4">Envío</h2>
               <div className="space-y-3 mb-6">
-                {SHIPPING_ZONES.map((z) => (
-                  <label key={z.id} className={`flex cursor-pointer items-center justify-between rounded-lg border p-4 transition-all ${shippingZone === z.id ? 'border-primary bg-primary/5' : 'border-border hover:border-primary/50'}`}>
-                    <div className="flex items-center gap-3">
-                      <input type="radio" name="zone" checked={shippingZone === z.id} onChange={() => setShippingZone(z.id)} className="text-primary" />
-                      <div>
-                        <p className="font-medium text-foreground">{z.name}</p>
-                        {z.fee > 0 && <p className="text-xs text-muted-foreground">
-                          {total >= z.freeFrom ? '¡Envío gratis!' : `Gs. ${z.fee.toLocaleString('es-PY')}`}
-                          {total < z.freeFrom && ` (gratis desde Gs. ${z.freeFrom.toLocaleString('es-PY')})`}
-                        </p>}
-                        {z.id === "pickup" && <p className="text-xs text-muted-foreground">Coronel Felipe Toledo, Mariano Roque Alonso</p>}
+                {deliveryZones.length > 0 ? deliveryZones.map((z) => {
+                  const cost = parseInt((z.cost || "0").replace(/[^0-9]/g, ""), 10)
+                  const freeThreshold = parseInt((z.free_threshold || "0").replace(/[^0-9]/g, ""), 10)
+                  const isFree = freeThreshold > 0 && total >= freeThreshold
+                  return (
+                    <label key={z.id} className={`flex cursor-pointer items-center justify-between rounded-lg border p-4 transition-all ${shippingZone === z.id ? 'border-primary bg-primary/5' : 'border-border hover:border-primary/50'}`}>
+                      <div className="flex items-center gap-3">
+                        <input type="radio" name="zone" checked={shippingZone === z.id} onChange={() => setShippingZone(z.id)} className="text-primary" />
+                        <div>
+                          <p className="font-medium text-foreground">{z.name}</p>
+                          <p className="text-xs text-muted-foreground">{z.cities?.join(", ")}</p>
+                          {cost > 0 && <p className="text-xs text-muted-foreground">
+                            {isFree ? '¡Envío gratis!' : `Gs. ${cost.toLocaleString('es-PY')}`}
+                            {freeThreshold > 0 && !isFree && ` (gratis desde Gs. ${freeThreshold.toLocaleString('es-PY')})`}
+                          </p>}
+                        </div>
                       </div>
-                    </div>
-                    <span className="text-sm font-bold text-foreground">{z.fee === 0 ? 'Gratis' : 'Gs. ' + z.fee.toLocaleString('es-PY')}</span>
-                  </label>
-                ))}
+                      <span className="text-sm font-bold text-foreground">{cost === 0 || isFree ? 'Gratis' : 'Gs. ' + cost.toLocaleString('es-PY')}</span>
+                    </label>
+                  )
+                }) : (
+                  <div className="text-sm text-muted-foreground">Cargando zonas de envío...</div>
+                )}
               </div>
 
               {shippingZone !== "pickup" && (
@@ -269,8 +295,8 @@ function CheckoutForm() {
               <div className="rounded-lg bg-muted p-4 mb-6">
                 <h3 className="font-semibold text-foreground mb-3">Resumen del pedido</h3>
                 {items.map(i => (
-                  <div key={i.name} className="flex justify-between text-sm mb-2">
-                    <span className="text-muted-foreground">{i.name} x{i.quantity}</span>
+                  <div key={i.name + (i.variant ? "::" + i.variant : "")} className="flex justify-between text-sm mb-2">
+                    <span className="text-muted-foreground">{i.name}{i.variant ? ` (${i.variant})` : ""} x{i.quantity}</span>
                     <span className="text-foreground font-medium">Gs. {((i.priceGs ?? 0) * i.quantity).toLocaleString('es-PY')}</span>
                   </div>
                 ))}
@@ -280,8 +306,8 @@ function CheckoutForm() {
                     <span className="text-foreground">Gs. {total.toLocaleString('es-PY')}</span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Envío ({zone.name})</span>
-                    <span className="text-foreground">{shipping === 0 ? 'Gratis' : 'Gs. ' + shipping.toLocaleString('es-PY')}</span>
+                    <span className="text-muted-foreground">Envío ({zone?.name || "Asunción"})</span>
+                    <span className="text-foreground">{shippingCost === 0 ? 'Gratis' : 'Gs. ' + shippingCost.toLocaleString('es-PY')}</span>
                   </div>
                   {discount > 0 && (
                     <div className="flex justify-between text-sm">

@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from "next/server"
 import { createAdminClient } from "@ai-whisperers/auth/supabase/admin"
+import { requireAdmin } from "@/lib/auth"
 
 export async function GET(req: NextRequest) {
+    const { error: authError } = await requireAdmin(req)
+  if (authError) return authError
   const supabase = createAdminClient()
   const { searchParams } = new URL(req.url)
   const productId = searchParams.get("product_id") || ""
@@ -20,6 +23,8 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+    const { error: authError } = await requireAdmin(req)
+  if (authError) return authError
   const supabase = createAdminClient()
   const body = await req.json()
   const { product_id, type, quantity, reference, note } = body

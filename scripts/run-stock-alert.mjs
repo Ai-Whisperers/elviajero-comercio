@@ -1,7 +1,7 @@
 const SUPABASE_URL = 'https://qyvokpribmbrosafntqa.supabase.co';
 const SERVICE_KEY = 'sb_secret_J7n1igQHaVSKn35OrMe93A_p-_FEBvH';
 const EVO_API_KEY = 'EVOLUT...8080';
-const ADMIN_NUMBER = '595981234567';
+const ADMIN_NUMBER = '595984009751';
 const EVO_API_URL = 'http://evolution_evolution_api:8080';
 
 async function run() {

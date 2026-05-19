@@ -6,6 +6,7 @@ import {
   Package, Tags, Wand2, Image, Upload, FileText,
   Percent, Star, Briefcase, Activity,
   Settings, UserCog, Mail, Palette,
+  Truck, MessageCircle, HeartHandshake, RotateCcw, ShoppingCart, CalendarClock, History,
 } from "lucide-react"
 
 const iconMap: Record<string, any> = {
@@ -13,6 +14,7 @@ const iconMap: Record<string, any> = {
   Package, Tags, Wand2, Image, Upload, FileText,
   Percent, Star, Briefcase, Activity,
   Settings, UserCog, Mail, Palette,
+  Truck, MessageCircle, HeartHandshake, RotateCcw, ShoppingCart, CalendarClock, History,
 }
 
 const SECTIONS = [
@@ -23,13 +25,18 @@ const SECTIONS = [
       { href: "/admin/pedidos", label: "Pedidos", icon: "ShoppingBag" },
       { href: "/admin/clientes", label: "Clientes", icon: "Users" },
       { href: "/admin/reportes", label: "Reportes", icon: "BarChart3" },
+      { href: "/admin/devoluciones", label: "Devoluciones", icon: "RotateCcw" },
     ],
   },
   {
     label: "Catálogo",
     items: [
       { href: "/admin/productos", label: "Productos", icon: "Package" },
-      { href: "/admin/stock", label: "Stock", icon: "Activity" },
+      { href: "/admin/alertas-stock", label: "Alertas Stock", icon: "Activity" },
+      { href: "/admin/stock", label: "Movimientos", icon: "History" },
+      { href: "/admin/zonas-delivery", label: "Zonas Delivery", icon: "Truck" },
+      { href: "/admin/staff", label: "Equipo", icon: "Users" },
+      { href: "/admin/facturacion", label: "Facturación", icon: "FileText" },
       { href: "/admin/categorias", label: "Categorías", icon: "Tags" },
       { href: "/admin/enriquecer", label: "Enriquecer", icon: "Wand2" },
       { href: "/admin/fotos", label: "Fotos", icon: "Image" },
@@ -43,6 +50,9 @@ const SECTIONS = [
       { href: "/admin/promos", label: "Promos", icon: "Percent" },
       { href: "/admin/resenas", label: "Reseñas", icon: "Star" },
       { href: "/admin/b2b", label: "B2B", icon: "Briefcase" },
+      { href: "/admin/whatsapp", label: "WhatsApp", icon: "MessageCircle" },
+      { href: "/admin/carritos", label: "Abandonados", icon: "ShoppingCart" },
+      { href: "/admin/publicaciones", label: "Publicaciones", icon: "CalendarClock" },
     ],
   },
   {
@@ -53,6 +63,7 @@ const SECTIONS = [
       { href: "/admin/usuarios", label: "Usuarios", icon: "UserCog" },
       { href: "/admin/suscriptores", label: "Suscriptores", icon: "Mail" },
       { href: "/admin/tema", label: "Tema", icon: "Palette" },
+      { href: "/admin/fidelidad", label: "Fidelidad", icon: "HeartHandshake" },
     ],
   },
 ]

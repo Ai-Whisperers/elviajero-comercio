@@ -18,14 +18,14 @@ import Link from "next/link"
 import Image from "next/image"
 import { useState, useEffect, useRef } from "react"
 
-const ICON_MAP: Record<string, string> = {
-  camping: "/images/icons/camping.webp",
-  pesca: "/images/icons/pesca.webp",
-  equipotacticexplorador: "/images/icons/campo.webp",
-  accesoriosparaviajeselectronicajuegosplaya: "/images/icons/accesorios.webp",
-  accesoriosparavehiculos: "/images/icons/autos.webp",
+const CATEGORY_IMAGE_MAP: Record<string, string> = {
+  camping: "/images/categories/camping.webp",
+  pesca: "/images/categories/pesca.webp",
+  accesoriospersonales: "/images/categories/accesorios.webp",
+  electronica: "/images/categories/electronica.webp",
+  accesoriosparavehculos: "/images/categories/vehiculos.webp",
 }
-function catSlug(cat: string) { return cat.toLowerCase().replace(/[^a-z]/g, "") }
+function catSlug(cat: string) { return cat.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z]/g, "") }
 
 function AnimatedStat({ value, label }: { value: string; label: string }) {
   const [display, setDisplay] = useState("0")
@@ -138,15 +138,15 @@ function HomePage() {
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {categories.map((cat: any) => (
                 <Link key={cat} href={`/tienda#${catSlug(cat)}`}
-                className="group relative flex h-52 items-end overflow-hidden rounded-2xl bg-gradient-to-br from-primary/10 via-transparent to-primary/5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+                className="group relative flex h-52 items-end overflow-hidden rounded-2xl bg-slate-800 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
               >
-                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent z-10" />
-                {ICON_MAP[catSlug(cat)] && (
-                  <Image src={ICON_MAP[catSlug(cat)]} alt="" fill className="object-contain p-6 transition-all duration-500 group-hover:scale-110" sizes="(max-width: 768px) 100vw, 25vw" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent z-10" />
+                {CATEGORY_IMAGE_MAP[catSlug(cat)] && (
+                  <Image src={CATEGORY_IMAGE_MAP[catSlug(cat)]} alt={cat} fill className="object-cover transition-all duration-500 group-hover:scale-105 brightness-90 group-hover:brightness-100" sizes="(max-width: 768px) 100vw, 25vw" />
                 )}
                 <div className="relative z-20 p-5">
                   <h3 className="text-lg font-bold text-white drop-shadow-sm">{cat}</h3>
-                  <p className="mt-1 text-sm text-white/80">{cat.items || cat.count || ""} productos</p>
+                  <p className="mt-1 text-sm text-white/80">Ver productos →</p>
                 </div>
               </Link>
             ))}
@@ -290,7 +290,7 @@ function HomePage() {
       <RecentlyViewed />
       <Footer />
       <CookieConsent />
-      <WhatsAppFloat phone={get("home.contact.whatsapp") || process.env.NEXT_PUBLIC_WHATSAPP || "595981234567"} message={get("whatsapp.defaultMessage") || "Hola! Quiero informacion"} />
+      <WhatsAppFloat phone={get("home.contact.whatsapp") || process.env.NEXT_PUBLIC_WHATSAPP || "595984009751"} message={get("whatsapp.defaultMessage") || "Hola! Quiero informacion"} />
       {h.contact?.map && (
         <ExitIntentPopup />
       )}

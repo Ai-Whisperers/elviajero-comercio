@@ -1,14 +1,15 @@
 "use client"
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect } from "react"
 import { useAdminAuth } from "@/components/admin/admin-layout"
+import { useToast } from "@/hooks/use-toast"
 import { PageHeader, EmptyState, CardSkeleton } from "@/components/admin/ui"
 
 export default function AdminPhotos() {
   const { authed } = useAdminAuth()
+  const { toasts, addToast } = useToast()
   const [products, setProducts] = useState<any[]>([])
   const [uploading, setUploading] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
-  const fileRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     if (!authed) return
@@ -21,17 +22,25 @@ export default function AdminPhotos() {
 
   const upload = async (productId: string, file: File) => {
     setUploading(productId)
-    const ext = file.name.split(".").pop()
-    const fileName = `products/${productId}-${Date.now()}.${ext}`
-    const { createClient } = await import("@ai-whisperers/auth/supabase/client")
-    const supabase = createClient()
+    const form = new FormData()
+    form.append("file", file)
+    form.append("path", `products/${productId}`)
 
-    const { error } = await supabase.storage.from("ej_images").upload(fileName, file)
-    if (error) { alert("Error: " + error.message); setUploading(null); return }
+    const res = await fetch("/api/upload-image", { method: "POST", body: form })
+    const data = await res.json()
+    if (!res.ok) {
+      addToast("error", "Error: " + (data.error || "Upload failed"))
+      setUploading(null)
+      return
+    }
 
-    const { data: { publicUrl } } = supabase.storage.from("ej_images").getPublicUrl(fileName)
-    await fetch("/api/admin/products", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: productId, image_url: publicUrl }) })
-    setProducts(products.map(p => p.id === productId ? { ...p, image_url: publicUrl } : p))
+    await fetch("/api/admin/products", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: productId, image_url: data.url }),
+    })
+    setProducts(products.map(p => p.id === productId ? { ...p, image_url: data.url } : p))
+    addToast("success", "Foto subida correctamente")
     setUploading(null)
   }
 
@@ -43,6 +52,19 @@ export default function AdminPhotos() {
         title="Fotos de Productos"
         subtitle="Subí fotos reales para reemplazar los placeholders SVG"
       />
+
+      {/* Toast container */}
+      <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-2">
+        {toasts.map(t => (
+          <div key={t.id} className={`rounded-lg px-4 py-3 text-sm font-medium shadow-lg border ${
+            t.type === "success" ? "bg-emerald-900/90 border-emerald-700/60 text-emerald-200" :
+            t.type === "error" ? "bg-red-900/90 border-red-700/60 text-red-200" :
+            "bg-zinc-900/90 border-zinc-700/60 text-zinc-200"
+          }`}>
+            {t.message}
+          </div>
+        ))}
+      </div>
 
       {loading ? (
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">

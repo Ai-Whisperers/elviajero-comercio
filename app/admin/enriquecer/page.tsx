@@ -16,7 +16,7 @@ export default function AdminEnrich() {
   useEffect(() => {
     if (!authed) return
     setLoading(true)
-    fetch("/api/admin/products").then(r => r.json()).then(data => { if (data) setProducts(data); setLoading(false) }).catch(() => setLoading(false))
+    fetch("/api/admin/products").then(r => r.json()).then(data => { if (data?.data) setProducts(data.data); setLoading(false) }).catch(() => setLoading(false))
   }, [authed])
 
   const save = async (id: string) => {
@@ -46,6 +46,30 @@ export default function AdminEnrich() {
             weight: data.suggested_weight || form.weight || "",
           })
         }
+      }
+    } catch {}
+    setEnriching(null)
+  }
+
+  const applyEnrich = async (p: any) => {
+    setEnriching(p.id)
+    try {
+      const res = await fetch("/api/admin/enrich", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: p.name, current: p }),
+      })
+      if (!res.ok) { setEnriching(null); return }
+      const data = await res.json()
+      const updates: any = { id: p.id }
+      if (data.suggested_description) updates.description = data.suggested_description
+      if (data.suggested_specs) updates.specs = data.suggested_specs
+      if (data.suggested_brand) updates.brand = data.suggested_brand
+      if (data.suggested_weight) updates.weight = data.suggested_weight
+
+      if (Object.keys(updates).length > 1) {
+        await fetch("/api/admin/products", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify(updates) })
+        setProducts(products.map(prod => prod.id === p.id ? { ...prod, ...updates } : prod))
       }
     } catch {}
     setEnriching(null)
@@ -89,7 +113,7 @@ export default function AdminEnrich() {
                 <th className="px-4 py-3 text-xs font-semibold text-zinc-500 uppercase">Descripción</th>
                 <th className="px-4 py-3 text-xs font-semibold text-zinc-500 uppercase">Especificaciones</th>
                 <th className="px-4 py-3 text-xs font-semibold text-zinc-500 uppercase">Peso</th>
-                <th className="px-4 py-3 text-xs font-semibold text-zinc-500 uppercase w-[120px]">Acción</th>
+                <th className="px-4 py-3 text-xs font-semibold text-zinc-500 uppercase w-[140px]">Acción</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-zinc-800/60">
@@ -133,9 +157,15 @@ export default function AdminEnrich() {
                         <div className="flex gap-2">
                           <button onClick={() => { setForm({brand: p.brand, description: p.description, specs: p.specs, weight: p.weight}); setEditing(p.id) }}
                             className="text-xs text-blue-400 hover:underline">Editar</button>
-                          <button onClick={() => enrich(p.id, p.name)} disabled={enriching === p.id}
+                          <button onClick={() => { setForm({brand: p.brand, description: p.description, specs: p.specs, weight: p.weight}); setEditing(p.id); enrich(p.id, p.name) }}
+                            disabled={enriching === p.id}
                             className="text-xs text-purple-400 hover:underline disabled:opacity-50 disabled:cursor-wait">
                             {enriching === p.id ? "Pensando..." : "✨ IA"}
+                          </button>
+                          <button onClick={() => applyEnrich(p)} disabled={enriching === p.id}
+                            className="text-xs text-emerald-400 hover:underline disabled:opacity-50 disabled:cursor-wait"
+                            title="Aplicar sugerencias de IA directamente">
+                            {enriching === p.id ? "..." : "Aplicar"}
                           </button>
                         </div>
                       </td>

@@ -31,7 +31,7 @@ export const BRAND = {
     container: 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8',
   },
   whatsapp: {
-    phone: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '+595****4567',
+    phone: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '+595 984 009751',
     message: 'Hola! Quisiera información sobre productos',
   },
 } as const

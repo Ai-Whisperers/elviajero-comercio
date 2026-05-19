@@ -1,28 +1,36 @@
-export interface ValidationResult {
-  ok: boolean
-  errors: Record<string, string>
-}
+import { z } from "zod"
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-const PY_PHONE_RE = /^(0\d{2,3}\s?\d{3}\s?\d{3,4}|\+595\s?\d{2,3}\s?\d{3}\s?\d{3,4})$/
+// ── Content overrides ─────────────────────────────────────────
+export const ContentOverrideSchema = z.record(z.string(), z.unknown())
 
-export function validateEmail(email: string): string | null {
-  if (!email.trim()) return "El email es requerido"
-  if (!EMAIL_RE.test(email)) return "Email inv\u00e1lido"
-  return null
-}
+// ── Blog post ─────────────────────────────────────────────────
+export const BlogPostSchema = z.object({
+  slug: z.string().min(1, "El slug es requerido").regex(/^[a-z0-9-]+$/, "El slug solo puede contener letras minúsculas, números y guiones"),
+  title: z.string().min(1, "El título es requerido"),
+  excerpt: z.string().optional(),
+  content: z.string().optional(),
+  category: z.string().optional(),
+  image_url: z.string().optional(),
+  author: z.string().optional(),
+  published: z.boolean().optional(),
+  created_at: z.string().optional(),
+})
 
-export function validatePhone(phone: string): string | null {
-  if (!phone.trim()) return "El tel\u00e9fono es requerido"
-  return null
-}
+// ── Staff role ────────────────────────────────────────────────
+export const ALLOWED_ROLES = ["admin", "staff", "user", "guest"] as const
+export const StaffRoleSchema = z.enum(ALLOWED_ROLES)
 
-export function validatePassword(password: string): string | null {
-  if (password.length < 6) return "M\u00ednimo 6 caracteres"
-  return null
-}
+// ── Order status ─────────────────────────────────────────────
+export const ORDER_STATUSES = [
+  "pendiente",
+  "confirmado",
+  "procesando",
+  "enviado",
+  "entregado",
+  "cancelado",
+] as const
+export const OrderStatusSchema = z.enum(ORDER_STATUSES)
 
-export function validateRequired(value: string, field: string): string | null {
-  if (!value.trim()) return field + " es requerido"
-  return null
-}
+// ── Payment status ───────────────────────────────────────────
+export const PAYMENT_STATUSES = ["pending", "verified", "rejected", "refunded"] as const
+export const PaymentStatusSchema = z.enum(PAYMENT_STATUSES)

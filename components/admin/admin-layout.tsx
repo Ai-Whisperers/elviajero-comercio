@@ -31,7 +31,7 @@ export function useAdminAuth() {
             body: JSON.stringify({ action: "me" }),
           })
           const data = await res.json()
-          if (res.ok && data.ok && data.user?.role === "admin") {
+          if (res.ok && data.ok && ["admin", "ventas", "bodega"].includes(data.user?.role)) {
             if (!cancelled) { setAuthed(true); setAdmin(data.user); setLoading(false) }
             return
           }
@@ -42,7 +42,7 @@ export function useAdminAuth() {
         const { data: { session } } = await supabase.auth.getSession()
         if (session?.user) {
           const { data: profile } = await supabase.from("profiles").select("*").eq("id", session.user.id).single()
-          if (profile && profile.role === "admin") {
+          if (profile && ["admin", "ventas", "bodega"].includes(profile.role)) {
             if (!cancelled) { setAuthed(true); setAdmin({ id: profile.id, name: profile.name, email: session.user.email || "", role: profile.role }); setLoading(false) }
             return
           }
@@ -62,7 +62,7 @@ export function useAdminAuth() {
             body: JSON.stringify({ action: "me" }),
           })
           const data = await res.json()
-          if (res.ok && data.ok && data.user?.role === "admin") {
+          if (res.ok && data.ok && ["admin", "ventas", "bodega"].includes(data.user?.role)) {
             if (!cancelled) { setAuthed(true); setAdmin(data.user); setLoading(false) }
             return
           }

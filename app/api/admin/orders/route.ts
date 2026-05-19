@@ -1,9 +1,12 @@
 import { NextRequest, NextResponse } from "next/server"
 import { createAdminClient } from "@ai-whisperers/auth/supabase/admin"
+import { requireAdmin } from "@/lib/auth"
 
 const TABLE = "ej_orders"
 
 export async function GET(req: NextRequest) {
+  const { error: authError } = await requireAdmin(req)
+  if (authError) return authError
   const supabase = createAdminClient()
   const { searchParams } = new URL(req.url)
   const id = searchParams.get("id")
@@ -12,16 +15,26 @@ export async function GET(req: NextRequest) {
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })
     return NextResponse.json(data)
   }
-  const { data, error } = await supabase.from(TABLE).select("*").order("created_at", { ascending: false })
+  const page = parseInt(searchParams.get("page") || "1")
+  const perPage = parseInt(searchParams.get("perPage") || "20")
+  const from = (page - 1) * perPage
+  const to = from + perPage - 1
+
+  const { data, error, count } = await supabase
+    .from(TABLE)
+    .select("*", { count: "exact" })
+    .order("created_at", { ascending: false })
+    .range(from, to)
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
-  return NextResponse.json(data ?? [])
+  return NextResponse.json({ data: data ?? [], total: count ?? 0, page, perPage })
 }
 
 export async function POST(req: NextRequest) {
+  const { error: authError } = await requireAdmin(req)
+  if (authError) return authError
   const supabase = createAdminClient()
   const body = await req.json()
-  
-  // Save customer contact info to ej_orders for later notifications
+
   const orderData = {
     id: body.id,
     user_id: body.user_id || null,
@@ -30,15 +43,21 @@ export async function POST(req: NextRequest) {
     status: body.status || "pendiente",
     address_id: body.address_id || "",
     payment_method: body.payment_method || "whatsapp",
-    note: body.note || "",
     customer_name: body.customer_name || body.customer?.name || "",
     customer_phone: body.customer_phone || body.customer?.phone || "",
     customer_email: body.customer_email || body.customer?.email || "",
+    payment_status: body.payment_status || "pending",
+    payment_proof_url: body.payment_proof_url || "",
+    delivery_zone_id: body.delivery_zone_id || "",
+    delivery_cost: body.delivery_cost || "0",
+    internal_notes: body.note || body.internal_notes || "",
+    promo_code: body.promo_code || null,
+    discount_applied: body.discount_applied || "0",
   }
 
   const { data, error } = await supabase.from(TABLE).insert(orderData).select()
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
-  
+
   // Notify admin via WhatsApp
   try {
     const { notifyNewOrder } = await import("@/lib/whatsapp")
@@ -61,6 +80,8 @@ export async function POST(req: NextRequest) {
 }
 
 export async function PATCH(req: NextRequest) {
+  const { error: authError } = await requireAdmin(req)
+  if (authError) return authError
   const supabase = createAdminClient()
   const body = await req.json()
   const { id, ...updates } = body
@@ -68,30 +89,61 @@ export async function PATCH(req: NextRequest) {
 
   updates.updated_at = new Date().toISOString()
 
-  const { data, error } = await supabase.from("ej_orders").update(updates).eq("id", id).select()
+  const { data, error } = await supabase.from(TABLE).update(updates).eq("id", id).select()
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
-    if (updates.status === "confirmado") {
-      const orderItems = data?.[0]?.items || []
-      for (const item of orderItems) {
-        if (!item.name) continue
-        const qty = item.quantity || 1
-        const { data: product } = await supabase.from("ej_products").select("id, stock").eq("name", item.name).single()
-        if (product) {
-          const newStock = Math.max(0, (product.stock || 0) - qty)
-          await supabase.from("ej_products").update({ stock: newStock }).eq("id", product.id)
-          await supabase.from("ej_stock_movements").insert({
-            product_id: product.id,
-            product_name: item.name,
-            quantity_change: -qty,
-            reason: "sale",
-            reference_id: `Orden #${((data?.[0]?.id) || "").slice(0, 8)}`,
-          }).maybeSingle()
-        }
+  if (updates.status === "confirmado") {
+    const orderItems = data?.[0]?.items || []
+    for (const item of orderItems) {
+      if (!item.id) continue
+      const qty = item.quantity || 1
+      const { data: product } = await supabase.from("ej_products").select("id, stock").eq("id", item.id).single()
+      if (product) {
+        const newStock = Math.max(0, (product.stock || 0) - qty)
+        await supabase.from("ej_products").update({ stock: newStock }).eq("id", product.id)
+        await supabase.from("ej_stock_movements").insert({
+          product_id: product.id,
+          type: "sale",
+          quantity: qty,
+          stock_before: product.stock || 0,
+          stock_after: newStock,
+          reference: `Orden #${((data?.[0]?.id) || "").slice(0, 8)}`,
+          note: `Venta confirmada`,
+        }).maybeSingle()
       }
     }
 
-    // Log activity for status or tracking changes
+    // Decrement promo usage if a promo code was applied
+    const orderRecord = data?.[0]
+    if (orderRecord?.promo_code) {
+      const { data: promo } = await supabase.from("ej_promo_codes").select("code, uses_count").eq("code", orderRecord.promo_code).single()
+      if (promo) {
+        await supabase.from("ej_promo_codes").update({ uses_count: (promo.uses_count || 0) + 1 }).eq("code", promo.code)
+      }
+    }
+
+    // Accrue loyalty points
+    try {
+      const { data: loyaltyData } = await supabase.from("ej_site_config").select("value").eq("key", "loyalty_config").single()
+      const loyaltyConfig = loyaltyData?.value || {}
+      if (loyaltyConfig.enabled && loyaltyConfig.points_per_gs) {
+        const totalNum = parseInt((orderRecord.total || "0").replace(/[^0-9]/g, ""), 10) || 0
+        const points = Math.floor(totalNum / (loyaltyConfig.points_per_gs || 1000))
+        if (points > 0 && orderRecord.user_id) {
+          await supabase.from("ej_loyalty_points").insert({
+            user_id: orderRecord.user_id,
+            points,
+            source: "order",
+            source_id: orderRecord.id,
+          }).maybeSingle()
+        }
+      }
+    } catch (e) {
+      console.error("[loyalty] Failed to accrue points:", e)
+    }
+  }
+
+  // Log activity for status or tracking changes
   if (updates.status || updates.tracking_number || updates.carrier) {
     const order = data?.[0]
     const changes: string[] = []
@@ -115,15 +167,26 @@ export async function PATCH(req: NextRequest) {
     // Send notifications
     if (updates.tracking_number && order?.customer_phone) {
       try {
-        const { sendWhatsApp } = await import("@/lib/whatsapp")
-        const carrierLabel = updates.carrier || "transportista"
-        await sendWhatsApp(order.customer_phone,
-          `📦 *Tu pedido #${id.slice(0, 8)} ya está en camino!*\n\nTransportista: ${carrierLabel}\nTracking: ${updates.tracking_number}\n\nGracias por confiar en El Viajero 🏕️`
-        )
+        const { notifyStatusChange } = await import("@/lib/whatsapp")
+        await notifyStatusChange(id, order.customer_phone, "enviado", {
+          carrier: updates.carrier || "transportista",
+          tracking_number: updates.tracking_number,
+        })
       } catch (e) {
         console.error("[whatsapp] Failed to send tracking notification:", e)
       }
     }
+  }
+
+  // Log payment updates
+  if (updates.payment_status || updates.payment_proof_url) {
+    await supabase.from("ej_activity_log").insert({
+      action: "order.payment_update",
+      entity_type: "order",
+      entity_id: id,
+      summary: `Pago del pedido #${id.slice(0, 8)} actualizado: ${updates.payment_status || ""}`,
+      details: { payment_status: updates.payment_status, payment_proof_url: updates.payment_proof_url },
+    }).maybeSingle()
   }
 
   return NextResponse.json(data?.[0] ?? null)

@@ -27,7 +27,7 @@ export function PackingSlip({ order, onClose }: PackingSlipProps) {
       </style></head><body>
       <h1>🧭 EL VIAJERO</h1>
       <p style="text-align:center;font-size:10px;">Coronel Felipe Toledo, Mariano Roque Alonso</p>
-      <p style="text-align:center;font-size:10px;">+595 981 234 567</p>
+      <p style="text-align:center;font-size:10px;">+595 984 009 751</p>
       <hr>
       <p><strong>Pedido:</strong> #${order.id?.slice(0, 8)}</p>
       <p><strong>Fecha:</strong> ${order.created_at ? new Date(order.created_at).toLocaleDateString("es-PY") : ""}</p>

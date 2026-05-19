@@ -1,219 +1,107 @@
 "use client"
-import { useState, useMemo, useEffect } from "react"
+
+import { useState } from "react"
+
+export type SortOption = "" | "price_asc" | "price_desc" | "name" | "newest"
+
+interface SearchAndFiltersProps {
+  search: string
+  onSearchChange: (s: string) => void
+  sortBy: SortOption
+  onSortChange: (s: SortOption) => void
+  activeFiltersCount: number
+  onOpenFilters: () => void
+  resultCount: number
+  totalCount: number
+}
 
 export function SearchAndFilters({
-  products,
-  categories,
-  onFilteredProducts,
-  externalCategory,
-  onExternalCategory,
-}: {
-  products: any[]
-  categories: string[]
-  onFilteredProducts: (products: any[]) => void
-  externalCategory?: string
-  onExternalCategory?: (cat: string) => void
-}) {
-  const [search, setSearch] = useState("")
-  const [categoryFilter, setCategoryFilter] = useState("")
-  const [sortBy, setSortBy] = useState("")
-  const [priceMin, setPriceMin] = useState("")
-  const [priceMax, setPriceMax] = useState("")
-  const [stockFilter, setStockFilter] = useState("")
-  const [pricePreset, setPricePreset] = useState("")
-  const [brandFilter, setBrandFilter] = useState("")
-
-  // Sync external category filter
-  useEffect(() => {
-    if (externalCategory !== undefined) {
-      setCategoryFilter(externalCategory)
-    }
-  }, [externalCategory])
-
-  const parseGs = (s: string) => parseInt(s.replace(/[^\d]/g, ""), 10) || 0
-
-  // Extract unique brands
-  const brands = useMemo(() => {
-    const b = new Set<string>()
-    products.forEach((p: any) => { if (p.brand) b.add(p.brand) })
-    return Array.from(b).sort()
-  }, [products])
-
-  const filtered = useMemo(() => {
-    let result = [...products]
-
-    if (search) {
-      const q = search.toLowerCase()
-      result = result.filter(
-        (p) =>
-          p.name.toLowerCase().includes(q) ||
-          (p.description || "").toLowerCase().includes(q) ||
-          (p.specs || "").toLowerCase().includes(q)
-      )
-    }
-
-    if (categoryFilter) {
-      result = result.filter((p) => p.category === categoryFilter)
-    }
-
-    if (brandFilter) {
-      result = result.filter((p) => p.brand === brandFilter)
-    }
-
-    // Price presets override manual inputs
-    if (pricePreset) {
-      const [min, max] = pricePreset.split("-").map(Number)
-      result = result.filter((p) => {
-        const price = parseGs(p.price)
-        return price >= (min || 0) && (max ? price <= max : true)
-      })
-    } else {
-      if (priceMin) {
-        const min = parseGs(priceMin)
-        result = result.filter((p) => parseGs(p.price) >= min)
-      }
-      if (priceMax) {
-        const max = parseGs(priceMax)
-        result = result.filter((p) => parseGs(p.price) <= max)
-      }
-    }
-
-    if (stockFilter === "in_stock") {
-      result = result.filter((p) => (p.stock ?? 0) > 0)
-    } else if (stockFilter === "low_stock") {
-      result = result.filter((p) => (p.stock ?? 0) > 0 && (p.stock ?? 0) <= 5)
-    } else if (stockFilter === "out_of_stock") {
-      result = result.filter((p) => (p.stock ?? 0) === 0)
-    }
-
-    if (sortBy === "price_asc") {
-      result.sort((a, b) => parseGs(a.price) - parseGs(b.price))
-    } else if (sortBy === "price_desc") {
-      result.sort((a, b) => parseGs(b.price) - parseGs(a.price))
-    } else if (sortBy === "name") {
-      result.sort((a, b) => a.name.localeCompare(b.name))
-    }
-
-    return result
-  }, [search, categoryFilter, brandFilter, sortBy, priceMin, priceMax, stockFilter, pricePreset, products])
-
-  // Report filtered results to parent — use effect instead of setTimeout
-  useEffect(() => {
-    onFilteredProducts(filtered)
-  }, [filtered, onFilteredProducts])
+  search,
+  onSearchChange,
+  sortBy,
+  onSortChange,
+  activeFiltersCount,
+  onOpenFilters,
+  resultCount,
+  totalCount,
+}: SearchAndFiltersProps) {
+  const [focused, setFocused] = useState(false)
 
   return (
-    <div className="rounded-xl border border-border bg-surface p-4 shadow-sm">
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-6">
+    <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
         {/* Search */}
-        <div className="lg:col-span-2">
-          <label className="mb-1 block text-xs font-medium text-muted-foreground">Buscar</label>
+        <div className={`relative flex-1 transition-all duration-200 ${focused ? "ring-1 ring-ring/30 rounded-xl" : ""}`}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+          >
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.3-4.3" />
+          </svg>
           <input
             type="text"
-            placeholder="Buscá por producto..."
+            placeholder="Buscá productos..."
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm text-foreground outline-none transition-colors focus:border-ring focus:ring-1 focus:ring-ring/30"
+            onChange={(e) => onSearchChange(e.target.value)}
+            onFocus={() => setFocused(true)}
+            onBlur={() => setFocused(false)}
+            className="w-full rounded-xl border border-border bg-background py-2.5 pl-10 pr-10 text-sm text-foreground outline-none transition-colors focus:border-ring"
           />
-        </div>
-
-        {/* Category filter */}
-        <div>
-          <label className="mb-1 block text-xs font-medium text-muted-foreground">Categoría</label>
-          <select
-            value={categoryFilter}
-            onChange={(e) => { setCategoryFilter(e.target.value); onExternalCategory?.(e.target.value) }}
-            className="w-full rounded-lg border border-input bg-background px-3 py-2.5 text-sm text-foreground outline-none transition-colors focus:border-ring focus:ring-1 focus:ring-ring/30"
-          >
-            <option value="">Todas</option>
-            {categories.map((cat) => (
-              <option key={cat} value={cat}>{cat}</option>
-            ))}
-          </select>
-        </div>
-
-        {/* Brand filter */}
-        {brands.length > 0 && (
-          <div>
-            <label className="mb-1 block text-xs font-medium text-muted-foreground">Marca</label>
-            <select
-              value={brandFilter}
-              onChange={(e) => setBrandFilter(e.target.value)}
-              className="w-full rounded-lg border border-input bg-background px-3 py-2.5 text-sm text-foreground outline-none transition-colors focus:border-ring focus:ring-1 focus:ring-ring/30"
+          {search && (
+            <button
+              onClick={() => onSearchChange("")}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
             >
-              <option value="">Todas</option>
-              {brands.map((brand) => (
-                <option key={brand} value={brand}>{brand}</option>
-              ))}
-            </select>
-          </div>
-        )}
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M18 6 6 18M6 6l12 12" />
+              </svg>
+            </button>
+          )}
+        </div>
 
         {/* Sort */}
-        <div>
-          <label className="mb-1 block text-xs font-medium text-muted-foreground">Ordenar</label>
+        <div className="flex items-center gap-2">
           <select
             value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
-            className="w-full rounded-lg border border-input bg-background px-3 py-2.5 text-sm text-foreground outline-none transition-colors focus:border-ring focus:ring-1 focus:ring-ring/30"
+            onChange={(e) => onSortChange(e.target.value as SortOption)}
+            className="rounded-xl border border-border bg-background px-3 py-2.5 text-sm text-foreground outline-none transition-colors focus:border-ring"
           >
-            <option value="">Por defecto</option>
+            <option value="">Ordenar por</option>
             <option value="price_asc">Menor precio</option>
             <option value="price_desc">Mayor precio</option>
-            <option value="name">A-Z</option>
+            <option value="name">A - Z</option>
+            <option value="newest">Más recientes</option>
           </select>
-        </div>
 
-        {/* Stock filter */}
-        <div>
-          <label className="mb-1 block text-xs font-medium text-muted-foreground">Disponibilidad</label>
-          <select
-            value={stockFilter}
-            onChange={(e) => setStockFilter(e.target.value)}
-            className="w-full rounded-lg border border-input bg-background px-3 py-2.5 text-sm text-foreground outline-none transition-colors focus:border-ring focus:ring-1 focus:ring-ring/30"
-          >
-            <option value="">Todos</option>
-            <option value="in_stock">En stock</option>
-            <option value="low_stock">Pocas unidades (≤5)</option>
-            <option value="out_of_stock">Agotado</option>
-          </select>
-        </div>
-
-        {/* Results count */}
-        <div className="flex items-end justify-end lg:col-span-6">
-          <p className="text-xs text-muted-foreground">
-            {filtered.length} de {products.length} productos
-          </p>
-        </div>
-      </div>
-
-      {/* Price preset buttons */}
-      <div className="mt-3 flex flex-wrap items-center gap-2">
-        <span className="self-center text-xs font-medium text-muted-foreground">Precio:</span>
-        {[
-          { label: "Hasta Gs. 50mil", value: "0-50000" },
-          { label: "Gs. 50mil-150mil", value: "50000-150000" },
-          { label: "Gs. 150mil-300mil", value: "150000-300000" },
-          { label: "Más de Gs. 300mil", value: "300000-0" },
-        ].map((preset) => (
+          {/* Mobile filter button */}
           <button
-            key={preset.value}
-            onClick={() => setPricePreset(pricePreset === preset.value ? "" : preset.value)}
-            className={`rounded-full border px-3 py-1 text-xs font-medium transition-all ${
-              pricePreset === preset.value
-                ? "bg-primary text-primary-foreground border-primary"
-                : "border-border bg-white text-muted-foreground hover:bg-surface hover:border-primary/30"
-            }`}
+            onClick={onOpenFilters}
+            className="flex items-center gap-2 rounded-xl border border-border bg-background px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-muted lg:hidden"
           >
-            {preset.label}
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z" />
+            </svg>
+            Filtros
+            {activeFiltersCount > 0 && (
+              <span className="flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-primary px-1.5 text-[10px] font-bold text-primary-foreground">
+                {activeFiltersCount}
+              </span>
+            )}
           </button>
-        ))}
-        {pricePreset && (
-          <button onClick={() => setPricePreset("")} className="text-xs text-muted-foreground hover:text-foreground underline ml-1">
-            Limpiar
-          </button>
-        )}
+        </div>
       </div>
+
+      {/* Result count */}
+      <p className="text-xs text-muted-foreground">
+        {resultCount} {totalCount > 0 ? `de ${totalCount}` : ""} productos
+      </p>
     </div>
   )
 }

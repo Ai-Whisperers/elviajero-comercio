@@ -92,7 +92,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = useCallback(async (email: string, password: string) => {
     const { data, error } = await supabase.auth.signInWithPassword({ email, password })
-    if (error) return { ok: false, error: error.message }
+    if (error) {
+      const msg = error.message
+      let friendly = msg
+      if (msg.includes("Invalid login")) friendly = "Credenciales incorrectas"
+      else if (msg.includes("Email not confirmed")) friendly = "Email no confirmado. Revisá tu bandeja de entrada."
+      else if (msg.includes("rate limit")) friendly = "Demasiados intentos. Probá más tarde."
+      return { ok: false, error: friendly }
+    }
     const u: User = {
       id: data.user.id,
       email: data.user.email || "",

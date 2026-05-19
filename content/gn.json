@@ -685,7 +685,7 @@
     },
     "contactInfo": {
       "address": "Coronel Felipe Toledo, Barrio La Concordia, Mariano Roque Alonso",
-      "phone": "+595 981 234 567",
+      "phone": "+595 984 009 751",
       "email": "info@tiendaelviajero.com.py",
       "hours": "Lun-Vie 08:00-19:00 | Sáb 08:00-17:00 | Dom 09:00-13:00"
     },
@@ -734,7 +734,7 @@
       "title": "Marandu Ñe'ẽmondo",
       "address": "Coronel Felipe Toledo, Barrio La Concordia, Mariano Roque Alonso",
       "hours": "Lun-Vie 08:00-19:00 | Sáb 08:00-17:00 | Dom 09:00-13:00",
-      "phone": "+595 981 234 567",
+      "phone": "+595 984 009 751",
       "email": "info@tiendaelviajero.com.py"
     },
     "mapSection": {
@@ -955,7 +955,7 @@
     "contactSection": {
       "address": "Coronel Felipe Toledo, Barrio La Concordia",
       "hours": "Lun-Vie 08:00-19:00 | Sáb 08:00-17:00 | Dom 09:00-13:00",
-      "phone": "+595 981 234 567",
+      "phone": "+595 984 009 751",
       "email": "info@tiendaelviajero.com.py"
     },
     "socialLinks": {
@@ -1331,7 +1331,7 @@
     "ogImage": "/images/og-viajero.png",
     "schemaName": "El Viajero",
     "schemaDescription": "Tienda de camping, pesca, accesorios outdoor y más en Paraguay.",
-    "schemaTelephone": "+595****4567",
+    "schemaTelephone": "+595 984 009751",
     "schemaEmail": "info@tiendaelviajero.com.py",
     "schemaPriceRange": "Gs. 35.000 - Gs. 2.000.000"
   },

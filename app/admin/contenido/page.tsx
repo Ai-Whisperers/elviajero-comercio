@@ -361,11 +361,17 @@ function ContentEditor() {
 
           {section === "seo" && (
             <div className="space-y-4">
-              <p className="text-sm text-zinc-400">Meta tags para SEO — aparecen en &lt;title&gt; y &lt;meta description&gt; (requiere rebuild para actualizar)</p>
+              <p className="text-sm text-zinc-400">Meta tags para SEO — aparecen en &lt;title&gt; y &lt;meta description&gt;</p>
               <Input label="Home: Title" value={get("home.seo.title")} onChange={v => set("home.seo.title", v)} placeholder={deepGet(defaultContent, "home.seo.title")} />
               <Input label="Home: Description" multiline value={get("home.seo.description")} onChange={v => set("home.seo.description", v)} placeholder={deepGet(defaultContent, "home.seo.description")} />
               <Input label="Tienda: Title" value={get("tienda.seo.title")} onChange={v => set("tienda.seo.title", v)} placeholder={deepGet(defaultContent, "tienda.seo.title")} />
               <Input label="Tienda: Description" multiline value={get("tienda.seo.description")} onChange={v => set("tienda.seo.description", v)} placeholder={deepGet(defaultContent, "tienda.seo.description")} />
+              <Input label="Blog: Title" value={get("blog.title")} onChange={v => set("blog.title", v)} placeholder={deepGet(defaultContent, "blog.title")} />
+              <Input label="Blog: Subtitle" value={get("blog.subtitle")} onChange={v => set("blog.subtitle", v)} placeholder={deepGet(defaultContent, "blog.subtitle")} />
+              <Input label="Nosotros: Title" value={get("about.seo.title")} onChange={v => set("about.seo.title", v)} placeholder={deepGet(defaultContent, "about.seo.title")} />
+              <Input label="Nosotros: Description" multiline value={get("about.seo.description")} onChange={v => set("about.seo.description", v)} placeholder={deepGet(defaultContent, "about.seo.description")} />
+              <Input label="Contacto: Title" value={get("contacto.seo.title")} onChange={v => set("contacto.seo.title", v)} placeholder={deepGet(defaultContent, "contacto.seo.title")} />
+              <Input label="Contacto: Description" multiline value={get("contacto.seo.description")} onChange={v => set("contacto.seo.description", v)} placeholder={deepGet(defaultContent, "contacto.seo.description")} />
             </div>
           )}
 

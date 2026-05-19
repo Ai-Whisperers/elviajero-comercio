@@ -1,106 +1,78 @@
 import { NextRequest, NextResponse } from "next/server"
 import { createAdminClient } from "@ai-whisperers/auth/supabase/admin"
+import { requireAdmin } from "@/lib/auth"
+import { BlogPostSchema } from "@/lib/validation"
 
-// Blog posts stored in ej_site_config under key "blog_posts"
-const KEY = "blog_posts"
-
-export async function GET() {
+export async function GET(req: NextRequest) {
+  const { error: authError } = await requireAdmin(req)
+  if (authError) return authError
   const supabase = createAdminClient()
-  const { data, error } = await supabase
-    .from("ej_site_config")
-    .select("value")
-    .eq("key", KEY)
-    .single()
-  
-  if (error && error.code !== "PGRST116") {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+  const { searchParams } = new URL(req.url)
+  const slug = searchParams.get("slug")
+
+  if (slug) {
+    const { data, error } = await supabase.from("ej_blog_posts").select("*").eq("slug", slug).single()
+    if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+    return NextResponse.json(data)
   }
-  
-  const posts: any[] = data?.value ?? []
-  return NextResponse.json(posts.sort((a: any, b: any) => (b.created_at || "").localeCompare(a.created_at || "")))
+
+  const { data, error } = await supabase
+    .from("ej_blog_posts")
+    .select("*")
+    .order("created_at", { ascending: false })
+  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  return NextResponse.json(data ?? [])
 }
 
 export async function POST(req: NextRequest) {
+  const { error: authError } = await requireAdmin(req)
+  if (authError) return authError
   const supabase = createAdminClient()
   const body = await req.json()
-  
-  // Get existing posts, add new one
-  const { data: existing } = await supabase
-    .from("ej_site_config")
-    .select("value")
-    .eq("key", KEY)
-    .single()
-  
-  const posts: any[] = existing?.value ?? []
-  
-  // Check slug uniqueness
-  if (posts.find(p => p.slug === body.slug)) {
-    return NextResponse.json({ error: "Ya existe un post con ese slug" }, { status: 400 })
+
+  const parsed = BlogPostSchema.safeParse(body)
+  if (!parsed.success) {
+    return NextResponse.json({ error: parsed.error.issues.map((e) => e.message).join(", ") }, { status: 400 })
   }
-  
-  posts.push({
-    slug: body.slug,
-    title: body.title,
-    excerpt: body.excerpt || "",
-    content: body.content || "",
-    category: body.category || "general",
-    image_url: body.image_url || "",
-    author: body.author || "",
-    published: body.published || false,
-    created_at: body.created_at || new Date().toISOString().split("T")[0],
-  })
-  
-  const { error } = await supabase
-    .from("ej_site_config")
-    .upsert({ key: KEY, value: posts }, { onConflict: "key" })
-  
+
+  const { data, error } = await supabase
+    .from("ej_blog_posts")
+    .insert({ ...parsed.data, created_at: new Date().toISOString() })
+    .select()
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
-  return NextResponse.json({ success: true })
+  return NextResponse.json(data?.[0] ?? null)
 }
 
 export async function PATCH(req: NextRequest) {
+  const { error: authError } = await requireAdmin(req)
+  if (authError) return authError
   const supabase = createAdminClient()
   const body = await req.json()
-  const slug = body.original_slug || body.slug
-  
-  const { data: existing } = await supabase
-    .from("ej_site_config")
-    .select("value")
-    .eq("key", KEY)
-    .single()
-  
-  const posts: any[] = existing?.value ?? []
-  const idx = posts.findIndex(p => p.slug === slug)
-  if (idx === -1) return NextResponse.json({ error: "Post not found" }, { status: 404 })
-  
-  posts[idx] = { ...posts[idx], ...body }
-  
-  const { error } = await supabase
-    .from("ej_site_config")
-    .upsert({ key: KEY, value: posts }, { onConflict: "key" })
-  
+  const { id, ...updates } = body
+  if (!id) return NextResponse.json({ error: "id required" }, { status: 400 })
+
+  const parsed = BlogPostSchema.partial().safeParse(updates)
+  if (!parsed.success) {
+    return NextResponse.json({ error: parsed.error.issues.map((e) => e.message).join(", ") }, { status: 400 })
+  }
+
+  const { data, error } = await supabase
+    .from("ej_blog_posts")
+    .update({ ...parsed.data, updated_at: new Date().toISOString() })
+    .eq("id", id)
+    .select()
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
-  return NextResponse.json({ success: true })
+  return NextResponse.json(data?.[0] ?? null)
 }
 
 export async function DELETE(req: NextRequest) {
+  const { error: authError } = await requireAdmin(req)
+  if (authError) return authError
   const supabase = createAdminClient()
-  const slug = new URL(req.url).searchParams.get("slug")
-  if (!slug) return NextResponse.json({ error: "slug required" }, { status: 400 })
-  
-  const { data: existing } = await supabase
-    .from("ej_site_config")
-    .select("value")
-    .eq("key", KEY)
-    .single()
-  
-  const posts: any[] = existing?.value ?? []
-  const filtered = posts.filter(p => p.slug !== slug)
-  
-  const { error } = await supabase
-    .from("ej_site_config")
-    .upsert({ key: KEY, value: filtered }, { onConflict: "key" })
-  
+  const id = new URL(req.url).searchParams.get("id")
+  if (!id) return NextResponse.json({ error: "id required" }, { status: 400 })
+
+  const { error } = await supabase.from("ej_blog_posts").delete().eq("id", id)
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
   return NextResponse.json({ success: true })
 }

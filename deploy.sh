@@ -1,7 +1,9 @@
 #!/bin/bash
 set -euo pipefail
 cd "$(dirname "$0")"
+set -a
 source ./.env
+set +a
 
 VERSION=$(git rev-parse --short HEAD)
 DATE=$(date +%Y%m%d-%H%M)

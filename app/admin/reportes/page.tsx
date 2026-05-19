@@ -3,7 +3,7 @@ import { useAdminAuth } from "@/components/admin/admin-layout"
 import { exportOrdersCSV } from "@/lib/export-csv"
 import { useState, useEffect } from "react"
 import {
-  PageHeader, StatCard, EmptyState, StatsGridSkeleton,
+  PageHeader, StatCard, EmptyState, StatsGridSkeleton, TableSkeleton,
 } from "@/components/admin/ui"
 
 function RevenueChart({ data }: { data: { label: string; value: number }[] }) {
@@ -102,6 +102,8 @@ export default function SalesReport() {
   })
   const [dateTo, setDateTo] = useState(() => new Date().toISOString().split("T")[0])
 
+  const [exchangeRate, setExchangeRate] = useState(7400)
+
   useEffect(() => {
     if (!authed) return
     setLoading(true)
@@ -109,6 +111,10 @@ export default function SalesReport() {
       if (data) setOrders(data.map((o: any) => ({ ...o, items: typeof o.items === "string" ? JSON.parse(o.items) : o.items, date: o.created_at || o.date })))
       setLoading(false)
     })
+    fetch("/api/admin/config?key=exchange_rate")
+      .then(r => r.json())
+      .then(val => { if (typeof val === "number" && val > 0) setExchangeRate(val) })
+      .catch(() => {})
   }, [authed])
 
   const filtered = orders.filter(o => o.date >= dateFrom && o.date <= dateTo + "T23:59:59")
@@ -126,7 +132,7 @@ export default function SalesReport() {
 
   const dayData = Object.entries(byDay).sort(([a], [b]) => a.localeCompare(b)).map(([label, v]) => ({
     label: label.slice(5),
-    value: v.total / 7400,
+    value: v.total / exchangeRate,
   }))
   const topProducts = Object.entries(productCount).sort((a, b) => b[1] - a[1]).slice(0, 15)
   const totalRevenue = filtered.reduce((s, o) => s + parseNum(o.total), 0)
@@ -196,8 +202,8 @@ export default function SalesReport() {
             />
             <StatCard
               label="En USD"
-              value={"$" + (totalRevenue / 7400).toFixed(2)}
-              sub={"Tasa: 7.400 PYG"}
+              value={"$" + (totalRevenue / exchangeRate).toFixed(2)}
+              sub={`Tasa: ${exchangeRate.toLocaleString("es-PY")} PYG`}
               color="blue"
               icon={
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -232,8 +238,97 @@ export default function SalesReport() {
             <h2 className="text-base font-bold text-white">Productos más vendidos</h2>
           </div>
           <TopProducts products={topProducts} total={filtered.length} />
+
+          {/* Profit margin section */}
+          <ProfitabilityReport />
         </>
       )}
     </>
+  )
+}
+
+function ProfitabilityReport() {
+  const [products, setProducts] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetch("/api/admin/products?perPage=1000")
+      .then(r => r.json())
+      .then(res => {
+        setProducts(res.data || [])
+        setLoading(false)
+      })
+      .catch(() => setLoading(false))
+  }, [])
+
+  const parseNum = (s: string) => parseInt((s || "0").replace(/[^0-9]/g, ""), 10) || 0
+
+  const withMargin = products
+    .map(p => {
+      const price = parseNum(p.price)
+      const cost = parseNum(p.cost_price)
+      const margin = price > 0 && cost > 0 ? Math.round(((price - cost) / price) * 100) : null
+      return { ...p, price, cost, margin }
+    })
+    .filter(p => p.margin !== null)
+    .sort((a, b) => (b.margin || 0) - (a.margin || 0))
+
+  const totalRevenue = withMargin.reduce((s, p) => s + p.price * (p.stock || 0), 0)
+  const totalCost = withMargin.reduce((s, p) => s + p.cost * (p.stock || 0), 0)
+  const avgMargin = withMargin.length > 0 ? Math.round(withMargin.reduce((s, p) => s + (p.margin || 0), 0) / withMargin.length) : 0
+
+  return (
+    <div className="mt-10">
+      <div className="mb-4 flex items-center justify-between">
+        <h2 className="text-base font-bold text-white">Rentabilidad por producto</h2>
+        <div className="flex items-center gap-4 text-xs text-zinc-500">
+          <span>Stock valorizado: <strong className="text-white">Gs. {totalRevenue.toLocaleString("es-PY")}</strong></span>
+          <span>Costo total: <strong className="text-white">Gs. {totalCost.toLocaleString("es-PY")}</strong></span>
+          <span>Margen promedio: <strong className={avgMargin >= 30 ? "text-emerald-400" : avgMargin >= 15 ? "text-amber-400" : "text-red-400"}>{avgMargin}%</strong></span>
+        </div>
+      </div>
+
+      {loading ? (
+        <TableSkeleton rows={5} cols={5} />
+      ) : withMargin.length === 0 ? (
+        <EmptyState icon={<span className="text-2xl">📈</span>} title="Sin datos de costos" description="Cargá el costo de los productos para ver el margen de rentabilidad" />
+      ) : (
+        <div className="overflow-x-auto rounded-xl border border-zinc-800/60">
+          <table className="w-full text-sm">
+            <thead className="border-b border-zinc-800/60 bg-zinc-900/80 text-left">
+              <tr>
+                <th className="px-4 py-3 text-xs font-semibold text-zinc-500 uppercase">Producto</th>
+                <th className="px-4 py-3 text-xs font-semibold text-zinc-500 uppercase text-right">Precio</th>
+                <th className="px-4 py-3 text-xs font-semibold text-zinc-500 uppercase text-right">Costo</th>
+                <th className="px-4 py-3 text-xs font-semibold text-zinc-500 uppercase text-right">Margen</th>
+                <th className="px-4 py-3 text-xs font-semibold text-zinc-500 uppercase text-right">Stock</th>
+                <th className="px-4 py-3 text-xs font-semibold text-zinc-500 uppercase text-right">Valor stock</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-zinc-800/60">
+              {withMargin.slice(0, 20).map(p => (
+                <tr key={p.id} className="hover:bg-zinc-800/30">
+                  <td className="px-4 py-3">
+                    <div className="flex items-center gap-3">
+                      {p.image_url && <img src={p.image_url} alt="" className="w-8 h-8 rounded-lg object-cover" />}
+                      <span className="text-white font-medium">{p.name}</span>
+                    </div>
+                  </td>
+                  <td className="px-4 py-3 text-right text-zinc-300">Gs. {p.price.toLocaleString("es-PY")}</td>
+                  <td className="px-4 py-3 text-right text-zinc-400">Gs. {p.cost.toLocaleString("es-PY")}</td>
+                  <td className="px-4 py-3 text-right">
+                    <span className={`font-bold ${p.margin >= 40 ? "text-emerald-400" : p.margin >= 20 ? "text-amber-400" : "text-red-400"}`}>
+                      {p.margin}%
+                    </span>
+                  </td>
+                  <td className="px-4 py-3 text-right text-zinc-400">{p.stock}</td>
+                  <td className="px-4 py-3 text-right text-white font-semibold">Gs. {(p.price * p.stock).toLocaleString("es-PY")}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
   )
 }

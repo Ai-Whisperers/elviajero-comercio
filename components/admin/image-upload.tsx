@@ -1,6 +1,5 @@
 "use client"
 import { useState } from "react"
-import { createClient } from "@ai-whisperers/auth/supabase/client"
 
 interface ImageUploadProps {
   onUpload: (url: string) => void
@@ -10,19 +9,24 @@ interface ImageUploadProps {
 export function ImageUpload({ onUpload, currentUrl }: ImageUploadProps) {
   const [uploading, setUploading] = useState(false)
   const [preview, setPreview] = useState(currentUrl || "")
-  const supabase = createClient()
 
   const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
     setUploading(true)
-    const ext = file.name.split(".").pop()
-    const fileName = `products/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`
-    const { error } = await supabase.storage.from("ej_images").upload(fileName, file)
-    if (error) { setUploading(false); console.error(error); return }
-    const { data: { publicUrl } } = supabase.storage.from("ej_images").getPublicUrl(fileName)
-    setPreview(publicUrl)
-    onUpload(publicUrl)
+
+    const form = new FormData()
+    form.append("file", file)
+
+    const res = await fetch("/api/upload-image", { method: "POST", body: form })
+    const data = await res.json()
+    if (!res.ok) {
+      setUploading(false)
+      console.error("Upload failed:", data.error)
+      return
+    }
+    setPreview(data.url)
+    onUpload(data.url)
     setUploading(false)
   }
 

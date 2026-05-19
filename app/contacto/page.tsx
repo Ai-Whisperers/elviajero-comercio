@@ -7,7 +7,7 @@ import { useContent } from "@/lib/content-provider"
 export default function ContactoPage() {
   const { get } = useContent()
   const info = get("contacto.info") || {}
-  const waLink = "https://wa.me/" + (info.whatsapp || process.env.NEXT_PUBLIC_WHATSAPP || "595981234567")
+  const waLink = "https://wa.me/" + (info.whatsapp || process.env.NEXT_PUBLIC_WHATSAPP || "595984009751")
   const contacto = get("contacto") || {}
 
   return (

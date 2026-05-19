@@ -116,7 +116,7 @@ export async function POST(req: NextRequest) {
       const { name, email, password, phone } = body
       const { error } = await supabase.auth.signUp({
         email, password,
-        options: { data: { name, phone }, emailRedirectTo: `https://el-viajero.paragu-ai.com/auth/callback` }
+        options: { data: { name, phone },        emailRedirectTo: `https://tiendaelviajero.com.py/auth/callback`}
       })
       if (error) {
         if (error.message.includes('already registered')) return NextResponse.json({ ok: false, error: 'Email ya registrado' }, { status: 409 })

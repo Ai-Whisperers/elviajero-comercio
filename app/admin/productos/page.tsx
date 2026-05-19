@@ -6,7 +6,7 @@ import { ImageUpload } from "@/components/admin/image-upload"
 import {
   Pencil, Copy, Trash2, Search, X, Plus, Package, Upload,
   ChevronLeft, ChevronRight, AlertCircle, Download, FileSpreadsheet,
-  BarChart3, History, PackagePlus, TrendingUp,
+  BarChart3, History, PackagePlus, TrendingUp, Layers,
 } from "lucide-react"
 
 function formatPrice(s: string) {
@@ -49,6 +49,7 @@ export default function AdminProducts() {
   const [priceHistoryProduct, setPriceHistoryProduct] = useState<string>("")
   const fileRef = useRef<HTMLInputElement>(null)
   const PER_PAGE = 20
+  const [categoryList, setCategoryList] = useState<string[]>([])
 
   const notify = useCallback((type: "success" | "error", text: string) => {
     setNotification({ type, text })
@@ -63,7 +64,14 @@ export default function AdminProducts() {
       .catch(() => { setLoading(false); notify("error", "Error al cargar productos") })
   }, [page, notify])
 
-  useEffect(() => { if (authed) load() }, [authed, load])
+  const loadCategories = useCallback(() => {
+    fetch("/api/admin/categories")
+      .then(r => r.json())
+      .then((data: any[]) => { setCategoryList((data || []).map((c: any) => c.name).filter(Boolean)) })
+      .catch(() => {})
+  }, [])
+
+  useEffect(() => { if (authed) { load(); loadCategories() } }, [authed, load, loadCategories])
 
   const save = async () => {
     if (editing === null) return
@@ -278,7 +286,7 @@ export default function AdminProducts() {
               <select value={bulkCategory} onChange={e => setBulkCategory(e.target.value)}
                 className="rounded-lg bg-zinc-800 px-3 py-2 text-sm text-white border border-zinc-700/60 focus:outline-none focus:border-emerald-500/50">
                 <option value="">Todas las categorías</option>
-                {categories.map(c => <option key={c} value={c}>{c}</option>)}
+                {categoryList.map(c => <option key={c} value={c}>{c}</option>)}
               </select>
             </div>
             <div>
@@ -306,11 +314,25 @@ export default function AdminProducts() {
               className="rounded-lg bg-zinc-800 px-3 py-2 text-sm text-white border border-zinc-700/60 focus:outline-none focus:border-emerald-500/50" />
             <input value={newForm.cost_price || ""} onChange={e => setNewForm({...newForm, cost_price: e.target.value})} placeholder="Costo (Gs.)"
               className="rounded-lg bg-zinc-800 px-3 py-2 text-sm text-white border border-zinc-700/60 focus:outline-none focus:border-emerald-500/50" />
-            <input value={newForm.category || ""} onChange={e => setNewForm({...newForm, category: e.target.value})} placeholder="Categoría"
+            <select value={newForm.category || ""} onChange={e => setNewForm({...newForm, category: e.target.value})}
+              className="rounded-lg bg-zinc-800 px-3 py-2 text-sm text-white border border-zinc-700/60 focus:outline-none focus:border-emerald-500/50">
+              <option value="">Categoría</option>
+              {categoryList.map(c => <option key={c} value={c}>{c}</option>)}
+            </select>
+            <input value={newForm.b2b_price || ""} onChange={e => setNewForm({...newForm, b2b_price: e.target.value})} placeholder="Precio B2B (Gs.)"
               className="rounded-lg bg-zinc-800 px-3 py-2 text-sm text-white border border-zinc-700/60 focus:outline-none focus:border-emerald-500/50" />
             <input type="number" value={newForm.stock ?? 0} onChange={e => setNewForm({...newForm, stock: parseInt(e.target.value) || 0})} placeholder="Stock"
               className="rounded-lg bg-zinc-800 px-3 py-2 text-sm text-white border border-zinc-700/60 focus:outline-none focus:border-emerald-500/50" />
+            <input type="number" value={newForm.stock_alert_threshold ?? 5} onChange={e => setNewForm({...newForm, stock_alert_threshold: parseInt(e.target.value) || 0})} placeholder="Umbral alerta"
+              className="rounded-lg bg-zinc-800 px-3 py-2 text-sm text-white border border-zinc-700/60 focus:outline-none focus:border-emerald-500/50" />
           </div>
+          <textarea
+            value={newForm.variants || ""}
+            onChange={e => setNewForm({...newForm, variants: e.target.value})}
+            placeholder='Variantes JSON opcional: [{"sku":"CAM-RED-M","color":"Rojo","size":"M","price":"Gs. 450000","stock":5}]'
+            rows={2}
+            className="w-full rounded-lg bg-zinc-800 px-3 py-2 text-xs text-white border border-zinc-700/60 focus:outline-none focus:border-emerald-500/50 font-mono"
+          />
           <div className="flex items-center gap-3">
             <ImageUpload onUpload={(url) => setNewForm({...newForm, image_url: url})} />
             <button onClick={add}
@@ -397,6 +419,7 @@ export default function AdminProducts() {
                 <th className="w-28 px-3 py-3 text-left text-[10px] font-semibold text-zinc-500 uppercase tracking-wider">Precio</th>
                 <th className="w-24 px-3 py-3 text-left text-[10px] font-semibold text-zinc-500 uppercase tracking-wider">Costo</th>
                 <th className="w-16 px-3 py-3 text-left text-[10px] font-semibold text-zinc-500 uppercase tracking-wider">Margen</th>
+                <th className="w-20 px-3 py-3 text-left text-[10px] font-semibold text-zinc-500 uppercase tracking-wider">B2B</th>
                 <th className="w-24 px-3 py-3 text-left text-[10px] font-semibold text-zinc-500 uppercase tracking-wider">Stock</th>
                 <th className="w-28 px-3 py-3 text-left text-[10px] font-semibold text-zinc-500 uppercase tracking-wider">Categoría</th>
                 <th className="w-56 px-3 py-3 text-right text-[10px] font-semibold text-zinc-500 uppercase tracking-wider">Acciones</th>
@@ -411,6 +434,7 @@ export default function AdminProducts() {
                     <td className="px-3 py-3"><div className="h-4 w-20 rounded bg-zinc-800" /></td>
                     <td className="px-3 py-3"><div className="h-4 w-14 rounded bg-zinc-800" /></td>
                     <td className="px-3 py-3"><div className="h-4 w-10 rounded bg-zinc-800" /></td>
+                    <td className="px-3 py-3"><div className="h-4 w-14 rounded bg-zinc-800" /></td>
                     <td className="px-3 py-3"><div className="h-4 w-16 rounded bg-zinc-800" /></td>
                     <td className="px-3 py-3"><div className="h-4 w-20 rounded bg-zinc-800" /></td>
                     <td className="px-3 py-3"><div className="h-4 w-40 rounded bg-zinc-800 ml-auto" /></td>
@@ -418,7 +442,7 @@ export default function AdminProducts() {
                 ))
               ) : filtered.length === 0 ? (
                 <tr>
-                  <td colSpan={8} className="px-6 py-16 text-center">
+                  <td colSpan={9} className="px-6 py-16 text-center">
                     <Package className="w-8 h-8 text-zinc-600 mx-auto mb-3" />
                     <p className="text-sm text-zinc-500">
                       {search ? "No se encontraron productos con ese filtro" : "Sin productos todavía"}
@@ -459,19 +483,40 @@ export default function AdminProducts() {
                             : "—"}
                         </td>
                         <td className="px-3 py-2">
-                          <input type="number" value={form.stock ?? p.stock} onChange={e => setForm({...form, stock: parseInt(e.target.value) || 0})}
-                            className="w-16 rounded-lg bg-zinc-800 px-2.5 py-1.5 text-sm text-white border border-zinc-700/60 focus:outline-none focus:border-emerald-500/50" />
-                        </td>
-                        <td className="px-3 py-2">
-                          <input value={form.category || p.category} onChange={e => setForm({...form, category: e.target.value})}
+                          <input value={form.b2b_price ?? p.b2b_price ?? ""} onChange={e => setForm({...form, b2b_price: e.target.value})}
                             className="w-full rounded-lg bg-zinc-800 px-2.5 py-1.5 text-sm text-white border border-zinc-700/60 focus:outline-none focus:border-emerald-500/50" />
                         </td>
+                        <td className="px-3 py-2">
+                          <div className="flex items-center gap-2">
+                            <input type="number" value={form.stock ?? p.stock} onChange={e => setForm({...form, stock: parseInt(e.target.value) || 0})}
+                              className="w-16 rounded-lg bg-zinc-800 px-2.5 py-1.5 text-sm text-white border border-zinc-700/60 focus:outline-none focus:border-emerald-500/50" />
+                            <span className="text-zinc-600 text-[10px]">umbral</span>
+                            <input type="number" value={form.stock_alert_threshold ?? p.stock_alert_threshold ?? 5} onChange={e => setForm({...form, stock_alert_threshold: parseInt(e.target.value) || 0})}
+                              className="w-14 rounded-lg bg-zinc-800 px-2 py-1.5 text-xs text-white border border-zinc-700/60 focus:outline-none focus:border-emerald-500/50" />
+                          </div>
+                        </td>
+                        <td className="px-3 py-2">
+                          <select value={form.category || p.category || ""} onChange={e => setForm({...form, category: e.target.value})}
+                            className="w-full rounded-lg bg-zinc-800 px-2.5 py-1.5 text-sm text-white border border-zinc-700/60 focus:outline-none focus:border-emerald-500/50">
+                            <option value="">—</option>
+                            {categoryList.map(c => <option key={c} value={c}>{c}</option>)}
+                          </select>
+                        </td>
                         <td className="px-3 py-2 text-right">
-                          <div className="inline-flex items-center gap-1.5">
-                            <button onClick={save}
-                              className="rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-emerald-500 transition-all">Guardar</button>
-                            <button onClick={() => setEditing(null)}
-                              className="rounded-lg border border-zinc-700/60 px-3 py-1.5 text-xs font-semibold text-zinc-400 hover:text-white transition-all">Cancelar</button>
+                          <div className="space-y-2">
+                            <textarea
+                              value={form.variants || p.variants || ""}
+                              onChange={e => setForm({...form, variants: e.target.value})}
+                              placeholder='Variantes JSON'
+                              rows={2}
+                              className="w-full rounded-lg bg-zinc-800 px-2 py-1 text-[10px] text-white border border-zinc-700/60 focus:outline-none focus:border-emerald-500/50 font-mono"
+                            />
+                            <div className="inline-flex items-center gap-1.5">
+                              <button onClick={save}
+                                className="rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-emerald-500 transition-all">Guardar</button>
+                              <button onClick={() => setEditing(null)}
+                                className="rounded-lg border border-zinc-700/60 px-3 py-1.5 text-xs font-semibold text-zinc-400 hover:text-white transition-all">Cancelar</button>
+                            </div>
                           </div>
                         </td>
                       </>
@@ -491,6 +536,14 @@ export default function AdminProducts() {
                         <td className="px-3 py-2.5">
                           <div className="font-medium text-white text-sm leading-tight">{p.name || <span className="text-zinc-600 italic">Sin nombre</span>}</div>
                           {p.brand && <div className="text-[11px] text-zinc-500 mt-0.5">{p.brand}</div>}
+                          {p.variants && (
+                            <div className="mt-1">
+                              <span className="inline-flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                                <Layers className="w-3 h-3" />
+                                {Array.isArray(JSON.parse(p.variants)) ? JSON.parse(p.variants).length : "?"} variantes
+                              </span>
+                            </div>
+                          )}
                         </td>
                         <td className="px-3 py-2.5">
                           <span className="font-semibold text-white text-sm">{p.price || <span className="text-zinc-600">—</span>}</span>
@@ -510,6 +563,9 @@ export default function AdminProducts() {
                               </span>
                             ) : <span className="text-zinc-600 text-xs">—</span>
                           })()}
+                        </td>
+                        <td className="px-3 py-2.5">
+                          <span className="text-xs text-zinc-400">{p.b2b_price || <span className="text-zinc-600">—</span>}</span>
                         </td>
                         <td className="px-3 py-2.5">
                           <div className="flex items-center gap-1">
@@ -543,7 +599,7 @@ export default function AdminProducts() {
                               title="Historial de precios">
                               <History className="w-4 h-4" />
                             </button>
-                            <button onClick={() => { setForm({name: p.name, price: p.price, cost_price: p.cost_price || "", stock: p.stock, category: p.category, image_url: p.image_url}); setEditing(i) }}
+                            <button onClick={() => { setForm({name: p.name, price: p.price, cost_price: p.cost_price || "", b2b_price: p.b2b_price || "", stock: p.stock, stock_alert_threshold: p.stock_alert_threshold ?? 5, category: p.category, image_url: p.image_url}); setEditing(i) }}
                               className="rounded-lg p-1.5 text-zinc-500 hover:text-blue-400 hover:bg-blue-500/10 transition-all"
                               title="Editar producto">
                               <Pencil className="w-4 h-4" />

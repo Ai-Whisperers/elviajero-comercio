@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from "next/server"
+import { requireAdmin } from "@/lib/auth"
 
 export async function POST(req: NextRequest) {
   try {
+  const { error: authError } = await requireAdmin(req)
+  if (authError) return authError
     const { name, current } = await req.json()
     if (!name) return NextResponse.json({ error: "name required" }, { status: 400 })
 

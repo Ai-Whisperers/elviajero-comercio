@@ -57,7 +57,7 @@ export function KitsCarousel({
                   )}
                 </div>
                 <a
-                  href={`https://wa.me/${whatsappPhone || "595981234567"}?text=${encodeURIComponent(item.whatsappText || `Hola! Quiero info sobre ${item.title}`)}`}
+                  href={`https://wa.me/${whatsappPhone || "595984009751"}?text=${encodeURIComponent(item.whatsappText || `Hola! Quiero info sobre ${item.title}`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="mt-5 inline-flex items-center justify-center gap-2 rounded-lg border border-accent px-6 py-2.5 text-sm font-semibold text-accent hover:bg-accent/5 active:scale-[0.97] transition-all sm:self-start"

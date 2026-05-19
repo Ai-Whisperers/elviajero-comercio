@@ -288,9 +288,24 @@ const statusOptions = [
   { key: "cancelado", label: "Cancelado", icon: "❌" },
 ]
 
+const paymentStatusColors: Record<string, string> = {
+  pending: "bg-amber-500/10 text-amber-400 border-amber-500/20",
+  paid: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+  verified: "bg-blue-500/10 text-blue-400 border-blue-500/20",
+  rejected: "bg-red-500/10 text-red-400 border-red-500/20",
+}
+
+const paymentStatusLabels: Record<string, string> = {
+  pending: "Pendiente",
+  paid: "Pagado",
+  verified: "Verificado",
+  rejected: "Rechazado",
+}
+
 export function OrderCard({
   order,
   onStatusChange,
+  onPaymentStatusChange,
   onNoteToggle,
   noteInput,
   noteText,
@@ -300,6 +315,7 @@ export function OrderCard({
 }: {
   order: any
   onStatusChange: (id: string, status: string) => void
+  onPaymentStatusChange: (id: string, paymentStatus: string) => void
   onNoteToggle: (id: string) => void
   noteInput: string | null
   noteText: string
@@ -308,6 +324,7 @@ export function OrderCard({
   onNoteClose: () => void
 }) {
   const id = order.id?.slice(0, 8)
+  const paymentStatus = order.payment_status || "pending"
   return (
     <div className="rounded-xl border border-zinc-800/60 bg-zinc-900/50 p-5 hover:border-zinc-700/60 transition-all group">
       <div className="flex items-center justify-between mb-3">
@@ -319,11 +336,16 @@ export function OrderCard({
             #{id}
           </Link>
         </div>
-        <span className="text-xs text-zinc-500">
-          {order.created_at
-            ? new Date(order.created_at).toLocaleDateString("es", { day: "numeric", month: "short", year: "numeric" })
-            : ""}
-        </span>
+        <div className="flex items-center gap-2">
+          <span className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-semibold ${paymentStatusColors[paymentStatus] || paymentStatusColors.pending}`}>
+            {paymentStatusLabels[paymentStatus] || "Pendiente"}
+          </span>
+          <span className="text-xs text-zinc-500">
+            {order.created_at
+              ? new Date(order.created_at).toLocaleDateString("es", { day: "numeric", month: "short", year: "numeric" })
+              : ""}
+          </span>
+        </div>
       </div>
 
       <div className="flex items-start justify-between gap-4">
@@ -350,6 +372,15 @@ export function OrderCard({
             onChange={(v) => onStatusChange(order.id, v)}
             options={statusOptions}
           />
+          <select
+            value={paymentStatus}
+            onChange={(e) => onPaymentStatusChange(order.id, e.target.value)}
+            className={`rounded-lg border px-2 py-1 text-[10px] font-medium outline-none cursor-pointer ${paymentStatusColors[paymentStatus] || paymentStatusColors.pending}`}
+          >
+            {Object.entries(paymentStatusLabels).map(([key, label]) => (
+              <option key={key} value={key}>{label}</option>
+            ))}
+          </select>
           <div className="flex items-center gap-2">
             <button
               onClick={() => onNoteToggle(order.id)}

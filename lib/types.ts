@@ -10,4 +10,5 @@ export interface CartItem {
   image?: string
   category?: string
   priceBefore?: string
+  variant?: string
 }

@@ -122,7 +122,16 @@ async function handleStripe(items: any[], total: string, customer: any) {
     })
   }
 
-  const amountUsd = Math.round((parseFloat(total.replace(/[^0-9]/g, '')) / 7400) * 100)
+  // Fetch exchange rate from config
+  let rate = 7400
+  try {
+    const { createAdminClient } = await import("@ai-whisperers/auth/supabase/admin")
+    const supabase = createAdminClient()
+    const { data } = await supabase.from("ej_site_config").select("value").eq("key", "exchange_rate").single()
+    if (data?.value && typeof data.value === "number" && data.value > 0) rate = data.value
+  } catch {}
+
+  const amountUsd = Math.round((parseFloat(total.replace(/[^0-9]/g, '')) / rate) * 100)
 
   const res = await fetch('https://api.stripe.com/v1/checkout/sessions', {
     method: 'POST',

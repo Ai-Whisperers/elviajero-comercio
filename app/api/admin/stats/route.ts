@@ -1,28 +1,37 @@
-import { NextResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
 import { createAdminClient } from "@ai-whisperers/auth/supabase/admin"
+import { requireAdmin } from "@/lib/auth"
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+    const { error: authError } = await requireAdmin(req)
+  if (authError) return authError
   const supabase = createAdminClient()
-  const [usersRes, prodsRes, ordersRes] = await Promise.all([
-    supabase.from("ej_customers").select("*", { count: "exact", head: true }),
+
+  const monthAgo = new Date(Date.now() - 30 * 86400000).toISOString()
+
+  const [usersRes, prodsRes, ordersCountRes, recentOrdersRes] = await Promise.all([
+    supabase.from("profiles").select("*", { count: "exact", head: true }),
     supabase.from("ej_products").select("*", { count: "exact", head: true }),
-    supabase.from("ej_orders").select("total, status, created_at").order("created_at", { ascending: false }),
+    supabase.from("ej_orders").select("*", { count: "exact", head: true }),
+    supabase
+      .from("ej_orders")
+      .select("total, status, created_at")
+      .gte("created_at", monthAgo)
+      .order("created_at", { ascending: false })
+      .limit(100),
   ])
 
   const parse = (s: string) => parseInt(s.replace(/[^0-9]/g, ""), 10) || 0
-  const ords = ordersRes.data ?? []
-  const totalRevenue = ords.reduce((s, o) => s + parse(o.total), 0)
-  const monthAgo = new Date(Date.now() - 30 * 86400000).toISOString()
-  const monthOrds = ords.filter((o: any) => o.created_at >= monthAgo)
-  const monthRevenue = monthOrds.reduce((s, o) => s + parse(o.total), 0)
+  const monthOrds = recentOrdersRes.data ?? []
+  const monthRevenue = monthOrds.reduce((s: number, o: any) => s + parse(o.total), 0)
 
   return NextResponse.json({
     users: usersRes.count ?? 0,
     products: prodsRes.count ?? 0,
-    orders: ords.length,
-    revenue: totalRevenue,
+    orders: ordersCountRes.count ?? 0,
     monthOrders: monthOrds.length,
+    monthRevenueFormatted: "Gs. " + monthRevenue.toLocaleString("es-PY"),
     monthRevenue,
-    recentOrders: ords.slice(0, 5),
+    recentOrders: monthOrds.slice(0, 5),
   })
 }

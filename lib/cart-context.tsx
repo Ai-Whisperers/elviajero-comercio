@@ -43,14 +43,15 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const addItem = useCallback((item: Omit<CartItem, "quantity">) => {
     setItems((prev) => {
-      const exist = prev.find((i) => i.name === item.name)
+      const key = item.name + (item.variant ? "::" + item.variant : "")
+      const exist = prev.find((i) => i.name + (i.variant ? "::" + i.variant : "") === key)
       if (exist) {
-        if (typeof window !== "undefined") window.dispatchEvent(new CustomEvent("cart-toast", { detail: { message: item.name + " (+1) en el carrito", type: "success" } }))
-        try { if (typeof window !== "undefined" && (window as any).gtag) { const p = parseInt(item.priceGs?.toString() || "0", 10); (window as any).gtag("event", "add_to_cart", { currency: "PYG", value: p / 7400, items: [{ item_id: item.name, item_name: item.name, price: p / 7400, quantity: 1 }] }) } } catch {}
-        return prev.map((i) => (i.name === item.name ? { ...i, quantity: i.quantity + 1 } : i))
+        if (typeof window !== "undefined") window.dispatchEvent(new CustomEvent("cart-toast", { detail: { message: item.name + (item.variant ? " (" + item.variant + ")" : "") + " (+1) en el carrito", type: "success" } }))
+        try { if (typeof window !== "undefined" && (window as any).gtag) { const p = parseInt(item.priceGs?.toString() || "0", 10); (window as any).gtag("event", "add_to_cart", { currency: "PYG", value: p / 7400, items: [{ item_id: item.name, item_name: item.name, item_variant: item.variant || undefined, price: p / 7400, quantity: 1 }] }) } } catch {}
+        return prev.map((i) => (i.name + (i.variant ? "::" + i.variant : "") === key ? { ...i, quantity: i.quantity + 1 } : i))
       }
-      if (typeof window !== "undefined") window.dispatchEvent(new CustomEvent("cart-toast", { detail: { message: item.name + " agregado al carrito", type: "success" } }))
-      try { if (typeof window !== "undefined" && (window as any).gtag) { const p = parseInt(item.priceGs?.toString() || "0", 10); (window as any).gtag("event", "add_to_cart", { currency: "PYG", value: p / 7400, items: [{ item_id: item.name, item_name: item.name, price: p / 7400, quantity: 1 }] }) } } catch {}
+      if (typeof window !== "undefined") window.dispatchEvent(new CustomEvent("cart-toast", { detail: { message: item.name + (item.variant ? " (" + item.variant + ")" : "") + " agregado al carrito", type: "success" } }))
+      try { if (typeof window !== "undefined" && (window as any).gtag) { const p = parseInt(item.priceGs?.toString() || "0", 10); (window as any).gtag("event", "add_to_cart", { currency: "PYG", value: p / 7400, items: [{ item_id: item.name, item_name: item.name, item_variant: item.variant || undefined, price: p / 7400, quantity: 1 }] }) } } catch {}
       return [...prev, { ...item, quantity: 1 }]
     })
   }, [])
@@ -60,7 +61,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       const item = prev.find((i) => i.name === name)
       const filtered = prev.filter((i) => i.name !== name)
       if (item && typeof window !== 'undefined') {
-        window.dispatchEvent(new CustomEvent("cart-toast", { detail: { message: item.name + " eliminado del carrito", type: "info" } }))
+        window.dispatchEvent(new CustomEvent("cart-toast", { detail: { message: item.name + (item.variant ? " (" + item.variant + ")" : "") + " eliminado del carrito", type: "info" } }))
       }
       return filtered
     })
@@ -85,7 +86,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const itemCount = items.reduce((sum, i) => sum + i.quantity, 0)
 
   const shareCart = useCallback(() => {
-    const msg = items.map(i => "\u2022 " + i.name + " x" + i.quantity + ": " + i.price).join("\n")
+    const msg = items.map(i => "\u2022 " + i.name + (i.variant ? " (" + i.variant + ")" : "") + " x" + i.quantity + ": " + i.price).join("\n")
     const url = "https://wa.me/?text=" + encodeURIComponent("Mir\u00e1 mi carrito de El Viajero:\n\n" + msg + "\n\nTotal: Gs. " + total.toLocaleString("es-PY"))
     window.open(url, "_blank")
     return url

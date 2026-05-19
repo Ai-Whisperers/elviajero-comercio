@@ -93,7 +93,7 @@ export default function BlogPostPage({ params }: { params: Promise<{ slug: strin
 
   const postContent = fullContent[post.slug]
   const products = c.home?.productCatalog?.products || []
-  const whatsapp = c.home?.productCatalog?.whatsappPhone || "595981234567"
+  const whatsapp = c.home?.productCatalog?.whatsappPhone || "595984009751"
 
   return (
     <>

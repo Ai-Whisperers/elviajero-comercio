@@ -1,9 +1,16 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { createServerClient } from '@supabase/ssr'
+import { rateLimit } from '@/lib/rate-limit'
 
 export async function middleware(request: NextRequest) {
   const { pathname } = new URL(request.url)
+
+  // Rate limit all admin paths
+  if (pathname.startsWith('/admin') || pathname.startsWith('/api/admin')) {
+    const { allowed, response } = rateLimit(request)
+    if (!allowed) return response
+  }
 
   // Public paths — no auth needed
   const publicPaths = [
@@ -40,6 +47,23 @@ export async function middleware(request: NextRequest) {
     }
   )
   await supabase.auth.getUser()
+
+  // API admin paths — must be admin
+  if (pathname.startsWith('/api/admin')) {
+    const { data: { session } } = await supabase.auth.getSession()
+    if (!session) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', session.user.id)
+      .single()
+    if (!profile || profile.role !== 'admin') {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+    }
+    return supabaseResponse
+  }
 
   if (isPublic) return supabaseResponse
 

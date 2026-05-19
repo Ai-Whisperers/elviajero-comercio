@@ -110,7 +110,7 @@ function DashboardForm() {
         </div>
       </section>
       <Footer />
-      <WhatsAppFloat phone={c.home?.contact?.whatsapp || process.env.NEXT_PUBLIC_WHATSAPP || "595981234567"} message={c.whatsapp?.defaultMessage || "Hola! Quiero informacion"} />
+      <WhatsAppFloat phone={c.home?.contact?.whatsapp || process.env.NEXT_PUBLIC_WHATSAPP || "595984009751"} message={c.whatsapp?.defaultMessage || "Hola! Quiero informacion"} />
       <CookieConsent />
     </>
   )

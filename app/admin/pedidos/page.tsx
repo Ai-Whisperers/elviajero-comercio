@@ -31,10 +31,24 @@ export default function AdminOrders() {
     if (!authed) return
     setLoading(true)
     fetch("/api/admin/orders").then(r => r.json()).then(data => {
-      if (data) setOrders(data.map((o: any) => ({ ...o, items: typeof o.items === "string" ? JSON.parse(o.items) : o.items })))
+      if (data) {
+        setOrders(data.map((o: any) => ({
+          ...o,
+          items: typeof o.items === "string" ? JSON.parse(o.items) : o.items,
+        })))
+      }
       setLoading(false)
     })
   }, [authed])
+
+  const updatePayment = async (orderId: string, paymentStatus: string) => {
+    await fetch("/api/admin/orders", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: orderId, payment_status: paymentStatus, payment_confirmed_at: paymentStatus === "verified" ? new Date().toISOString() : undefined }),
+    })
+    setOrders(orders.map(o => o.id === orderId ? { ...o, payment_status: paymentStatus } : o))
+  }
 
   const update = async (orderId: string, newStatus: string) => {
     await fetch("/api/admin/orders", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: orderId, status: newStatus }) })
@@ -113,6 +127,7 @@ export default function AdminOrders() {
                 key={o.id}
                 order={o}
                 onStatusChange={(id, s) => update(id, s)}
+                onPaymentStatusChange={(id, ps) => updatePayment(id, ps)}
                 onNoteToggle={(id) => { setNoteInput(id); setNoteText(o.note || "") }}
                 noteInput={noteInput}
                 noteText={noteText}
