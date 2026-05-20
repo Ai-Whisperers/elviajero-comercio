@@ -3,7 +3,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import {
   LayoutDashboard, ShoppingBag, Users, BarChart3,
-  Package, Tags, Wand2, Image, Upload, FileText,
+  Package, Wand2, Image, Upload, FileText,
   Percent, Star, Briefcase, Activity,
   Settings, UserCog, Mail, Palette,
   Truck, MessageCircle, HeartHandshake, RotateCcw, ShoppingCart, CalendarClock, History,
@@ -11,7 +11,7 @@ import {
 
 const iconMap: Record<string, any> = {
   LayoutDashboard, ShoppingBag, Users, BarChart3,
-  Package, Tags, Wand2, Image, Upload, FileText,
+  Package, Wand2, Image, Upload, FileText,
   Percent, Star, Briefcase, Activity,
   Settings, UserCog, Mail, Palette,
   Truck, MessageCircle, HeartHandshake, RotateCcw, ShoppingCart, CalendarClock, History,
@@ -37,7 +37,6 @@ const SECTIONS = [
       { href: "/admin/zonas-delivery", label: "Zonas Delivery", icon: "Truck" },
       { href: "/admin/staff", label: "Equipo", icon: "Users" },
       { href: "/admin/facturacion", label: "Facturación", icon: "FileText" },
-      { href: "/admin/categorias", label: "Categorías", icon: "Tags" },
       { href: "/admin/enriquecer", label: "Enriquecer", icon: "Wand2" },
       { href: "/admin/fotos", label: "Fotos", icon: "Image" },
       { href: "/admin/importar", label: "Importar", icon: "Upload" },
