@@ -48,7 +48,7 @@ function CheckoutForm() {
 
   // Fetch delivery zones from admin config
   useEffect(() => {
-    fetch("/api/admin/delivery-zones")
+    fetch("/api/delivery-zones")
       .then(r => r.json())
       .then((zones: DeliveryZone[]) => {
         if (Array.isArray(zones) && zones.length > 0) {

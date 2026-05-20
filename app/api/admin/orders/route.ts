@@ -30,8 +30,6 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const { error: authError } = await requireAdmin(req)
-  if (authError) return authError
   const supabase = createAdminClient()
   const body = await req.json()
 
