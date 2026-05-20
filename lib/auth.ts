@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { createServerClient } from "@supabase/ssr"
+import { createClient } from "@supabase/supabase-js"
 
 /**
  * Validates that the incoming request has an authenticated admin session.
@@ -9,6 +10,38 @@ import { createServerClient } from "@supabase/ssr"
 export async function requireAdmin(req: NextRequest) {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL!
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
+
+  async function validateBearerToken(token: string) {
+    const userResp = await fetch(`${url}/auth/v1/user`, {
+      headers: { apikey: anonKey, Authorization: `Bearer ${token}` },
+      cache: "no-store",
+    })
+    if (!userResp.ok) return null
+    const user = await userResp.json()
+    if (!user?.id) return null
+
+    const admin = createClient(url, serviceKey, { auth: { persistSession: false } })
+    const { data: profile } = await admin
+      .from("profiles")
+      .select("role")
+      .eq("id", user.id)
+      .single()
+
+    if (!profile || !["admin", "ventas", "bodega"].includes(profile.role)) return null
+    return user
+  }
+
+  const authHeader = req.headers.get("authorization") || ""
+  const bearerToken = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : ""
+  if (bearerToken) {
+    try {
+      const bearerUser = await validateBearerToken(bearerToken)
+      if (bearerUser) return { error: null, user: bearerUser }
+    } catch (err) {
+      console.error("[requireAdmin] bearer validation failed", err)
+    }
+  }
 
   const response = NextResponse.next()
   const supabase = createServerClient(url, anonKey, {

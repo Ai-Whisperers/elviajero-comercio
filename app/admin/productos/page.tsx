@@ -26,6 +26,28 @@ function calcMargin(price: string, cost: string) {
   return Math.round(((p - c) / p) * 100)
 }
 
+function adminHeaders(extra: Record<string, string> = {}) {
+  if (typeof window === "undefined") return extra
+  try {
+    const stored = localStorage.getItem("elviajero_admin_session")
+    if (!stored) return extra
+    const session = JSON.parse(stored)
+    const accessToken = session?.access_token || session
+    return accessToken ? { ...extra, Authorization: `Bearer ${accessToken}` } : extra
+  } catch {
+    return extra
+  }
+}
+
+function adminFetch(input: RequestInfo | URL, init: RequestInit = {}) {
+  const baseHeaders = init.headers instanceof Headers
+    ? Object.fromEntries(init.headers.entries())
+    : Array.isArray(init.headers)
+      ? Object.fromEntries(init.headers)
+      : (init.headers as Record<string, string> | undefined) || {}
+  return fetch(input, { ...init, headers: adminHeaders(baseHeaders) })
+}
+
 export default function AdminProducts() {
   const { authed } = useAdminAuth()
   const [items, setItems] = useState<any[]>([])
@@ -58,14 +80,14 @@ export default function AdminProducts() {
 
   const load = useCallback(() => {
     setLoading(true)
-    fetch(`/api/admin/products?page=${page}&perPage=${PER_PAGE}`)
+    adminFetch(`/api/admin/products?page=${page}&perPage=${PER_PAGE}`)
       .then(r => r.json())
       .then(res => { if (res.data) { setItems(res.data); setTotal(res.total) }; setLoading(false) })
       .catch(() => { setLoading(false); notify("error", "Error al cargar productos") })
   }, [page, notify])
 
   const loadCategories = useCallback(() => {
-    fetch("/api/admin/categories")
+    adminFetch("/api/admin/categories")
       .then(r => r.json())
       .then((data: any[]) => { setCategoryList((data || []).map((c: any) => c.name).filter(Boolean)) })
       .catch(() => {})
@@ -76,7 +98,7 @@ export default function AdminProducts() {
   const save = async () => {
     if (editing === null) return
     const item = items[editing]
-    const res = await fetch("/api/admin/products", {
+    const res = await adminFetch("/api/admin/products", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id: item.id, ...form })
@@ -93,7 +115,7 @@ export default function AdminProducts() {
 
   const add = async () => {
     if (!newForm.name) return notify("error", "El nombre es obligatorio")
-    const res = await fetch("/api/admin/products", {
+    const res = await adminFetch("/api/admin/products", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newForm)
@@ -111,7 +133,7 @@ export default function AdminProducts() {
 
   const remove = async (id: string) => {
     if (!confirm("¿Eliminar este producto?")) return
-    await fetch("/api/admin/products?id=" + id, { method: "DELETE" })
+    await adminFetch("/api/admin/products?id=" + id, { method: "DELETE" })
     setItems(items.filter(p => p.id !== id))
     notify("success", "Producto eliminado")
   }
@@ -119,7 +141,7 @@ export default function AdminProducts() {
   const duplicate = async (p: any) => {
     const { id, created_at, ...rest } = p
     rest.name = p.name + " (copia)"
-    const res = await fetch("/api/admin/products", {
+    const res = await adminFetch("/api/admin/products", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(rest)
@@ -139,7 +161,7 @@ export default function AdminProducts() {
     for (const p of target) {
       const priceNum = parsePrice(p.price)
       const newPrice = Math.round(priceNum * (1 + bulkPercent / 100))
-      await fetch("/api/admin/products", {
+      await adminFetch("/api/admin/products", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: p.id, price: formatPrice(String(newPrice)) })
@@ -161,7 +183,7 @@ export default function AdminProducts() {
     setImporting(true)
     const formData = new FormData()
     formData.append("file", file)
-    const res = await fetch("/api/admin/products/import", { method: "POST", body: formData })
+    const res = await adminFetch("/api/admin/products/import", { method: "POST", body: formData })
     const data = await res.json()
     setImporting(false)
     if (data.ok) {
@@ -174,7 +196,7 @@ export default function AdminProducts() {
   }
 
   const handleStock = async (productId: number) => {
-    const res = await fetch("/api/admin/stock-movements", {
+    const res = await adminFetch("/api/admin/stock-movements", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ product_id: productId, ...stockForm })
@@ -192,7 +214,7 @@ export default function AdminProducts() {
 
   const showPriceHistory = async (product: any) => {
     setPriceHistoryProduct(product.name)
-    const res = await fetch(`/api/admin/products/price-history?product_id=${product.id}`)
+    const res = await adminFetch(`/api/admin/products/price-history?product_id=${product.id}`)
     const data = await res.json()
     setPriceHistory(Array.isArray(data) ? data : [])
   }

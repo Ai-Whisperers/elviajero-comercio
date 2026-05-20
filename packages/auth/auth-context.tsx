@@ -91,28 +91,52 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const login = useCallback(async (email: string, password: string) => {
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password })
-    if (error) {
-      const msg = error.message
-      let friendly = msg
-      if (msg.includes("Invalid login")) friendly = "Credenciales incorrectas"
-      else if (msg.includes("Email not confirmed")) friendly = "Email no confirmado. Revisá tu bandeja de entrada."
-      else if (msg.includes("rate limit")) friendly = "Demasiados intentos. Probá más tarde."
-      return { ok: false, error: friendly }
+    try {
+      const res = await fetch('/api/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'login', email, password }),
+      })
+      const data = await res.json()
+      if (!data.ok) {
+        return { ok: false, error: data.error || 'Error al iniciar sesión' }
+      }
+      const accessToken = data.session?.access_token
+      if (accessToken) {
+        saveToStorage("elviajero_admin_session", data.session)
+      }
+
+      if (data.user) {
+        const u: User = data.user
+        setUser(u)
+        saveToStorage("viajero_user", u)
+        setAddresses(loadFromStorage<any[]>("viajero_addresses_" + u.id, []))
+        setOrders(loadFromStorage<any[]>("viajero_orders_" + u.id, []))
+        return { ok: true }
+      }
+
+      // Backward-compatible fallback for older deployments that only return a session.
+      const meRes = await fetch('/api/auth', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+        },
+        body: JSON.stringify({ action: 'me' }),
+      })
+      const meData = await meRes.json()
+      if (!meData.ok || !meData.user) {
+        return { ok: false, error: 'No se pudo obtener la sesión' }
+      }
+      const u: User = meData.user
+      setUser(u)
+      saveToStorage("viajero_user", u)
+      setAddresses(loadFromStorage<any[]>("viajero_addresses_" + u.id, []))
+      setOrders(loadFromStorage<any[]>("viajero_orders_" + u.id, []))
+      return { ok: true }
+    } catch (e: any) {
+      return { ok: false, error: e.message || 'Error de conexión' }
     }
-    const u: User = {
-      id: data.user.id,
-      email: data.user.email || "",
-      name: data.user.user_metadata?.name || email.split("@")[0],
-      phone: data.user.user_metadata?.phone || "",
-      role: "customer",
-      createdAt: data.user.created_at || "",
-    }
-    setUser(u)
-    saveToStorage("viajero_user", u)
-    setAddresses(loadFromStorage<any[]>("viajero_addresses_" + u.id, []))
-    setOrders(loadFromStorage<any[]>("viajero_orders_" + u.id, []))
-    return { ok: true }
   }, [])
 
   const loginWithGoogle = useCallback(async () => {

@@ -47,6 +47,29 @@ function getTokenClient(token: string) {
   })
 }
 
+async function buildAuthUser(user: any) {
+  const svc = getServiceClient()
+  const { data: profileRow, error: profileError } = await svc
+    .from('profiles')
+    .select('name,phone,role,created_at')
+    .eq('id', user.id)
+    .maybeSingle()
+
+  if (profileError) {
+    console.error('PROFILE QUERY ERROR:', JSON.stringify({ userId: user.id, error: profileError.message }))
+  }
+
+  const profile = (profileRow || {}) as { name?: string; phone?: string; role?: string; created_at?: string }
+  return {
+    id: user.id,
+    name: profile?.name || user.user_metadata?.name || user.email?.split('@')[0] || '',
+    email: user.email,
+    phone: profile?.phone || user.user_metadata?.phone || '',
+    role: profile?.role || 'customer',
+    createdAt: profile?.created_at || user.created_at,
+  }
+}
+
 export async function POST(req: NextRequest) {
   const response = NextResponse.next()
   
@@ -84,35 +107,39 @@ export async function POST(req: NextRequest) {
       }
 
       // Use service role to read profile (bypasses RLS)
-      const svc = getServiceClient()
-      const { data: profileRow } = await svc.from('profiles').select('name,phone,role,created_at').eq('id', user.id).single()
-      const profile = (profileRow || {}) as { name?: string; phone?: string; role?: string; created_at?: string }
-      console.error('PROFILE QUERY:', JSON.stringify({ userId: user.id, profileRow, supaUserKeys: Object.keys(user) }))
       return NextResponse.json({
         ok: true,
-        user: {
-          id: user.id,
-          name: profile?.name || user.email?.split('@')[0] || '',
-          email: user.email,
-          phone: profile?.phone || '',
-          role: profile?.role || 'customer',
-          createdAt: profile?.created_at || user.created_at,
-        },
+        user: await buildAuthUser(user),
       })
     }
 
     if (action === 'login') {
-      const supabase = getSSRClient(req, response)
+      const cookieResponse = NextResponse.next()
+      const supabase = getSSRClient(req, cookieResponse)
       const { email, password } = body
       const { data, error } = await supabase.auth.signInWithPassword({ email, password })
       if (error) return NextResponse.json({ ok: false, error: 'Credenciales incorrectas' }, { status: 401 })
-      return NextResponse.json({
+
+      const appUser = await buildAuthUser(data.user)
+      const loginResponse = NextResponse.json({
         ok: true,
+        user: appUser,
         session: {
           access_token: data.session?.access_token,
           refresh_token: data.session?.refresh_token,
         }
       })
+      cookieResponse.cookies.getAll().forEach((cookie) => loginResponse.cookies.set(cookie))
+      if (data.session?.access_token) {
+        loginResponse.cookies.set('elviajero_admin_token', data.session.access_token, {
+          httpOnly: false,
+          sameSite: 'lax',
+          secure: true,
+          path: '/',
+          maxAge: 60 * 60,
+        })
+      }
+      return loginResponse
     }
 
     if (action === 'register') {

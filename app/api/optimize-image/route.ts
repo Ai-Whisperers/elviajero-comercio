@@ -79,7 +79,7 @@ export async function POST(req: NextRequest) {
     }
 
     // 6. Return both URLs
-    const optimizedUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${optimizedFilename}`
+    const optimizedUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/ej_product_images/${optimizedFilename}`
 
     const response: OptimizeImageResponse = {
       original: imageUrl,

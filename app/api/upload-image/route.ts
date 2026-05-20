@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: uploadError?.message || "Error al subir imagen" }, { status: 500 })
     }
 
-    const publicUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${filename}`
+    const publicUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/ej_product_images/${filename}`
 
     return NextResponse.json({
       url: publicUrl,
