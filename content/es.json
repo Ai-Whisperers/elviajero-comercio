@@ -86,29 +86,55 @@
       "items": [
         {
           "title": "Kit Camping Completo",
-          "description": "Carpa 4 pers + 2 bolsas de dormir + colchon inflable",
+          "description": "Carpa 4 pers + 2 bolsas de dormir + colchon inflable + linterna",
           "price": "Gs. 420.000",
           "priceBefore": "Gs. 500.000",
-          "image": "/images/marketing/promo-kit-camping.png",
+          "image": "/images/marketing/promo-kit-camping.webp",
           "badge": "-15%",
           "whatsappText": "Hola! Quiero info del Kit Camping Completo (Gs. 420.000)"
         },
         {
           "title": "Combo Pesca Inicial",
-          "description": "Caña + caja de herramientas + señuelos. Ideal para empezar.",
+          "description": "Caña + caja de herramientas + señuelos + anzuelos. Ideal para empezar.",
           "price": "Gs. 280.000",
           "priceBefore": "Gs. 310.000",
-          "image": "/images/marketing/promo-combo-pesca.png",
+          "image": "/images/marketing/promo-combo-pesca.webp",
           "badge": "-10%",
           "whatsappText": "Hola! Quiero info del Combo Pesca Inicial (Gs. 280.000)"
         },
         {
           "title": "Kit Explorador",
-          "description": "Mochila 50L + cantimplora + brújula + linterna frontal",
+          "description": "Mochila 50L + cantimplora + brújula + linterna frontal + silbato",
           "price": "Gs. 350.000",
-          "image": "/images/marketing/promo-envio-gratis.png",
+          "image": "/images/marketing/promo-envio-gratis.webp",
           "badge": "NUEVO",
           "whatsappText": "Hola! Quiero info del Kit Explorador (Gs. 350.000)"
+        },
+        {
+          "title": "Pack Electrónica",
+          "description": "Cargador portátil 20000mAh + linterna recargable + pilas recargables",
+          "price": "Gs. 390.000",
+          "priceBefore": "Gs. 450.000",
+          "image": "/images/marketing/promo-kit-camping.webp",
+          "badge": "-13%",
+          "whatsappText": "Hola! Quiero info del Pack Electrónica (Gs. 390.000)"
+        },
+        {
+          "title": "Set Vehículos",
+          "description": "Compresor 12V + cargador USB-auto + organizador + sogas de amarre",
+          "price": "Gs. 250.000",
+          "image": "/images/marketing/promo-envio-gratis.webp",
+          "badge": "OFERTA",
+          "whatsappText": "Hola! Quiero info del Set Vehículos (Gs. 250.000)"
+        },
+        {
+          "title": "Accesorios Esenciales",
+          "description": "Mochila plegable + cantimplora + brújula + silbato + multiherramienta",
+          "price": "Gs. 180.000",
+          "priceBefore": "Gs. 220.000",
+          "image": "/images/marketing/promo-combo-pesca.webp",
+          "badge": "-18%",
+          "whatsappText": "Hola! Quiero info de Accesorios Esenciales (Gs. 180.000)"
         }
       ]
     },
