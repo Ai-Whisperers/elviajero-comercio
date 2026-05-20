@@ -111,7 +111,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
       {mobileMenu && (
         <div className="fixed inset-0 z-40 bg-black/60 lg:hidden" onClick={() => setMobileMenu(false)} />
       )}
-      <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-[#0f0f10] border-r border-zinc-800/60 transform transition-transform duration-200 lg:relative lg:translate-x-0 ${mobileMenu ? 'translate-x-0' : '-translate-x-full'}`}>
+      <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-[#0f0f10] border-r border-zinc-800/60 overflow-hidden transform transition-transform duration-200 lg:relative lg:translate-x-0 ${mobileMenu ? 'translate-x-0' : '-translate-x-full'}`}>
         <AdminSidebar onNavigate={() => setMobileMenu(false)} />
       </div>
       <div className="flex-1 flex flex-col min-w-0">

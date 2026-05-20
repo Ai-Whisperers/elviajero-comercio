@@ -72,7 +72,7 @@ export function AdminSidebar({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = usePathname()
 
   return (
-    <aside className="w-64 bg-[#0f0f10] border-r border-zinc-800/60 min-h-screen flex flex-col">
+    <aside className="w-64 bg-[#0f0f10] border-r border-zinc-800/60 h-screen flex flex-col">
       {/* Brand */}
       <div className="p-5 border-b border-zinc-800/60">
         <Link href="/admin" onClick={onNavigate} className="flex items-center gap-2.5 group">
