@@ -83,7 +83,7 @@ function CheckoutForm() {
     const orderId = "ORD-" + Date.now().toString(36).toUpperCase() + Math.random().toString(36).slice(2, 6).toUpperCase()
 
     // Save order via API route (handles WhatsApp notification to admin)
-    const res = await fetch("/api/admin/orders", {
+    const res = await fetch("/api/orders", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

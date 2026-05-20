@@ -1,91 +1,50 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { notifyStatusChange } from '@/lib/whatsapp'
-import { createClient } from '@ai-whisperers/auth/supabase/server'
-
-async function getUser(supabase: any) {
-  const { data: { session } } = await supabase.auth.getSession()
-  if (!session) return null
-  return session.user
-}
-
-export async function GET(req: NextRequest) {
-  const supabase = await createClient()
-  const user = await getUser(supabase)
-  if (!user) return NextResponse.json({ ok: false, error: 'No autorizado' }, { status: 401 })
-
-  const { data } = await supabase
-    .from('ej_orders')
-    .select('*')
-    .eq('user_id', user.id)
-    .order('created_at', { ascending: false })
-
-  return NextResponse.json((data || []).map((o: any) => ({
-    ...o,
-    items: typeof o.items === 'string' ? JSON.parse(o.items) : o.items,
-    date: o.created_at || o.date,
-  })))
-}
+import { NextRequest, NextResponse } from "next/server"
+import { createAdminClient } from "@ai-whisperers/auth/supabase/admin"
 
 export async function POST(req: NextRequest) {
-  const supabase = await createClient()
-  const user = await getUser(supabase)
-  if (!user) return NextResponse.json({ ok: false, error: 'No autorizado' }, { status: 401 })
+  const supabase = createAdminClient()
+  const body = await req.json()
 
-  try {
-    const body = await req.json()
-    const { items, total, addressId, paymentMethod, note } = body
-    if (!items || !items.length) return NextResponse.json({ ok: false, error: 'Carrito vacío' }, { status: 400 })
-
-    const id = 'ORD-' + Date.now().toString(36).toUpperCase() + Math.random().toString(36).slice(2, 6).toUpperCase()
-    const { error } = await supabase.from('ej_orders').insert({
-      id, user_id: user.id, items: JSON.stringify(items), total: total || '0',
-      status: 'pendiente', address_id: addressId || '', payment_method: paymentMethod || '', note: note || '',
-    })
-
-    if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 })
-
-    // Create in-app notification for admin
-    try {
-      const adminSupabase = await createClient()
-      await adminSupabase.from("ej_notifications").insert({
-        type: "order",
-        title: "Nuevo pedido",
-        body: `Pedido #${id.slice(0, 8)} — Gs. ${total}`,
-        link: `/admin/pedidos/detalle?id=${id}`,
-      })
-    } catch (_) { /* non-critical */ }
-
-    // Notify admin via WhatsApp
-    try {
-      const { notifyNewOrder } = await import("@/lib/whatsapp")
-      notifyNewOrder({
-        id, items, total, status: 'pendiente',
-        customer_name: user.email,
-      })
-    } catch (_) { /* non-critical */ }
-
-    return NextResponse.json({
-      ok: true,
-      order: { id, items, total, status: 'pendiente', addressId: addressId || '', paymentMethod: paymentMethod || '' },
-    })
-  } catch (err) {
-    return NextResponse.json({ ok: false, error: String(err) }, { status: 500 })
+  const orderData = {
+    id: body.id,
+    user_id: body.user_id || null,
+    items: body.items || [],
+    total: body.total || "0",
+    status: body.status || "pendiente",
+    address_id: body.address_id || "",
+    payment_method: body.payment_method || "whatsapp",
+    customer_name: body.customer_name || body.customer?.name || "",
+    customer_phone: body.customer_phone || body.customer?.phone || "",
+    customer_email: body.customer_email || body.customer?.email || "",
+    payment_status: body.payment_status || "pending",
+    payment_proof_url: body.payment_proof_url || "",
+    delivery_zone_id: body.delivery_zone_id || "",
+    delivery_cost: body.delivery_cost || "0",
+    internal_notes: body.note || body.internal_notes || "",
+    promo_code: body.promo_code || null,
+    discount_applied: body.discount_applied || "0",
   }
-}
 
-export async function PATCH(req: NextRequest) {
-  const supabase = await createClient()
-  const user = await getUser(supabase)
-  if (!user) return NextResponse.json({ ok: false, error: 'No autorizado' }, { status: 401 })
+  const { data, error } = await supabase.from("ej_orders").insert(orderData).select()
+  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
+  // Notify admin via WhatsApp
   try {
-    const body = await req.json()
-    const { id, status } = body
-    if (!id) return NextResponse.json({ ok: false, error: 'ID requerido' }, { status: 400 })
-
-    await supabase.from('ej_orders').update({ status: status || 'pendiente' }).eq('id', id).eq('user_id', user.id)
-    return NextResponse.json({ ok: true })
-  } catch (err) {
-    return NextResponse.json({ ok: false, error: String(err) }, { status: 500 })
+    const { notifyNewOrder } = await import("@/lib/whatsapp")
+    await notifyNewOrder(data?.[0] || orderData)
+  } catch (e) {
+    console.error("[whatsapp] Failed to notify admin:", e)
   }
+
+  // Create in-app notification
+  try {
+    await supabase.from("ej_notifications").insert({
+      type: "order",
+      title: "Nuevo pedido",
+      body: `Pedido #${(orderData.id || "").slice(0, 8)} — ${orderData.total}`,
+      link: `/admin/pedidos/detalle?id=${orderData.id}`,
+    })
+  } catch (_) { /* non-critical */ }
+
+  return NextResponse.json(data?.[0] ?? null)
 }
