@@ -1,4 +1,7 @@
 "use client"
+import { useEffect, useRef, useState } from "react"
+import Link from "next/link"
+import Image from "next/image"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { CartSidebar } from "@/components/cart-sidebar"
@@ -14,9 +17,6 @@ import { NewsletterSuccess } from "@/components/ui"
 import { WhatsAppFloat } from "@/components/whatsapp-float"
 import { KitsCarousel } from "@/components/kits-carousel"
 import { useContent } from "@/lib/content-provider"
-import Link from "next/link"
-import Image from "next/image"
-import { useState, useEffect, useRef } from "react"
 
 const CATEGORY_IMAGE_MAP: Record<string, string> = {
   camping: "/images/categories/camping.webp",
@@ -25,7 +25,40 @@ const CATEGORY_IMAGE_MAP: Record<string, string> = {
   electronica: "/images/categories/electronica.webp",
   accesoriosparavehculos: "/images/categories/vehiculos.webp",
 }
-function catSlug(cat: string) { return cat.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z]/g, "") }
+
+const BRAND_LOGOS: Record<string, string> = {
+  bestway: "/images/brands/bestway.webp",
+  fishmaster: "/images/brands/fishmaster.webp",
+  outdoorpro: "/images/brands/outdoorpro.webp",
+  coleman: "/images/brands/coleman.webp",
+  nautika: "/images/brands/nautika.webp",
+}
+
+const DEFAULT_BRANDS = [
+  { name: "Bestway", slug: "bestway", desc: "Equipo camping y outdoor" },
+  { name: "FishMaster", slug: "fishmaster", desc: "Pesca profesional" },
+  { name: "OutdoorPro", slug: "outdoorpro", desc: "Aventura y exploración" },
+  { name: "Coleman", slug: "coleman", desc: "Camping desde 1900" },
+  { name: "Nautika", slug: "nautika", desc: "Acc. náuticos y pesca" },
+  { name: "Chennson", slug: "chennson", desc: "Mochilas y bolsos" },
+  { name: "SleepWell", slug: "sleepwell", desc: "Bolsas de dormir" },
+  { name: "CampMaster", slug: "campmaster", desc: "Sillas y mesas plegables" },
+]
+
+function catSlug(cat: string) {
+  return cat.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z]/g, "")
+}
+
+function BrandCard({ name, slug }: { name: string; slug: string }) {
+  return (
+    <div className="flex flex-col items-center gap-2 rounded-xl border border-border bg-surface p-4 transition-all hover:-translate-y-1 hover:shadow-md">
+      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-xl font-bold text-primary">
+        {name.charAt(0)}
+      </div>
+      <span className="text-xs font-semibold text-foreground text-center">{name}</span>
+    </div>
+  )
+}
 
 function AnimatedStat({ value, label }: { value: string; label: string }) {
   const [display, setDisplay] = useState("0")
@@ -62,20 +95,54 @@ function AnimatedStat({ value, label }: { value: string; label: string }) {
   )
 }
 
+function ProductCard({ p }: { p: any }) {
+  return (
+    <Link key={p.id} href={`/producto/${p.slug || p.id}`}
+      className="group rounded-xl border border-border bg-white p-4 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md">
+      <div className="relative mb-3 flex h-44 items-center justify-center overflow-hidden rounded-lg bg-surface-light">
+        {p.image_url ? (
+          <Image src={p.image_url} alt={p.name} fill className="object-contain p-2 transition-all duration-300 group-hover:scale-105" sizes="(max-width: 768px) 100vw, 25vw" />
+        ) : (
+          <svg className="h-12 w-12 text-muted-foreground/30" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+        )}
+        {p.is_new && (
+          <span className="absolute left-2 top-2 rounded-full bg-primary px-2 py-0.5 text-[10px] font-bold uppercase text-white">Nuevo</span>
+        )}
+      </div>
+      <h3 className="text-sm font-semibold text-foreground line-clamp-2">{p.name}</h3>
+      <p className="mt-1 text-xs text-muted-foreground">{p.brand}</p>
+      <p className="mt-2 text-sm font-bold text-primary">
+        {p.price_before && <span className="mr-1 text-xs text-muted-foreground line-through">{p.price_before}</span>}
+        {p.price}
+      </p>
+    </Link>
+  )
+}
+
 function HomePage() {
   const { get } = useContent()
   const h = get("home") || {}
-  const products: any[] = h.productCatalog?.products || []
   const categories: any[] = h.productCatalog?.categories || []
   const testimonials: any[] = h.testimonials?.items || []
   const features: any[] = h.features?.items || []
   const stats: any[] = h.stats?.items || []
-  const promotions: any[] = get("promociones.promotions") || []
-  const newArrivals = products.filter((p: any) => p.isNew)
-  const featuredProducts = products.filter((p: any) => p.featured)
-  const bestSellers = products.filter((p: any) => p.featured).slice(0, 4)
   const statsTitle = h.stats?.title || ""
   const [cartOpen, setCartOpen] = useState(false)
+  const [dbProducts, setDbProducts] = useState<any[]>([])
+  const [loaded, setLoaded] = useState(false)
+
+  useEffect(() => {
+    fetch("/api/home").then(r => r.json()).then(json => {
+      setDbProducts(json.products || [])
+      setLoaded(true)
+    }).catch(() => setLoaded(true))
+  }, [])
+
+  const newArrivals = dbProducts.filter((p: any) => p.is_new)
+  const featuredProducts = dbProducts.filter((p: any) => p.featured)
+  const bestSellers = [...dbProducts].sort((a: any, b: any) => (b.stock || 0) - (a.stock || 0)).slice(0, 8)
+
+  const allBrands = DEFAULT_BRANDS
 
   return (
     <>
@@ -115,7 +182,7 @@ function HomePage() {
                   <div className="group h-full rounded-2xl border border-border bg-surface p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-primary/20">
                     <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary transition-all group-hover:bg-primary group-hover:text-white">
                       <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-                        <path d="M9 12l2 2l5-5M21 12a9 9 0 1 1-18 0a9 9 0 0 1 18 0z"/>
+                        <path d="M9 12l2 2l5-5M21 12a9 9 0 1 1-18 0a9 9 0 0 1 18 0z" />
                       </svg>
                     </div>
                     <h3 className="mb-2 text-lg font-bold text-foreground">{f.title}</h3>
@@ -128,7 +195,7 @@ function HomePage() {
         </section>
       )}
 
-      {/* Product Catalog */}
+      {/* Product Categories */}
       <section className="bg-background py-16">
         <div className="mx-auto max-w-7xl px-4">
           <FadeUp>
@@ -137,9 +204,8 @@ function HomePage() {
           </FadeUp>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {categories.map((cat: any) => (
-                <Link key={cat} href={`/tienda#${catSlug(cat)}`}
-                className="group relative flex h-52 items-end overflow-hidden rounded-2xl bg-slate-800 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
-              >
+              <Link key={cat} href={`/tienda#${catSlug(cat)}`}
+                className="group relative flex h-52 items-end overflow-hidden rounded-2xl bg-slate-800 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent z-10" />
                 {CATEGORY_IMAGE_MAP[catSlug(cat)] && (
                   <Image src={CATEGORY_IMAGE_MAP[catSlug(cat)]} alt={cat} fill className="object-cover transition-all duration-500 group-hover:scale-105 brightness-90 group-hover:brightness-100" sizes="(max-width: 768px) 100vw, 25vw" />
@@ -154,64 +220,72 @@ function HomePage() {
         </div>
       </section>
 
-      {/* New Arrivals */}
-      {newArrivals.length > 0 && (
-        <section className="bg-surface py-16">
+      {/* Marcas que trabajamos */}
+      <section className="bg-surface py-16">
+        <div className="mx-auto max-w-7xl px-4">
+          <FadeUp>
+            <h2 className="mb-3 text-center text-3xl font-bold text-foreground">Marcas que trabajamos</h2>
+            <p className="mb-10 text-center text-muted-foreground">Productos de calidad de las mejores marcas</p>
+          </FadeUp>
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-8">
+            {allBrands.map((brand) => (
+              <BrandCard key={brand.slug} name={brand.name} slug={brand.slug} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Más Vendidos */}
+      {loaded && bestSellers.length > 0 && (
+        <section className="bg-background py-16">
           <div className="mx-auto max-w-7xl px-4">
-            <FadeUp>
-              <h2 className="mb-8 text-center text-3xl font-bold text-foreground">{h.newArrivals?.title || "Novedades"}</h2>
-            </FadeUp>
+            <div className="mb-8 flex items-center justify-between">
+              <FadeUp>
+                <h2 className="text-3xl font-bold text-foreground">Más Vendidos</h2>
+              </FadeUp>
+              <Link href="/tienda" className="text-sm font-semibold text-primary hover:underline">Ver todos</Link>
+            </div>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {newArrivals.slice(0, 8).map((p: any) => (
-                <Link key={p.id} href={`/producto/${p.slug || p.id}`}
-                  className="group rounded-xl border border-border bg-white p-4 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md">
-                  <div className="relative mb-3 flex h-44 items-center justify-center overflow-hidden rounded-lg bg-surface-light">
-                    {p.image_url ? (
-                      <Image src={p.image_url} alt={p.name} fill className="object-contain p-2 transition-all duration-300 group-hover:scale-105" sizes="(max-width: 768px) 100vw, 25vw" />
-                    ) : (
-                      <svg className="h-12 w-12 text-muted-foreground/30" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                    )}
-                    {p.isNew && (
-                      <span className="absolute left-2 top-2 rounded-full bg-primary px-2 py-0.5 text-[10px] font-bold uppercase text-white">Nuevo</span>
-                    )}
-                  </div>
-                  <h3 className="text-sm font-semibold text-foreground line-clamp-2">{p.name}</h3>
-                  <p className="mt-1 text-xs text-muted-foreground">{p.brand}</p>
-                  <p className="mt-2 text-sm font-bold text-primary">
-                    {p.price_before && <span className="mr-1 text-xs text-muted-foreground line-through">{p.price_before}</span>}
-                    {p.price}
-                  </p>
-                </Link>
+              {bestSellers.slice(0, 8).map((p: any) => (
+                <ProductCard key={p.id} p={p} />
               ))}
             </div>
           </div>
         </section>
       )}
 
-      {/* Featured Products */}
-      {featuredProducts.length > 0 && (
+      {/* Nuevo en Stock */}
+      {loaded && newArrivals.length > 0 && (
+        <section className="bg-surface py-16">
+          <div className="mx-auto max-w-7xl px-4">
+            <div className="mb-8 flex items-center justify-between">
+              <FadeUp>
+                <h2 className="text-3xl font-bold text-foreground">{h.newArrivals?.title || "Nuevo en Stock"}</h2>
+              </FadeUp>
+              <Link href="/tienda" className="text-sm font-semibold text-primary hover:underline">Ver todos</Link>
+            </div>
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {newArrivals.slice(0, 8).map((p: any) => (
+                <ProductCard key={p.id} p={p} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Destacados */}
+      {loaded && featuredProducts.length > 0 && (
         <section className="bg-background py-16">
           <div className="mx-auto max-w-7xl px-4">
-            <FadeUp>
-              <h2 className="mb-8 text-center text-3xl font-bold text-foreground">{h.featuredProducts?.title || "Destacados"}</h2>
-            </FadeUp>
+            <div className="mb-8 flex items-center justify-between">
+              <FadeUp>
+                <h2 className="text-3xl font-bold text-foreground">{h.featuredProducts?.title || "Destacados"}</h2>
+              </FadeUp>
+              <Link href="/tienda" className="text-sm font-semibold text-primary hover:underline">Ver todos</Link>
+            </div>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {featuredProducts.slice(0, 8).map((p: any) => (
-                <Link key={p.id} href={`/producto/${p.slug || p.id}`}
-                  className="group rounded-xl border border-border bg-white p-4 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md">
-                  <div className="relative mb-3 flex h-44 items-center justify-center overflow-hidden rounded-lg bg-surface-light">
-                    {p.image_url ? (
-                      <Image src={p.image_url} alt={p.name} fill className="object-contain p-2 transition-all duration-300 group-hover:scale-105" sizes="(max-width: 768px) 100vw, 25vw" />
-                    ) : (
-                      <svg className="h-12 w-12 text-muted-foreground/30" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                    )}
-                  </div>
-                  <h3 className="text-sm font-semibold text-foreground line-clamp-2">{p.name}</h3>
-                  <p className="mt-2 text-sm font-bold text-primary">
-                    {p.price_before && <span className="mr-1 text-xs text-muted-foreground line-through">{p.price_before}</span>}
-                    {p.price}
-                  </p>
-                </Link>
+                <ProductCard key={p.id} p={p} />
               ))}
             </div>
           </div>
@@ -231,7 +305,7 @@ function HomePage() {
                   <div className="h-full rounded-xl border border-border bg-white p-6 shadow-sm">
                     <div className="mb-3 flex text-amber-400">
                       {[...Array(t.rating || 5)].map((_, j) => (
-                        <svg key={j} className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        <svg key={j} className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
                       ))}
                     </div>
                     <p className="text-sm text-muted-foreground leading-relaxed">&ldquo;{t.text}&rdquo;</p>
@@ -291,9 +365,7 @@ function HomePage() {
       <Footer />
       <CookieConsent />
       <WhatsAppFloat phone={get("home.contact.whatsapp") || process.env.NEXT_PUBLIC_WHATSAPP || "595984009751"} message={get("whatsapp.defaultMessage") || "Hola! Quiero informacion"} />
-      {h.contact?.map && (
-        <ExitIntentPopup />
-      )}
+      {h.contact?.map && <ExitIntentPopup />}
       <CartSidebar open={cartOpen} onClose={() => setCartOpen(false)} />
     </>
   )
