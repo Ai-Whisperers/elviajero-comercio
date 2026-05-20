@@ -107,8 +107,9 @@ export default function SalesReport() {
   useEffect(() => {
     if (!authed) return
     setLoading(true)
-    fetch("/api/admin/orders").then(r => r.json()).then(data => {
-      if (data) setOrders(data.map((o: any) => ({ ...o, items: typeof o.items === "string" ? JSON.parse(o.items) : o.items, date: o.created_at || o.date })))
+    fetch("/api/admin/orders").then(r => r.json()).then(json => {
+      const data = Array.isArray(json) ? json : json?.data ?? []
+      if (data.length > 0) setOrders(data.map((o: any) => ({ ...o, items: typeof o.items === "string" ? JSON.parse(o.items) : o.items, date: o.created_at || o.date })))
       setLoading(false)
     })
     fetch("/api/admin/config?key=exchange_rate")
