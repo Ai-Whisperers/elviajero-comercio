@@ -11,6 +11,7 @@ export async function requireAdmin(req: NextRequest) {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL!
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
+  const allowedRoles = ["admin", "ventas", "bodega"]
 
   async function validateBearerToken(token: string) {
     const userResp = await fetch(`${url}/auth/v1/user`, {
@@ -22,18 +23,19 @@ export async function requireAdmin(req: NextRequest) {
     if (!user?.id) return null
 
     const admin = createClient(url, serviceKey, { auth: { persistSession: false } })
-    const { data: profile } = await admin
+    const { data: profile, error: profileError } = await admin
       .from("profiles")
       .select("role")
       .eq("id", user.id)
       .single()
 
-    if (!profile || !["admin", "ventas", "bodega"].includes(profile.role)) return null
+    if (profileError || !profile || !allowedRoles.includes(profile.role)) return null
     return user
   }
 
   const authHeader = req.headers.get("authorization") || ""
-  const bearerToken = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : ""
+  const cookieToken = req.cookies.get("elviajero_admin_token")?.value || ""
+  const bearerToken = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : cookieToken
   if (bearerToken) {
     try {
       const bearerUser = await validateBearerToken(bearerToken)
@@ -66,15 +68,16 @@ export async function requireAdmin(req: NextRequest) {
     }
   }
 
-  const { data: profile, error: profileError } = await supabase
+  const admin = createClient(url, serviceKey, { auth: { persistSession: false } })
+  const { data: profile, error: profileError } = await admin
     .from("profiles")
     .select("role")
     .eq("id", user.id)
     .single()
 
-  if (profileError || !profile || profile.role !== "admin") {
+  if (profileError || !profile || !allowedRoles.includes(profile.role)) {
     return {
-      error: NextResponse.json({ error: "Forbidden: admin required", success: false }, { status: 403 }),
+      error: NextResponse.json({ error: "Forbidden: admin role required", success: false }, { status: 403 }),
       user: null,
     }
   }

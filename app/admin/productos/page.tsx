@@ -26,26 +26,60 @@ function calcMargin(price: string, cost: string) {
   return Math.round(((p - c) / p) * 100)
 }
 
-function adminHeaders(extra: Record<string, string> = {}) {
-  if (typeof window === "undefined") return extra
+function getAdminAccessToken() {
+  if (typeof window === "undefined") return ""
   try {
     const stored = localStorage.getItem("elviajero_admin_session")
-    if (!stored) return extra
-    const session = JSON.parse(stored)
-    const accessToken = session?.access_token || session
-    return accessToken ? { ...extra, Authorization: `Bearer ${accessToken}` } : extra
+    if (stored) {
+      const session = JSON.parse(stored)
+      const accessToken = session?.access_token || session
+      if (accessToken) {
+        try {
+          const payload = JSON.parse(atob(accessToken.split(".")[1] || ""))
+          if (!payload?.exp || payload.exp * 1000 > Date.now() + 30_000) return accessToken
+          localStorage.removeItem("elviajero_admin_session")
+        } catch {
+          return accessToken
+        }
+      }
+    }
+    const tokenCookie = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("elviajero_admin_token="))
+    return tokenCookie ? decodeURIComponent(tokenCookie.split("=").slice(1).join("=")) : ""
   } catch {
-    return extra
+    return ""
   }
 }
 
-function adminFetch(input: RequestInfo | URL, init: RequestInit = {}) {
+function adminHeaders(extra: Record<string, string> = {}) {
+  const accessToken = getAdminAccessToken()
+  return accessToken ? { ...extra, Authorization: `Bearer ${accessToken}` } : extra
+}
+
+async function adminFetch(input: RequestInfo | URL, init: RequestInit = {}) {
   const baseHeaders = init.headers instanceof Headers
     ? Object.fromEntries(init.headers.entries())
     : Array.isArray(init.headers)
       ? Object.fromEntries(init.headers)
       : (init.headers as Record<string, string> | undefined) || {}
-  return fetch(input, { ...init, headers: adminHeaders(baseHeaders) })
+  const first = await fetch(input, { ...init, headers: adminHeaders(baseHeaders) })
+  if (first.status !== 401) return first
+
+  // If an old tab has a stale bearer token, remove it and retry once using the
+  // SSR Supabase cookie/session. This prevents false "Error al guardar" after
+  // the local admin token expires while the page remains open.
+  try { localStorage.removeItem("elviajero_admin_session") } catch {}
+  return fetch(input, { ...init, headers: baseHeaders })
+}
+
+async function responseError(res: Response, fallback: string) {
+  try {
+    const data = await res.clone().json()
+    return data?.error || data?.details || data?.hint || fallback
+  } catch {
+    return fallback
+  }
 }
 
 export default function AdminProducts() {
@@ -98,18 +132,20 @@ export default function AdminProducts() {
   const save = async () => {
     if (editing === null) return
     const item = items[editing]
+    const payload = { id: item.id, ...item, ...form }
     const res = await adminFetch("/api/admin/products", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: item.id, ...form })
+      body: JSON.stringify(payload)
     })
     if (res.ok) {
-      items[editing] = { ...item, ...form }
+      const saved = await res.json().catch(() => null)
+      items[editing] = saved?.data ? { ...item, ...saved.data } : { ...item, ...form }
       setItems([...items])
       setEditing(null)
       notify("success", "Producto actualizado")
     } else {
-      notify("error", "Error al guardar")
+      notify("error", await responseError(res, "Error al guardar"))
     }
   }
 
@@ -127,7 +163,7 @@ export default function AdminProducts() {
       setNewForm({})
       notify("success", "Producto creado")
     } else {
-      notify("error", "Error al crear producto")
+      notify("error", await responseError(res, "Error al crear producto"))
     }
   }
 
@@ -151,7 +187,7 @@ export default function AdminProducts() {
       setItems([data, ...items])
       notify("success", "Producto duplicado")
     } else {
-      notify("error", "Error al duplicar")
+      notify("error", await responseError(res, "Error al duplicar"))
     }
   }
 
