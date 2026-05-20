@@ -13,16 +13,10 @@ export async function POST(req: NextRequest) {
     status: body.status || "pendiente",
     address_id: body.address_id || "",
     payment_method: body.payment_method || "whatsapp",
+    note: body.note || body.internal_notes || "",
     customer_name: body.customer_name || body.customer?.name || "",
     customer_phone: body.customer_phone || body.customer?.phone || "",
     customer_email: body.customer_email || body.customer?.email || "",
-    payment_status: body.payment_status || "pending",
-    payment_proof_url: body.payment_proof_url || "",
-    delivery_zone_id: body.delivery_zone_id || "",
-    delivery_cost: body.delivery_cost || "0",
-    internal_notes: body.note || body.internal_notes || "",
-    promo_code: body.promo_code || null,
-    discount_applied: body.discount_applied || "0",
   }
 
   const { data, error } = await supabase.from("ej_orders").insert(orderData).select()
