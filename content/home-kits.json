@@ -1,0 +1,33 @@
+{
+  "kitsCarousel": {
+    "title": "Promociones del Mes",
+    "items": [
+      {
+        "title": "Kit Camping Completo",
+        "description": "Tienda de campaña 4 personas, sábanas, colchoneta y linterna. Todo lo que necesitás para tu primera aventura.",
+        "price": "Gs. 850.000",
+        "priceBefore": "Gs. 1.200.000",
+        "image": "/images/kits/camping-kit.webp",
+        "badge": "OFERTA -30%",
+        "whatsappText": "Hola! Me interesa el Kit Camping Completo por Gs. 850.000. ¿Tienen stock?"
+      },
+      {
+        "title": "Kit Pesca Básico",
+        "description": "Caña de pesca telescópica 2.4m, carrete con línea, señuelos variados y caja de transporte.",
+        "price": "Gs. 450.000",
+        "image": "/images/kits/fishing-kit.webp",
+        "badge": "POPULAR",
+        "whatsappText": "Hola! Quiero info sobre el Kit Pesca Básico por Gs. 450.000. ¿Qué incluye exacto?"
+      },
+      {
+        "title": "Kit Iluminación Solar",
+        "description": "Panel solar 10W con batería, 3 lámparas LED USB y cables de conexión. Ideal para camping sin electricidad.",
+        "price": "Gs. 320.000",
+        "priceBefore": "Gs. 420.000",
+        "image": "/images/kits/solar-lighting-kit.webp",
+        "badge": "AHORRA 25%",
+        "whatsappText": "Hola! Me interesa el Kit Iluminación Solar por Gs. 320.000. ¿Cuánto tiempo de autonomía tiene?"
+      }
+    ]
+  }
+}
