@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
     .order("created_at", { ascending: false })
     .limit(200)
 
-  if (productId) query = query.eq("product_id", parseInt(productId))
+  if (productId) query = query.eq("product_id", productId)
 
   const { data, error } = await query
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
