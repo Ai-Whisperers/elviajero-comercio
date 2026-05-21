@@ -11,7 +11,9 @@
     "build": "next build",
     "start": "next start",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "typecheck": "tsc --noEmit",
+    "test:ci": "jest --ci --runInBand"
   },
   "dependencies": {
     "@ai-whisperers/auth": "^0.2.0",

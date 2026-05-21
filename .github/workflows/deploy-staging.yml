@@ -1,14 +1,10 @@
-name: Deploy production
+name: Deploy staging
 
 on:
-  workflow_run:
-    workflows: [CI]
-    branches: [main]
-    types: [completed]
   workflow_dispatch:
     inputs:
       ref:
-        description: Git ref to deploy. Defaults to main.
+        description: Git ref to deploy to staging. Defaults to main.
         required: false
         default: main
 
@@ -19,38 +15,26 @@ permissions:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  SERVICE_NAME: elviajero_web
-  PRODUCTION_URL: https://tiendaelviajero.com.py
+  SERVICE_NAME: elviajero_staging_web
+  STAGING_URL: https://elviajero-staging.paragu-ai.com
 
 jobs:
-  deploy:
-    name: Build image and update Swarm service
+  deploy-staging:
+    name: Build image and update staging Swarm service
     runs-on: ubuntu-latest
     timeout-minutes: 25
-    if: >-
-      github.event_name == 'workflow_dispatch' ||
-      github.event.workflow_run.conclusion == 'success'
 
     steps:
-      - name: Resolve deployment ref
-        id: ref
-        run: |
-          if [ "${{ github.event_name }}" = "workflow_run" ]; then
-            echo "ref=${{ github.event.workflow_run.head_sha }}" >> "$GITHUB_OUTPUT"
-          else
-            echo "ref=${{ github.event.inputs.ref || 'main' }}" >> "$GITHUB_OUTPUT"
-          fi
-
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          ref: ${{ steps.ref.outputs.ref }}
+          ref: ${{ github.event.inputs.ref || 'main' }}
 
       - name: Resolve image tag
         id: image
         run: |
           SHORT_SHA=$(git rev-parse --short HEAD)
-          IMAGE="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:prod-${SHORT_SHA}"
+          IMAGE="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:staging-${SHORT_SHA}"
           echo "image=$IMAGE" >> "$GITHUB_OUTPUT"
           echo "short_sha=$SHORT_SHA" >> "$GITHUB_OUTPUT"
 
@@ -61,17 +45,17 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push Docker image
+      - name: Build and push staging Docker image
         uses: docker/build-push-action@v6
         with:
           context: .
           push: true
           tags: |
             ${{ steps.image.outputs.image }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:prod-latest
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:staging-latest
           build-args: |
-            NEXT_PUBLIC_SUPABASE_URL=${{ secrets.SUPABASE_URL }}
-            NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}
+            NEXT_PUBLIC_SUPABASE_URL=${{ secrets.STAGING_SUPABASE_URL }}
+            NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.STAGING_SUPABASE_ANON_KEY }}
 
       - name: Setup SSH
         run: |
@@ -80,7 +64,7 @@ jobs:
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -H "${{ secrets.VPS_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null || true
 
-      - name: Deploy to Docker Swarm
+      - name: Deploy to staging service
         run: |
           set -euo pipefail
           SSH_CMD="ssh -o StrictHostKeyChecking=accept-new ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}"
@@ -98,21 +82,20 @@ jobs:
             --update-failure-action rollback \
             '${{ env.SERVICE_NAME }}'"
 
-          echo "=== Waiting for rollout ==="
           $SSH_CMD "docker service ps '${{ env.SERVICE_NAME }}' --no-trunc"
 
-      - name: Verify production health
+      - name: Verify staging health
         run: |
           set -euo pipefail
           for i in {1..20}; do
-            code=$(curl -L -s -o /tmp/health.json -w '%{http_code}' '${{ env.PRODUCTION_URL }}/api/health' || true)
+            code=$(curl -L -s -o /tmp/health.json -w '%{http_code}' '${{ env.STAGING_URL }}/api/health' || true)
             cat /tmp/health.json || true
             if [ "$code" = "200" ] && grep -q '"status":"ok"' /tmp/health.json; then
-              echo "Production health OK"
+              echo "Staging health OK"
               exit 0
             fi
             echo "Health pending ($code), retry $i/20"
             sleep 10
           done
-          echo "Production health failed"
+          echo "Staging health failed"
           exit 1

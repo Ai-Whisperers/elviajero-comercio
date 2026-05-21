@@ -28,6 +28,11 @@ services:
       replicas: 1
       restart_policy:
         condition: any
+      update_config:
+        order: start-first
+        parallelism: 1
+        delay: 10s
+        failure_action: rollback
       resources:
         limits:
           cpus: '1.0'

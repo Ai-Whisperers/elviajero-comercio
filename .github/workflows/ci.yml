@@ -6,9 +6,91 @@ on:
   push:
     branches: [main]
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NEXT_PUBLIC_BASE_URL: https://ci.local
+  NEXT_PUBLIC_SUPABASE_URL: https://placeholder.supabase.co
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: placeholder-anon-key
+  SUPABASE_SERVICE_ROLE_KEY: placeholder-service-role-key
+  EVOLUTION_API_URL: http://localhost:8080
+  EVOLUTION_API_KEY: placeholder-evolution-key
+  EVOLUTION_INSTANCE: elviajero-ci
+  ADMIN_WHATSAPP: "595984009751"
+  NEXT_PUBLIC_WHATSAPP: "595984009751"
+
 jobs:
-  ci:
-    uses: Ai-Whisperers/ci-cd/.github/workflows/ci-nextjs.yml@main
-    with:
-      supabase-url: 'https://placeholder.supabase.co'
-      supabase-anon-key: 'placeholder'
+  quality:
+    name: Typecheck, tests, build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Unit tests
+        run: npm run test:ci
+
+      - name: Production build
+        run: npm run build
+
+  compose:
+    name: Validate Docker Compose files
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    env:
+      NEXT_PUBLIC_BASE_URL: https://ci.local
+      NEXT_PUBLIC_SUPABASE_URL: https://placeholder.supabase.co
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: placeholder-anon-key
+      SUPABASE_SERVICE_ROLE_KEY: placeholder-service-role-key
+      EVOLUTION_API_URL: http://localhost:8080
+      EVOLUTION_API_KEY: placeholder-evolution-key
+      EVOLUTION_INSTANCE: elviajero-ci
+      ADMIN_WHATSAPP: "595984009751"
+      NEXT_PUBLIC_WHATSAPP: "595984009751"
+      IMAGE_TAG: elviajero:ci
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create placeholder env files for compose validation
+        run: |
+          printf '%s\n' \
+            'NODE_ENV=production' \
+            'APP_ENV=production' \
+            'NEXT_PUBLIC_BASE_URL=https://ci.local' \
+            'NEXT_PUBLIC_SUPABASE_URL=https://placeholder.supabase.co' \
+            'NEXT_PUBLIC_SUPABASE_ANON_KEY=placeholder-anon-key' \
+            'SUPABASE_SERVICE_ROLE_KEY=placeholder-service-role-key' \
+            'EVOLUTION_API_URL=http://localhost:8080' \
+            'EVOLUTION_API_KEY=placeholder-evolution-key' \
+            'EVOLUTION_INSTANCE=elviajero-ci' \
+            'ADMIN_WHATSAPP=595984009751' \
+            'NEXT_PUBLIC_WHATSAPP=595984009751' > .env
+          cp .env .env.staging
+
+      - name: Validate production compose
+        run: docker compose -f docker-compose.yml config --quiet
+
+      - name: Validate staging compose
+        run: docker compose -f docker-compose.staging.yml config --quiet
