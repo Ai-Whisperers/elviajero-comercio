@@ -1,0 +1,54 @@
+services:
+  web:
+    build:
+      context: .
+      args:
+        - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
+        - NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+    image: ${IMAGE_TAG:-elviajero:staging}
+    ports: []
+    networks:
+      - agent-net
+    env_file:
+      - .env.staging
+    environment:
+      - NODE_ENV=production
+      - APP_ENV=staging
+      - NEXT_PUBLIC_BASE_URL=${NEXT_PUBLIC_BASE_URL}
+      - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
+      - NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+      - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY}
+      - EVOLUTION_API_URL=${EVOLUTION_API_URL}
+      - EVOLUTION_API_KEY=${EVOLUTION_API_KEY}
+      - EVOLUTION_INSTANCE=${EVOLUTION_INSTANCE}
+      - ADMIN_WHATSAPP=${ADMIN_WHATSAPP}
+      - NEXT_PUBLIC_WHATSAPP=${NEXT_PUBLIC_WHATSAPP}
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: any
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1GB
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.viajero-staging.entrypoints=websecure"
+        - "traefik.http.routers.viajero-staging.rule=Host(`elviajero-staging.paragu-ai.com`)"
+        - "traefik.http.routers.viajero-staging.tls=true"
+        - "traefik.http.routers.viajero-staging.tls.certresolver=letsencryptresolver"
+        - "traefik.http.services.viajero-staging.loadbalancer.server.port=3000"
+        - "traefik.docker.network=agent-net"
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 90s
+networks:
+  agent-net:
+    external: true

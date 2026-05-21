@@ -3,6 +3,8 @@ node_modules/
 *.log
 .env
 .env.local
+.env.staging
+.env.production
 .turbo/
 dist/
 *.tsbuildinfo
