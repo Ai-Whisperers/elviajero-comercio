@@ -4,6 +4,7 @@ export type Section = { key: string; label: string }
 
 export const SECTIONS: Section[] = [
   { key: "general", label: "General" },
+  { key: "branding", label: "Branding / Logo" },
   { key: "hero", label: "Hero / Portada" },
   { key: "categories", label: "Categorías" },
   { key: "about", label: "Nosotros" },
@@ -24,6 +25,9 @@ export const SECTIONS: Section[] = [
   { key: "cookieConsent", label: "Cookies" },
   { key: "newsletter", label: "Newsletter" },
   { key: "blog", label: "Blog" },
+  { key: "storeTexts", label: "Textos Tienda" },
+  { key: "productPage", label: "Página Producto" },
+  { key: "uiLabels", label: "Etiquetas UI" },
   { key: "seo", label: "SEO" },
 ]
 
