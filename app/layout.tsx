@@ -4,6 +4,8 @@ import "./globals.css"
 import { ToastProvider } from "@/components/toast"
 import { ClientProviders } from "@/components/client-providers"
 import { AnalyticsProvider } from "@/components/analytics"
+import { Analytics } from "@vercel/analytics/react"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import content from "@/content/es.json"
 
 const c = content as any
@@ -90,6 +92,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </ClientProviders>
         </ErrorBoundary>
         <AnalyticsProvider />
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )
