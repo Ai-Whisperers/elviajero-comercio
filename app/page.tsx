@@ -27,6 +27,14 @@ const CATEGORY_IMAGE_MAP: Record<string, string> = {
   accesoriosparaviajes: "/images/categories/accesorios.webp",
 }
 
+const DEFAULT_HOME_CATEGORIES = [
+  "Camping",
+  "Pesca",
+  "Equipo táctico/explorador",
+  "Accesorios para viajes",
+  "Accesorios para vehículos",
+]
+
 function catSlug(cat: string) {
   return cat.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z]/g, "")
 }
@@ -38,7 +46,8 @@ function categoryHref(cat: string) {
 function HomePage() {
   const { get } = useContent()
   const h = get("home") || {}
-  const categories: any[] = h.productCatalog?.categories || []
+  const contentCategories: any[] = h.productCatalog?.categories || []
+  const categories: string[] = contentCategories.length > 0 ? contentCategories : DEFAULT_HOME_CATEGORIES
   const blogSection = get("tienda.blog") || {}
   const posts: any[] = blogSection?.index?.posts || []
   const [cartOpen, setCartOpen] = useState(false)
