@@ -11,7 +11,7 @@ export function ShareWishlist({ items }: { items: string[] }) {
 
   const share = () => {
     const msg = products.map((p: any) => "\u2022 " + p.name + " - " + p.price).join("\n")
-    const text = "\u2764\uFE0F Mis favoritos en El Viajero:\n\n" + msg + "\n\nhttps://el-viajero.paragu-ai.com/tienda"
+    const text = "\u2764\uFE0F Mis favoritos en El Viajero:\n\n" + msg + "\n\nhttps://tiendaelviajero.com.py/tienda"
     window.open("https://wa.me/?text=" + encodeURIComponent(text), "_blank")
   }
 

@@ -17,6 +17,7 @@ import { NewsletterSuccess } from "@/components/ui"
 import { WhatsAppFloat } from "@/components/whatsapp-float"
 import { KitsCarousel } from "@/components/kits-carousel"
 import { useContent } from "@/lib/content-provider"
+import { ProductCard } from "@/components/product-card"
 
 const CATEGORY_IMAGE_MAP: Record<string, string> = {
   camping: "/images/categories/camping.webp",
@@ -65,35 +66,16 @@ function AnimatedStat({ value, label }: { value: string; label: string }) {
   )
 }
 
-function ProductCard({ p }: { p: any }) {
-  return (
-    <Link key={p.id} href={`/producto/${p.slug || p.id}`}
-      className="group rounded-xl border border-border bg-white p-4 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md">
-      <div className="relative mb-3 flex h-44 items-center justify-center overflow-hidden rounded-lg bg-surface-light">
-        {p.image_url ? (
-          <Image src={p.image_url} alt={p.name} fill className="object-contain p-2 transition-all duration-300 group-hover:scale-105" sizes="(max-width: 768px) 100vw, 25vw" />
-        ) : (
-          <svg className="h-12 w-12 text-muted-foreground/30" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-        )}
-        {p.is_new && (
-          <span className="absolute left-2 top-2 rounded-full bg-primary px-2 py-0.5 text-[10px] font-bold uppercase text-white">Nuevo</span>
-        )}
-      </div>
-      <h3 className="text-sm font-semibold text-foreground line-clamp-2">{p.name}</h3>
-      <p className="mt-1 text-xs text-muted-foreground">{p.brand}</p>
-      <p className="mt-2 text-sm font-bold text-primary">
-        {p.price_before && <span className="mr-1 text-xs text-muted-foreground line-through">{p.price_before}</span>}
-        {p.price}
-      </p>
-    </Link>
-  )
+function slugify(str: string) {
+  return str.toLowerCase().replace(/[^a-z0-9áéíóúñü]+/g, "-").replace(/-+$/, "")
 }
 
 function HomePage() {
   const { get } = useContent()
   const h = get("home") || {}
   const categories: any[] = h.productCatalog?.categories || []
-  const testimonials: any[] = h.testimonials?.items || []
+  const blogSection = get("tienda.blog") || {}
+  const posts: any[] = blogSection?.index?.posts || []
   const features: any[] = h.features?.items || []
   const stats: any[] = h.stats?.items || []
   const statsTitle = h.stats?.title || ""
@@ -175,9 +157,15 @@ function HomePage() {
               <Link key={cat} href={`/tienda#${catSlug(cat)}`}
                 className="group relative flex h-52 items-end overflow-hidden rounded-2xl bg-slate-800 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent z-10" />
-                {CATEGORY_IMAGE_MAP[catSlug(cat)] && (
-                  <Image src={CATEGORY_IMAGE_MAP[catSlug(cat)]} alt={cat} fill className="object-cover transition-all duration-500 group-hover:scale-105 brightness-90 group-hover:brightness-100" sizes="(max-width: 768px) 100vw, 25vw" />
-                )}
+                {/* Category images: check content overrides first, then fall back to hardcoded map */}
+                {(() => {
+                  const imgKey = catSlug(cat)
+                  const catImages = get("home.categoryImages") || {}
+                  const imgUrl = catImages[imgKey] || CATEGORY_IMAGE_MAP[imgKey]
+                  return imgUrl ? (
+                    <Image src={imgUrl} alt={cat} fill className="object-cover transition-all duration-500 group-hover:scale-105 brightness-90 group-hover:brightness-100" sizes="(max-width: 768px) 100vw, 25vw" />
+                  ) : null
+                })()}
                 <div className="relative z-20 p-5">
                   <h3 className="text-lg font-bold text-white drop-shadow-sm">{cat}</h3>
                   <p className="mt-1 text-sm text-white/80">Ver productos →</p>
@@ -198,9 +186,9 @@ function HomePage() {
               </FadeUp>
               <Link href="/tienda" className="text-sm font-semibold text-primary hover:underline">Ver todos</Link>
             </div>
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {bestSellers.slice(0, 8).map((p: any) => (
-                <ProductCard key={p.id} p={p} />
+                <ProductCard key={p.id} product={{ id: p.id, slug: p.slug, name: p.name, price: p.price, priceBefore: p.price_before, imageUrl: p.image_url, category: p.category, stock: p.stock, specs: p.specs }} onClick={() => {}} />
               ))}
             </div>
           </div>
@@ -217,9 +205,9 @@ function HomePage() {
               </FadeUp>
               <Link href="/tienda" className="text-sm font-semibold text-primary hover:underline">Ver todos</Link>
             </div>
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {newArrivals.slice(0, 8).map((p: any) => (
-                <ProductCard key={p.id} p={p} />
+                <ProductCard key={p.id} product={{ id: p.id, slug: p.slug, name: p.name, price: p.price, priceBefore: p.price_before, imageUrl: p.image_url, category: p.category, stock: p.stock, specs: p.specs }} onClick={() => {}} />
               ))}
             </div>
           </div>
@@ -236,37 +224,55 @@ function HomePage() {
               </FadeUp>
               <Link href="/tienda" className="text-sm font-semibold text-primary hover:underline">Ver todos</Link>
             </div>
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {featuredProducts.slice(0, 8).map((p: any) => (
-                <ProductCard key={p.id} p={p} />
+                <ProductCard key={p.id} product={{ id: p.id, slug: p.slug, name: p.name, price: p.price, priceBefore: p.price_before, imageUrl: p.image_url, category: p.category, stock: p.stock, specs: p.specs }} onClick={() => {}} />
               ))}
             </div>
           </div>
         </section>
       )}
 
-      {/* Testimonials */}
-      {testimonials.length > 0 && (
+      {/* Blog / Guías */}
+      {posts.length > 0 && (
         <section className="bg-surface py-16">
           <div className="mx-auto max-w-7xl px-4">
             <FadeUp>
-              <h2 className="mb-8 text-center text-3xl font-bold text-foreground">{h.testimonials?.title || "Lo que dicen nuestros clientes"}</h2>
+              <h2 className="mb-8 text-center text-3xl font-bold text-foreground">{get("blog.title") || "Blog y Guías"}</h2>
             </FadeUp>
-            <StaggerGrid className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {testimonials.map((t: any, i: number) => (
+            <StaggerGrid className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {posts.slice(0, 4).map((post: any, i: number) => (
                 <StaggerItem key={i}>
-                  <div className="h-full rounded-xl border border-border bg-white p-6 shadow-sm">
-                    <div className="mb-3 flex text-amber-400">
-                      {[...Array(t.rating || 5)].map((_, j) => (
-                        <svg key={j} className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
-                      ))}
+                  <Link href={`/blog/${post.slug}`}
+                    className="group block overflow-hidden rounded-xl border border-border bg-white shadow-sm transition-all hover:-translate-y-1 hover:shadow-md">
+                    <div className="relative aspect-video overflow-hidden bg-muted">
+                      {post.image ? (
+                        <Image src={post.image} alt={post.title} fill className="object-cover transition-transform duration-300 group-hover:scale-105" sizes="(max-width: 768px) 100vw, 25vw" />
+                      ) : (
+                        <div className="flex h-full w-full items-center justify-center">
+                          <svg className="h-10 w-10 text-muted-foreground/30" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" /></svg>
+                        </div>
+                      )}
                     </div>
-                    <p className="text-sm text-muted-foreground leading-relaxed">&ldquo;{t.text}&rdquo;</p>
-                    <p className="mt-4 text-xs font-semibold text-foreground">— {t.name || "Cliente"}</p>
-                  </div>
+                    <div className="p-4">
+                      <div className="mb-2 flex items-center gap-2 text-xs">
+                        <span className="rounded-full bg-primary/10 px-2 py-0.5 font-medium text-primary">{post.category}</span>
+                        <span className="text-muted-foreground">{post.date}</span>
+                      </div>
+                      <h3 className="mb-1 text-sm font-semibold text-foreground line-clamp-2 group-hover:text-primary transition-colors">{post.title}</h3>
+                      <p className="text-xs text-muted-foreground line-clamp-2">{post.excerpt}</p>
+                      <p className="mt-2 text-xs font-medium text-primary group-hover:underline">Leer más →</p>
+                    </div>
+                  </Link>
                 </StaggerItem>
               ))}
             </StaggerGrid>
+            <div className="mt-8 text-center">
+              <Link href="/blog"
+                className="inline-flex h-11 items-center justify-center rounded-xl border border-primary/30 px-6 text-sm font-semibold text-primary hover:bg-primary/5 transition-all">
+                Ver todas las guías
+              </Link>
+            </div>
           </div>
         </section>
       )}

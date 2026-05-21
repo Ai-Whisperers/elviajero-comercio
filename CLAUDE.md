@@ -1,12 +1,12 @@
 # El Viajero — AI Agent Guide
 
 ## Quick Links
-- **Live:** https://el-viajero.paragu-ai.com
+- **Live:** https://tiendaelviajero.com.py
 - **Repo:** github.com/Ai-Whisperers/elviajero-comercio
 - **Local:** /root/elviajero
-- **Docker service:** elviajero_web (2 replicas)
+- **Docker service:** elviajero_web (1 replica)
 - **VPS:** 72.61.44.159
-- **Traefik:** Host(`el-viajero.paragu-ai.com`) || Host(`viajero.paragu-ai.com`)
+- **Traefik:** Host(`tiendaelviajero.com.py`) || Host(`www.tiendaelviajero.com.py`)
 
 ## Architecture
 Cloudflare (DNS, SSL) → VPS → Traefik → elviajero_web:3000

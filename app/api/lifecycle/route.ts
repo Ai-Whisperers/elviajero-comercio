@@ -2,7 +2,7 @@ import { NextResponse } from "next/server"
 import { createAdminClient } from "@ai-whisperers/auth/supabase/admin"
 import { sendWhatsApp } from "@/lib/whatsapp"
 
-const SITE_URL = "https://el-viajero.paragu-ai.com"
+const SITE_URL = "https://tiendaelviajero.com.py"
 
 async function sendReviewRequest(order: any) {
   if (!order.customer_phone || order.customer_phone.length < 8) return false

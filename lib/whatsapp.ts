@@ -93,10 +93,10 @@ export async function notifyNewOrder(order: any) {
     order_id: order.id?.slice(0, 8) || "",
     customer_name: order.customer_name || "",
     total: order.total || "",
-    admin_url: "https://el-viajero.paragu-ai.com/admin/pedidos",
+    admin_url: "https://tiendaelviajero.com.py/admin/pedidos",
   }
   const msg = tpl ? renderTemplate(tpl.message, vars)
-    : `🆕 *Nuevo pedido* #${order.id?.slice(0, 8)}\nTotal: ${order.total}\nPago: ${order.payment_method || 'whatsapp'}\n\nVer en el panel:\nhttps://el-viajero.paragu-ai.com/admin/pedidos`
+    : `🆕 *Nuevo pedido* #${order.id?.slice(0, 8)}\nTotal: ${order.total}\nPago: ${order.payment_method || 'whatsapp'}\n\nVer en el panel:\nhttps://tiendaelviajero.com.py/admin/pedidos`
   await sendWhatsApp(ADMIN_NUMBER, msg)
 }
 
@@ -114,7 +114,7 @@ export async function notifyStatusChange(orderId: string, customerPhone: string,
     customer_name: "",
     tracking_number: extra.tracking_number || "",
     carrier: extra.carrier || "",
-    review_url: "https://el-viajero.paragu-ai.com",
+    review_url: "https://tiendaelviajero.com.py",
   }
 
   let msg: string

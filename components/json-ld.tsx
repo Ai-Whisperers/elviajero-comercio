@@ -22,11 +22,11 @@ export function ProductJsonLd({ productName }: { productName: string }) {
     "brand": { "@type": "Brand", "name": product.brand || "El Viajero" },
     "offers": {
       "@type": "Offer",
-      "price": (parseGs(product.price) / 7400).toFixed(2),
-      "priceCurrency": "USD",
+      "price": parseGs(product.price).toString(),
+      "priceCurrency": "PYG",
       "priceValidUntil": new Date(Date.now() + 365 * 86400000).toISOString().split("T")[0],
       "availability": product.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
-      "url": "https://el-viajero.paragu-ai.com/producto/" + slugify(product.name),
+      "url": "https://tiendaelviajero.com.py/producto/" + slugify(product.name),
     },
   }
 
@@ -46,7 +46,7 @@ export function BreadcrumbJsonLd({ items }: { items: { name: string; url: string
       "@type": "ListItem",
       "position": i + 1,
       "name": item.name,
-      "item": "https://el-viajero.paragu-ai.com" + item.url,
+      "item": "https://tiendaelviajero.com.py" + item.url,
     })),
   }
   return (

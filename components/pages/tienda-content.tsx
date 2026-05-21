@@ -383,8 +383,8 @@ export default function TiendaContent() {
             {/* Product grid */}
             <div className="mt-6">
               {loading ? (
-                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                  {Array.from({ length: 12 }).map((_, i) => (
+                <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+                  {Array.from({ length: 15 }).map((_, i) => (
                     <SkeletonCard key={i} />
                   ))}
                 </div>
@@ -400,7 +400,7 @@ export default function TiendaContent() {
                 </div>
               ) : (
                 <>
-                  <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                  <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                     {paginated.map((p, i) => (
                       <ProductCard
                         key={p.id || p.slug || p.name || i}

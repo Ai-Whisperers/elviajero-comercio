@@ -2,7 +2,6 @@
 
 import { useRecentlyViewed } from "@/lib/wishlist"
 import { SafeImage } from "@/components/safe-image"
-import { PriceUSD } from "@/components/price-usd"
 import Link from "next/link"
 import content from "@/content/es.json"
 
@@ -10,11 +9,7 @@ const c = content as any
 const allProducts = c.home?.productCatalog?.products || []
 
 function slugify(s: string) {
-  return s.toLowerCase().replace(/[^a-z0-9\u00e1\u00e9\u00ed\u00f3\u00fa\u00f1\u00fc]+/g, "-").replace(/-+$/, "")
-}
-
-function parseGs(s: string) {
-  return parseInt(s.replace(/[^\d]/g, ""), 10) || 0
+  return s.toLowerCase().replace(/[^a-z0-9áéíóúñü]+/g, "-").replace(/-+$/, "")
 }
 
 export function RecentlyViewedProducts({ exclude }: { exclude: string }) {
@@ -59,7 +54,6 @@ export function RecentlyViewedProducts({ exclude }: { exclude: string }) {
               </p>
               <div className="mt-auto flex items-baseline gap-1.5 pt-1">
                 <p className="text-sm font-bold text-foreground">{p.price}</p>
-                {parseGs(p.price) > 0 && <PriceUSD pygStr={p.price} />}
               </div>
             </div>
           </Link>

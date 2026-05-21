@@ -1,7 +1,7 @@
 "use client"
 
 export function ShareButtons({ productName, productSlug }: { productName: string; productSlug: string }) {
-  const url = `https://el-viajero.paragu-ai.com/producto/${productSlug}`
+  const url = `https://tiendaelviajero.com.py/producto/${productSlug}`
   const shareText = encodeURIComponent(`Mirá ${productName} en El Viajero — ${url}`)
 
   return (

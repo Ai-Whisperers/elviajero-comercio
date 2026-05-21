@@ -205,17 +205,23 @@ function ContentEditor() {
             <div>
               <p className="mb-4 text-sm text-zinc-400">Categorías que aparecen en la home y en la tienda. El orden aquí es el orden en que se muestran.</p>
               <p className="mb-4 text-xs text-zinc-500">Tip: usá nombres cortos para mejor visualización. Los productos se agrupan por estas categorías.</p>
-              {(getArray("home.productCatalog.categories").length > 0 ? getArray("home.productCatalog.categories") : defaultContent.home?.productCatalog?.categories || []).map((item: string, i: number) => (
-                <div key={i} className="mb-3 flex items-center gap-3 rounded-lg border border-zinc-700/60 bg-zinc-800 p-3">
-                  <span className="text-xs text-zinc-500 w-6">{i + 1}</span>
-                  <input
-                    value={item}
-                    onChange={e => updateArrayItem("home.productCatalog.categories", i, "", e.target.value)}
-                    className="flex-1 rounded bg-zinc-900 px-3 py-2 text-sm text-white border border-zinc-700/60 focus:outline-none focus:border-emerald-500/50"
-                  />
-                  <button onClick={() => removeArrayItem("home.productCatalog.categories", i)} className="text-xs text-red-400 shrink-0">✕</button>
+              <p className="mb-6 text-xs text-emerald-400">Podés cambiar la imagen de cada categoría desde acá. Slug se genera automáticamente.</p>
+              {(getArray("home.productCatalog.categories").length > 0 ? getArray("home.productCatalog.categories") : defaultContent.home?.productCatalog?.categories || []).map((item: string, i: number) => {
+                const slug = item.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z]/g, "")
+                return (
+                <div key={i} className="mb-4 rounded-lg border border-zinc-700/60 bg-zinc-800 p-4">
+                  <div className="mb-3 flex items-center gap-3">
+                    <span className="text-xs text-zinc-500 w-6">{i + 1}</span>
+                    <input
+                      value={item}
+                      onChange={e => updateArrayItem("home.productCatalog.categories", i, "", e.target.value)}
+                      className="flex-1 rounded bg-zinc-900 px-3 py-2 text-sm text-white border border-zinc-700/60 focus:outline-none focus:border-emerald-500/50"
+                    />
+                    <button onClick={() => removeArrayItem("home.productCatalog.categories", i)} className="text-xs text-red-400 shrink-0">✕</button>
+                  </div>
+                  <Input label={`Imagen (slug: ${slug})`} value={get(`home.categoryImages.${slug}`)} onChange={v => set(`home.categoryImages.${slug}`, v)} placeholder={`/images/categories/${slug}.webp`} />
                 </div>
-              ))}
+              )})}
               <button onClick={() => addArrayItem("home.productCatalog.categories", "Nueva categoría")}
                 className="mt-2 rounded-lg border border-dashed border-zinc-600 px-4 py-2 text-sm text-zinc-400 hover:text-white">
                 + Agregar categoría

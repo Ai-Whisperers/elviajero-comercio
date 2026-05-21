@@ -13,7 +13,7 @@ import { ImageGallery } from "@/components/image-gallery"
 import { ShareWhatsApp } from "@/components/share-whatsapp"
 import { RecentlyViewedProducts } from "@/components/recently-viewed-products"
 import { ProductTabs } from "@/components/product-tabs"
-import { PriceUSD } from "@/components/price-usd"
+
 import { SafeImage } from "@/components/safe-image"
 import { getProductWhatsappUrl } from "@/lib/content-resolver"
 import { useState, useMemo, useEffect } from "react"
@@ -93,7 +93,7 @@ function RelatedCard({ product }: { product: any }) {
         </p>
         <div className="mt-auto flex items-baseline gap-1.5 pt-1">
           <p className="text-sm font-bold text-foreground">{product.price}</p>
-          {priceVal > 0 && <PriceUSD pygStr={product.price} />}
+          {priceVal > 0 && <></>}
         </div>
       </div>
     </Link>
@@ -296,7 +296,6 @@ export default function ProductPageContent({ slug }: { slug: string }) {
               {/* Price */}
               <div className="mt-6 flex items-baseline gap-3">
                 <span className="text-3xl font-bold text-foreground">{effectivePrice}</span>
-                {priceNum > 0 && <PriceUSD pygStr={effectivePrice} />}
                 {product.priceBefore && (
                   <span className="text-lg text-muted-foreground line-through">{product.priceBefore}</span>
                 )}

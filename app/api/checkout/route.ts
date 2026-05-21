@@ -138,8 +138,8 @@ async function handleStripe(items: any[], total: string, customer: any) {
     headers: { Authorization: `Bearer ${stripeKey}`, 'Content-Type': 'application/x-www-form-urlencoded' },
     body: new URLSearchParams({
       mode: 'payment',
-      success_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://el-viajero.paragu-ai.com'}/pedido/confirmado?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://el-viajero.paragu-ai.com'}/checkout`,
+      success_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://tiendaelviajero.com.py'}/pedido/confirmado?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://tiendaelviajero.com.py'}/checkout`,
       'line_items[0][price_data][currency]': 'usd',
       'line_items[0][price_data][product_data][name]': 'Pedido El Viajero',
       'line_items[0][price_data][unit_amount]': String(amountUsd),

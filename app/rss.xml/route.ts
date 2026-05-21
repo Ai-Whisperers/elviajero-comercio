@@ -5,7 +5,7 @@ const c = content as any
 const posts = c.blog?.posts || []
 
 export async function GET() {
-  const baseUrl = "https://el-viajero.paragu-ai.com"
+  const baseUrl = "https://tiendaelviajero.com.py"
   const items = posts.map((p: any) => `
     <item>
       <title><![CDATA[${p.title}]]></title>

@@ -37,7 +37,7 @@ export interface ReviewData {
   productUrl?: string
 }
 
-const SITE_URL = "https://el-viajero.paragu-ai.com"
+const SITE_URL = "https://tiendaelviajero.com.py"
 
 /**
  * Product schema — use on product detail pages.

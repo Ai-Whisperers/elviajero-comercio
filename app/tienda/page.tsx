@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Tienda Online | El Viajero",
     description: "Equipamiento para camping, pesca y aventura en Paraguay.",
-    url: "https://el-viajero.paragu-ai.com/tienda",
+    url: "https://tiendaelviajero.com.py/tienda",
     type: "website",
     images: [
       {

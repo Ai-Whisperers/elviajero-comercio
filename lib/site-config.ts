@@ -13,7 +13,7 @@ export function getPromosConfig(): PromosConfig {
 }
 
 export function getSiteUrl(): string {
-  return process.env.NEXT_PUBLIC_BASE_URL || siteConfig.publicUrl || (siteConfig as any).siteUrl || 'https://el-viajero.paragu-ai.com'
+  return process.env.NEXT_PUBLIC_BASE_URL || siteConfig.publicUrl || (siteConfig as any).siteUrl || 'https://tiendaelviajero.com.py'
 }
 
 export function getShippingZones() {

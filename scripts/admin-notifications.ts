@@ -32,7 +32,7 @@ async function recoverCarts() {
   if (!carts || carts.length === 0) { console.log('[cart-recovery] No carts to recover'); return }
 
   for (const cart of carts) {
-    const msg = `👋 ¡Hola! Te recordamos que tenés productos pendientes en El Viajero.\n\nHacé tu pedido acá:\nhttps://el-viajero.paragu-ai.com/tienda\n\n¿Te ayudamos con algo? Respondé este mensaje.`
+    const msg = `👋 ¡Hola! Te recordamos que tenés productos pendientes en El Viajero.\n\nHacé tu pedido acá:\nhttps://tiendaelviajero.com.py/tienda\n\n¿Te ayudamos con algo? Respondé este mensaje.`
     await sendWhatsApp(cart.phone, msg)
     await supabase.from('ej_abandoned_carts').update({ reminders_sent: (cart.reminders_sent || 0) + 1 }).eq('id', cart.id)
     console.log('[cart-recovery] Sent reminder to', cart.phone)
@@ -61,7 +61,7 @@ async function dailyBriefing() {
     msg += lowStock.map((p: any) => `• ${p.name}: ${p.stock} un.`).join('\n')
     msg += `\n\n`
   }
-  msg += `👉 Panel: https://el-viajero.paragu-ai.com/admin`
+  msg += `👉 Panel: https://tiendaelviajero.com.py/admin`
 
   await sendWhatsApp(ADMIN_NUMBER, msg)
   console.log('[briefing] Sent daily briefing')

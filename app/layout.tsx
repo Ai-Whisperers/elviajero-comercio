@@ -64,7 +64,7 @@ const jsonLd = {
   },
   "openingHours": "Mo-Fr 08:00-19:00, Sa 08:00-17:00, Su 09:00-13:00",
   "priceRange": m.schemaPriceRange || "Gs. 35.000 - Gs. 2.000.000",
-  "currenciesAccepted": "PYG, USD",
+  "currenciesAccepted": "PYG",
   "paymentAccepted": "Efectivo, Transferencia, Tarjeta de crédito/débito",
   "sameAs": [
     "https://instagram.com/elviajero_py",

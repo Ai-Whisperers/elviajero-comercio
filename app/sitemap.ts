@@ -3,7 +3,7 @@ import content from "@/content/es.json"
 
 const c = content as any
 const products = c.home?.productCatalog?.products || []
-const base = "https://el-viajero.paragu-ai.com"
+const base = "https://tiendaelviajero.com.py"
 
 function slugify(s: string) {
   return s.toLowerCase().replace(/[^a-z0-9áéíóúñü]+/g, "-").replace(/-+$/, "")
