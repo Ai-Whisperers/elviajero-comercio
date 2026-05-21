@@ -12,11 +12,7 @@ import { useRecentlyViewed } from "@/lib/wishlist"
 import Image from "next/image"
 import Link from "next/link"
 import { useState, useEffect, useMemo, useCallback } from "react"
-import { createClient } from "@ai-whisperers/auth/supabase/client"
 import { useSearchParams, useRouter, usePathname } from "next/navigation"
-
-// NOTE: JSON import removed - using Supabase only
-// Migration 008 created ej_site_config table as source of truth
 
 function parseGs(priceStr: string) {
   return parseInt(priceStr.replace(/[^\d]/g, ""), 10) || 0
@@ -73,17 +69,15 @@ export default function TiendaContent() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
-  /* --- Load products --- */
+  /* --- Load products via /api/home (server-side Supabase) --- */
   useEffect(() => {
-    const supabase = createClient()
-    supabase
-      .from("ej_products")
-      .select("*")
-      .order("name")
-      .then(({ data }: { data: any[] | null }) => {
-        if (data && data.length > 0) {
+    let cancelled = false
+    fetch("/api/home")
+      .then((res) => res.json())
+      .then((json) => {
+        if (!cancelled && json.products && json.products.length > 0) {
           setDbProducts(
-            data.map((p: any): StoreProduct => ({
+            json.products.map((p: any): StoreProduct => ({
               id: p.id,
               slug: p.slug,
               name: p.name,
@@ -101,8 +95,10 @@ export default function TiendaContent() {
             }))
           )
         }
-        setLoading(false)
       })
+      .catch((err) => console.error("Failed to fetch products:", err))
+      .finally(() => { if (!cancelled) setLoading(false) })
+    return () => { cancelled = true }
   }, [])
 
   // NOTE: No fallback to JSON - Supabase is source of truth

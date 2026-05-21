@@ -23,9 +23,9 @@ const CATEGORY_IMAGE_MAP: Record<string, string> = {
 const DEFAULT_HOME_CATEGORIES = [
   "Camping",
   "Pesca",
-  "Equipo táctico/explorador",
-  "Accesorios para viajes",
-  "Accesorios para vehículos",
+  "Accesorios Personales",
+  "Electrónica",
+  "Accesorios para Vehículos",
 ]
 
 function catSlug(cat: string) {

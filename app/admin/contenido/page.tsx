@@ -111,7 +111,7 @@ function ContentEditor() {
     })
   }
 
-  const updateArrayItem = (path: string, index: number, field: string, value: string) => {
+  const updateArrayItem = (path: string, index: number, field: string | null, value: string | number) => {
     setOverrides((prev: any) => {
       const parts = path.split(".")
       const clone = JSON.parse(JSON.stringify(prev))
@@ -121,7 +121,7 @@ function ContentEditor() {
         obj = obj[parts[i]]
       }
       const arr = [...(obj[parts[parts.length - 1]] || [])]
-      if (field === "") {
+      if (field === "" || field === null) {
         arr[index] = value
       } else {
         if (!arr[index]) arr[index] = {}
@@ -397,6 +397,177 @@ function ContentEditor() {
                 className="mt-2 rounded-lg border border-dashed border-zinc-600 px-4 py-2 text-sm text-zinc-400 hover:text-white">
                 + Agregar característica
               </button>
+            </div>
+          )}
+
+          {section === "promociones" && (
+            <div>
+              <p className="mb-4 text-sm text-zinc-400">Página de Promociones — hero y listado de promos</p>
+              <Input label="Título" value={get("promociones.hero.headline")} onChange={v => set("promociones.hero.headline", v)} placeholder={deepGet(defaultContent, "promociones.hero.headline")} />
+              <Input label="Subtítulo" value={get("promociones.hero.subheadline")} onChange={v => set("promociones.hero.subheadline", v)} placeholder={deepGet(defaultContent, "promociones.hero.subheadline")} />
+              <Input label="SEO Title" value={get("promociones.seo.title")} onChange={v => set("promociones.seo.title", v)} />
+              <Input label="SEO Description" multiline value={get("promociones.seo.description")} onChange={v => set("promociones.seo.description", v)} />
+              <h3 className="mt-6 mb-2 text-sm font-semibold text-zinc-300">Promociones</h3>
+              {(getArray("promociones.promotions").length > 0 ? getArray("promociones.promotions") : defaultContent.promociones?.promotions || []).map((promo: any, i: number) => (
+                <div key={i} className="mb-4 rounded-lg border border-zinc-700/60 bg-zinc-800 p-4">
+                  <Input label={`Título ${i + 1}`} value={promo.title || ""} onChange={v => updateArrayItem("promociones.promotions", i, "title", v)} />
+                  <Input label="Descripción" multiline value={promo.description || ""} onChange={v => updateArrayItem("promociones.promotions", i, "description", v)} />
+                  <Input label="Badge" value={promo.badge || ""} onChange={v => updateArrayItem("promociones.promotions", i, "badge", v)} />
+                  <div className="mt-2">
+                    <label className="mb-1 block text-xs text-zinc-500">Imagen</label>
+                    <ImageUpload currentUrl={promo.image || undefined} onUpload={v => updateArrayItem("promociones.promotions", i, "image", v)} />
+                  </div>
+                  <Input label="Texto del botón" value={promo.ctaText || ""} onChange={v => updateArrayItem("promociones.promotions", i, "ctaText", v)} />
+                  <Input label="Link del botón" value={promo.ctaHref || ""} onChange={v => updateArrayItem("promociones.promotions", i, "ctaHref", v)} />
+                  <button onClick={() => removeArrayItem("promociones.promotions", i)} className="text-xs text-red-400 hover:underline">Eliminar promo</button>
+                </div>
+              ))}
+              <button onClick={() => addArrayItem("promociones.promotions", { title: "", description: "", badge: "", image: "", ctaText: "Ver más", ctaHref: "" })}
+                className="mt-2 rounded-lg border border-dashed border-zinc-600 px-4 py-2 text-sm text-zinc-400 hover:text-white">
+                + Agregar promoción
+              </button>
+            </div>
+          )}
+
+          {section === "navigation" && (
+            <div>
+              <p className="mb-4 text-sm text-zinc-400">Menú de navegación principal</p>
+              <Input label="Nombre del negocio" value={get("navigation.businessName")} onChange={v => set("navigation.businessName", v)} />
+              <Input label="Texto del botón CTA" value={get("navigation.ctaText")} onChange={v => set("navigation.ctaText", v)} />
+              <Input label="Link del CTA" value={get("navigation.ctaHref")} onChange={v => set("navigation.ctaHref", v)} />
+              <h3 className="mt-6 mb-2 text-sm font-semibold text-zinc-300">Items del menú</h3>
+              {(getArray("navigation.items").length > 0 ? getArray("navigation.items") : defaultContent.navigation?.items || []).map((item: any, i: number) => (
+                <div key={i} className="mb-3 flex gap-2 items-end">
+                  <div className="flex-1">
+                    <Input label={`Label ${i + 1}`} value={item.label || ""} onChange={v => updateArrayItem("navigation.items", i, "label", v)} />
+                  </div>
+                  <div className="flex-1">
+                    <Input label="Href" value={item.href || ""} onChange={v => updateArrayItem("navigation.items", i, "href", v)} />
+                  </div>
+                  <button onClick={() => removeArrayItem("navigation.items", i)} className="mb-2 text-xs text-red-400 hover:underline">✕</button>
+                </div>
+              ))}
+              <button onClick={() => addArrayItem("navigation.items", { label: "", href: "" })}
+                className="mt-2 rounded-lg border border-dashed border-zinc-600 px-4 py-2 text-sm text-zinc-400 hover:text-white">
+                + Agregar item
+              </button>
+            </div>
+          )}
+
+          {section === "storeLocator" && (
+            <div>
+              <p className="mb-4 text-sm text-zinc-400">Información del local físico</p>
+              <Input label="Título" value={get("storeLocator.title")} onChange={v => set("storeLocator.title", v)} />
+              <Input label="Descripción" multiline value={get("storeLocator.description")} onChange={v => set("storeLocator.description", v)} />
+              <Input label="Dirección" value={get("storeLocator.address")} onChange={v => set("storeLocator.address", v)} />
+              <Input label="Horarios" value={get("storeLocator.hours")} onChange={v => set("storeLocator.hours", v)} />
+              <Input label="Google Maps URL" value={get("storeLocator.googleMapsUrl")} onChange={v => set("storeLocator.googleMapsUrl", v)} />
+              <Input label="Texto del botón WhatsApp" value={get("storeLocator.whatsappText")} onChange={v => set("storeLocator.whatsappText", v)} />
+              <Input label="Número WhatsApp" value={get("storeLocator.whatsappNumber")} onChange={v => set("storeLocator.whatsappNumber", v)} />
+            </div>
+          )}
+
+          {section === "whatsapp" && (
+            <div>
+              <p className="mb-4 text-sm text-zinc-400">Configuración de WhatsApp Business</p>
+              <Input label="Número de negocio" value={get("whatsapp.businessNumber")} onChange={v => set("whatsapp.businessNumber", v)} />
+              <Input label="Link de negocio" value={get("whatsapp.businessLink")} onChange={v => set("whatsapp.businessLink", v)} />
+              <Input label="Mensaje por defecto" multiline value={get("whatsapp.defaultMessage")} onChange={v => set("whatsapp.defaultMessage", v)} />
+              <Input label="Mensaje de producto (usar {{productName}})" multiline value={get("whatsapp.serviceMessage")} onChange={v => set("whatsapp.serviceMessage", v)} />
+            </div>
+          )}
+
+          {section === "shipping" && (
+            <div>
+              <p className="mb-4 text-sm text-zinc-400">Textos de la sección de envío</p>
+              <Input label="Título" value={get("shipping.title")} onChange={v => set("shipping.title", v)} />
+              <Input label="Envío a domicilio" value={get("shipping.delivery")} onChange={v => set("shipping.delivery", v)} />
+              <Input label="Retiro en tienda" value={get("shipping.pickup")} onChange={v => set("shipping.pickup", v)} />
+              <Input label="Gratis" value={get("shipping.free")} onChange={v => set("shipping.free", v)} />
+              <Input label="Tiempo de entrega (label)" value={get("shipping.timing")} onChange={v => set("shipping.timing", v)} />
+              <Input label="Tiempo de entrega (valor)" value={get("shipping.deliveryTime")} onChange={v => set("shipping.deliveryTime", v)} />
+              <Input label="Envío a todo el país" value={get("shipping.fullCountry")} onChange={v => set("shipping.fullCountry", v)} />
+            </div>
+          )}
+
+          {section === "deliveryZones" && (
+            <div>
+              <p className="mb-4 text-sm text-zinc-400">Zonas de entrega y costos de envío</p>
+              {(getArray("deliveryZones").length > 0 ? getArray("deliveryZones") : defaultContent.deliveryZones || []).map((zone: any, i: number) => (
+                <div key={i} className="mb-4 rounded-lg border border-zinc-700/60 bg-zinc-800 p-4">
+                  <div className="grid grid-cols-2 gap-3">
+                    <Input label="Zona" value={zone.zone || ""} onChange={v => updateArrayItem("deliveryZones", i, "zone", v)} />
+                    <Input label="Costo (Gs.)" value={String(zone.fee ?? 0)} onChange={v => updateArrayItem("deliveryZones", i, "fee", Number(v))} />
+                    <Input label="Mínimo para envío gratis (Gs.)" value={String(zone.minForFree ?? 0)} onChange={v => updateArrayItem("deliveryZones", i, "minForFree", Number(v))} />
+                    <Input label="Tiempo de entrega" value={zone.days || ""} onChange={v => updateArrayItem("deliveryZones", i, "days", v)} />
+                  </div>
+                  <button onClick={() => removeArrayItem("deliveryZones", i)} className="mt-2 text-xs text-red-400 hover:underline">Eliminar zona</button>
+                </div>
+              ))}
+              <button onClick={() => addArrayItem("deliveryZones", { zone: "", fee: 0, minForFree: 0, days: "" })}
+                className="mt-2 rounded-lg border border-dashed border-zinc-600 px-4 py-2 text-sm text-zinc-400 hover:text-white">
+                + Agregar zona
+              </button>
+            </div>
+          )}
+
+          {section === "paymentMethods" && (
+            <div>
+              <p className="mb-4 text-sm text-zinc-400">Medios de pago aceptados</p>
+              <Input label="Cuotas" value={get("paymentMethods.installments")} onChange={v => set("paymentMethods.installments", v)} />
+              <Input label="Nota" value={get("paymentMethods.note")} onChange={v => set("paymentMethods.note", v)} />
+              <h3 className="mt-4 mb-2 text-sm font-semibold text-zinc-300">Iconos de medios de pago</h3>
+              {(getArray("paymentMethods.icons").length > 0 ? getArray("paymentMethods.icons") : defaultContent.paymentMethods?.icons || []).map((icon: string, i: number) => (
+                <div key={i} className="mb-2 flex gap-2 items-center">
+                  <input
+                    className="flex-1 rounded-lg bg-zinc-800 border border-zinc-700 px-3 py-2 text-sm text-white"
+                    value={icon || ""}
+                    onChange={e => updateArrayItem("paymentMethods.icons", i, null, e.target.value)}
+                  />
+                  <button onClick={() => removeArrayItem("paymentMethods.icons", i)} className="text-xs text-red-400 hover:underline">✕</button>
+                </div>
+              ))}
+              <button onClick={() => addArrayItem("paymentMethods.icons", "")}
+                className="mt-2 rounded-lg border border-dashed border-zinc-600 px-4 py-2 text-sm text-zinc-400 hover:text-white">
+                + Agregar icono
+              </button>
+            </div>
+          )}
+
+          {section === "cookieConsent" && (
+            <div>
+              <p className="mb-4 text-sm text-zinc-400">Banner de consentimiento de cookies</p>
+              <label className="flex items-center gap-2 mb-4">
+                <input
+                  type="checkbox"
+                  checked={String(get("cookieConsent.enabled")) === "true"}
+                  onChange={e => set("cookieConsent.enabled", e.target.checked)}
+                  className="rounded"
+                />
+                <span className="text-sm text-zinc-300">Mostrar banner de cookies</span>
+              </label>
+              <Input label="Mensaje" multiline value={get("cookieConsent.message")} onChange={v => set("cookieConsent.message", v)} />
+              <Input label="Texto del botón aceptar" value={get("cookieConsent.acceptText")} onChange={v => set("cookieConsent.acceptText", v)} />
+              <Input label="Texto 'Más información'" value={get("cookieConsent.moreInfoText")} onChange={v => set("cookieConsent.moreInfoText", v)} />
+              <Input label="Link 'Más información'" value={get("cookieConsent.moreInfoLink")} onChange={v => set("cookieConsent.moreInfoLink", v)} />
+            </div>
+          )}
+
+          {section === "newsletter" && (
+            <div>
+              <p className="mb-4 text-sm text-zinc-400">Formulario de newsletter</p>
+              <Input label="Endpoint" value={get("newsletter.endpoint")} onChange={v => set("newsletter.endpoint", v)} />
+              <Input label="Nombre de la lista" value={get("newsletter.listName")} onChange={v => set("newsletter.listName", v)} />
+            </div>
+          )}
+
+          {section === "blog" && (
+            <div>
+              <p className="mb-4 text-sm text-zinc-400">Configuración del blog</p>
+              <Input label="Título" value={get("blog.title")} onChange={v => set("blog.title", v)} />
+              <Input label="Subtítulo" value={get("blog.subtitle")} onChange={v => set("blog.subtitle", v)} />
+              <Input label="Texto 'Leer más'" value={get("blog.readMore")} onChange={v => set("blog.readMore", v)} />
+              <Input label="Texto sin artículos" value={get("blog.noPosts")} onChange={v => set("blog.noPosts", v)} />
             </div>
           )}
         </div>

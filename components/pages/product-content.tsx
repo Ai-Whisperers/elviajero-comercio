@@ -13,10 +13,7 @@ import { getProductWhatsappUrl } from "@/lib/content-resolver"
 import { useState, useMemo, useEffect } from "react"
 import Link from "next/link"
 import { notFound } from "next/navigation"
-import { createClient } from "@ai-whisperers/auth/supabase/client"
 
-// NOTE: JSON import removed - using Supabase only
-// Migration 008 created ej_site_config table as source of truth
 const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP || "595984009751"
 
 function slugify(s: string) {
@@ -104,16 +101,17 @@ export default function ProductPageContent({ slug }: { slug: string }) {
   const [dbProducts, setDbProducts] = useState<any[]>([])
   const [dbLoaded, setDbLoaded] = useState(false)
   const [selectedVariant, setSelectedVariant] = useState<string>("")
-  const supabase = createClient()
 
   useEffect(() => {
-   ;(async () => {
+    let cancelled = false
+    ;(async () => {
       try {
-        const { data, error } = await supabase.from("ej_products").select("*")
-        if (error) {
-          console.error("Failed to fetch products:", error)
-        } else if (data && data.length > 0) {
-          setDbProducts(data.map((p) => ({
+        // Fetch all products via /api/home (server-side Supabase, proven reliable)
+        const res = await fetch("/api/home")
+        if (!res.ok) throw new Error(`API error: ${res.status}`)
+        const json = await res.json()
+        if (!cancelled && json.products && json.products.length > 0) {
+          setDbProducts(json.products.map((p: any) => ({
             id: p.id,
             name: p.name, category: p.category, price: p.price,
             priceBefore: p.price_before, description: p.description,
@@ -121,14 +119,14 @@ export default function ProductPageContent({ slug }: { slug: string }) {
             weight: p.weight, imageUrl: p.image_url, isNew: p.is_new, featured: p.featured,
             variants: p.variants,
           })))
-          console.log(`Loaded ${data.length} products from DB`)
         }
       } catch (err) {
-        console.error("Exception fetching products:", err)
+        console.error("Failed to fetch products:", err)
       } finally {
-        setDbLoaded(true)
+        if (!cancelled) setDbLoaded(true)
       }
     })()
+    return () => { cancelled = true }
   }, [])
 
   const allProducts = dbProducts
