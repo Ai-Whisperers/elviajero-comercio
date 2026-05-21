@@ -3,7 +3,7 @@ import { createContext, useContext, useState, useEffect, ReactNode } from "react
 import { STORAGE_KEYS } from "@ai-whisperers/auth/storage-keys"
 import es from "@/content/es.json"
 
-type Currency = "PYG" | "USD"
+type Currency = "PYG"
 // Rate from content config, fallback to 7400
 const RATE_PYG_PER_USD = (es as any)?.paymentGateway?.rate || 7400
 
@@ -21,12 +21,12 @@ export function CurrencyProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEYS.CURRENCY) as Currency | null
-    if (saved === "PYG" || saved === "USD") setCur(saved)
+    if (saved === "PYG") setCur(saved)
   }, [])
 
-  const setCurrency = (c: Currency) => {
-    setCur(c)
-    localStorage.setItem(STORAGE_KEYS.CURRENCY, c)
+  const setCurrency = (_c: Currency) => {
+    setCur("PYG")
+    localStorage.setItem(STORAGE_KEYS.CURRENCY, "PYG")
   }
 
   const pygNum = (pygStr: string): number => {
@@ -34,20 +34,13 @@ export function CurrencyProvider({ children }: { children: ReactNode }) {
     return m ? parseFloat(m[0].replace(/\./g, "").replace(",", ".")) : 0
   }
 
-  const formatPrice = (pygStr: string): string => {
-    const n = pygNum(pygStr)
-    if (currency === "USD") {
-      const usd = n / RATE_PYG_PER_USD
-      return `USD ${usd.toFixed(2)}`
-    }
-    return pygStr
-  }
+  const formatPrice = (pygStr: string): string => pygStr
 
   const formatDual = (pygStr: string) => {
     const n = pygNum(pygStr)
     return {
       pyg: `Gs. ${n.toLocaleString("es-PY")}`,
-      usd: `USD ${(n / RATE_PYG_PER_USD).toFixed(2)}`,
+      usd: "",
     }
   }
 

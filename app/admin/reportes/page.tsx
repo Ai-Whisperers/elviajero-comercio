@@ -10,7 +10,7 @@ function RevenueChart({ data }: { data: { label: string; value: number }[] }) {
   const max = Math.max(...data.map(d => d.value), 1)
   return (
     <div className="rounded-xl border border-zinc-800/60 bg-zinc-900/50 p-5">
-      <h3 className="text-sm font-semibold text-zinc-300 mb-5">Ingresos diarios (USD)</h3>
+      <h3 className="text-sm font-semibold text-zinc-300 mb-5">Ingresos diarios (Gs.)</h3>
       <div className="flex items-end gap-[3px] h-48">
         {data.map((d, i) => {
           const pct = (d.value / max) * 100
@@ -202,9 +202,9 @@ export default function SalesReport() {
               }
             />
             <StatCard
-              label="En USD"
-              value={"$" + (totalRevenue / exchangeRate).toFixed(2)}
-              sub={`Tasa: ${exchangeRate.toLocaleString("es-PY")} PYG`}
+              label="Ticket estimado"
+              value={"Gs. " + (filtered.length ? Math.round(totalRevenue / filtered.length).toLocaleString("es-PY") : "0")}
+              sub="Promedio por pedido"
               color="blue"
               icon={
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

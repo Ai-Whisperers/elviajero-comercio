@@ -3,8 +3,8 @@
 ## 1. Set Supabase Auth URLs
 Go to https://supabase.com/dashboard/project/qyvokpribmbrosafntqa/auth/url-configuration
 Set:
-- Site URL: `https://el-viajero.paragu-ai.com`
-- Redirect URLs: `https://el-viajero.paragu-ai.com/auth/callback`
+- Site URL: `https://tiendaelviajero.com.py`
+- Redirect URLs: `https://tiendaelviajero.com.py/auth/callback`
 
 ## 2. Google OAuth
 1. Go to https://console.cloud.google.com/apis/credentials
@@ -24,4 +24,4 @@ Set:
 7. Enable, paste keys
 
 ## 4. Test
-Visit https://el-viajero.paragu-ai.com/login — click Google/Facebook buttons — should redirect to auth and back.
+Visit https://tiendaelviajero.com.py/login — click Google/Facebook buttons — should redirect to auth and back.

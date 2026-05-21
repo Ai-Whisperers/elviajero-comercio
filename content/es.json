@@ -136,7 +136,8 @@
           "badge": "-18%",
           "whatsappText": "Hola! Quiero info de Accesorios Esenciales (Gs. 180.000)"
         }
-      ]
+      ],
+      "enabled": false
     },
     "stats": {
       "title": "El Viajero en Numeros",
@@ -203,9 +204,9 @@
       "categories": [
         "Camping",
         "Pesca",
-        "Accesorios Personales",
-        "Electrónica",
-        "Accesorios para Vehículos"
+        "Equipo táctico/explorador",
+        "Accesorios para viajes",
+        "Accesorios para vehículos"
       ],
       "products": []
     },
@@ -279,43 +280,55 @@
           "image": "/images/marketing/hero-carousel-01-family-river.png",
           "title": "Equipate para tu próxima aventura",
           "subtitle": "Camping, pesca, outdoor — todo en un solo lugar",
-          "ctaText": "Explorá la Tienda",
-          "ctaHref": "/tienda"
+          "ctaText": "Ir a tienda",
+          "ctaHref": "/tienda",
+          "ctaPrimaryText": "Ir a tienda",
+          "ctaPrimaryHref": "/tienda"
         },
         {
           "image": "/images/marketing/category-camping.png",
           "title": "Ofertas en Camping",
           "subtitle": "Carpas, bolsas de dormir, linternas y más con precios especiales",
-          "ctaText": "Ver Ofertas",
-          "ctaHref": "/promociones"
+          "ctaText": "Ver Camping",
+          "ctaHref": "/tienda?cat=Camping",
+          "ctaPrimaryText": "Ver Camping",
+          "ctaPrimaryHref": "/tienda?cat=Camping"
         },
         {
           "image": "/images/marketing/hero-carousel-02-fishing-sunrise.png",
           "title": "Pesca: Temporada Alta",
           "subtitle": "Equipate con las mejores cañas, señuelos y accesorios",
-          "ctaText": "Ver Productos",
-          "ctaHref": "/tienda#pesca"
+          "ctaText": "Ver Pesca",
+          "ctaHref": "/tienda?cat=Pesca",
+          "ctaPrimaryText": "Ver Pesca",
+          "ctaPrimaryHref": "/tienda?cat=Pesca"
         },
         {
           "image": "/images/marketing/hero-carousel-03-truck-adventure.png",
           "title": "Ruta y aventura",
           "subtitle": "Equipo outdoor, autos y moto — cargá tu próximo viaje",
-          "ctaText": "Ver productos",
-          "ctaHref": "/tienda"
+          "ctaText": "Ver vehículos",
+          "ctaHref": "/tienda?cat=Accesorios%20para%20veh%C3%ADculos",
+          "ctaPrimaryText": "Ver vehículos",
+          "ctaPrimaryHref": "/tienda?cat=Accesorios%20para%20veh%C3%ADculos"
         },
         {
           "image": "/images/marketing/hero-carousel-04-shop-warm.png",
           "title": "Visitanos en la Tienda",
           "subtitle": "Te esperamos en Mariano Roque Alonso con atencion personalizada",
-          "ctaText": "Ver Direccion",
-          "ctaHref": "/contacto"
+          "ctaText": "Ver tienda",
+          "ctaHref": "/tienda",
+          "ctaPrimaryText": "Ver tienda",
+          "ctaPrimaryHref": "/tienda"
         },
         {
           "image": "/images/marketing/hero-carousel-05-trail-wide.png",
           "title": "Paraguay te espera",
           "subtitle": "Descubrí destinos y preparate con nosotros",
-          "ctaText": "Ir al Blog",
-          "ctaHref": "/blog"
+          "ctaText": "Leer guías",
+          "ctaHref": "/blog",
+          "ctaPrimaryText": "Leer guías",
+          "ctaPrimaryHref": "/blog"
         }
       ]
     },
@@ -323,6 +336,13 @@
     "newArrivals": {
       "title": "Nuevo en Stock",
       "subtitle": "Los últimos productos que llegaron"
+    },
+    "categoryImages": {
+      "camping": "/images/categories/camping.webp",
+      "pesca": "/images/categories/pesca.webp",
+      "equipotacticoexplorador": "/images/categories/outdoor.svg",
+      "accesoriosparaviajes": "/images/categories/accesorios.webp",
+      "accesoriosparavehiculos": "/images/categories/vehiculos.webp"
     }
   },
   "about": {
@@ -444,7 +464,7 @@
       },
       {
         "question": "¿Qué métodos de pago aceptan?",
-        "answer": "Aceptamos efectivo (Gs. / USD), transferencia bancaria, tarjetas de credito y debito (Bancard), Mercado Pago y Pagopar.",
+        "answer": "Aceptamos efectivo, transferencia bancaria, tarjetas de credito y debito (Bancard), Mercado Pago y Pagopar.",
         "id": "medios-de-pago"
       },
       {
