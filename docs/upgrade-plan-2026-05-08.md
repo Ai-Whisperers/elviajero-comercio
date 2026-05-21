@@ -1,6 +1,6 @@
 # El Viajero — Upgrade Plan (2026-05-08)
 
-> Prepared for: Osmar Aguilera
+> Prepared for: Omar Aguilera
 > Live site: https://el-viajero.paragu-ai.com
 > Report for: Kiki / Hermes Agent
 
@@ -123,7 +123,7 @@ Replace placeholder PNG illustrations with real product photos. Either:
 ---
 
 ### H4. Connect at least one payment gateway (Pagopar priority #1)
-Pagopar is the dominant payment method in Paraguay. Osmar needs to:
+Pagopar is the dominant payment method in Paraguay. Omar needs to:
 1. Create a Pagopar merchant account
 2. Add `PAGOPAR_PUBLIC_KEY` and `PAGOPAR_PRIVATE_KEY` to `.env.local` and `docker-compose.yml`
 3. Test the checkout flow end-to-end
@@ -159,7 +159,7 @@ Current flow forces account creation. Add guest checkout option and/or WhatsApp-
 ---
 
 ### H9. Add real phone number and WhatsApp number to config
-Update `config/site.json` and `content/es.json` with Osmar's real phone and WhatsApp number.
+Update `config/site.json` and `content/es.json` with Omar's real phone and WhatsApp number.
 
 **Files:** `config/site.json`, `content/es.json`
 
@@ -175,14 +175,14 @@ GA4 is referenced in code but uses placeholder ID. Add real `NEXT_PUBLIC_GA_ID`.
 ## 4. MEDIUM PRIORITY IMPROVEMENTS
 
 ### M1. Enable Google/Facebook OAuth in Supabase
-Buttons show but OAuth isn't configured. Osmar needs to add Client ID/Secret in Supabase dashboard.
+Buttons show but OAuth isn't configured. Omar needs to add Client ID/Secret in Supabase dashboard.
 
 **Files:** Supabase Dashboard > Auth Providers
 
 ---
 
 ### M2. Add real phone number to WhatsApp CTAs
-All WhatsApp links use placeholder `595981234567`. Replace with Osmar's real number.
+All WhatsApp links use placeholder `595981234567`. Replace with Omar's real number.
 
 **Files:** `content/es.json`, `config/site.json`, various components
 

@@ -1,4 +1,4 @@
-# Pitch de Ventas — Osmar Aguilera / El Viajero
+# Pitch de Ventas — Omar Aguilera / El Viajero
 
 *Cliente: Primer caso de éxito e-commerce de Paragu-AI*
 
@@ -16,7 +16,7 @@
 
 ## Pitch Inicial (Whatsapp)
 
-"Hola Osmar, soy [tu nombre] de Paragu-AI. Vimos El Viajero y nos encantó el catálogo que tienen — camping, pesca, todo para aventura.
+"Hola Omar, soy [tu nombre] de Paragu-AI. Vimos El Viajero y nos encantó el catálogo que tienen — camping, pesca, todo para aventura.
 
 Te escribo porque tenemos una propuesta que encaja justo con lo que hacen. ¿Tenés 5 minutos para contarte?"
 
@@ -26,7 +26,7 @@ Te escribo porque tenemos una propuesta que encaja justo con lo que hacen. ¿Ten
 
 **Apertura**
 
-"Osmar, El Viajero tiene un local en Mariano Roque Alonso y vende por WhatsApp, ¿cierto? Me imagino que recibís consultas todo el día: precios, disponibilidad, si tal producto está en stock."
+"Omar, El Viajero tiene un local en Mariano Roque Alonso y vende por WhatsApp, ¿cierto? Me imagino que recibís consultas todo el día: precios, disponibilidad, si tal producto está en stock."
 
 **El Dolor**
 
@@ -112,10 +112,10 @@ Nada más. Sin contratos rígidos, sin permanencia."
 ## Seguimiento
 
 **Si dice que sí:**
-"Perfecto Osmar. En 48 horas te envío el link. Después coordinamos 15 minutos para que te muestre el panel de administración por si querés cambiar algo vos mismo."
+"Perfecto Omar. En 48 horas te envío el link. Después coordinamos 15 minutos para que te muestre el panel de administración por si querés cambiar algo vos mismo."
 
 **Si dice "lo voy a pensar":**
 "Dale. Mientras, te dejo el link para que veas cómo queda: el-viajero.paragu-ai.com. Cualquier cosa me escribís. El cupo de primer cliente es por tiempo limitado, avisame antes de que se cierre."
 
 **Si dice que no:**
-"Sin problema Osmar. Si en el futuro querés dar el salto a lo digital, la oferta sigue disponible para vos. Suerte con El Viajero."
+"Sin problema Omar. Si en el futuro querés dar el salto a lo digital, la oferta sigue disponible para vos. Suerte con El Viajero."

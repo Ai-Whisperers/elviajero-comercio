@@ -1,7 +1,7 @@
 # El Viajero — Source of Truth
 
 > All confirmed answers from the owner. This is the canonical reference for site content.
-> Updated: 2026-04-30
+> Updated: 2026-05-21
 
 ---
 
@@ -9,26 +9,27 @@
 
 | Field | Value |
 |-------|-------|
-| **Legal name** | El Viajero (not "El Viajero") |
+| **Legal name** | El Viajero |
+| **Owner** | Omar Aguilera |
 | **RUC** | Contribuyente General (IVA completo) |
-| **Founded** | Less than 1 year ago (started approx. 2025) |
+| **Founded** | ~2025 (less than 1 year old) |
 | **Team size** | Solo el dueño |
 | **City** | Mariano Roque Alonso |
 | **Neighborhood** | La Concordia |
 | **Address** | Coronel Felipe Toledo |
 | **Landmark** | Detrás de Mariam Lubricantes |
 | **Slug** | viajero-comercio |
-| **Domain** | Does NOT have one — wants **tiendaelviajero.com.py** |
+| **Domain** | tiendaelviajero.com.py (active, DNS via Max Domain) |
 
 ## 2. Contact
 
 | Channel | Value |
 |---------|-------|
-| **WhatsApp Business** | Confirmed (number TBD — currently placeholder in site.json) |
-| **Email** | Does NOT have one — expects the site domain to provide it |
-| **Facebook** | Yes, active |
-| **Instagram** | Yes, active |
-| **TikTok** | Yes, active |
+| **WhatsApp Business** | +595 984 009751 (hardcoded in site, not yet verbally confirmed by owner) |
+| **Email** | info@tiendaelviajero.com.py (configured in code) |
+| **Facebook** | facebook.com/elviajeropy |
+| **Instagram** | @elviajero_py |
+| **TikTok** | @elviajero_py |
 | **YouTube** | Yes, active |
 | **Social activity** | Publishes several times per week |
 
@@ -209,7 +210,7 @@ None yet — will develop together.
 - [ ] Business name is "El Viajero" not "El Viajero"
 - [ ] Address is Mariano Roque Alonso (La Concordia), not Av. Mariscal Lopez
 - [ ] Contact email doesn't exist yet — owner expects domain email
-- [ ] Founded year was 2018 in config — actual is less than 1 year (~2025)
+- [x] Founded year fixed: 2018 → 2025 in es.json and gn.json (2026-05-21)
 - [ ] Hours need updating (currently shows Sat/Sun hours as closed, but they're open)
 - [ ] No logo exists — needs design
 - [ ] Product photos exist but are all Unsplash placeholders
