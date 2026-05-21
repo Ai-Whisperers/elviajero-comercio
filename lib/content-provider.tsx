@@ -27,10 +27,11 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
   const content = deepMerge(defaultContent, overrides)
 
   const get = useCallback((path: string) => {
-    const ov = deepGet(overrides, path)
-    if (ov !== undefined && ov !== null && ov !== "") return ov
-    return deepGet(defaultContent, path)
-  }, [overrides])
+    // Use the already-deep-merged content so partial overrides don't kill
+    // default fields (e.g. kitsCarousel disappearing when DepiFlash overrides
+    // have a "home" key without kitsCarousel).
+    return deepGet(content, path)
+  }, [content])
 
   const fetchOverrides = useCallback(async () => {
     try {

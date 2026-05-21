@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server"
 import { createAdminClient } from "@ai-whisperers/auth/supabase/admin"
 
-const CONFIG_KEY = "content_overrides"
+// Each site has its own config key so shared Supabase instances don't collide
+const SITE_KEY = process.env.NEXT_PUBLIC_SITE_KEY || "elviajero"
+const CONFIG_KEY = `content_overrides_${SITE_KEY}`
 
 export async function GET() {
   const supabase = createAdminClient()
