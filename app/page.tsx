@@ -26,38 +26,8 @@ const CATEGORY_IMAGE_MAP: Record<string, string> = {
   accesoriosparavehculos: "/images/categories/vehiculos.webp",
 }
 
-const BRAND_LOGOS: Record<string, string> = {
-  bestway: "/images/brands/bestway.webp",
-  fishmaster: "/images/brands/fishmaster.webp",
-  outdoorpro: "/images/brands/outdoorpro.webp",
-  coleman: "/images/brands/coleman.webp",
-  nautika: "/images/brands/nautika.webp",
-}
-
-const DEFAULT_BRANDS = [
-  { name: "Bestway", slug: "bestway", desc: "Equipo camping y outdoor" },
-  { name: "FishMaster", slug: "fishmaster", desc: "Pesca profesional" },
-  { name: "OutdoorPro", slug: "outdoorpro", desc: "Aventura y exploración" },
-  { name: "Coleman", slug: "coleman", desc: "Camping desde 1900" },
-  { name: "Nautika", slug: "nautika", desc: "Acc. náuticos y pesca" },
-  { name: "Chennson", slug: "chennson", desc: "Mochilas y bolsos" },
-  { name: "SleepWell", slug: "sleepwell", desc: "Bolsas de dormir" },
-  { name: "CampMaster", slug: "campmaster", desc: "Sillas y mesas plegables" },
-]
-
 function catSlug(cat: string) {
   return cat.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z]/g, "")
-}
-
-function BrandCard({ name, slug }: { name: string; slug: string }) {
-  return (
-    <div className="flex flex-col items-center gap-2 rounded-xl border border-border bg-surface p-4 transition-all hover:-translate-y-1 hover:shadow-md">
-      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-xl font-bold text-primary">
-        {name.charAt(0)}
-      </div>
-      <span className="text-xs font-semibold text-foreground text-center">{name}</span>
-    </div>
-  )
 }
 
 function AnimatedStat({ value, label }: { value: string; label: string }) {
@@ -142,8 +112,6 @@ function HomePage() {
   const featuredProducts = dbProducts.filter((p: any) => p.featured)
   const bestSellers = [...dbProducts].sort((a: any, b: any) => (b.stock || 0) - (a.stock || 0)).slice(0, 8)
 
-  const allBrands = DEFAULT_BRANDS
-
   return (
     <>
       <Header onCartClick={() => setCartOpen(true)} />
@@ -215,21 +183,6 @@ function HomePage() {
                   <p className="mt-1 text-sm text-white/80">Ver productos →</p>
                 </div>
               </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Marcas que trabajamos */}
-      <section className="bg-surface py-16">
-        <div className="mx-auto max-w-7xl px-4">
-          <FadeUp>
-            <h2 className="mb-3 text-center text-3xl font-bold text-foreground">Marcas que trabajamos</h2>
-            <p className="mb-10 text-center text-muted-foreground">Productos de calidad de las mejores marcas</p>
-          </FadeUp>
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-8">
-            {allBrands.map((brand) => (
-              <BrandCard key={brand.slug} name={brand.name} slug={brand.slug} />
             ))}
           </div>
         </div>
