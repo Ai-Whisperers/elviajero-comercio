@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
-import { createClient } from "@supabase/supabase-js"
+import { createAdminClient } from "@ai-whisperers/auth/supabase/admin"
+import { requireAdmin } from "@/lib/auth"
 import sharp from "sharp"
 
 interface OptimizeImageRequest {
@@ -17,12 +18,11 @@ interface OptimizeImageResponse {
  * Downloads from Supabase Storage, optimizes with sharp, re-uploads.
  */
 export async function POST(req: NextRequest) {
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
-
   try {
+    const { error: authError } = await requireAdmin(req)
+    if (authError) return authError
+
+    const supabase = createAdminClient()
     const body: OptimizeImageRequest = await req.json()
     const { imageUrl } = body
 
@@ -79,7 +79,12 @@ export async function POST(req: NextRequest) {
     }
 
     // 6. Return both URLs
-    const optimizedUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/ej_product_images/${optimizedFilename}`
+    const { data: publicData } = supabase
+      .storage
+      .from('ej_product_images')
+      .getPublicUrl(optimizedFilename)
+
+    const optimizedUrl = publicData.publicUrl
 
     const response: OptimizeImageResponse = {
       original: imageUrl,

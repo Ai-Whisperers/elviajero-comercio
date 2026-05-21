@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
-import { createClient } from "@supabase/supabase-js"
+import { createAdminClient } from "@ai-whisperers/auth/supabase/admin"
+import { requireAdmin } from "@/lib/auth"
 import { nanoid } from "nanoid"
 
 /**
@@ -7,12 +8,11 @@ import { nanoid } from "nanoid"
  * Used by enhanced ImageUpload component with auto WebP optimization.
  */
 export async function POST(req: NextRequest) {
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
-
   try {
+    const { error: authError } = await requireAdmin(req)
+    if (authError) return authError
+
+    const supabase = createAdminClient()
     const formData = await req.formData()
     const file = formData.get("file") as File
 
@@ -48,7 +48,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: uploadError?.message || "Error al subir imagen" }, { status: 500 })
     }
 
-    const publicUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/ej_product_images/${filename}`
+    const { data: publicData } = supabase
+      .storage
+      .from('ej_product_images')
+      .getPublicUrl(filename)
+
+    const publicUrl = publicData.publicUrl
 
     return NextResponse.json({
       url: publicUrl,

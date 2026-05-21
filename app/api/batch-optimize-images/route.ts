@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
-import { createClient } from "@supabase/supabase-js"
+import { createAdminClient } from "@ai-whisperers/auth/supabase/admin"
+import { requireAdmin } from "@/lib/auth"
 // @ts-ignore - sharp has import issues in this TypeScript config
 import sharp from "sharp"
 
@@ -8,12 +9,11 @@ import sharp from "sharp"
  * Fetches all product images and optimizes them one by one.
  */
 export async function POST(req: NextRequest) {
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
-
   try {
+    const { error: authError } = await requireAdmin(req)
+    if (authError) return authError
+
+    const supabase = createAdminClient()
     // 1. Fetch all product images from Supabase
     const { data: products, error: fetchError } = await supabase
       .from("ej_products")
@@ -93,7 +93,12 @@ export async function POST(req: NextRequest) {
           continue
         }
 
-        const optimizedUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${optimizedFilename}`
+        const { data: publicData } = supabase
+          .storage
+          .from("ej_product_images")
+          .getPublicUrl(optimizedFilename)
+
+        const optimizedUrl = publicData.publicUrl
 
         results.push({
           productId: id,
