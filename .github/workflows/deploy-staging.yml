@@ -30,12 +30,23 @@ jobs:
         with:
           ref: ${{ github.event.inputs.ref || 'main' }}
 
+      - name: Preflight required secrets
+        run: |
+          set -euo pipefail
+          test -n "${{ secrets.STAGING_SUPABASE_URL }}" || { echo "Missing STAGING_SUPABASE_URL secret"; exit 1; }
+          test -n "${{ secrets.STAGING_SUPABASE_ANON_KEY }}" || { echo "Missing STAGING_SUPABASE_ANON_KEY secret"; exit 1; }
+          test -n "${{ secrets.VPS_HOST }}" || { echo "Missing VPS_HOST secret"; exit 1; }
+          test -n "${{ secrets.VPS_USER }}" || { echo "Missing VPS_USER secret"; exit 1; }
+          test -n "${{ secrets.VPS_KEY }}" || { echo "Missing VPS_KEY secret"; exit 1; }
+
       - name: Resolve image tag
         id: image
         run: |
           SHORT_SHA=$(git rev-parse --short HEAD)
-          IMAGE="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:staging-${SHORT_SHA}"
+          IMAGE_REPO=$(echo "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}" | tr '[:upper:]' '[:lower:]')
+          IMAGE="${IMAGE_REPO}:staging-${SHORT_SHA}"
           echo "image=$IMAGE" >> "$GITHUB_OUTPUT"
+          echo "latest=${IMAGE_REPO}:staging-latest" >> "$GITHUB_OUTPUT"
           echo "short_sha=$SHORT_SHA" >> "$GITHUB_OUTPUT"
 
       - name: Log in to GitHub Container Registry
@@ -52,7 +63,7 @@ jobs:
           push: true
           tags: |
             ${{ steps.image.outputs.image }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:staging-latest
+            ${{ steps.image.outputs.latest }}
           build-args: |
             NEXT_PUBLIC_SUPABASE_URL=${{ secrets.STAGING_SUPABASE_URL }}
             NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.STAGING_SUPABASE_ANON_KEY }}

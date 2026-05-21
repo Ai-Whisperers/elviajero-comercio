@@ -1,10 +1,6 @@
 name: Deploy production
 
 on:
-  workflow_run:
-    workflows: [CI]
-    branches: [main]
-    types: [completed]
   workflow_dispatch:
     inputs:
       ref:
@@ -27,31 +23,29 @@ jobs:
     name: Build image and update Swarm service
     runs-on: ubuntu-latest
     timeout-minutes: 25
-    if: >-
-      github.event_name == 'workflow_dispatch' ||
-      github.event.workflow_run.conclusion == 'success'
 
     steps:
-      - name: Resolve deployment ref
-        id: ref
-        run: |
-          if [ "${{ github.event_name }}" = "workflow_run" ]; then
-            echo "ref=${{ github.event.workflow_run.head_sha }}" >> "$GITHUB_OUTPUT"
-          else
-            echo "ref=${{ github.event.inputs.ref || 'main' }}" >> "$GITHUB_OUTPUT"
-          fi
-
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          ref: ${{ steps.ref.outputs.ref }}
+          ref: ${{ github.event.inputs.ref || 'main' }}
+
+      - name: Preflight required secrets
+        run: |
+          set -euo pipefail
+          test -n "${{ secrets.SUPABASE_URL }}" || { echo "Missing SUPABASE_URL secret"; exit 1; }
+          test -n "${{ secrets.SUPABASE_ANON_KEY }}" || { echo "Missing SUPABASE_ANON_KEY secret"; exit 1; }
+          test -n "${{ secrets.VPS_HOST }}" || { echo "Missing VPS_HOST secret"; exit 1; }
+          test -n "${{ secrets.VPS_USER }}" || { echo "Missing VPS_USER secret"; exit 1; }
+          test -n "${{ secrets.VPS_KEY }}" || { echo "Missing VPS_KEY secret"; exit 1; }
 
       - name: Resolve image tag
         id: image
         run: |
           SHORT_SHA=$(git rev-parse --short HEAD)
-          IMAGE="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:prod-${SHORT_SHA}"
-          echo "image=$IMAGE" >> "$GITHUB_OUTPUT"
+          IMAGE_REPO=$(echo "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}" | tr '[:upper:]' '[:lower:]')
+          echo "image=${IMAGE_REPO}:prod-${SHORT_SHA}" >> "$GITHUB_OUTPUT"
+          echo "latest=${IMAGE_REPO}:prod-latest" >> "$GITHUB_OUTPUT"
           echo "short_sha=$SHORT_SHA" >> "$GITHUB_OUTPUT"
 
       - name: Log in to GitHub Container Registry
@@ -68,7 +62,7 @@ jobs:
           push: true
           tags: |
             ${{ steps.image.outputs.image }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:prod-latest
+            ${{ steps.image.outputs.latest }}
           build-args: |
             NEXT_PUBLIC_SUPABASE_URL=${{ secrets.SUPABASE_URL }}
             NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}
@@ -98,7 +92,6 @@ jobs:
             --update-failure-action rollback \
             '${{ env.SERVICE_NAME }}'"
 
-          echo "=== Waiting for rollout ==="
           $SSH_CMD "docker service ps '${{ env.SERVICE_NAME }}' --no-trunc"
 
       - name: Verify production health
