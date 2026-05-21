@@ -1,6 +1,3 @@
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
-import { CookieConsent } from "@/components/cookie-consent"
 import { Breadcrumbs } from "@/components/ui"
 import { renderLegalLines } from "@/components/legal-renderer"
 import content from "@/content/es.json"
@@ -13,8 +10,7 @@ export default function PrivacidadPage() {
 
   return (
     <>
-      <Header />
-      <Breadcrumbs items={[{ label: bc.home || "Inicio", href: "/" }, { label: data.title || "Política de Privacidad" }]} />
+<Breadcrumbs items={[{ label: bc.home || "Inicio", href: "/" }, { label: data.title || "Política de Privacidad" }]} />
       <section className="bg-background py-16">
         <div className="mx-auto max-w-3xl px-4">
           <h1 className="mb-2 text-4xl font-bold text-foreground">{data.title || "Política de Privacidad"}</h1>
@@ -24,8 +20,6 @@ export default function PrivacidadPage() {
           </div>
         </div>
       </section>
-      <Footer />
-      <CookieConsent />
-    </>
+</>
   )
 }

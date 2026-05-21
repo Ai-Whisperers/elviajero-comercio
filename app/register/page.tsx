@@ -3,9 +3,6 @@ export const dynamic = "force-dynamic"
 export const fetchCache = "force-no-store"
 export const runtime = "edge"
 import { useAuth, AuthProvider } from "@ai-whisperers/auth/auth-context"
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
-import { CookieConsent } from "@/components/cookie-consent"
 import { useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
@@ -44,8 +41,7 @@ function RegisterForm() {
   if (success) {
     return (
       <>
-        <Header />
-        <section className="flex min-h-[70vh] items-center justify-center bg-background px-4 py-20">
+<section className="flex min-h-[70vh] items-center justify-center bg-background px-4 py-20">
           <div className="w-full max-w-sm text-center">
             <div className="mb-4 text-5xl">✅</div>
             <h1 className="mb-2 text-2xl font-bold text-foreground">Registro exitoso</h1>
@@ -53,16 +49,13 @@ function RegisterForm() {
             <Link href="/login" className="inline-block rounded-lg bg-primary px-6 py-3 font-semibold text-primary-foreground hover:bg-primary/90">Iniciar Sesión</Link>
           </div>
         </section>
-        <Footer />
-        <CookieConsent />
-      </>
+</>
     )
   }
 
   return (
     <>
-      <Header />
-      <section className="flex min-h-[70vh] items-center justify-center bg-background px-4 py-20">
+<section className="flex min-h-[70vh] items-center justify-center bg-background px-4 py-20">
         <div className="w-full max-w-sm">
           <div className="mb-8 text-center">
             <h1 className="text-3xl font-bold text-foreground">Crear Cuenta</h1>
@@ -115,9 +108,7 @@ function RegisterForm() {
           <p className="mt-6 text-center text-sm text-muted-foreground">¿Ya tenés cuenta? <Link href="/login" className="text-primary font-semibold hover:underline">Iniciar Sesión</Link></p>
         </div>
       </section>
-      <Footer />
-      <CookieConsent />
-    </>
+</>
   )
 }
 

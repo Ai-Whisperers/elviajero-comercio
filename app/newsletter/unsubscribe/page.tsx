@@ -1,9 +1,5 @@
-
 "use client"
 import { useState } from "react"
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
-
 export default function UnsubscribePage() {
   const [email, setEmail] = useState("")
   const [done, setDone] = useState(false)
@@ -23,8 +19,7 @@ export default function UnsubscribePage() {
 
   return (
     <>
-      <Header />
-      <section className="flex min-h-[70vh] items-center justify-center bg-background px-4">
+<section className="flex min-h-[70vh] items-center justify-center bg-background px-4">
         <div className="w-full max-w-sm text-center">
           {done ? (
             <>
@@ -45,7 +40,6 @@ export default function UnsubscribePage() {
           )}
         </div>
       </section>
-      <Footer />
-    </>
+</>
   )
 }

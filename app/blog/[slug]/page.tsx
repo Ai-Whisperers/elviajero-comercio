@@ -1,8 +1,5 @@
 "use client"
 import { use } from "react"
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
-import { CookieConsent } from "@/components/cookie-consent"
 import { Breadcrumbs } from "@/components/ui"
 import { ArticleJsonLd } from "@/components/article-json-ld"
 import content from "@/content/es.json"
@@ -98,8 +95,7 @@ export default function BlogPostPage({ params }: { params: Promise<{ slug: strin
   return (
     <>
       <ArticleJsonLd title={post.title} description={post.excerpt} image={post.image} date={post.date} author={post.author} />
-      <Header />
-      <Breadcrumbs items={[{ label: "Inicio", href: "/" }, { label: "Blog", href: "/blog" }, { label: post.title }]} />
+<Breadcrumbs items={[{ label: "Inicio", href: "/" }, { label: "Blog", href: "/blog" }, { label: post.title }]} />
       
       <section className="bg-primary py-12 text-center text-primary-foreground">
         <h1 className="text-4xl font-bold max-w-3xl mx-auto px-4">{post.title}</h1>
@@ -175,9 +171,6 @@ export default function BlogPostPage({ params }: { params: Promise<{ slug: strin
           </div>
         </div>
       </section>
-
-      <Footer />
-      <CookieConsent />
-    </>
+</>
   )
 }

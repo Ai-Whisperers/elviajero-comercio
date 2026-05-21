@@ -2,7 +2,7 @@
   "siteName": "El Viajero",
   "businessName": "El Viajero",
   "tagline": "Todo para tu Aventura",
-  "founded": "2018",
+  "founded": "2025",
   "navigation": {
     "businessName": "El Viajero",
     "ctaText": "Pedir por WhatsApp",
@@ -137,7 +137,7 @@
           "whatsappText": "Hola! Quiero info de Accesorios Esenciales (Gs. 180.000)"
         }
       ],
-      "enabled": false
+      "enabled": true
     },
     "stats": {
       "title": "El Viajero en Numeros",
@@ -147,12 +147,12 @@
           "label": "Categorías"
         },
         {
-          "value": "200+",
+          "value": "35+",
           "label": "Productos"
         },
         {
-          "value": "+100",
-          "label": "Clientes"
+          "value": "Envíos",
+          "label": "a todo el país"
         },
         {
           "value": "🇵🇾",

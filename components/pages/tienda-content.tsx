@@ -1,10 +1,6 @@
 "use client"
 
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
-import { CartSidebar } from "@/components/cart-sidebar"
 import { ProductModal } from "@/components/product-modal"
-import { CookieConsent } from "@/components/cookie-consent"
 import { CartToastListener } from "@/components/cart-toast-listener"
 import { ProductCard } from "@/components/product-card"
 import { SearchAndFilters, SortOption } from "@/components/search-filters"
@@ -68,7 +64,6 @@ function SkeletonCard() {
 /* ------------------------------------------------------------------ */
 export default function TiendaContent() {
   const { add: addRecent } = useRecentlyViewed()
-  const [cartOpen, setCartOpen] = useState(false)
   const [selectedProduct, setSelectedProduct] = useState<any>(null)
   const [dbProducts, setDbProducts] = useState<StoreProduct[]>([])
   const [loading, setLoading] = useState(true)
@@ -316,7 +311,6 @@ export default function TiendaContent() {
 
   return (
     <>
-      <Header onCartClick={() => setCartOpen(true)} />
       <CartToastListener />
 
       {/* Breadcrumbs */}
@@ -474,10 +468,7 @@ export default function TiendaContent() {
         </div>
       </section>
 
-      <Footer />
-      <CartSidebar open={cartOpen} onClose={() => setCartOpen(false)} />
       <ProductModal product={selectedProduct} onClose={() => setSelectedProduct(null)} />
-      <CookieConsent />
 
       {/* Mobile filter drawer */}
       <FilterDrawer

@@ -3,9 +3,6 @@ export const dynamic = "force-dynamic"
 export const fetchCache = "force-no-store"
 export const runtime = "edge"
 import { useAuth, AuthProvider } from "@ai-whisperers/auth/auth-context"
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
-import { CookieConsent } from "@/components/cookie-consent"
 import { useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { Suspense } from "react"
@@ -18,8 +15,7 @@ function ConfirmedContent() {
 
   return (
     <>
-      <Header />
-      <section className="flex min-h-[70vh] items-center justify-center bg-background px-4">
+<section className="flex min-h-[70vh] items-center justify-center bg-background px-4">
         <div className="max-w-md text-center">
           <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-success/10 text-4xl">
             ✅
@@ -41,9 +37,7 @@ function ConfirmedContent() {
           </div>
         </div>
       </section>
-      <Footer />
-      <CookieConsent />
-    </>
+</>
   )
 }
 

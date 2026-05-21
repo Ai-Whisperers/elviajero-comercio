@@ -1,8 +1,5 @@
 "use client"
 import Link from "next/link"
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
-import { CookieConsent } from "@/components/cookie-consent"
 import { useState } from "react"
 import content from "@/content/es.json"
 
@@ -19,8 +16,7 @@ export default function NotFound() {
 
   return (
     <>
-      <Header />
-      <section className="flex min-h-[70vh] flex-col items-center justify-center bg-background px-4 py-20">
+<section className="flex min-h-[70vh] flex-col items-center justify-center bg-background px-4 py-20">
         <div className="max-w-lg text-center">
           <div className="text-8xl font-bold text-primary/20 mb-4">404</div>
           <div className="text-6xl mb-6">🔍</div>
@@ -43,8 +39,6 @@ export default function NotFound() {
           </Link>
         </div>
       </section>
-      <Footer />
-      <CookieConsent />
-    </>
+</>
   )
 }

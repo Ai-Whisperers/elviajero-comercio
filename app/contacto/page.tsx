@@ -1,6 +1,4 @@
 "use client"
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
 import Image from "next/image"
 import { useContent } from "@/lib/content-provider"
 
@@ -12,8 +10,7 @@ export default function ContactoPage() {
 
   return (
     <>
-      <Header />
-      <section className="relative overflow-hidden py-16 text-center text-primary-foreground">
+<section className="relative overflow-hidden py-16 text-center text-primary-foreground">
         <div className="pointer-events-none absolute inset-0">
           <Image src="/images/marketing/contact-hero-storefront.webp" alt="" fill className="object-cover object-[center_35%]" sizes="100vw" priority />
           <div className="absolute inset-0 bg-primary/78" aria-hidden />
@@ -48,7 +45,6 @@ export default function ContactoPage() {
           </div>
         </div>
       </section>
-      <Footer />
-    </>
+</>
   )
 }

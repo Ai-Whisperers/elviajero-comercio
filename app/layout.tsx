@@ -1,8 +1,8 @@
 import { ErrorBoundary } from "@/components/error-boundary"
 import type { Metadata, Viewport } from "next"
 import "./globals.css"
-import { ToastProvider } from "@/components/toast"
 import { ClientProviders } from "@/components/client-providers"
+import { SiteShell } from "@/components/site-shell"
 import { AnalyticsProvider } from "@/components/analytics"
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
@@ -88,7 +88,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="antialiased overflow-x-hidden">
         <ErrorBoundary>
           <ClientProviders>
-            {children}
+            <SiteShell>
+              {children}
+            </SiteShell>
           </ClientProviders>
         </ErrorBoundary>
         <AnalyticsProvider />

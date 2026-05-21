@@ -1,12 +1,6 @@
 "use client"
 
 import { useCart } from "@ai-whisperers/commerce/cart/cart-context"
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
-import { CartSidebar } from "@/components/cart-sidebar"
-import { CookieConsent } from "@/components/cookie-consent"
-import { WhatsAppFloat } from "@/components/whatsapp-float"
-import { CartToastListener } from "@/components/cart-toast-listener"
 import { BackInStockForm } from "@/components/back-in-stock"
 import { ProductReviews } from "@/components/product-reviews"
 import { ImageGallery } from "@/components/image-gallery"
@@ -104,7 +98,6 @@ function RelatedCard({ product }: { product: any }) {
 /*  Main component                                                      */
 /* ------------------------------------------------------------------ */
 export default function ProductPageContent({ slug }: { slug: string }) {
-  const [cartOpen, setCartOpen] = useState(false)
   const { addItem } = useCart()
   const [qty, setQty] = useState(1)
   const [added, setAdded] = useState(false)
@@ -148,7 +141,6 @@ export default function ProductPageContent({ slug }: { slug: string }) {
   if (!product) {
     return (
       <>
-        <Header onCartClick={() => setCartOpen(true)} />
         <section className="bg-background py-6 sm:py-8">
           <div className="mx-auto max-w-6xl px-4">
             <div className="mb-6 h-3 w-32 animate-pulse rounded bg-muted" />
@@ -164,7 +156,6 @@ export default function ProductPageContent({ slug }: { slug: string }) {
             </div>
           </div>
         </section>
-        <Footer />
       </>
     )
   }
@@ -247,9 +238,6 @@ export default function ProductPageContent({ slug }: { slug: string }) {
       {/* Structured data */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-
-      <Header onCartClick={() => setCartOpen(true)} />
-      <CartToastListener />
 
       <section className="bg-background py-6 sm:py-8">
         <div className="mx-auto max-w-6xl px-4">
@@ -595,14 +583,6 @@ export default function ProductPageContent({ slug }: { slug: string }) {
           )}
         </div>
       </section>
-
-      <Footer />
-      <WhatsAppFloat
-        phone={WHATSAPP_NUMBER}
-        message="Hola! Quiero informacion"
-      />
-      <CartSidebar open={cartOpen} onClose={() => setCartOpen(false)} />
-      <CookieConsent />
     </>
   )
 }

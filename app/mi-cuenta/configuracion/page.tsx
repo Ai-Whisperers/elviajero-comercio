@@ -1,9 +1,6 @@
 "use client"
 export const dynamic = "force-dynamic"
 import { useAuth, AuthProvider } from "@ai-whisperers/auth/auth-context"
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
-import { CookieConsent } from "@/components/cookie-consent"
 import { useState } from "react"
 import Link from "next/link"
 
@@ -34,8 +31,7 @@ function SettingsForm() {
 
   return (
     <>
-      <Header />
-      <section className="flex min-h-[70vh] items-center justify-center bg-background px-4 py-20">
+<section className="flex min-h-[70vh] items-center justify-center bg-background px-4 py-20">
         <div className="w-full max-w-md">
           <div className="mb-8 text-center">
             <h1 className="text-3xl font-bold text-foreground">Configuración</h1>
@@ -75,9 +71,7 @@ function SettingsForm() {
           </div>
         </div>
       </section>
-      <Footer />
-      <CookieConsent />
-    </>
+</>
   )
 }
 

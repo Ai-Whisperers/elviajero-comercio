@@ -1,12 +1,8 @@
-
 "use client"
 export const dynamic = "force-dynamic"
 export const fetchCache = "force-no-store"
 export const runtime = "edge"
 import { useAuth, AuthProvider } from "@ai-whisperers/auth/auth-context"
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
-import { CookieConsent } from "@/components/cookie-consent"
 import { OrderTimeline } from "@/components/order-timeline"
 import { useSearchParams } from "next/navigation"
 import Link from "next/link"
@@ -32,8 +28,7 @@ function OrderDetailContent() {
 
   return (
     <>
-      <Header />
-      <section className="min-h-[70vh] bg-muted/30 pb-20 pt-8">
+<section className="min-h-[70vh] bg-muted/30 pb-20 pt-8">
         <div className="mx-auto max-w-3xl px-4">
           <div className="mb-6 flex items-center gap-3">
             <Link href="/mi-cuenta/pedidos" className="text-muted-foreground hover:text-foreground">
@@ -72,9 +67,7 @@ function OrderDetailContent() {
           </div>
         </div>
       </section>
-      <Footer />
-      <CookieConsent />
-    </>
+</>
   )
 }
 

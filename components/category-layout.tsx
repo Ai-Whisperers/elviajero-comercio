@@ -1,7 +1,4 @@
 "use client"
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
-import { CookieConsent } from "@/components/cookie-consent"
 import content from "@/content/es.json"
 import Link from "next/link"
 import Image from "next/image"
@@ -18,8 +15,7 @@ export function CategoryContent({ slug, name, emoji, description, heroImage }: {
 
   return (
     <>
-      <Header />
-      <section className="bg-primary py-12 text-center text-primary-foreground relative overflow-hidden">
+<section className="bg-primary py-12 text-center text-primary-foreground relative overflow-hidden">
         {heroImage && (
           <Image src={heroImage} alt="" fill className="object-cover object-center" sizes="100vw" priority />
         )}
@@ -61,8 +57,6 @@ export function CategoryContent({ slug, name, emoji, description, heroImage }: {
           <div className="mt-10 text-center"><Link href="/tienda" className="text-sm text-primary hover:underline">← Ver todas las categorías</Link></div>
         </div>
       </section>
-      <Footer />
-      <CookieConsent />
-    </>
+</>
   )
 }

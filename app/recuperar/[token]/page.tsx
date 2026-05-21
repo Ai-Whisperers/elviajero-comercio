@@ -1,8 +1,5 @@
 "use client"
 export const dynamic = "force-dynamic"
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
-import { CookieConsent } from "@/components/cookie-consent"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@ai-whisperers/auth/supabase/client"
@@ -46,8 +43,7 @@ function ResetForm() {
 
   return (
     <>
-      <Header />
-      <section className="flex min-h-[70vh] items-center justify-center bg-background px-4">
+<section className="flex min-h-[70vh] items-center justify-center bg-background px-4">
         <div className="w-full max-w-sm">
           <h1 className="mb-6 text-center text-2xl font-bold text-foreground">Nueva contraseña</h1>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -60,8 +56,7 @@ function ResetForm() {
           </form>
         </div>
       </section>
-      <Footer /><CookieConsent />
-    </>
+</>
   )
 }
 

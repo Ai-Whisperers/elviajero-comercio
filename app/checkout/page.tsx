@@ -2,9 +2,6 @@
 export const dynamic = "force-dynamic"
 export const fetchCache = "force-no-store"
 
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
-import { CookieConsent } from "@/components/cookie-consent"
 import { useAuth, AuthProvider } from "@ai-whisperers/auth/auth-context"
 import { useCart } from "@ai-whisperers/commerce/cart/cart-context"
 import { useState, useEffect, useCallback } from "react"
@@ -150,8 +147,7 @@ function CheckoutForm() {
   if (items.length === 0) {
     return (
       <>
-        <Header />
-        <section className="flex min-h-[50vh] items-center justify-center bg-background px-4">
+<section className="flex min-h-[50vh] items-center justify-center bg-background px-4">
           <div className="text-center">
             <div className="text-5xl mb-4">🛒</div>
             <h1 className="text-2xl font-bold text-foreground mb-2">Tu carrito está vacío</h1>
@@ -161,15 +157,13 @@ function CheckoutForm() {
             </button>
           </div>
         </section>
-        <Footer /><CookieConsent />
-      </>
+</>
     )
   }
 
   return (
     <>
-      <Header />
-      <section className="bg-background py-12">
+<section className="bg-background py-12">
         <div className="mx-auto max-w-3xl px-4">
           {/* Progress */}
           <div className="mb-8 flex items-center justify-center gap-4">
@@ -333,8 +327,7 @@ function CheckoutForm() {
           )}
         </div>
       </section>
-      <Footer /><CookieConsent />
-    </>
+</>
   )
 }
 

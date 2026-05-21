@@ -1,7 +1,4 @@
 "use client"
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
-import { CookieConsent } from "@/components/cookie-consent"
 import { FaqJsonLd } from "@/components/faq-json-ld"
 import { useContent } from "@/lib/content-provider"
 import Link from "next/link"
@@ -15,8 +12,7 @@ export default function FaqPage() {
   return (
     <>
       <FaqJsonLd />
-      <Header />
-      <section className="relative flex items-center justify-center min-h-[250px] bg-gradient-to-br from-primary/90 to-primary">
+<section className="relative flex items-center justify-center min-h-[250px] bg-gradient-to-br from-primary/90 to-primary">
         <div className="relative z-10 text-center px-4">
           <h1 className="text-4xl font-bold text-primary-foreground">{hero.headline || "FAQ"}</h1>
           <p className="mt-2 text-primary-foreground/80">{hero.subheadline}</p>
@@ -43,9 +39,6 @@ export default function FaqPage() {
           Contactanos →
         </Link>
       </section>
-
-      <Footer />
-      <CookieConsent />
-    </>
+</>
   )
 }

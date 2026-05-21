@@ -1,5 +1,3 @@
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
 import content from "@/content/es.json"
 import Link from "next/link"
 
@@ -7,8 +5,8 @@ const c = content as any
 const promos = c.promociones?.promotions || []
 
 export default function Promociones() {
-  return (<><Header />
-    <section className="bg-accent py-12 text-center text-accent-foreground"><h1 className="text-4xl font-bold">{c.promociones?.hero?.headline}</h1><p className="mt-2 text-accent-foreground/80">{c.promociones?.hero?.subheadline}</p></section>
+  return (<>
+<section className="bg-accent py-12 text-center text-accent-foreground"><h1 className="text-4xl font-bold">{c.promociones?.hero?.headline}</h1><p className="mt-2 text-accent-foreground/80">{c.promociones?.hero?.subheadline}</p></section>
 
     <section className="bg-background py-16"><div className="mx-auto max-w-7xl px-4">
       <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
@@ -26,7 +24,5 @@ export default function Promociones() {
       </div>
       {promos.length === 0 && <div className="py-20 text-center text-muted-foreground">No hay promociones activas en este momento.</div>}
     </div></section>
-
-    <Footer />
-  </>)
+</>)
 }

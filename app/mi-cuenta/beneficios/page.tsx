@@ -1,8 +1,5 @@
 "use client"
 import { useAuth, AuthProvider } from "@ai-whisperers/auth/auth-context"
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
-import { CookieConsent } from "@/components/cookie-consent"
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { createClient } from "@ai-whisperers/auth/supabase/client"
@@ -63,8 +60,7 @@ function LoyaltyContent() {
 
   return (
     <>
-      <Header />
-      <section className="bg-background py-16">
+<section className="bg-background py-16">
         <div className="mx-auto max-w-3xl px-4">
           <h1 className="text-3xl font-bold text-foreground mb-8">Mis beneficios</h1>
 
@@ -140,8 +136,7 @@ function LoyaltyContent() {
           )}
         </div>
       </section>
-      <Footer /><CookieConsent />
-    </>
+</>
   )
 }
 

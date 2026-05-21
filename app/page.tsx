@@ -2,18 +2,11 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
-import { CartSidebar } from "@/components/cart-sidebar"
 import { HeroCarousel } from "@/components/hero-carousel"
-import { CookieConsent } from "@/components/cookie-consent"
 import { FadeUp, StaggerGrid, StaggerItem } from "@/components/animations/scroll-reveal"
-import { CartToastListener } from "@/components/cart-toast-listener"
 import { RecentlyViewed } from "@/components/recently-viewed"
 import { ExitIntentPopup } from "@/components/exit-intent"
 import { NewsletterForm } from "@/components/newsletter-form"
-import { NewsletterSuccess } from "@/components/ui"
-import { WhatsAppFloat } from "@/components/whatsapp-float"
 import { useContent } from "@/lib/content-provider"
 import { ProductCard } from "@/components/product-card"
 
@@ -43,14 +36,20 @@ function categoryHref(cat: string) {
   return `/tienda?cat=${encodeURIComponent(cat)}`
 }
 
+function whatsappHref(text: string) {
+  const phone = process.env.NEXT_PUBLIC_WHATSAPP || "595984009751"
+  return `https://wa.me/${phone}?text=${encodeURIComponent(text || "Hola! Quiero información sobre los kits y promociones de El Viajero")}`
+}
+
 function HomePage() {
   const { get } = useContent()
   const h = get("home") || {}
   const contentCategories: any[] = h.productCatalog?.categories || []
   const categories: string[] = contentCategories.length > 0 ? contentCategories : DEFAULT_HOME_CATEGORIES
+  const kitsCarousel = h.kitsCarousel || {}
+  const kits: any[] = Array.isArray(kitsCarousel.items) ? kitsCarousel.items : []
   const blogSection = get("tienda.blog") || {}
   const posts: any[] = blogSection?.index?.posts || []
-  const [cartOpen, setCartOpen] = useState(false)
   const [dbProducts, setDbProducts] = useState<any[]>([])
   const [loaded, setLoaded] = useState(false)
 
@@ -65,10 +64,65 @@ function HomePage() {
 
   return (
     <>
-      <Header onCartClick={() => setCartOpen(true)} />
-      <CartToastListener />
-      <NewsletterSuccess />
       <HeroCarousel />
+
+      {/* Kits / Promos */}
+      {kits.length > 0 && kitsCarousel.enabled !== false && (
+        <section id="kits-promos" className="bg-surface py-12">
+          <div className="mx-auto max-w-7xl px-4">
+            <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+              <FadeUp>
+                <p className="mb-2 text-xs font-bold uppercase tracking-[0.24em] text-primary">Kits listos para salir</p>
+                <h2 className="text-3xl font-bold text-foreground">{kitsCarousel.title || "Kits y Promociones"}</h2>
+                <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
+                  Combos armados con productos clave para camping, pesca, vehículo y aventura. Consultá stock directo por WhatsApp.
+                </p>
+              </FadeUp>
+              <Link href="/promociones" className="inline-flex h-10 items-center justify-center rounded-xl border border-primary/30 px-5 text-sm font-semibold text-primary transition-all hover:bg-primary/5">
+                Ver todas las promos
+              </Link>
+            </div>
+            <StaggerGrid className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {kits.slice(0, 6).map((kit: any, i: number) => (
+                <StaggerItem key={`${kit.title || "kit"}-${i}`}>
+                  <article className="group overflow-hidden rounded-2xl border border-border bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+                    <div className="relative aspect-[4/3] overflow-hidden bg-muted">
+                      {kit.image ? (
+                        <Image src={kit.image} alt={kit.title || "Kit promocional"} fill className="object-cover transition-transform duration-500 group-hover:scale-105" sizes="(max-width: 768px) 100vw, 33vw" />
+                      ) : (
+                        <div className="flex h-full w-full items-center justify-center text-sm text-muted-foreground">Kit promocional</div>
+                      )}
+                      {kit.badge && (
+                        <span className="absolute left-3 top-3 rounded-full bg-primary px-3 py-1 text-xs font-bold uppercase tracking-wide text-primary-foreground shadow-lg">
+                          {kit.badge}
+                        </span>
+                      )}
+                      {kit.priceBefore && (
+                        <span className="absolute bottom-3 right-3 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-muted-foreground line-through shadow">
+                          {kit.priceBefore}
+                        </span>
+                      )}
+                    </div>
+                    <div className="p-5">
+                      <h3 className="text-lg font-bold text-foreground">{kit.title}</h3>
+                      <p className="mt-2 min-h-[2.5rem] text-sm text-muted-foreground line-clamp-2">{kit.description}</p>
+                      <div className="mt-4 flex items-center justify-between gap-3">
+                        <div>
+                          <p className="text-xs uppercase tracking-wide text-muted-foreground">Precio promo</p>
+                          <p className="text-xl font-black text-primary">{kit.price || "Consultar"}</p>
+                        </div>
+                        <Link href={whatsappHref(kit.whatsappText)} target="_blank" rel="noopener noreferrer" className="inline-flex h-11 shrink-0 items-center justify-center rounded-xl bg-[#25D366] px-4 text-sm font-bold text-white shadow-lg shadow-green-500/20 transition-all hover:bg-[#1fb957]">
+                          Consultar
+                        </Link>
+                      </div>
+                    </div>
+                  </article>
+                </StaggerItem>
+              ))}
+            </StaggerGrid>
+          </div>
+        </section>
+      )}
 
       {/* Product Categories */}
       <section className="bg-background py-10">
@@ -208,11 +262,7 @@ function HomePage() {
       )}
 
       <RecentlyViewed />
-      <Footer />
-      <CookieConsent />
-      <WhatsAppFloat phone={get("home.contact.whatsapp") || process.env.NEXT_PUBLIC_WHATSAPP || "595984009751"} message={get("whatsapp.defaultMessage") || "Hola! Quiero informacion"} />
       {h.contact?.map && <ExitIntentPopup />}
-      <CartSidebar open={cartOpen} onClose={() => setCartOpen(false)} />
     </>
   )
 }

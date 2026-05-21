@@ -1,13 +1,10 @@
 'use client'
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
 import Link from "next/link"
 
 export default function ErrorPage({ reset }: { error: Error; reset: () => void }) {
   return (
     <>
-      <Header />
-      <div className="flex min-h-[60vh] flex-col items-center justify-center bg-background px-4 text-center">
+<div className="flex min-h-[60vh] flex-col items-center justify-center bg-background px-4 text-center">
         <div className="text-6xl mb-6">⚠️</div>
         <h1 className="text-3xl font-bold text-foreground mb-3">Error del servidor</h1>
         <p className="text-muted-foreground mb-8">Algo salió mal. Intentalo de nuevo o volvé al inicio.</p>
@@ -20,7 +17,6 @@ export default function ErrorPage({ reset }: { error: Error; reset: () => void }
           </Link>
         </div>
       </div>
-      <Footer />
-    </>
+</>
   )
 }

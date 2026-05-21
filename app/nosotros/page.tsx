@@ -1,7 +1,4 @@
 "use client"
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
-import { CookieConsent } from "@/components/cookie-consent"
 import { useContent } from "@/lib/content-provider"
 
 export default function NosotrosPage() {
@@ -12,8 +9,7 @@ export default function NosotrosPage() {
 
   return (
     <>
-      <Header />
-      <section className="bg-primary py-12 text-center text-primary-foreground">
+<section className="bg-primary py-12 text-center text-primary-foreground">
         <h1 className="text-4xl font-bold">{about.hero?.headline || "Nosotros"}</h1>
         <p className="mt-2 text-primary-foreground/80">{about.hero?.subheadline}</p>
       </section>
@@ -95,9 +91,6 @@ export default function NosotrosPage() {
           </div>
         </section>
       )}
-
-      <Footer />
-      <CookieConsent />
-    </>
+</>
   )
 }

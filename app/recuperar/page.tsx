@@ -1,8 +1,5 @@
 "use client"
 export const dynamic = "force-dynamic"
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
-import { CookieConsent } from "@/components/cookie-consent"
 import { useState } from "react"
 import Link from "next/link"
 import { createClient } from "@ai-whisperers/auth/supabase/client"
@@ -25,8 +22,7 @@ function ForgotForm() {
 
   if (sent) return (
     <>
-      <Header />
-      <section className="flex min-h-[70vh] items-center justify-center bg-background px-4">
+<section className="flex min-h-[70vh] items-center justify-center bg-background px-4">
         <div className="max-w-sm text-center">
           <div className="text-5xl mb-4">📧</div>
           <h1 className="text-2xl font-bold text-foreground mb-2">Revisá tu email</h1>
@@ -34,14 +30,12 @@ function ForgotForm() {
           <Link href="/login" className="text-sm font-semibold text-primary hover:underline">Volver</Link>
         </div>
       </section>
-      <Footer /><CookieConsent />
-    </>
+</>
   )
 
   return (
     <>
-      <Header />
-      <section className="flex min-h-[70vh] items-center justify-center bg-background px-4">
+<section className="flex min-h-[70vh] items-center justify-center bg-background px-4">
         <div className="w-full max-w-sm">
           <div className="mb-8 text-center">
             <h1 className="text-2xl font-bold text-foreground">Recuperar contraseña</h1>
@@ -56,8 +50,7 @@ function ForgotForm() {
           <p className="mt-6 text-center text-sm"><Link href="/login" className="font-semibold text-primary hover:underline">Volver</Link></p>
         </div>
       </section>
-      <Footer /><CookieConsent />
-    </>
+</>
   )
 }
 

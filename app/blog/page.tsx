@@ -1,6 +1,3 @@
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
-import { CookieConsent } from "@/components/cookie-consent"
 import { Breadcrumbs } from "@/components/ui"
 import content from "@/content/es.json"
 import Link from "next/link"
@@ -14,8 +11,7 @@ const categories = blog.index?.categories || []
 export default function BlogPage() {
   return (
     <>
-      <Header />
-      <Breadcrumbs items={[{ label: "Inicio", href: "/" }, { label: "Blog" }]} />
+<Breadcrumbs items={[{ label: "Inicio", href: "/" }, { label: "Blog" }]} />
       <section className="bg-primary py-12 text-center text-primary-foreground">
         <h1 className="text-4xl font-bold">{blog.hero?.headline || "Blog"}</h1>
         <p className="mt-2 text-primary-foreground/80">{blog.hero?.subheadline}</p>
@@ -64,8 +60,6 @@ export default function BlogPage() {
           </div>
         </div>
       </section>
-      <Footer />
-      <CookieConsent />
-    </>
+</>
   )
 }

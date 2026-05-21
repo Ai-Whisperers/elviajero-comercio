@@ -3,10 +3,6 @@ export const dynamic = "force-dynamic"
 export const fetchCache = "force-no-store"
 export const runtime = "edge"
 import { useAuth, AuthProvider } from "@ai-whisperers/auth/auth-context"
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
-import { CookieConsent } from "@/components/cookie-consent"
-import { WhatsAppFloat } from "@/components/whatsapp-float"
 import { MobileBottomNav } from "@/components/mobile-bottom-nav"
 import Link from "next/link"
 import content from "@/content/es.json"
@@ -25,8 +21,7 @@ function DashboardForm() {
 
   return (
     <>
-      <Header />
-      <section className="min-h-[70vh] bg-muted/30 pb-20 pt-8">
+<section className="min-h-[70vh] bg-muted/30 pb-20 pt-8">
         <div className="mx-auto max-w-5xl px-4">
           {/* User card */}
           <div className="mb-8 overflow-hidden rounded-xl border border-border bg-surface shadow-sm">
@@ -109,10 +104,7 @@ function DashboardForm() {
           </div>
         </div>
       </section>
-      <Footer />
-      <WhatsAppFloat phone={c.home?.contact?.whatsapp || process.env.NEXT_PUBLIC_WHATSAPP || "595984009751"} message={c.whatsapp?.defaultMessage || "Hola! Quiero informacion"} />
-      <CookieConsent />
-    </>
+</>
   )
 }
 

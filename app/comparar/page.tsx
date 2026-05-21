@@ -1,8 +1,5 @@
-
 "use client"
 import { useState, useEffect } from "react"
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
 import Link from "next/link"
 import Image from "next/image"
 import content from "@/content/es.json"
@@ -39,8 +36,7 @@ export default function ComparePage() {
 
   return (
     <>
-      <Header />
-      <section className="min-h-[70vh] bg-background pb-20 pt-8">
+<section className="min-h-[70vh] bg-background pb-20 pt-8">
         <div className="mx-auto max-w-6xl px-4">
           <div className="mb-6 flex items-center justify-between">
             <h1 className="text-2xl font-bold text-foreground">Comparar productos</h1>
@@ -93,7 +89,6 @@ export default function ComparePage() {
           )}
         </div>
       </section>
-      <Footer />
-    </>
+</>
   )
 }
