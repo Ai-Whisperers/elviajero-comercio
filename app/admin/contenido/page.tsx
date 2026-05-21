@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react"
 import defaultContentRaw from "@/content/es.json"
 import { SectionNav, SECTIONS } from "@/components/admin/section-nav"
 import { PageHeader } from "@/components/admin/ui"
+import { ImageUpload } from "@/components/admin/image-upload"
 const defaultContent: any = defaultContentRaw
 
 function Input({ label, value, onChange, multiline, placeholder }: { label: string; value: string; onChange: (v: string) => void; multiline?: boolean; placeholder?: string }) {
@@ -192,7 +193,7 @@ function ContentEditor() {
                     <h3 className="text-sm font-semibold text-white mb-3">Slide {i + 1}</h3>
                     <Input label="Título" value={deepGet(overrideSlides[i] || defaultSlides[i] || {}, "title")} onChange={v => set(`home.heroCarousel.slides.${i}.title`, v)} placeholder={deepGet(defaultContent, `home.heroCarousel.slides.${i}.title`)} />
                     <Input label="Subtítulo" multiline value={deepGet(overrideSlides[i] || defaultSlides[i] || {}, "subtitle")} onChange={v => set(`home.heroCarousel.slides.${i}.subtitle`, v)} placeholder={deepGet(defaultContent, `home.heroCarousel.slides.${i}.subtitle`)} />
-                    <Input label="Imagen de fondo (URL)" value={deepGet(overrideSlides[i] || defaultSlides[i] || {}, "image")} onChange={v => set(`home.heroCarousel.slides.${i}.image`, v)} placeholder={deepGet(defaultContent, `home.heroCarousel.slides.${i}.image`)} />
+                    <ImageUpload label={`Imagen de fondo ${i + 1}`} currentUrl={deepGet(overrideSlides[i] || defaultSlides[i] || {}, "image") || undefined} onUpload={v => set(`home.heroCarousel.slides.${i}.image`, v)} />
                     <Input label="Texto botón" value={deepGet(overrideSlides[i] || defaultSlides[i] || {}, "ctaText")} onChange={v => set(`home.heroCarousel.slides.${i}.ctaText`, v)} placeholder={deepGet(defaultContent, `home.heroCarousel.slides.${i}.ctaText`)} />
                     <Input label="Link botón" value={deepGet(overrideSlides[i] || defaultSlides[i] || {}, "ctaHref")} onChange={v => set(`home.heroCarousel.slides.${i}.ctaHref`, v)} placeholder={deepGet(defaultContent, `home.heroCarousel.slides.${i}.ctaHref`)} />
                   </div>
@@ -219,7 +220,7 @@ function ContentEditor() {
                     />
                     <button onClick={() => removeArrayItem("home.productCatalog.categories", i)} className="text-xs text-red-400 shrink-0">✕</button>
                   </div>
-                  <Input label={`Imagen (slug: ${slug})`} value={get(`home.categoryImages.${slug}`)} onChange={v => set(`home.categoryImages.${slug}`, v)} placeholder={`/images/categories/${slug}.webp`} />
+                  <ImageUpload label={`Imagen (slug: ${slug})`} currentUrl={get(`home.categoryImages.${slug}`) || undefined} onUpload={v => set(`home.categoryImages.${slug}`, v)} />
                 </div>
               )})}
               <button onClick={() => addArrayItem("home.productCatalog.categories", "Nueva categoría")}
@@ -279,7 +280,7 @@ function ContentEditor() {
                   <Input label={`Precio ${i + 1}`} value={item.price || ""} onChange={v => updateArrayItem("home.kitsCarousel.items", i, "price", v)} />
                   <Input label={`Precio anterior ${i + 1}`} value={item.priceBefore || ""} onChange={v => updateArrayItem("home.kitsCarousel.items", i, "priceBefore", v)} />
                   <Input label={`Badge ${i + 1}`} value={item.badge || ""} onChange={v => updateArrayItem("home.kitsCarousel.items", i, "badge", v)} placeholder="-15%, NUEVO, etc" />
-                  <Input label={`Imagen (URL) ${i + 1}`} value={item.image || ""} onChange={v => updateArrayItem("home.kitsCarousel.items", i, "image", v)} />
+                  <ImageUpload label={`Imagen ${i + 1}`} currentUrl={item.image || undefined} onUpload={v => updateArrayItem("home.kitsCarousel.items", i, "image", v)} />
                   <Input label={`WhatsApp text ${i + 1}`} value={item.whatsappText || ""} onChange={v => updateArrayItem("home.kitsCarousel.items", i, "whatsappText", v)} />
                   <button onClick={() => removeArrayItem("home.kitsCarousel.items", i)} className="mt-2 text-xs text-red-400 hover:underline">Eliminar kit</button>
                 </div>

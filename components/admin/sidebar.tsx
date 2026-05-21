@@ -7,6 +7,7 @@ import {
   Percent, Star, Briefcase, Activity,
   Settings, UserCog, Mail, Palette,
   Truck, MessageCircle, HeartHandshake, RotateCcw, ShoppingCart, CalendarClock, History,
+  Sparkles,
 } from "lucide-react"
 
 const iconMap: Record<string, any> = {
@@ -15,6 +16,7 @@ const iconMap: Record<string, any> = {
   Percent, Star, Briefcase, Activity,
   Settings, UserCog, Mail, Palette,
   Truck, MessageCircle, HeartHandshake, RotateCcw, ShoppingCart, CalendarClock, History,
+  Sparkles,
 }
 
 const SECTIONS = [
@@ -58,6 +60,7 @@ const SECTIONS = [
     label: "Configuración",
     items: [
       { href: "/admin/contenido", label: "Contenido", icon: "Settings" },
+      { href: "/admin/asistente", label: "Asistente AI", icon: "Sparkles" },
       { href: "/admin/actividad", label: "Actividad", icon: "Activity" },
       { href: "/admin/usuarios", label: "Usuarios", icon: "UserCog" },
       { href: "/admin/suscriptores", label: "Suscriptores", icon: "Mail" },
