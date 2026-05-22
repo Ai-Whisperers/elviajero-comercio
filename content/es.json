@@ -129,7 +129,60 @@
       ]
     },
     "kitsCarousel": {
-      "items": [],
+      "items": [
+        {
+          "title": "Kit Camping Completo",
+          "description": "Carpa 4 pers + 2 bolsas de dormir + colchon inflable + linterna",
+          "price": "Gs. 420.000",
+          "priceBefore": "Gs. 500.000",
+          "image": "/images/marketing/promo-kit-camping.webp",
+          "badge": "-15%",
+          "whatsappText": "Hola! Quiero info del Kit Camping Completo (Gs. 420.000)"
+        },
+        {
+          "title": "Combo Pesca Inicial",
+          "description": "Caña + caja de herramientas + señuelos + anzuelos. Ideal para empezar.",
+          "price": "Gs. 280.000",
+          "priceBefore": "Gs. 310.000",
+          "image": "/images/marketing/promo-combo-pesca.webp",
+          "badge": "-10%",
+          "whatsappText": "Hola! Quiero info del Combo Pesca Inicial (Gs. 280.000)"
+        },
+        {
+          "title": "Kit Explorador",
+          "description": "Mochila 50L + cantimplora + brújula + linterna frontal + silbato",
+          "price": "Gs. 350.000",
+          "image": "/images/marketing/promo-envio-gratis.webp",
+          "badge": "NUEVO",
+          "whatsappText": "Hola! Quiero info del Kit Explorador (Gs. 350.000)"
+        },
+        {
+          "title": "Pack Electrónica",
+          "description": "Cargador portátil 20000mAh + linterna recargable + pilas recargables",
+          "price": "Gs. 390.000",
+          "priceBefore": "Gs. 450.000",
+          "image": "/images/marketing/promo-kit-camping.webp",
+          "badge": "-13%",
+          "whatsappText": "Hola! Quiero info del Pack Electrónica (Gs. 390.000)"
+        },
+        {
+          "title": "Set Vehículos",
+          "description": "Compresor 12V + cargador USB-auto + organizador + sogas de amarre",
+          "price": "Gs. 250.000",
+          "image": "/images/marketing/promo-envio-gratis.webp",
+          "badge": "OFERTA",
+          "whatsappText": "Hola! Quiero info del Set Vehículos (Gs. 250.000)"
+        },
+        {
+          "title": "Accesorios Esenciales",
+          "description": "Mochila plegable + cantimplora + brújula + silbato + multiherramienta",
+          "price": "Gs. 180.000",
+          "priceBefore": "Gs. 220.000",
+          "image": "/images/marketing/promo-combo-pesca.webp",
+          "badge": "-18%",
+          "whatsappText": "Hola! Quiero info de Accesorios Esenciales (Gs. 180.000)"
+        }
+      ],
       "title": "Kits y Promociones"
     },
     "testimonials": [
@@ -257,9 +310,30 @@
   },
   "about": {
     "story": {
-      "paragraphs": []
+      "paragraphs": [
+        "El Viajero nació con una misión clara: equipar a los aventureros paraguayos con todo lo necesario para explorar Paraguay. Desde nuestro local en Mariano Roque Alonso, comenzamos trayendo carpas y equipos de camping de la mejor calidad.",
+        "Apostamos a la variedad: camping, pesca, accesorios para auto y moto, equipo personal y más. Nos enorgullece brindar atención personalizada y asesoramiento experto para que cada cliente encuentre exactamente lo que necesita.",
+        "Creemos que el equipo correcto hace la diferencia entre un buen viaje y una experiencia inolvidable. Seguimos creciendo, trayendo las mejores marcas y los productos más innovadores."
+      ]
     },
-    "values": [],
+    "values": [
+      {
+        "title": "Calidad",
+        "description": "Seleccionamos productos que cumplen con nuestros estandares de durabilidad y rendimiento en el campo."
+      },
+      {
+        "title": "Atencion Personalizada",
+        "description": "Cada cliente recibe asesoramiento segun su experiencia y sus necesidades especificas de viaje."
+      },
+      {
+        "title": "Variedad",
+        "description": "Seis categorias con mas de 500 productos para que encuentres todo en un solo lugar."
+      },
+      {
+        "title": "Pasion por la Aventura",
+        "description": "Somos viajeros y aventureros nosotros mismos. Sabemos lo que necesitas porque lo vivimos."
+      }
+    ],
     "hero": {
       "title": "Sobre Nosotros",
       "subtitle": "Equipamiento para aventura"
@@ -346,19 +420,167 @@
     "address": "Coronel Felipe Toledo, Barrio La Concordia (detrás de Mariam Lubricantes), Mariano Roque Alonso",
     "phone": "+595 984 009 751",
     "hours": "Lun-Vie 08:00-19:00 | Sáb 08:00-17:00 | Dom 09:00-13:00",
-    "columns": [],
-    "paymentMethods": [],
+    "columns": [
+      {
+        "title": "El Viajero",
+        "links": [
+          {
+            "label": "Inicio",
+            "href": "/"
+          },
+          {
+            "label": "Tienda",
+            "href": "/tienda"
+          },
+          {
+            "label": "Blog",
+            "href": "/blog"
+          },
+          {
+            "label": "Nosotros",
+            "href": "/nosotros"
+          },
+          {
+            "label": "Contacto",
+            "href": "/contacto"
+          }
+        ]
+      },
+      {
+        "title": "Ayuda",
+        "links": [
+          {
+            "label": "FAQ",
+            "href": "/faq?q=faq"
+          },
+          {
+            "label": "Envios",
+            "href": "/faq#envios"
+          },
+          {
+            "label": "Cambios y devoluciones",
+            "href": "/faq#cambios"
+          },
+          {
+            "label": "Medios de pago",
+            "href": "/faq#medios-de-pago"
+          }
+        ]
+      },
+      {
+        "title": "Legales",
+        "links": [
+          {
+            "label": "Privacidad",
+            "href": "/privacidad"
+          },
+          {
+            "label": "Terminos",
+            "href": "/terminos"
+          }
+        ]
+      }
+    ],
+    "paymentMethods": [
+      {
+        "name": "Visa",
+        "icon": "visa"
+      },
+      {
+        "name": "Mastercard",
+        "icon": "mastercard"
+      },
+      {
+        "name": "Mercado Pago",
+        "icon": "mercadopago"
+      },
+      {
+        "name": "Pagopar",
+        "icon": "pagopar"
+      },
+      {
+        "name": "Bancard",
+        "icon": "bancard"
+      },
+      {
+        "name": "Efectivo",
+        "icon": "cash"
+      },
+      {
+        "name": "Transferencia",
+        "icon": "transfer"
+      }
+    ],
     "trustSignals": [
       "Envio gratis desde Gs. 300.000",
       "Cambios hasta 7 dias",
       "Garantia incluida",
       "Pago 100% seguro"
     ],
-    "social": [],
-    "contactStrip": []
+    "social": [
+      {
+        "name": "Instagram",
+        "url": "https://instagram.com/elviajero_py",
+        "icon": "instagram"
+      },
+      {
+        "name": "Facebook",
+        "url": "https://facebook.com/elviajeropy",
+        "icon": "facebook"
+      },
+      {
+        "name": "TikTok",
+        "url": "https://tiktok.com/@elviajero_py",
+        "icon": "tiktok"
+      },
+      {
+        "name": "YouTube",
+        "url": "https://youtube.com/@elviajero_py",
+        "icon": "youtube"
+      }
+    ],
+    "contactStrip": [
+      {
+        "icon": "📍",
+        "text": "Coronel Felipe Toledo, Barrio La Concordia (detrás de Mariam Lubricantes), Mariano Roque Alonso"
+      },
+      {
+        "icon": "📞",
+        "text": "+595 984 009751"
+      },
+      {
+        "icon": "🕐",
+        "text": "Lun-Vie 08:00-19:00 | Sáb 08:00-17:00 | Dom 09:00-13:00"
+      }
+    ]
   },
   "promociones": {
-    "promotions": [],
+    "promotions": [
+      {
+        "title": "Kit Camping Completo",
+        "description": "Carpa 4 pers + 2 bolsas de dormir + colchon inflable. Ahorra Gs. 80.000",
+        "badge": "-15%",
+        "image": "/images/marketing/promo-kit-camping.png",
+        "ctaText": "Consultar por WhatsApp",
+        "ctaHref": "https://wa.me/595984009751?text=Hola!%20Quiero%20info%20del%20Kit%20Camping%20Completo"
+      },
+      {
+        "title": "Combo Pesca Inicial",
+        "description": "Caña + caja de herramientas + señuelos. Ideal para empezar.",
+        "badge": "-10%",
+        "image": "/images/marketing/promo-combo-pesca.png",
+        "ctaText": "Consultar por WhatsApp",
+        "ctaHref": "https://wa.me/595984009751?text=Hola!%20Quiero%20info%20del%20Combo%20Pesca%20Inicial"
+      },
+      {
+        "title": "Envio Gratis",
+        "description": "En compras mayores a Gs. 300.000 en Asunción y area metropolitana.",
+        "badge": "GRATIS",
+        "image": "/images/marketing/promo-envio-gratis.png",
+        "ctaText": "Ver productos",
+        "ctaHref": "/tienda"
+      }
+    ],
     "hero": {
       "headline": "Promociones",
       "subheadline": "No te pierdas nuestras ofertas"
@@ -432,7 +654,13 @@
     }
   ],
   "paymentMethods": {
-    "icons": [],
+    "icons": [
+      "visa",
+      "mastercard",
+      "mercadopago",
+      "pagopar",
+      "bancard"
+    ],
     "installments": "3, 6 y 12 cuotas sin interés",
     "note": "Consultá medios de pago disponibles"
   },

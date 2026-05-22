@@ -80,27 +80,28 @@ export default function TiendaContent() {
   /* --- Load products and categories from Supabase --- */
   useEffect(() => {
     let cancelled = false
-    Promise.all([
-      fetch("/api/home").then((r) => r.json()).catch(() => ({ products: [] })),
-      fetch("/api/categories").then((r) => r.json()).catch(() => []),
-    ]).then(([homeData, catsData]) => {
-      if (cancelled) return
-      if (homeData.products?.length) {
-        setDbProducts(
-          homeData.products.map((p: any): StoreProduct => ({
-            id: p.id, slug: p.slug, name: p.name,
-            category: p.category, subcategory: p.subcategory,
-            price: p.price, priceBefore: p.price_before,
-            description: p.description, brand: p.brand,
-            specs: p.specs, stock: p.stock, weight: p.weight,
-            imageUrl: p.image_url, isNew: p.is_new, featured: p.featured,
-          }))
-        )
-      }
-      if (Array.isArray(catsData) && catsData.length > 0) {
-        setCategories(catsData)
-      }
-    }).finally(() => { if (!cancelled) setLoading(false) })
+    fetch("/api/home")
+      .then((r) => r.json())
+      .catch(() => ({ products: [], categories: [] }))
+      .then((data) => {
+        if (cancelled) return
+        if (data.products?.length) {
+          setDbProducts(
+            data.products.map((p: any): StoreProduct => ({
+              id: p.id, slug: p.slug, name: p.name,
+              category: p.category, subcategory: p.subcategory,
+              price: p.price, priceBefore: p.price_before,
+              description: p.description, brand: p.brand,
+              specs: p.specs, stock: p.stock, weight: p.weight,
+              imageUrl: p.image_url, isNew: p.is_new, featured: p.featured,
+            }))
+          )
+        }
+        if (Array.isArray(data.categories) && data.categories.length > 0) {
+          setCategories(data.categories)
+        }
+      })
+      .finally(() => { if (!cancelled) setLoading(false) })
     return () => { cancelled = true }
   }, [])
 
