@@ -542,11 +542,127 @@ function ContentEditor() {
           )}
 
           {section === "footer" && (
-            <div className="space-y-4">
-              <Input label="Descripción" multiline value={get("footer.description")} onChange={v => set("footer.description", v)} placeholder={deepGet(defaultContent, "footer.description")} />
-              <Input label="Dirección" value={get("footer.address")} onChange={v => set("footer.address", v)} placeholder={deepGet(defaultContent, "footer.address")} />
-              <Input label="Teléfono" value={get("footer.phone")} onChange={v => set("footer.phone", v)} placeholder={deepGet(defaultContent, "footer.phone")} />
-              <Input label="Horarios" value={get("footer.hours")} onChange={v => set("footer.hours", v)} placeholder={deepGet(defaultContent, "footer.hours")} />
+            <div className="space-y-6">
+              {/* Basic info */}
+              <div className="space-y-4">
+                <h3 className="text-sm font-semibold text-zinc-300 border-b border-zinc-700 pb-2">Información básica</h3>
+                <Input label="Razón social" value={get("businessName")} onChange={v => set("businessName", v)} placeholder={deepGet(defaultContent, "businessName")} />
+                <Input label="Descripción" multiline value={get("footer.description")} onChange={v => set("footer.description", v)} placeholder={deepGet(defaultContent, "footer.description")} />
+                <Input label="Dirección" value={get("footer.address")} onChange={v => set("footer.address", v)} placeholder={deepGet(defaultContent, "footer.address")} />
+                <Input label="Teléfono" value={get("footer.phone")} onChange={v => set("footer.phone", v)} placeholder={deepGet(defaultContent, "footer.phone")} />
+                <Input label="Horarios" value={get("footer.hours")} onChange={v => set("footer.hours", v)} placeholder={deepGet(defaultContent, "footer.hours")} />
+              </div>
+
+              {/* Contact strip (top of footer) */}
+              <div>
+                <h3 className="text-sm font-semibold text-zinc-300 border-b border-zinc-700 pb-2 mb-4">Barra de contacto (arriba del footer)</h3>
+                <p className="mb-3 text-xs text-zinc-500">Los íconos que aparecen arriba de todo en el footer (📍📍📞🕐)</p>
+                {(getArray("footer.contactStrip").length > 0 ? getArray("footer.contactStrip") : defaultContent.footer?.contactStrip || []).map((item: any, i: number) => (
+                  <div key={i} className="mb-3 flex items-end gap-3 rounded-lg border border-zinc-700/60 bg-zinc-800 p-3">
+                    <Input label={`Ícono ${i + 1}`} value={item.icon || ""} onChange={v => updateArrayItem("footer.contactStrip", i, "icon", v)} placeholder="📍" />
+                    <div className="flex-1">
+                      <Input label={`Texto ${i + 1}`} value={item.text || ""} onChange={v => updateArrayItem("footer.contactStrip", i, "text", v)} />
+                    </div>
+                    <button onClick={() => removeArrayItem("footer.contactStrip", i)} className="text-xs text-red-400 hover:underline shrink-0 mb-1">✕</button>
+                  </div>
+                ))}
+                <button onClick={() => addArrayItem("footer.contactStrip", { icon: "📍", text: "" })}
+                  className="mt-2 rounded-lg border border-dashed border-zinc-600 px-4 py-2 text-sm text-zinc-400 hover:text-white hover:border-zinc-500">
+                  + Agregar ítem
+                </button>
+              </div>
+
+              {/* Footer columns (navigation) */}
+              <div>
+                <h3 className="text-sm font-semibold text-zinc-300 border-b border-zinc-700 pb-2 mb-4">Columnas de navegación</h3>
+                <p className="mb-3 text-xs text-zinc-500">Grupos de links que se muestran en el footer (El Viajero, Ayuda, Legales, etc.)</p>
+                {(getArray("footer.columns").length > 0 ? getArray("footer.columns") : defaultContent.footer?.columns || []).map((col: any, ci: number) => (
+                  <div key={ci} className="mb-4 rounded-lg border border-zinc-700/60 bg-zinc-800 p-4">
+                    <div className="flex items-center gap-3 mb-3">
+                      <Input label={`Título de columna ${ci + 1}`} value={col.title || ""} onChange={v => updateArrayItem("footer.columns", ci, "title", v)} />
+                      <button onClick={() => removeArrayItem("footer.columns", ci)} className="text-xs text-red-400 hover:underline shrink-0 mt-5">Eliminar columna</button>
+                    </div>
+                    {(col.links || []).map((lnk: any, li: number) => (
+                      <div key={li} className="mb-2 flex items-end gap-2 pl-4">
+                        <Input label={`Texto del link`} value={lnk.label || ""} onChange={v => {
+                          const cols = getArray("footer.columns").length > 0 ? getArray("footer.columns") : defaultContent.footer?.columns || []
+                          const updated = JSON.parse(JSON.stringify(cols))
+                          if (!updated[ci]) return
+                          updated[ci].links[li] = { ...updated[ci].links[li], label: v }
+                          set("footer.columns", updated)
+                        }} />
+                        <Input label={`URL`} value={lnk.href || ""} onChange={v => {
+                          const cols = getArray("footer.columns").length > 0 ? getArray("footer.columns") : defaultContent.footer?.columns || []
+                          const updated = JSON.parse(JSON.stringify(cols))
+                          if (!updated[ci]) return
+                          updated[ci].links[li] = { ...updated[ci].links[li], href: v }
+                          set("footer.columns", updated)
+                        }} />
+                        <button onClick={() => {
+                          const cols = getArray("footer.columns").length > 0 ? getArray("footer.columns") : defaultContent.footer?.columns || []
+                          const updated = JSON.parse(JSON.stringify(cols))
+                          if (!updated[ci]) return
+                          updated[ci].links.splice(li, 1)
+                          set("footer.columns", updated)
+                        }} className="text-xs text-red-400 hover:underline shrink-0 mb-1">✕</button>
+                      </div>
+                    ))}
+                    <button onClick={() => {
+                      const cols = getArray("footer.columns").length > 0 ? getArray("footer.columns") : JSON.parse(JSON.stringify(defaultContent.footer?.columns || []))
+                      const updated = JSON.parse(JSON.stringify(cols))
+                      if (!updated[ci]) updated[ci] = { title: "", links: [] }
+                      updated[ci].links = [...(updated[ci].links || []), { label: "", href: "" }]
+                      set("footer.columns", updated)
+                    }} className="ml-4 mt-1 text-xs text-emerald-400 hover:underline">+ Link</button>
+                  </div>
+                ))}
+                <button onClick={() => addArrayItem("footer.columns", { title: "", links: [] })}
+                  className="mt-2 rounded-lg border border-dashed border-zinc-600 px-4 py-2 text-sm text-zinc-400 hover:text-white hover:border-zinc-500">
+                  + Agregar columna
+                </button>
+              </div>
+
+              {/* Social media links */}
+              <div>
+                <h3 className="text-sm font-semibold text-zinc-300 border-b border-zinc-700 pb-2 mb-4">Redes sociales</h3>
+                <p className="mb-3 text-xs text-zinc-500">Links a las redes sociales que aparecen en el footer</p>
+                {(getArray("footer.social").length > 0 ? getArray("footer.social") : defaultContent.footer?.social || []).map((s: any, i: number) => (
+                  <div key={i} className="mb-3 flex items-end gap-3 rounded-lg border border-zinc-700/60 bg-zinc-800 p-3">
+                    <div className="w-32">
+                      <Input label="Red social" value={s.name || ""} onChange={v => updateArrayItem("footer.social", i, "name", v)} placeholder="Instagram" />
+                    </div>
+                    <div className="flex-1">
+                      <Input label="URL" value={s.url || ""} onChange={v => updateArrayItem("footer.social", i, "url", v)} placeholder="https://instagram.com/..." />
+                    </div>
+                    <div className="w-28">
+                      <Input label="Ícono" value={s.icon || ""} onChange={v => updateArrayItem("footer.social", i, "icon", v)} placeholder="instagram" />
+                    </div>
+                    <button onClick={() => removeArrayItem("footer.social", i)} className="text-xs text-red-400 hover:underline shrink-0 mb-1">✕</button>
+                  </div>
+                ))}
+                <button onClick={() => addArrayItem("footer.social", { name: "", url: "", icon: "" })}
+                  className="mt-2 rounded-lg border border-dashed border-zinc-600 px-4 py-2 text-sm text-zinc-400 hover:text-white hover:border-zinc-500">
+                  + Agregar red social
+                </button>
+              </div>
+
+              {/* Payment methods in footer */}
+              <div>
+                <h3 className="text-sm font-semibold text-zinc-300 border-b border-zinc-700 pb-2 mb-4">Medios de pago (footer)</h3>
+                <p className="mb-3 text-xs text-zinc-500">Los badges de medios de pago que se muestran en el footer</p>
+                {(getArray("footer.paymentMethods").length > 0 ? getArray("footer.paymentMethods") : defaultContent.footer?.paymentMethods || []).map((pm: any, i: number) => (
+                  <div key={i} className="mb-2 flex items-end gap-3 rounded-lg border border-zinc-700/60 bg-zinc-800 p-3">
+                    <div className="flex-1">
+                      <Input label={`Método ${i + 1}`} value={pm.name || ""} onChange={v => updateArrayItem("footer.paymentMethods", i, "name", v)} />
+                    </div>
+                    <button onClick={() => removeArrayItem("footer.paymentMethods", i)} className="text-xs text-red-400 hover:underline shrink-0 mb-1">✕</button>
+                  </div>
+                ))}
+                <button onClick={() => addArrayItem("footer.paymentMethods", { name: "", icon: "" })}
+                  className="mt-2 rounded-lg border border-dashed border-zinc-600 px-4 py-2 text-sm text-zinc-400 hover:text-white hover:border-zinc-500">
+                  + Agregar método de pago
+                </button>
+              </div>
             </div>
           )}
 
