@@ -7,6 +7,6 @@ const config = {
     "^@/(.*)$": "<rootDir>/$1",
     "^@ai-whisperers/auth/storage-keys$": "<rootDir>/packages/auth/storage-keys.ts",
   },
-  testPathIgnorePatterns: ["<rootDir>/.next/", "<rootDir>/node_modules/"],
+  testPathIgnorePatterns: ["<rootDir>/.next/", "<rootDir>/node_modules/", "<rootDir>/__tests__/test-utils\\.ts$"],
 }
 module.exports = createJestConfig(config)
