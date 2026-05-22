@@ -50,7 +50,7 @@ function RelatedCard({ product }: { product: any }) {
       href={href}
       className="group flex flex-col overflow-hidden rounded-xl border border-border bg-surface transition-all hover:-translate-y-1 hover:shadow-md"
     >
-      <div className="relative aspect-square overflow-hidden bg-muted">
+      <div className="relative aspect-square overflow-hidden bg-white">
         {product.imageUrl ? (
           <SafeImage
             src={product.imageUrl}

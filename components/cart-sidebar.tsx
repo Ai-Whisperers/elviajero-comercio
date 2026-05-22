@@ -80,7 +80,7 @@ export function CartSidebar({ open, onClose }: { open: boolean; onClose: () => v
         <div className="overflow-y-auto px-4 py-4" style={{ maxHeight: "calc(100vh - 220px)" }}>
           {items.length === 0 && (
             <div className="flex flex-col items-center py-12 text-center">
-              <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-muted">
+              <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-white">
                 <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-muted-foreground">
                   <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
                   <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
@@ -103,7 +103,7 @@ export function CartSidebar({ open, onClose }: { open: boolean; onClose: () => v
               className={`flex gap-3 py-3 ${idx !== items.length - 1 ? "border-b border-border" : ""}`}
             >
               {/* Thumbnail */}
-              <div className="h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-muted">
+              <div className="h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-white">
                 {item.image ? (
                   <SafeImage
                     src={item.image}

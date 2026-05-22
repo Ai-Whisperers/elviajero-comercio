@@ -69,7 +69,7 @@ export function KitsCarousel({
               className="group relative rounded-xl border border-border bg-surface shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col overflow-hidden"
             >
               {/* Image */}
-              <div className="relative aspect-[4/3] bg-muted overflow-hidden">
+              <div className="relative aspect-[4/3] bg-white overflow-hidden">
                 {item.image ? (
                   <Image src={item.image} alt={item.title} width={300} height={225} className="h-full w-full object-contain p-3 group-hover:scale-105 transition-transform duration-500" />
                 ) : (

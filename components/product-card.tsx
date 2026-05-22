@@ -83,7 +83,7 @@ export function ProductCard({ product, onClick }: { product: Product; onClick?: 
         <Link
           href={productHref}
           onClick={() => onClick?.(product)}
-          className="relative block aspect-[4/3] overflow-hidden bg-muted"
+          className="relative block aspect-[4/3] overflow-hidden bg-white"
         >
           <SafeImage
             src={product.imageUrl}

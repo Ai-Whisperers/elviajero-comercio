@@ -16,7 +16,7 @@ export function EmptyCartSuggestions() {
       <div className="space-y-2">
         {prods.map((p: any, i: number) => (
           <Link key={i} href={"/producto/" + slugify(p.name)} className="flex items-center gap-3 rounded-lg border border-border p-2 transition-all hover:bg-muted">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-muted">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white">
               {p.imageUrl && <Image src={p.imageUrl} alt={p.name} width={40} height={40} className="h-full w-full object-contain p-1" />}
             </div>
             <div className="min-w-0 flex-1"><p className="truncate text-xs font-medium text-foreground">{p.name}</p><p className="text-xs text-primary font-bold">{p.price}</p></div>

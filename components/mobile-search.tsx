@@ -43,7 +43,7 @@ export function MobileSearchBar() {
               {results.map((p: any, i: number) => (
                 <Link key={i} href={"/producto/" + slugify(p.name)} onClick={() => setOpen(false)}
                   className="flex items-center gap-3 rounded-xl border border-border p-3 mb-2 transition-all hover:bg-muted">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-muted">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-white">
                     {p.imageUrl && <Image src={p.imageUrl} alt={p.name} width={48} height={48} className="h-full w-full object-contain p-1" />}
                   </div>
                   <div><p className="font-medium text-foreground">{p.name}</p><p className="text-sm text-muted-foreground">{p.price}</p></div>

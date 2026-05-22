@@ -14,16 +14,16 @@ Cualquiera de estas funciona:
 REGLA DE ORO
 ------------
 
-Fondo color #F0F7F0 (verde menta muy suave, casi blanco con un toque de verde). Este es el color exacto que usa la tienda detrás de las imágenes. Si usás fondo blanco puro, se va a ver como un rectángulo blanco pegado sobre el fondo de la tienda. Con #F0F7F0 la imagen se funde con el fondo y queda profesional.
+Fondo color blanco (verde menta muy suave, casi blanco con un toque de verde). Este es el color exacto que usa la tienda detrás de las imágenes. Si usás fondo blanco puro, se va a ver como un rectángulo blanco pegado sobre el fondo de la tienda. Con blanco la imagen se funde con el fondo y queda profesional.
 
-Sin paisaje, sin montaña, sin río, sin gente. Solo el producto sobre fondo sólido #F0F7F0. Estilo foto de catálogo profesional.
+Sin paisaje, sin montaña, sin río, sin gente. Solo el producto sobre fondo BLANCO PURO. Estilo foto de catálogo profesional.
 
 
 FORMATO QUE NECESITA LA TIENDA
 -------------------------------
 
 • 800x800 píxeles (cuadrado)
-• Fondo sólido color #F0F7F0 (verde menta muy claro)
+• Fondo sólido color blanco (verde menta muy claro)
 • Producto centrado llenando el 80% de la imagen
 • Sin texto, sin marcas de agua, sin gente
 
@@ -46,23 +46,23 @@ LOS 5 PROMPTS BASE (uno por categoría)
 
 CATEGORÍA: CAMPING (carpas, bolsas de dormir, mochilas, sillas, linternas, hornallas, coolers)
 
-Professional e-commerce product photo on a solid #F0F7F0 background color (very light mint green). {PRODUCTO}, centered in frame, well-lit with soft studio lighting from the upper left, subtle drop shadow underneath. No hands, no people, no props, no text overlays. The product fills 80-85% of the frame. Rugged outdoor adventure aesthetic, earthy green tones. Clean, modern, premium outdoor retail style. 800x800 pixels, square format, JPEG with solid #F0F7F0 background.
+Professional e-commerce product photo on a pure white background. {PRODUCTO}, centered in frame, well-lit with soft studio lighting from the upper left, subtle drop shadow underneath. No hands, no people, no props, no text overlays. The product fills 80-85% of the frame. Rugged outdoor adventure aesthetic, earthy green tones. Clean, modern, premium outdoor retail style. 800x800 pixels, square format, JPEG with pure white background.
 
 CATEGORÍA: PESCA (reels, cañas, señuelos, líneas, cajas de pesca, redes)
 
-Professional e-commerce product photo on a solid #F0F7F0 background color (very light mint green). {PRODUCTO}, centered in frame, well-lit with soft studio lighting from the upper left, subtle drop shadow underneath. No hands, no people, no props, no text overlays. The product fills 80-85% of the frame. Freshwater fishing aesthetic, silver and blue tones. Clean, modern, premium outdoor retail style. 800x800 pixels, square format, JPEG with solid #F0F7F0 background.
+Professional e-commerce product photo on a pure white background. {PRODUCTO}, centered in frame, well-lit with soft studio lighting from the upper left, subtle drop shadow underneath. No hands, no people, no props, no text overlays. The product fills 80-85% of the frame. Freshwater fishing aesthetic, silver and blue tones. Clean, modern, premium outdoor retail style. 800x800 pixels, square format, JPEG with pure white background.
 
 CATEGORÍA: ACCESORIOS PERSONALES (navajas, botellas, gorras, lentes, repelentes, riñoneras)
 
-Professional e-commerce product photo on a solid #F0F7F0 background color (very light mint green). {PRODUCTO}, centered in frame, well-lit with soft studio lighting from the upper left, subtle drop shadow underneath. No hands, no people, no props, no text overlays. The product fills 80-85% of the frame. Compact, functional, durable personal accessory. Clean, modern, premium outdoor retail style. 800x800 pixels, square format, JPEG with solid #F0F7F0 background.
+Professional e-commerce product photo on a pure white background. {PRODUCTO}, centered in frame, well-lit with soft studio lighting from the upper left, subtle drop shadow underneath. No hands, no people, no props, no text overlays. The product fills 80-85% of the frame. Compact, functional, durable personal accessory. Clean, modern, premium outdoor retail style. 800x800 pixels, square format, JPEG with pure white background.
 
 CATEGORÍA: ELECTRÓNICA (GPS, radios, linternas recargables, cargadores solares, baterías)
 
-Professional e-commerce product photo on a solid #F0F7F0 background color (very light mint green). {PRODUCTO}, centered in frame, well-lit with soft studio lighting from the upper left, subtle drop shadow underneath. No hands, no people, no props, no text overlays. The product fills 80-85% of the frame. Tech-forward with rugged outdoor durability. Subtle LED glow if applicable. Clean, modern, premium outdoor retail style. 800x800 pixels, square format, JPEG with solid #F0F7F0 background.
+Professional e-commerce product photo on a pure white background. {PRODUCTO}, centered in frame, well-lit with soft studio lighting from the upper left, subtle drop shadow underneath. No hands, no people, no props, no text overlays. The product fills 80-85% of the frame. Tech-forward with rugged outdoor durability. Subtle LED glow if applicable. Clean, modern, premium outdoor retail style. 800x800 pixels, square format, JPEG with pure white background.
 
 CATEGORÍA: ACCESORIOS PARA VEHÍCULOS (portaequipajes, fundas, herramientas, compresores, cables)
 
-Professional e-commerce product photo on a solid #F0F7F0 background color (very light mint green). {PRODUCTO}, centered in frame, well-lit with soft studio lighting from the upper left, subtle drop shadow underneath. No hands, no people, no props, no text overlays. The product fills 80-85% of the frame. Industrial, sturdy, automotive gear. Darker shadows for metallic parts. Clean, modern, premium outdoor retail style. 800x800 pixels, square format, JPEG with solid #F0F7F0 background.
+Professional e-commerce product photo on a pure white background. {PRODUCTO}, centered in frame, well-lit with soft studio lighting from the upper left, subtle drop shadow underneath. No hands, no people, no props, no text overlays. The product fills 80-85% of the frame. Industrial, sturdy, automotive gear. Darker shadows for metallic parts. Clean, modern, premium outdoor retail style. 800x800 pixels, square format, JPEG with pure white background.
 
 
 EJEMPLOS PRÁCTICOS
@@ -70,35 +70,35 @@ EJEMPLOS PRÁCTICOS
 
 Ejemplo 1 — Carpa (Camping):
 
-Professional e-commerce product photo on a solid #F0F7F0 background color (very light mint green). Green 4-person dome camping tent fully pitched, centered in frame, well-lit with soft studio lighting from the upper left, subtle drop shadow underneath. No hands, no people, no campsite, no props. The tent fills 80% of the frame. Rugged outdoor adventure aesthetic, earthy green tones. Clean, modern, premium outdoor retail style. 800x800 pixels, square format, JPEG with solid #F0F7F0 background.
+Professional e-commerce product photo on a pure white background. Green 4-person dome camping tent fully pitched, centered in frame, well-lit with soft studio lighting from the upper left, subtle drop shadow underneath. No hands, no people, no campsite, no props. The tent fills 80% of the frame. Rugged outdoor adventure aesthetic, earthy green tones. Clean, modern, premium outdoor retail style. 800x800 pixels, square format, JPEG with pure white background.
 
 Ejemplo 2 — Reel de pesca (Pesca):
 
-Professional e-commerce product photo on a solid #F0F7F0 background color (very light mint green). Silver and black spinning fishing reel showing the spool and handle, centered in frame, well-lit with soft studio lighting from the upper left, subtle drop shadow underneath. No hands, no rod, no water, no fish. The product fills 85% of frame. Freshwater fishing aesthetic, silver and blue tones. Clean, modern, premium outdoor retail style. 800x800 pixels, square format, JPEG with solid #F0F7F0 background.
+Professional e-commerce product photo on a pure white background. Silver and black spinning fishing reel showing the spool and handle, centered in frame, well-lit with soft studio lighting from the upper left, subtle drop shadow underneath. No hands, no rod, no water, no fish. The product fills 85% of frame. Freshwater fishing aesthetic, silver and blue tones. Clean, modern, premium outdoor retail style. 800x800 pixels, square format, JPEG with pure white background.
 
 Ejemplo 3 — Botella térmica (Accesorios Personales):
 
-Professional e-commerce product photo on a solid #F0F7F0 background color (very light mint green). Matte black stainless steel insulated water bottle 750ml standing upright with cap on, centered in frame, well-lit with soft studio lighting from the upper left, subtle drop shadow underneath. No hands, no people, no props. The product fills 80% of frame. Compact, functional, durable personal accessory. Clean, modern, premium outdoor retail style. 800x800 pixels, square format, JPEG with solid #F0F7F0 background.
+Professional e-commerce product photo on a pure white background. Matte black stainless steel insulated water bottle 750ml standing upright with cap on, centered in frame, well-lit with soft studio lighting from the upper left, subtle drop shadow underneath. No hands, no people, no props. The product fills 80% of frame. Compact, functional, durable personal accessory. Clean, modern, premium outdoor retail style. 800x800 pixels, square format, JPEG with pure white background.
 
 Ejemplo 4 — Faro LED (Electrónica):
 
-Professional e-commerce product photo on a solid #F0F7F0 background color (very light mint green). Black LED headlamp for outdoor use, front-facing view showing the light panel and elastic strap, centered in frame, well-lit with soft studio lighting, subtle drop shadow underneath. Faint warm glow from the LED. No hands, no people, no props. Product fills 80% of frame. Tech-forward with rugged outdoor durability. Clean, modern, premium outdoor retail style. 800x800 pixels, square format, JPEG with solid #F0F7F0 background.
+Professional e-commerce product photo on a pure white background. Black LED headlamp for outdoor use, front-facing view showing the light panel and elastic strap, centered in frame, well-lit with soft studio lighting, subtle drop shadow underneath. Faint warm glow from the LED. No hands, no people, no props. Product fills 80% of frame. Tech-forward with rugged outdoor durability. Clean, modern, premium outdoor retail style. 800x800 pixels, square format, JPEG with pure white background.
 
 Ejemplo 5 — Compresor portátil (Vehículos):
 
-Professional e-commerce product photo on a solid #F0F7F0 background color (very light mint green). Portable 12V tire inflator compressor with digital display and air hose, centered in frame, well-lit with soft studio lighting from the upper left, subtle drop shadow underneath. No hands, no car, no people, no props. Product fills 80% of frame. Industrial, sturdy, automotive gear. Clean, modern, premium outdoor retail style. 800x800 pixels, square format, JPEG with solid #F0F7F0 background.
+Professional e-commerce product photo on a pure white background. Portable 12V tire inflator compressor with digital display and air hose, centered in frame, well-lit with soft studio lighting from the upper left, subtle drop shadow underneath. No hands, no car, no people, no props. Product fills 80% of frame. Industrial, sturdy, automotive gear. Clean, modern, premium outdoor retail style. 800x800 pixels, square format, JPEG with pure white background.
 
 
 SI LA IA GENERA ALGO RARO — SOLUCIONES
 ---------------------------------------
 
-• Fondo no es el color correcto → insistí: "solid #F0F7F0 background color, not white, not transparent, exactly #F0F7F0"
+• Fondo no es el color correcto → insistí: "pure white background color, not white, not transparent, exactly blanco"
 • Imagen muy oscura → agregá "bright, well-lit" al prompt
 • Producto muy chico → agregá "product fills 90% of frame"
 • No se ve real → cambiá "professional e-commerce product photo" por "professional studio photograph of"
 • Tiene letras raras → agregá "no text, no letters, no words, no watermark"
 
-IMPORTANTE SOBRE EL FONDO: Si la herramienta de IA no genera exactamente el color #F0F7F0, no pasa nada. La imagen igual se va a ver bien porque el sistema de la tienda le pone un padding alrededor. Pero si lográs el color exacto, queda impecable — como si la imagen fuera parte del diseño de la página.
+IMPORTANTE SOBRE EL FONDO: Si la herramienta de IA no genera exactamente el color blanco, no pasa nada. La imagen igual se va a ver bien porque el sistema de la tienda le pone un padding alrededor. Pero si lográs el color exacto, queda impecable — como si la imagen fuera parte del diseño de la página.
 
 
 CHECKLIST POR PRODUCTO
@@ -122,7 +122,7 @@ COLORES DE LA MARCA (referencia)
 
 Verde principal: #1B5E20
 Naranja acento: #E65100
-Fondo de tarjetas (detrás de la imagen): #F0F7F0 ← ESTE es el color del fondo
+Fondo de tarjetas (detrás de la imagen): blanco ← ESTE es el color del fondo
 Fondo de la página: #FAFAFA
 Camping: verde oscuro #065f46
 Pesca: azul oscuro #1e40af

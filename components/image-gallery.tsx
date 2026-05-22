@@ -10,7 +10,7 @@ export function ImageGallery({ images, productName, isNew, hasDiscount, category
   const [zoomed, setZoomed] = useState(false)
 
   if (!images.length) return (
-    <div className="relative flex aspect-square items-center justify-center rounded-2xl border border-border bg-muted overflow-hidden">
+    <div className="relative flex aspect-square items-center justify-center rounded-2xl border border-border bg-white overflow-hidden">
       <Image src={getCategoryPlaceholderSvg(category, productName)} alt={productName} fill className="object-contain" unoptimized />
     </div>
   )

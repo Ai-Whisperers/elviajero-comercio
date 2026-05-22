@@ -45,7 +45,7 @@ export function CategoryContent({ slug, name, emoji, description, heroImage }: {
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {catProducts.map((p: any, i: number) => (
               <div key={i} className="overflow-hidden rounded-xl border border-border bg-surface shadow-sm transition-all hover:-translate-y-1 hover:shadow-md">
-                <Link href="/tienda"><div className="aspect-[3/2] flex items-center justify-center bg-muted p-4">{p.imageUrl && <Image src={p.imageUrl} alt={p.name} width={400} height={267} className="h-full w-full object-contain" />}</div></Link>
+                <Link href="/tienda"><div className="aspect-[3/2] flex items-center justify-center bg-white p-4">{p.imageUrl && <Image src={p.imageUrl} alt={p.name} width={400} height={267} className="h-full w-full object-contain" />}</div></Link>
                 <div className="p-4">
                   {p.brand && <p className="text-xs font-medium text-muted-foreground">{p.brand}</p>}
                   <Link href="/tienda"><h3 className="font-semibold text-foreground hover:text-primary line-clamp-1">{p.name}</h3></Link>

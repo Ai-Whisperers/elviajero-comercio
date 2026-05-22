@@ -36,7 +36,7 @@ export function FrequentlyBought({ currentProduct }: { currentProduct: string })
       <div className="flex gap-4 overflow-x-auto pb-2">
         {pairs.map((p: any, i: number) => (
           <Link key={i} href={"/producto/" + slugify(p.name)} className="flex-shrink-0 w-36 rounded-xl border border-border bg-surface p-3 transition-all hover:-translate-y-1 hover:shadow-md">
-            <div className="mb-2 aspect-square flex items-center justify-center bg-muted rounded-lg p-2">
+            <div className="mb-2 aspect-square flex items-center justify-center bg-white rounded-lg p-2">
               {p.imageUrl && <Image src={p.imageUrl} alt={p.name} width={200} height={200} className="h-full w-full object-contain" />}
             </div>
             <p className="text-xs font-medium text-foreground line-clamp-2">{p.name}</p>

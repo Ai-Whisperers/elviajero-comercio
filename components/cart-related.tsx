@@ -29,7 +29,7 @@ export function CartRelatedProducts({ currentItems }: { currentItems: string[] }
       <div className="flex gap-3 overflow-x-auto pb-2">
         {related.map((p: any, i: number) => (
           <Link key={i} href={"/producto/" + slugify(p.name)} className="flex-shrink-0 w-28">
-            <div className="mb-1 flex h-20 w-28 items-center justify-center rounded-lg bg-muted p-2">
+            <div className="mb-1 flex h-20 w-28 items-center justify-center rounded-lg bg-white p-2">
               {p.imageUrl && <Image src={p.imageUrl} alt={p.name} width={80} height={80} className="h-full w-full object-contain" />}
             </div>
             <p className="text-[10px] text-foreground line-clamp-2">{p.name}</p>
