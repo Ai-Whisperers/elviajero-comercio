@@ -11,11 +11,14 @@ export async function GET() {
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
-  // Load subcategories from ej_site_config (same table, same key structure)
+  // Load subcategories from ej_site_config
+  const SITE_KEY = process.env.NEXT_PUBLIC_SITE_KEY || "elviajero"
+  const LIVE_KEY = `content_overrides_${SITE_KEY}`
+
   const { data: configData } = await supabase
     .from("ej_site_config")
     .select("key, value")
-    .eq("key", "home")
+    .eq("key", LIVE_KEY)
     .maybeSingle()
 
   let subcategories: Record<string, any[]> = {}
