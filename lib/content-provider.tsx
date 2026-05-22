@@ -1,5 +1,5 @@
 "use client"
-import { createContext, useContext, useState, useEffect, useCallback, useRef } from "react"
+import { createContext, useContext, useState, useEffect, useCallback, useRef, useMemo } from "react"
 import defaultContent from "@/content/es.json"
 
 type ContentData = Record<string, any>
@@ -23,8 +23,8 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true)
   const fetchedRef = useRef(false)
 
-  // Merge defaults + overrides
-  const content = deepMerge(defaultContent, overrides)
+  // Memoize merged content to stabilize reference
+  const content = useMemo(() => deepMerge(defaultContent, overrides), [overrides])
 
   const get = useCallback((path: string) => {
     // Use the already-deep-merged content so partial overrides don't kill

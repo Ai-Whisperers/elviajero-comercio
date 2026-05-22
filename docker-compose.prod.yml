@@ -9,11 +9,11 @@ services:
       - NODE_ENV=production
       - APP_ENV=production
       - NEXT_PUBLIC_BASE_URL=https://tiendaelviajero.com.py
-      - NEXT_PUBLIC_SUPABASE_URL=
-      - NEXT_PUBLIC_SUPABASE_ANON_KEY=
-      - SUPABASE_SERVICE_ROLE_KEY=
+      - NEXT_PUBLIC_SUPABASE_URL=https://qyvokpribmbrosafntqa.supabase.co
+      - NEXT_PUBLIC_SUPABASE_ANON_KEY=sb_publishable_KQ-sFNr7r6AauoG0B4nyTg_vuPHmeCm
+      - SUPABASE_SERVICE_ROLE_KEY=sb_secret_J7n1igQHaVSKn35OrMe93A_p-_FEBvH
       - EVOLUTION_API_URL=http://evolution_evolution_api:8080
-      - EVOLUTION_API_KEY=
+      - EVOLUTION_API_KEY=a53c00...d0e1
       - EVOLUTION_INSTANCE=elviajero
       - ADMIN_WHATSAPP=595984009751
       - NEXT_PUBLIC_WHATSAPP=595984009751
