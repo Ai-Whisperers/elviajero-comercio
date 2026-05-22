@@ -25,17 +25,14 @@ export async function GET() {
 
   // Build subcategories from config
   let subcategories: Record<string, any[]> = {}
-  const configValue = configData?.data?.value
-  if (configValue && typeof configValue === "object") {
-    const val = configValue as any
-    if (val.productCatalog?.subcategories) {
-      subcategories = val.productCatalog.subcategories
-    }
+  const configValue = configData?.data?.value as any
+  if (configValue?.home?.productCatalog?.subcategories) {
+    subcategories = configValue.home.productCatalog.subcategories
   }
 
   // Categories from config (preserve admin order) or derive from products
   let categories: Array<{ id: string; name: string; subcategories: Array<{ id: string; name: string; slug: string }> }> = []
-  const savedCats: string[] = configValue?.productCatalog?.categories || []
+  const savedCats: string[] = configValue?.home?.productCatalog?.categories || []
 
   if (savedCats.length > 0) {
     // Use admin-defined category order
