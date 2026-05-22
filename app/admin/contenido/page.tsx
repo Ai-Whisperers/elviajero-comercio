@@ -93,7 +93,14 @@ function ContentEditor() {
         setOverrides(draft)
         setHasDraft(true)
       } else {
-        adminFetch("/api/admin/content").then(r => r.json()).then(d => { if (d) setOverrides(d) })
+        // No draft — load LIVE published content so admin sees what site actually shows
+        adminFetch("/api/admin/content").then(r => r.json()).then(d => {
+          // Only set overrides if live has actual content; otherwise keep {} so
+          // getArray falls back to defaultContent which contains real product categories
+          if (d && Object.keys(d).length > 0) {
+            setOverrides(d)
+          }
+        })
       }
     })
     refreshStatus()
@@ -287,7 +294,8 @@ function ContentEditor() {
     let cur = overrides
     for (const p of parts) {
       if (cur?.[p] === undefined) {
-        let def: any = {}
+        // Override not set — fall back to defaultContent
+        let def: any = defaultContent
         for (const pp of parts) {
           if (def?.[pp] === undefined) return []
           def = def[pp]
@@ -482,10 +490,33 @@ function ContentEditor() {
               <p className="mb-4 text-xs text-zinc-500">Tip: usá nombres cortos para mejor visualización. Los productos se agrupan por estas categorías.</p>
               <p className="mb-6 text-xs text-emerald-400">Podés cambiar la imagen de cada categoría desde acá. Slug se genera automáticamente.</p>
               {(getArray("home.productCatalog.categories").length > 0 ? getArray("home.productCatalog.categories") : defaultContent.home?.productCatalog?.categories || []).map((item: string, i: number) => {
+                const allCats = getArray("home.productCatalog.categories").length > 0
+                  ? getArray("home.productCatalog.categories")
+                  : (defaultContent.home?.productCatalog?.categories || [])
                 const slug = item.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z]/g, "")
                 return (
                 <div key={i} className="mb-4 rounded-lg border border-zinc-700/60 bg-zinc-800 p-4">
-                  <div className="mb-3 flex items-center gap-3">
+                  <div className="mb-3 flex items-center gap-2">
+                    <button onClick={() => {
+                      if (i === 0) return
+                      const arr = [...allCats]
+                      const catPath = "home.productCatalog.categories"
+                      const temp = arr[i]
+                      arr[i] = arr[i - 1]
+                      arr[i - 1] = temp
+                      setOverrides((prev: any) => deepSet(prev, catPath, arr))
+                      setDraftDiffersFromLive(true)
+                    }} disabled={i === 0} className="text-zinc-400 hover:text-white disabled:opacity-30 text-sm px-1">▲</button>
+                    <button onClick={() => {
+                      if (i === allCats.length - 1) return
+                      const arr = [...allCats]
+                      const catPath = "home.productCatalog.categories"
+                      const temp = arr[i]
+                      arr[i] = arr[i + 1]
+                      arr[i + 1] = temp
+                      setOverrides((prev: any) => deepSet(prev, catPath, arr))
+                      setDraftDiffersFromLive(true)
+                    }} disabled={i === allCats.length - 1} className="text-zinc-400 hover:text-white disabled:opacity-30 text-sm px-1">▼</button>
                     <span className="text-xs text-zinc-500 w-6">{i + 1}</span>
                     <input
                       value={item}

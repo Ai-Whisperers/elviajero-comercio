@@ -11,46 +11,60 @@ export async function GET() {
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
-  // Load subcategories from ej_site_config (site-specific key)
-  // Gracefully handle missing config — return empty, callers handle fallback
+  // Load categories from published ej_site_config content
+  // Fallback: extract from ej_products if no config exists
   const SITE_KEY = process.env.NEXT_PUBLIC_SITE_KEY || "elviajero"
   const LIVE_KEY = `content_overrides_${SITE_KEY}`
 
-  const { data: configData } = await supabase
-    .from("ej_site_config")
-    .select("key, value")
-    .eq("key", LIVE_KEY)
-    .maybeSingle()
+  const [configData, allProductsData] = await Promise.all([
+    supabase.from("ej_site_config").select("key, value").eq("key", LIVE_KEY).maybeSingle(),
+    supabase.from("ej_products").select("category").order("category"),
+  ])
 
+  const catNames = [...new Set((allProductsData.data || []).map((p: any) => p.category).filter(Boolean))].sort()
+
+  // Build subcategories from config
   let subcategories: Record<string, any[]> = {}
-  if (configData?.value && typeof configData.value === "object") {
-    const val = configData.value as any
+  const configValue = configData?.data?.value
+  if (configValue && typeof configValue === "object") {
+    const val = configValue as any
     if (val.productCatalog?.subcategories) {
       subcategories = val.productCatalog.subcategories
     }
   }
 
-  // Build categories array from the subcategories keys + any static category list
-  // Fallback: extract category names from the product data itself (allCategories)
-  const { data: allProducts } = await supabase
-    .from("ej_products")
-    .select("category")
-    .order("category")
-
-  const catNames = [...new Set((allProducts || []).map((p: any) => p.category).filter(Boolean))].sort()
-
+  // Categories from config (preserve admin order) or derive from products
   let categories: Array<{ id: string; name: string; subcategories: Array<{ id: string; name: string; slug: string }> }> = []
-  for (const name of catNames) {
-    const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, "")
-    categories.push({
-      id: slug,
-      name,
-      subcategories: (subcategories[slug] || []).map((s: any) => ({
-        id: s.slug || slugify(s.name),
-        name: s.name,
-        slug: s.slug || slugify(s.name),
-      })),
-    })
+  const savedCats: string[] = configValue?.productCatalog?.categories || []
+
+  if (savedCats.length > 0) {
+    // Use admin-defined category order
+    for (const name of savedCats) {
+      const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, "")
+      categories.push({
+        id: slug,
+        name,
+        subcategories: (subcategories[slug] || []).map((s: any) => ({
+          id: s.slug || slugify(s.name),
+          name: s.name,
+          slug: s.slug || slugify(s.name),
+        })),
+      })
+    }
+  } else {
+    // Fallback: derive from product data (sorted alphabetically)
+    for (const name of catNames) {
+      const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, "")
+      categories.push({
+        id: slug,
+        name,
+        subcategories: (subcategories[slug] || []).map((s: any) => ({
+          id: s.slug || slugify(s.name),
+          name: s.name,
+          slug: s.slug || slugify(s.name),
+        })),
+      })
+    }
   }
 
   function slugify(str: string) {
