@@ -12,7 +12,6 @@ import { SafeImage } from "@/components/safe-image"
 import { getProductWhatsappUrl } from "@/lib/content-resolver"
 import { useState, useMemo, useEffect } from "react"
 import Link from "next/link"
-import { notFound } from "next/navigation"
 
 const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP || "595984009751"
 
@@ -133,7 +132,20 @@ export default function ProductPageContent({ slug }: { slug: string }) {
   const product = useMemo(() => allProducts.find((p: any) => slugify(p.name) === slug), [slug, allProducts])
 
   /* Wait for DB before deciding 404 — avoids flash on first render */
-  if (!product && dbLoaded) notFound()
+  if (!product && dbLoaded) {
+    return (
+      <section className="flex min-h-[60vh] flex-col items-center justify-center bg-background px-4 py-20">
+        <div className="max-w-md text-center">
+          <div className="text-6xl font-bold text-primary/20 mb-4">404</div>
+          <h1 className="text-2xl font-bold text-foreground mb-3">Producto no encontrado</h1>
+          <p className="text-muted-foreground mb-6">Este producto ya no está disponible o fue removido.</p>
+          <Link href="/tienda" className="inline-flex h-10 items-center justify-center rounded-lg bg-primary px-8 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-all">
+            Ver todos los productos
+          </Link>
+        </div>
+      </section>
+    )
+  }
 
   /* Loading skeleton while DB fetches */
   if (!product) {
