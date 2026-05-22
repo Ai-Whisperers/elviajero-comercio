@@ -1,7 +1,5 @@
 "use client"
 import { createContext, useContext, useState, useEffect, useCallback, useRef, useMemo } from "react"
-import defaultContent from "@/content/es.json"
-
 type ContentData = Record<string, any>
 
 interface ContentContextType {
@@ -12,7 +10,7 @@ interface ContentContextType {
 }
 
 const ContentContext = createContext<ContentContextType>({
-  content: defaultContent as ContentData,
+  content: {} as ContentData,
   get: () => undefined,
   loading: false,
   refresh: async () => {},
@@ -24,7 +22,7 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
   const fetchedRef = useRef(false)
 
   // Memoize merged content to stabilize reference
-  const content = useMemo(() => deepMerge(defaultContent, overrides), [overrides])
+  const content = useMemo(() => deepMerge({}, overrides), [overrides])
 
   const get = useCallback((path: string) => {
     // Use the already-deep-merged content so partial overrides don't kill

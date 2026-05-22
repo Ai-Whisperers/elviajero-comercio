@@ -1,9 +1,7 @@
 import { NextResponse } from "next/server"
 import { createAdminClient } from "@ai-whisperers/auth/supabase/admin"
-import defaultContent from "@/content/es.json"
-
-// Public endpoint: merges live overrides with defaults
-// AI agents and draft content are NEVER exposed here
+// Public endpoint: returns raw overrides from Supabase only
+// All content managed via Supabase ej_site_config table
 const SITE_KEY = process.env.NEXT_PUBLIC_SITE_KEY || "elviajero"
 const LIVE_KEY = `content_overrides_${SITE_KEY}`
 
@@ -19,7 +17,7 @@ export async function GET(request: Request) {
     .single()
 
   const overrides = data?.value ?? {}
-  const merged = deepMerge(defaultContent, overrides)
+  const merged = overrides
 
   if (path) {
     const value = deepGet(merged, path)
