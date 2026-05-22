@@ -1,0 +1,128 @@
+Osmar — Guía para Generar Imágenes de Productos con IA
+=========================================================
+
+¡Hola Osmar! Acá tenés todo lo que necesitás para generar las fotos de los productos de la tienda con IA. Es simple: copiás un prompt, lo pegás en la herramienta, y subís la imagen al admin.
+
+HERRAMIENTAS GRATIS QUE PODÉS USAR
+-----------------------------------
+
+Cualquiera de estas funciona:
+• ChatGPT (chatgpt.com) — si tenés Plus, generás imágenes directo
+• Ideogram (ideogram.ai) — gratis, muy bueno para productos
+• Bing Image Creator (bing.com/create) — gratis con cuenta Microsoft
+
+REGLA DE ORO
+------------
+
+Fondo BLANCO. Siempre. Sin paisaje, sin montaña, sin río, sin gente. Solo el producto sobre fondo blanco. Estilo foto de catálogo profesional.
+
+
+FORMATO QUE NECESITA LA TIENDA
+-------------------------------
+
+• 800x800 píxeles (cuadrado)
+• Fondo blanco puro
+• Producto centrado llenando el 80% de la imagen
+• Sin texto, sin marcas de agua, sin gente
+
+El sistema de la tienda convierte automáticamente a formato web. Vos solo subís la imagen.
+
+
+CÓMO SE USA — 4 PASOS
+----------------------
+
+1. Elegí el prompt de la categoría del producto (están abajo)
+2. Cambiá donde dice {PRODUCTO} por la descripción del producto en inglés
+3. Pegá en ChatGPT / Ideogram / Bing Image Creator y generá
+4. Descargá la imagen y subila al admin: tiendaelviajero.com.py/admin/productos
+
+Para subir: entrás al producto → botón editar → subís la imagen → guardá.
+
+
+LOS 5 PROMPTS BASE (uno por categoría)
+---------------------------------------
+
+CATEGORÍA: CAMPING (carpas, bolsas de dormir, mochilas, sillas, linternas, hornallas, coolers)
+
+Professional e-commerce product photo on a pure white background. {PRODUCTO}, centered in frame, well-lit with soft studio lighting from the upper left, subtle drop shadow underneath. No hands, no people, no props, no text overlays. The product fills 80-85% of the frame. Rugged outdoor adventure aesthetic, earthy green tones. Clean, modern, premium outdoor retail style. 800x800 pixels, square format, JPEG with pure white background.
+
+CATEGORÍA: PESCA (reels, cañas, señuelos, líneas, cajas de pesca, redes)
+
+Professional e-commerce product photo on a pure white background. {PRODUCTO}, centered in frame, well-lit with soft studio lighting from the upper left, subtle drop shadow underneath. No hands, no people, no props, no text overlays. The product fills 80-85% of the frame. Freshwater fishing aesthetic, silver and blue tones. Clean, modern, premium outdoor retail style. 800x800 pixels, square format, JPEG with pure white background.
+
+CATEGORÍA: ACCESORIOS PERSONALES (navajas, botellas, gorras, lentes, repelentes, riñoneras)
+
+Professional e-commerce product photo on a pure white background. {PRODUCTO}, centered in frame, well-lit with soft studio lighting from the upper left, subtle drop shadow underneath. No hands, no people, no props, no text overlays. The product fills 80-85% of the frame. Compact, functional, durable personal accessory. Clean, modern, premium outdoor retail style. 800x800 pixels, square format, JPEG with pure white background.
+
+CATEGORÍA: ELECTRÓNICA (GPS, radios, linternas recargables, cargadores solares, baterías)
+
+Professional e-commerce product photo on a pure white background. {PRODUCTO}, centered in frame, well-lit with soft studio lighting from the upper left, subtle drop shadow underneath. No hands, no people, no props, no text overlays. The product fills 80-85% of the frame. Tech-forward with rugged outdoor durability. Subtle LED glow if applicable. Clean, modern, premium outdoor retail style. 800x800 pixels, square format, JPEG with pure white background.
+
+CATEGORÍA: ACCESORIOS PARA VEHÍCULOS (portaequipajes, fundas, herramientas, compresores, cables)
+
+Professional e-commerce product photo on a pure white background. {PRODUCTO}, centered in frame, well-lit with soft studio lighting from the upper left, subtle drop shadow underneath. No hands, no people, no props, no text overlays. The product fills 80-85% of the frame. Industrial, sturdy, automotive gear. Darker shadows for metallic parts. Clean, modern, premium outdoor retail style. 800x800 pixels, square format, JPEG with pure white background.
+
+
+EJEMPLOS PRÁCTICOS
+------------------
+
+Ejemplo 1 — Carpa (Camping):
+
+Professional e-commerce product photo on a pure white background. Green 4-person dome camping tent fully pitched, centered in frame, well-lit with soft studio lighting from the upper left, subtle drop shadow underneath. No hands, no people, no campsite, no props. The tent fills 80% of the frame. Rugged outdoor adventure aesthetic, earthy green tones. Clean, modern, premium outdoor retail style. 800x800 pixels, square format, JPEG with pure white background.
+
+Ejemplo 2 — Reel de pesca (Pesca):
+
+Professional e-commerce product photo on a pure white background. Silver and black spinning fishing reel showing the spool and handle, centered in frame, well-lit with soft studio lighting from the upper left, subtle drop shadow underneath. No hands, no rod, no water, no fish. The product fills 85% of frame. Freshwater fishing aesthetic, silver and blue tones. Clean, modern, premium outdoor retail style. 800x800 pixels, square format, JPEG with pure white background.
+
+Ejemplo 3 — Botella térmica (Accesorios Personales):
+
+Professional e-commerce product photo on a pure white background. Matte black stainless steel insulated water bottle 750ml standing upright with cap on, centered in frame, well-lit with soft studio lighting from the upper left, subtle drop shadow underneath. No hands, no people, no props. The product fills 80% of frame. Compact, functional, durable personal accessory. Clean, modern, premium outdoor retail style. 800x800 pixels, square format, JPEG with pure white background.
+
+Ejemplo 4 — Faro LED (Electrónica):
+
+Professional e-commerce product photo on a pure white background. Black LED headlamp for outdoor use, front-facing view showing the light panel and elastic strap, centered in frame, well-lit with soft studio lighting, subtle drop shadow underneath. Faint warm glow from the LED. No hands, no people, no props. Product fills 80% of frame. Tech-forward with rugged outdoor durability. Clean, modern, premium outdoor retail style. 800x800 pixels, square format, JPEG with pure white background.
+
+Ejemplo 5 — Compresor portátil (Vehículos):
+
+Professional e-commerce product photo on a pure white background. Portable 12V tire inflator compressor with digital display and air hose, centered in frame, well-lit with soft studio lighting from the upper left, subtle drop shadow underneath. No hands, no car, no people, no props. Product fills 80% of frame. Industrial, sturdy, automotive gear. Clean, modern, premium outdoor retail style. 800x800 pixels, square format, JPEG with pure white background.
+
+
+SI LA IA GENERA ALGO RARO — SOLUCIONES
+---------------------------------------
+
+• Imagen muy oscura → agregá "bright, well-lit" al prompt
+• Fondo no blanco → agregá "on pure white #FFFFFF background" al inicio
+• Producto muy chico → agregá "product fills 90% of frame"
+• No se ve real → cambiá "professional e-commerce product photo" por "professional studio photograph of"
+• Tiene letras raras → agregá "no text, no letters, no words, no watermark"
+
+
+CHECKLIST POR PRODUCTO
+-----------------------
+
+[ ] Elegí la categoría del producto
+[ ] Copié el prompt base de esa categoría
+[ ] Reemplacé {PRODUCTO} con la descripción del producto (en inglés)
+[ ] Generé la imagen en ChatGPT / Ideogram / Bing
+[ ] Verifiqué: fondo blanco, sin texto, producto centrado
+[ ] Descargué la imagen
+[ ] Entré a tiendaelviajero.com.py/admin/productos
+[ ] Edité el producto y subí la imagen
+[ ] Verifiqué que "Auto-optimizar a WebP" esté activado (viene activado por defecto)
+[ ] Guardé cambios
+[ ] Verifiqué en la tienda que se ve bien
+
+
+COLORES DE LA MARCA (referencia)
+---------------------------------
+
+Verde principal: #1B5E20
+Naranja acento: #E65100
+Camping: verde oscuro #065f46
+Pesca: azul oscuro #1e40af
+Accesorios: marrón #7c2d12
+Electrónica: púrpura #4c1d95
+Vehículos: gris oscuro #1f2937
+
+
+Cualquier duda me avisás. ¡Vamo arriba! 🏕️🎣
