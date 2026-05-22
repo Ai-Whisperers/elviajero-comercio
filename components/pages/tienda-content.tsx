@@ -322,6 +322,8 @@ export default function TiendaContent() {
               selectedCats={selectedCats}
               selectedSubcats={selectedSubcats}
               onSubcatToggle={toggleSubcat}
+              catCounts={catCounts}
+              subcatCounts={subcatCounts}
             />
           </div>
 

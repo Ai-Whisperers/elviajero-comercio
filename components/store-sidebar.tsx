@@ -29,6 +29,9 @@ interface StoreSidebarProps {
   selectedCats?: string[]
   selectedSubcats?: string[]
   onSubcatToggle?: (subcat: string) => void
+  // Real product counts per category / subcategory
+  catCounts?: Record<string, number>
+  subcatCounts?: Record<string, number>
 }
 
 function SectionHeader({ title, open, onToggle }: { title: string; open: boolean; onToggle: () => void }) {
@@ -66,6 +69,7 @@ export function StoreSidebar({
   sections, categories = [], activeCount, onClear,
   priceRange, priceBounds, onPriceChange,
   selectedCats = [], selectedSubcats = [], onSubcatToggle,
+  catCounts = {}, subcatCounts = {},
 }: StoreSidebarProps) {
 
   const [openSections, setOpenSections] = useState<Set<string>>(() => {
@@ -219,7 +223,7 @@ export function StoreSidebar({
                             {cat.name}
                           </span>
                           <span className="text-[11px] text-muted-foreground mr-1">
-                            ({cat.subcategories?.length || 0})
+                            ({catCounts[cat.name] || 0})
                           </span>
                           {hasSubs && (
                             <span onClick={() => toggleCatAccordion(cat.name)} className="cursor-pointer p-0.5 hover:bg-muted rounded transition-colors">
@@ -255,6 +259,9 @@ export function StoreSidebar({
                                 />
                                 <span className={`flex-1 text-xs transition-colors ${subSelected ? "text-foreground font-medium" : "text-muted-foreground"}`}>
                                   {sub.name}
+                                  {(subcatCounts[sub.name] || 0) > 0 && (
+                                    <span className="ml-1 text-[10px] text-muted-foreground">({subcatCounts[sub.name]})</span>
+                                  )}
                                 </span>
                               </label>
                             )
