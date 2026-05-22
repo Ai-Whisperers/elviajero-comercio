@@ -51,10 +51,20 @@ function deepSet(obj: any, path: string, value: any): any {
   const clone = JSON.parse(JSON.stringify(obj))
   let cur = clone
   for (let i = 0; i < parts.length - 1; i++) {
-    if (!cur[parts[i]]) cur[parts[i]] = {}
-    cur = cur[parts[i]]
+    const p = parts[i]
+    if (!cur[p]) {
+      const nextPart = parts[i + 1]
+      if (/^\d+$/.test(nextPart)) cur[p] = []
+      else cur[p] = {}
+    }
+    cur = cur[p]
   }
-  cur[parts[parts.length - 1]] = value
+  const lastPart = parts[parts.length - 1]
+  if (/^\d+$/.test(lastPart)) {
+    cur[parseInt(lastPart)] = value
+  } else {
+    cur[lastPart] = value
+  }
   return clone
 }
 
