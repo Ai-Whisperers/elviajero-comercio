@@ -28,9 +28,13 @@ La tienda muestra imágenes de productos en dos lugares:
 **Regla de oro:** Generá siempre de **800x800 (cuadrado)**. El sistema de la tienda
 lo adapta automáticamente para ambos lugares.
 
-El fondo tiene que ser **BLANCO PURO** o **TRANSPARENTE**. No fondo de camping, no paisaje,
-no río, no montaña. Solo blanco. El producto tiene que verse limpio y profesional, estilo
-foto de catálogo.
+El fondo tiene que ser **#F0F7F0** (verde menta muy suave). Este es el color EXACTO que la 
+tienda usa detrás de las imágenes de producto. Si usás blanco puro (#FFFFFF), la imagen se 
+ve como un rectángulo blanco pegado sobre un fondo verde claro — se nota el borde. Con 
+#F0F7F0 la imagen se funde perfectamente con el fondo de la tienda y queda profesional.
+
+No fondo de camping, no paisaje, no río, no montaña. Solo color sólido #F0F7F0. 
+El producto tiene que verse limpio y profesional, estilo foto de catálogo.
 
 ---
 
@@ -39,13 +43,13 @@ foto de catálogo.
 Copiá esto textual y solo cambiá lo que está entre llaves `{ }`:
 
 ```
-Professional e-commerce product photo on a pure white background.
-{DESCRIPCION BREVE DEL PRODUCTO}, centered in frame, well-lit with
-soft studio lighting from the upper left, subtle drop shadow underneath.
-No hands, no people, no props, no text overlays, no watermarks.
+Professional e-commerce product photo on a solid #F0F7F0 background color
+(very light mint green). {DESCRIPCION BREVE DEL PRODUCTO}, centered in frame,
+well-lit with soft studio lighting from the upper left, subtle drop shadow
+underneath. No hands, no people, no props, no text overlays, no watermarks.
 The product fills 80-85% of the frame.
 Clean, modern, premium outdoor retail style.
-800x800 pixels, square format, JPEG with pure white background.
+800x800 pixels, square format, JPEG with solid #F0F7F0 background.
 ```
 
 ### ¿Qué reemplazar?
@@ -65,46 +69,46 @@ hornallas portátiles, coolers.
 
 **Prompt base para Camping:**
 ```
-Professional e-commerce product photo on a pure white background.
+Professional e-commerce product photo on a solid #F0F7F0 background color (very light mint green).
 {PRODUCTO}, centered in frame, well-lit with soft studio lighting
 from the upper left, subtle drop shadow underneath. No hands, no people,
 no props, no text overlays. The product fills 80-85% of the frame.
 Rugged outdoor adventure aesthetic, earthy green tones.
 Clean, modern, premium outdoor retail style.
-800x800 pixels, square format, JPEG with pure white background.
+800x800 pixels, square format, JPEG with solid #F0F7F0 background.
 ```
 
 **Ejemplo — Carpa Coleman 4 personas:**
 ```
-Professional e-commerce product photo on a pure white background.
+Professional e-commerce product photo on a solid #F0F7F0 background color (very light mint green).
 Green 4-person dome camping tent fully pitched, centered in frame,
 well-lit with soft studio lighting from the upper left, subtle drop
 shadow underneath. No hands, no people, no campsite, no props.
 The tent fills 80% of the frame. Rugged outdoor adventure aesthetic.
 Clean, modern, premium outdoor retail style.
-800x800 pixels, square format, JPEG with pure white background.
+800x800 pixels, square format, JPEG with solid #F0F7F0 background.
 ```
 
 **Ejemplo — Bolsa de dormir:**
 ```
-Professional e-commerce product photo on a pure white background.
+Professional e-commerce product photo on a solid #F0F7F0 background color (very light mint green).
 Rolled green sleeping bag with compression straps, standing upright
 and slightly angled, centered in frame, well-lit with soft studio
 lighting, subtle drop shadow underneath. No hands, no people, no
 props. Product fills 80% of frame.
 Clean, modern, premium outdoor retail style.
-800x800 pixels, square format, JPEG with pure white background.
+800x800 pixels, square format, JPEG with solid #F0F7F0 background.
 ```
 
 **Ejemplo — Cooler:**
 ```
-Professional e-commerce product photo on a pure white background.
+Professional e-commerce product photo on a solid #F0F7F0 background color (very light mint green).
 Blue and white 50-quart insulated cooler box, slightly angled to show
 top lid, centered in frame, well-lit with soft studio lighting,
 subtle drop shadow underneath. No hands, no people, no drinks, no
 props. Product fills 80% of frame.
 Clean, modern, premium outdoor retail style.
-800x800 pixels, square format, JPEG with pure white background.
+800x800 pixels, square format, JPEG with solid #F0F7F0 background.
 ```
 
 ---
@@ -115,46 +119,46 @@ Clean, modern, premium outdoor retail style.
 
 **Prompt base para Pesca:**
 ```
-Professional e-commerce product photo on a pure white background.
+Professional e-commerce product photo on a solid #F0F7F0 background color (very light mint green).
 {PRODUCTO}, centered in frame, well-lit with soft studio lighting
 from the upper left, subtle drop shadow underneath. No hands, no people,
 no props, no text overlays. The product fills 80-85% of the frame.
 Freshwater fishing aesthetic, silver and blue tones.
 Clean, modern, premium outdoor retail style.
-800x800 pixels, square format, JPEG with pure white background.
+800x800 pixels, square format, JPEG with solid #F0F7F0 background.
 ```
 
 **Ejemplo — Reel Shimano:**
 ```
-Professional e-commerce product photo on a pure white background.
+Professional e-commerce product photo on a solid #F0F7F0 background color (very light mint green).
 Silver and black spinning fishing reel model Shimano FX 4000,
 showing the spool and handle, centered in frame, well-lit with soft
 studio lighting, subtle drop shadow underneath. No hands, no rod,
 no water, no fish. Product fills 85% of frame.
 Clean, modern, premium outdoor retail style.
-800x800 pixels, square format, JPEG with pure white background.
+800x800 pixels, square format, JPEG with solid #F0F7F0 background.
 ```
 
 **Ejemplo — Señuelo:**
 ```
-Professional e-commerce product photo on a pure white background.
+Professional e-commerce product photo on a solid #F0F7F0 background color (very light mint green).
 Colorful crankbait fishing lure with treble hooks, floating slightly
 above surface with shadow below, centered in frame, well-lit with
 soft studio lighting. No hands, no water, no fish.
 Product fills 80% of frame.
 Clean, modern, premium outdoor retail style.
-800x800 pixels, square format, JPEG with pure white background.
+800x800 pixels, square format, JPEG with solid #F0F7F0 background.
 ```
 
 **Ejemplo — Caña de pesca:**
 ```
-Professional e-commerce product photo on a pure white background.
+Professional e-commerce product photo on a solid #F0F7F0 background color (very light mint green).
 Two-piece telescopic fishing rod, fully extended horizontally,
 dark graphite with cork handle, centered in frame, well-lit with
 soft studio lighting, subtle drop shadow underneath. No hands,
 no reel, no water. Product fills 75% of frame.
 Clean, modern, premium outdoor retail style.
-800x800 pixels, square format, JPEG with pure white background.
+800x800 pixels, square format, JPEG with solid #F0F7F0 background.
 ```
 
 ---
@@ -166,35 +170,35 @@ mochilas pequeñas, riñoneras.
 
 **Prompt base para Accesorios Personales:**
 ```
-Professional e-commerce product photo on a pure white background.
+Professional e-commerce product photo on a solid #F0F7F0 background color (very light mint green).
 {PRODUCTO}, centered in frame, well-lit with soft studio lighting
 from the upper left, subtle drop shadow underneath. No hands, no people,
 no props, no text overlays. The product fills 80-85% of the frame.
 Compact, functional, durable personal accessory.
 Clean, modern, premium outdoor retail style.
-800x800 pixels, square format, JPEG with pure white background.
+800x800 pixels, square format, JPEG with solid #F0F7F0 background.
 ```
 
 **Ejemplo — Botella térmica:**
 ```
-Professional e-commerce product photo on a pure white background.
+Professional e-commerce product photo on a solid #F0F7F0 background color (very light mint green).
 Matte black stainless steel insulated water bottle 750ml, standing
 upright with cap on, centered in frame, well-lit with soft studio
 lighting, subtle drop shadow underneath. No hands, no people, no
 props. Product fills 80% of frame.
 Clean, modern, premium outdoor retail style.
-800x800 pixels, square format, JPEG with pure white background.
+800x800 pixels, square format, JPEG with solid #F0F7F0 background.
 ```
 
 **Ejemplo — Navaja multiusos:**
 ```
-Professional e-commerce product photo on a pure white background.
+Professional e-commerce product photo on a solid #F0F7F0 background color (very light mint green).
 Red Victorinox-style multi-tool pocket knife, partially open showing
 3-4 tools, centered in frame, well-lit with soft studio lighting,
 subtle drop shadow underneath. No hands, no people, no props.
 Product fills 85% of frame.
 Clean, modern, premium outdoor retail style.
-800x800 pixels, square format, JPEG with pure white background.
+800x800 pixels, square format, JPEG with solid #F0F7F0 background.
 ```
 
 ---
@@ -206,37 +210,37 @@ baterías portátiles, faros LED.
 
 **Prompt base para Electrónica:**
 ```
-Professional e-commerce product photo on a pure white background.
+Professional e-commerce product photo on a solid #F0F7F0 background color (very light mint green).
 {PRODUCTO}, centered in frame, well-lit with soft studio lighting
 from the upper left, subtle drop shadow underneath. No hands, no people,
 no props, no text overlays. The product fills 80-85% of the frame.
 Tech-forward with rugged outdoor durability. Subtle LED glow if
 applicable.
 Clean, modern, premium outdoor retail style.
-800x800 pixels, square format, JPEG with pure white background.
+800x800 pixels, square format, JPEG with solid #F0F7F0 background.
 ```
 
 **Ejemplo — Faro LED:**
 ```
-Professional e-commerce product photo on a pure white background.
+Professional e-commerce product photo on a solid #F0F7F0 background color (very light mint green).
 Black LED headlamp for outdoor use, front-facing view showing the
 light panel and elastic strap, centered in frame, well-lit with soft
 studio lighting, subtle drop shadow underneath. Faint warm glow
 from the LED. No hands, no people, no props.
 Product fills 80% of frame.
 Clean, modern, premium outdoor retail style.
-800x800 pixels, square format, JPEG with pure white background.
+800x800 pixels, square format, JPEG with solid #F0F7F0 background.
 ```
 
 **Ejemplo — Cargador solar:**
 ```
-Professional e-commerce product photo on a pure white background.
+Professional e-commerce product photo on a solid #F0F7F0 background color (very light mint green).
 Foldable solar panel charger, unfolded showing all panels with USB
 port visible, centered in frame, well-lit with soft studio lighting,
 subtle drop shadow underneath. No hands, no phone, no people.
 Product fills 80% of frame.
 Clean, modern, premium outdoor retail style.
-800x800 pixels, square format, JPEG with pure white background.
+800x800 pixels, square format, JPEG with solid #F0F7F0 background.
 ```
 
 ---
@@ -248,35 +252,35 @@ cables de arranque, ganchos de remolque.
 
 **Prompt base para Vehículos:**
 ```
-Professional e-commerce product photo on a pure white background.
+Professional e-commerce product photo on a solid #F0F7F0 background color (very light mint green).
 {PRODUCTO}, centered in frame, well-lit with soft studio lighting
 from the upper left, subtle drop shadow underneath. No hands, no people,
 no props, no text overlays. The product fills 80-85% of the frame.
 Industrial, sturdy, automotive gear. Darker shadows for metallic parts.
 Clean, modern, premium outdoor retail style.
-800x800 pixels, square format, JPEG with pure white background.
+800x800 pixels, square format, JPEG with solid #F0F7F0 background.
 ```
 
 **Ejemplo — Compresor portátil:**
 ```
-Professional e-commerce product photo on a pure white background.
+Professional e-commerce product photo on a solid #F0F7F0 background color (very light mint green).
 Portable 12V tire inflator compressor with digital display and air
 hose, centered in frame, well-lit with soft studio lighting, subtle
 drop shadow underneath. No hands, no car, no people, no props.
 Product fills 80% of frame.
 Clean, modern, premium outdoor retail style.
-800x800 pixels, square format, JPEG with pure white background.
+800x800 pixels, square format, JPEG with solid #F0F7F0 background.
 ```
 
 **Ejemplo — Portaequipajes:**
 ```
-Professional e-commerce product photo on a pure white background.
+Professional e-commerce product photo on a solid #F0F7F0 background color (very light mint green).
 Silver roof rack cross bars for SUV, shown from 3/4 angle above,
 centered in frame, well-lit with soft studio lighting, subtle drop
 shadow underneath. No car, no hands, no people, no props.
 Product fills 75% of frame.
 Clean, modern, premium outdoor retail style.
-800x800 pixels, square format, JPEG with pure white background.
+800x800 pixels, square format, JPEG with solid #F0F7F0 background.
 ```
 
 ---
@@ -318,7 +322,7 @@ y la guarda en el servidor. No necesitas hacer nada más.
 ## 6. CONSEJOS IMPORTANTES
 
 ### SIEMPRE:
-- Fondo BLANCO — sin excepciones
+- Fondo sólido #F0F7F0 (verde menta claro) — sin excepciones
 - Producto centrado, llenando 80% del frame
 - Buena iluminación — la IA lo hace automático con el prompt
 - Sin texto, sin logos de agua, sin marcas visibles
@@ -339,7 +343,7 @@ es que el cliente vea una representación profesional del tipo de producto.
 
 ### SI LA IA GENERA ALGO RARO:
 - Demasiado oscuro → agregá "bright, well-lit" al prompt
-- Fondo no blanco → agregá "on pure white #FFFFFF background" al inicio
+- Fondo no blanco → agregá "on solid #F0F7F0 background" al inicio
 - Producto muy chico → agregá "product fills 90% of frame"
 - No parece real → cambiá "professional e-commerce product photo" por
   "professional studio photograph of"
@@ -354,7 +358,7 @@ Para cada producto:
 - [ ] Copié el prompt base de esa categoría
 - [ ] Reemplacé {PRODUCTO} con descripción corta en inglés
 - [ ] Generé la imagen en la herramienta de IA
-- [ ] Verifiqué: fondo blanco, sin texto, producto centrado
+- [ ] Verifiqué: fondo #F0F7F0 sólido, sin texto, producto centrado
 - [ ] Descargué la imagen
 - [ ] Subí al admin del producto
 - [ ] Verifiqué que "Auto-optimizar a WebP" esté activado
