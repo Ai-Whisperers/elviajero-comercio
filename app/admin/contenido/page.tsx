@@ -573,31 +573,66 @@ function ContentEditor() {
 
           {section === "branding" && (
             <div>
-              <p className="mb-4 text-sm text-zinc-400">Logo, favicon y metadatos de marca</p>
-              <div className="mb-4">
-                <label className="mb-1 block text-xs text-zinc-500">Logo (SVG/PNG)</label>
-                <ImageUpload currentUrl={get("general.logoUrl") || undefined} onUpload={v => set("general.logoUrl", v)} label="Subir logo" />
-                {get("general.logoUrl") && (
-                  <p className="mt-1 text-xs text-zinc-500">Actual: <span className="text-emerald-400">{get("general.logoUrl")}</span></p>
+              <p className="mb-4 text-sm text-zinc-400">Logo, favicon, OG image y metadatos de marca</p>
+
+              {/* Logo */}
+              <div className="mb-6 rounded-lg border border-zinc-700/60 bg-zinc-800/50 p-4">
+                <label className="mb-2 block text-sm font-medium text-zinc-300">Logo del sitio</label>
+                {get("branding.logoUrl") && (
+                  <div className="mb-3 flex items-center gap-4 rounded-lg bg-zinc-900 p-3 border border-zinc-700/40">
+                    <img src={get("branding.logoUrl")} alt="Logo actual" className="h-12 w-auto max-w-[180px] object-contain" />
+                    <div>
+                      <p className="text-xs text-emerald-400 font-mono">{get("branding.logoUrl")}</p>
+                      <p className="text-xs text-zinc-500">Logo actual</p>
+                    </div>
+                  </div>
+                )}
+                <ImageUpload currentUrl={get("branding.logoUrl") || undefined} onUpload={v => set("branding.logoUrl", v)} label="Subir logo nuevo" />
+                {get("branding.logoUrlPng") && (
+                  <p className="mt-2 text-xs text-zinc-500">Fallback PNG/WebP: <span className="text-zinc-400">{get("branding.logoUrlPng")}</span></p>
                 )}
               </div>
-              <div className="mb-4">
-                <label className="mb-1 block text-xs text-zinc-500">Favicon</label>
-                <ImageUpload currentUrl={get("general.faviconUrl") || undefined} onUpload={v => set("general.faviconUrl", v)} label="Subir favicon" />
-                <p className="mt-1 text-xs text-zinc-500">Usar SVG o PNG de 32x32px</p>
+
+              {/* Favicon */}
+              <div className="mb-6 rounded-lg border border-zinc-700/60 bg-zinc-800/50 p-4">
+                <label className="mb-2 block text-sm font-medium text-zinc-300">Favicon (ícono del navegador)</label>
+                {get("branding.faviconUrl") && (
+                  <div className="mb-3 flex items-center gap-4 rounded-lg bg-zinc-900 p-3 border border-zinc-700/40">
+                    <img src={get("branding.faviconUrl")} alt="Favicon actual" className="h-8 w-8 object-contain rounded" />
+                    <div>
+                      <p className="text-xs text-emerald-400 font-mono">{get("branding.faviconUrl")}</p>
+                      <p className="text-xs text-zinc-500">Favicon actual</p>
+                    </div>
+                  </div>
+                )}
+                <ImageUpload currentUrl={get("branding.faviconUrl") || undefined} onUpload={v => set("branding.faviconUrl", v)} label="Subir favicon nuevo" />
+                <p className="mt-1 text-xs text-zinc-500">Recomendado: SVG o PNG de 32x32px</p>
               </div>
-              <div className="mb-4">
-                <label className="mb-1 block text-xs text-zinc-500">OG Image (compartir en redes)</label>
-                <ImageUpload currentUrl={get("layoutMetadata.ogImage") || undefined} onUpload={v => set("layoutMetadata.ogImage", v)} label="Subir imagen OG" />
-                <p className="mt-1 text-xs text-zinc-500">Recomendado: 1200x630px</p>
+
+              {/* OG Image */}
+              <div className="mb-6 rounded-lg border border-zinc-700/60 bg-zinc-800/50 p-4">
+                <label className="mb-2 block text-sm font-medium text-zinc-300">OG Image (redes sociales)</label>
+                {get("branding.ogImage") && (
+                  <div className="mb-3 rounded-lg bg-zinc-900 p-3 border border-zinc-700/40">
+                    <img src={get("branding.ogImage")} alt="OG Image actual" className="h-32 w-auto max-w-full rounded object-contain" />
+                    <p className="mt-2 text-xs text-emerald-400 font-mono">{get("branding.ogImage")}</p>
+                  </div>
+                )}
+                <ImageUpload currentUrl={get("branding.ogImage") || undefined} onUpload={v => { set("branding.ogImage", v); set("layoutMetadata.ogImage", v) }} label="Subir OG image nuevo" />
+                <p className="mt-1 text-xs text-zinc-500">Recomendado: 1200x630px. Se muestra al compartir en WhatsApp/Facebook/Twitter</p>
               </div>
-              <h3 className="mt-6 mb-2 text-sm font-semibold text-zinc-300">Metadatos del Sitio</h3>
+
+              {/* Schema / Metadata */}
+              <h3 className="mt-6 mb-3 text-sm font-semibold text-zinc-300 border-t border-zinc-700/50 pt-4">Metadatos del Sitio</h3>
               <Input label="Título del sitio (browser tab)" value={get("layoutMetadata.title")} onChange={v => set("layoutMetadata.title", v)} />
               <Input label="Descripción general" multiline value={get("layoutMetadata.description")} onChange={v => set("layoutMetadata.description", v)} />
               <Input label="OG Title (redes sociales)" value={get("layoutMetadata.ogTitle")} onChange={v => set("layoutMetadata.ogTitle", v)} />
               <Input label="OG Description" multiline value={get("layoutMetadata.ogDescription")} onChange={v => set("layoutMetadata.ogDescription", v)} />
               <Input label="Schema: Nombre del negocio" value={get("layoutMetadata.schemaName")} onChange={v => set("layoutMetadata.schemaName", v)} />
               <Input label="Schema: Descripción" multiline value={get("layoutMetadata.schemaDescription")} onChange={v => set("layoutMetadata.schemaDescription", v)} />
+              <Input label="Schema: Teléfono" value={get("layoutMetadata.schemaTelephone") || ""} onChange={v => set("layoutMetadata.schemaTelephone", v)} />
+              <Input label="Schema: Email" value={get("layoutMetadata.schemaEmail") || ""} onChange={v => set("layoutMetadata.schemaEmail", v)} />
+              <Input label="Schema: Rango de precios" value={get("layoutMetadata.schemaPriceRange") || ""} onChange={v => set("layoutMetadata.schemaPriceRange", v)} />
             </div>
           )}
 
