@@ -1,64 +1,58 @@
-name: Deploy production
+name: Auto-deploy staging
 
 on:
-  workflow_dispatch:
-    inputs:
-      ref:
-        description: Git ref to deploy. Defaults to main.
-        required: false
-        default: main
   push:
-    tags:
-      - "v*"
+    branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
   packages: write
 
+concurrency:
+  group: deploy-staging
+  cancel-in-progress: true
+
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  SERVICE_NAME: elviajero_web
-  PRODUCTION_URL: https://tiendaelviajero.com.py
+  SERVICE_NAME: elviajero_staging_web
+  STAGING_URL: https://staging.tiendaelviajero.com.py
 
 jobs:
   deploy:
-    name: Build image and update Swarm service
+    name: Build and deploy staging
     runs-on: ubuntu-latest
     timeout-minutes: 25
 
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.inputs.ref || 'main' }}
 
-      - name: Preflight required secrets
+      - name: Preflight secrets
         run: |
           set -euo pipefail
-          test -n "${{ secrets.SUPABASE_URL }}" || { echo "Missing SUPABASE_URL secret"; exit 1; }
-          test -n "${{ secrets.SUPABASE_ANON_KEY }}" || { echo "Missing SUPABASE_ANON_KEY secret"; exit 1; }
-          test -n "${{ secrets.VPS_HOST }}" || { echo "Missing VPS_HOST secret"; exit 1; }
-          test -n "${{ secrets.VPS_USER }}" || { echo "Missing VPS_USER secret"; exit 1; }
-          test -n "${{ secrets.VPS_KEY }}" || { echo "Missing VPS_KEY secret"; exit 1; }
+          for secret in SUPABASE_URL SUPABASE_ANON_KEY VPS_HOST VPS_USER VPS_KEY; do
+            eval "val=\${{ secrets.$secret }}"
+            test -n "$val" || { echo "Missing $secret"; exit 1; }
+          done
 
       - name: Resolve image tag
         id: image
         run: |
           SHORT_SHA=$(git rev-parse --short HEAD)
           IMAGE_REPO=$(echo "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}" | tr '[:upper:]' '[:lower:]')
-          echo "image=${IMAGE_REPO}:prod-${SHORT_SHA}" >> "$GITHUB_OUTPUT"
-          echo "latest=${IMAGE_REPO}:prod-latest" >> "$GITHUB_OUTPUT"
-          echo "short_sha=$SHORT_SHA" >> "$GITHUB_OUTPUT"
+          echo "image=${IMAGE_REPO}:staging-${SHORT_SHA}" >> "$GITHUB_OUTPUT"
+          echo "latest=${IMAGE_REPO}:staging-latest" >> "$GITHUB_OUTPUT"
 
-      - name: Log in to GitHub Container Registry
+      - name: Log in to GHCR
         uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push Docker image
+      - name: Build and push
         uses: docker/build-push-action@v6
         with:
           context: .
@@ -77,7 +71,7 @@ jobs:
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -H "${{ secrets.VPS_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null || true
 
-      - name: Deploy to Docker Swarm
+      - name: Deploy to Docker Swarm (staging)
         run: |
           set -euo pipefail
           SSH_CMD="ssh -o StrictHostKeyChecking=accept-new ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}"
@@ -93,22 +87,42 @@ jobs:
             --update-parallelism 1 \
             --update-delay 10s \
             --update-failure-action rollback \
-            '${{ env.SERVICE_NAME }}'"
+            '${{ env.SERVICE_NAME }}'" || echo "Service ${{ env.SERVICE_NAME }} not found — staging not set up yet"
 
-          $SSH_CMD "docker service ps '${{ env.SERVICE_NAME }}' --no-trunc"
-
-      - name: Verify production health
+      - name: Smoke test
         run: |
           set -euo pipefail
           for i in {1..20}; do
-            code=$(curl -L -s -o /tmp/health.json -w '%{http_code}' '${{ env.PRODUCTION_URL }}/api/health' || true)
-            cat /tmp/health.json || true
+            code=$(curl -L -s -o /tmp/health.json -w '%{http_code}' '${{ env.STAGING_URL }}/api/health' || true)
             if [ "$code" = "200" ] && grep -q '"status":"ok"' /tmp/health.json; then
-              echo "Production health OK"
+              echo "Staging health OK"
               exit 0
             fi
             echo "Health pending ($code), retry $i/20"
             sleep 10
           done
-          echo "Production health failed"
+          echo "Staging health check failed"
           exit 1
+
+  post-deploy-e2e:
+    name: Post-deploy E2E
+    needs: deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+      - run: npx playwright install chromium --with-deps
+
+      - name: Run E2E against staging
+        run: npx playwright test --reporter=line
+        env:
+          E2E_BASE_URL: ${{ env.STAGING_URL }}

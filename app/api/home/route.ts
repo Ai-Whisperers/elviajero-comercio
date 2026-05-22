@@ -15,7 +15,7 @@ export async function GET() {
   const featured = products?.filter((p: any) => p.featured) || []
   const bestSellers = products?.filter((p: any) => p.stock > 0).slice(0, 8) || []
 
-  const allBrands = [...new Set(products?.map((p: any) => p.brand).filter(Boolean) || [])]
+  const allBrands = [...new Set(products?.map((p: any) => p.brand).filter((b: any) => b && b.trim()) || [])]
 
   return NextResponse.json({ products, newArrivals, featured, bestSellers, brands: allBrands })
 }
