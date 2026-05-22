@@ -3,7 +3,7 @@ import { createAdminClient } from "@ai-whisperers/auth/supabase/admin"
 import { requireAdmin } from "@/lib/auth"
 
 const ALLOWED_PRODUCT_FIELDS = new Set([
-  "name","category","price","price_before","description","brand","specs",
+  "name","category","subcategory","price","price_before","description","brand","specs",
   "stock","weight","image_url","is_new","featured","cost_price","stock_alert_threshold"
 ])
 

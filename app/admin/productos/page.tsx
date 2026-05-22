@@ -106,6 +106,7 @@ export default function AdminProducts() {
   const fileRef = useRef<HTMLInputElement>(null)
   const PER_PAGE = 20
   const [categoryList, setCategoryList] = useState<string[]>([])
+  const [subcategoryMap, setSubcategoryMap] = useState<Record<string, {name:string;slug:string}[]>>({})
 
   const notify = useCallback((type: "success" | "error", text: string) => {
     setNotification({ type, text })
@@ -120,6 +121,22 @@ export default function AdminProducts() {
       .catch(() => { setLoading(false); notify("error", "Error al cargar productos") })
   }, [page, notify])
 
+  const loadSubcategories = useCallback(async () => {
+    try {
+      const res = await adminFetch("/api/home")
+      const data = await res.json()
+      const subs: Record<string, {name:string;slug:string}[]> = {}
+      const raw = data?.categories || []
+      for (const cat of raw) {
+        const slug = cat.name.toLowerCase().replace(/[^a-z0-9]+/g, "")
+        if (cat.subcategories?.length) {
+          subs[slug] = cat.subcategories
+        }
+      }
+      setSubcategoryMap(subs)
+    } catch {}
+  }, [])
+
   const loadCategories = useCallback(() => {
     adminFetch("/api/admin/categories")
       .then(r => r.json())
@@ -127,7 +144,7 @@ export default function AdminProducts() {
       .catch(() => {})
   }, [])
 
-  useEffect(() => { if (authed) { load(); loadCategories() } }, [authed, load, loadCategories])
+  useEffect(() => { if (authed) { load(); loadCategories(); loadSubcategories() } }, [authed, load, loadCategories, loadSubcategories])
 
   const save = async () => {
     if (editing === null) return
@@ -255,6 +272,11 @@ export default function AdminProducts() {
     setPriceHistory(Array.isArray(data) ? data : [])
   }
 
+  function getSubsForCategory(cat: string) {
+    const slug = (cat || "").toLowerCase().replace(/[^a-z0-9]+/g, "")
+    return subcategoryMap[slug] || []
+  }
+
   const categories = [...new Set(items.map(p => p.category).filter(Boolean))].sort()
   const filtered = search
     ? items.filter(p =>
@@ -372,10 +394,15 @@ export default function AdminProducts() {
               className="rounded-lg bg-zinc-800 px-3 py-2 text-sm text-white border border-zinc-700/60 focus:outline-none focus:border-emerald-500/50" />
             <input value={newForm.cost_price || ""} onChange={e => setNewForm({...newForm, cost_price: e.target.value})} placeholder="Costo (Gs.)"
               className="rounded-lg bg-zinc-800 px-3 py-2 text-sm text-white border border-zinc-700/60 focus:outline-none focus:border-emerald-500/50" />
-            <select value={newForm.category || ""} onChange={e => setNewForm({...newForm, category: e.target.value})}
+            <select value={newForm.category || ""} onChange={e => { setNewForm({...newForm, category: e.target.value, subcategory: ""}) }}
               className="rounded-lg bg-zinc-800 px-3 py-2 text-sm text-white border border-zinc-700/60 focus:outline-none focus:border-emerald-500/50">
               <option value="">Categoría</option>
               {categoryList.map(c => <option key={c} value={c}>{c}</option>)}
+            </select>
+            <select value={newForm.subcategory || ""} onChange={e => setNewForm({...newForm, subcategory: e.target.value})}
+              className="rounded-lg bg-zinc-800 px-3 py-2 text-sm text-white border border-zinc-700/60 focus:outline-none focus:border-emerald-500/50">
+              <option value="">Subcategoría</option>
+              {getSubsForCategory(newForm.category).map(s => <option key={s.slug} value={s.name}>{s.name}</option>)}
             </select>
             <input value={newForm.b2b_price || ""} onChange={e => setNewForm({...newForm, b2b_price: e.target.value})} placeholder="Precio B2B (Gs.)"
               className="rounded-lg bg-zinc-800 px-3 py-2 text-sm text-white border border-zinc-700/60 focus:outline-none focus:border-emerald-500/50" />
@@ -554,11 +581,18 @@ export default function AdminProducts() {
                           </div>
                         </td>
                         <td className="px-3 py-2">
-                          <select value={form.category || p.category || ""} onChange={e => setForm({...form, category: e.target.value})}
-                            className="w-full rounded-lg bg-zinc-800 px-2.5 py-1.5 text-sm text-white border border-zinc-700/60 focus:outline-none focus:border-emerald-500/50">
-                            <option value="">—</option>
-                            {categoryList.map(c => <option key={c} value={c}>{c}</option>)}
-                          </select>
+                          <div className="space-y-1.5">
+                            <select value={form.category || p.category || ""} onChange={e => setForm({...form, category: e.target.value, subcategory: ""})}
+                              className="w-full rounded-lg bg-zinc-800 px-2.5 py-1.5 text-sm text-white border border-zinc-700/60 focus:outline-none focus:border-emerald-500/50">
+                              <option value="">—</option>
+                              {categoryList.map(c => <option key={c} value={c}>{c}</option>)}
+                            </select>
+                            <select value={form.subcategory ?? p.subcategory ?? ""} onChange={e => setForm({...form, subcategory: e.target.value})}
+                              className="w-full rounded-lg bg-zinc-800 px-2.5 py-1.5 text-sm text-white border border-zinc-700/60 focus:outline-none focus:border-emerald-500/50">
+                              <option value="">Subcategoría</option>
+                              {getSubsForCategory(form.category || p.category).map(s => <option key={s.slug} value={s.name}>{s.name}</option>)}
+                            </select>
+                          </div>
                         </td>
                         <td className="px-3 py-2 text-right">
                           <div className="space-y-2">
@@ -646,9 +680,16 @@ export default function AdminProducts() {
                           </div>
                         </td>
                         <td className="px-3 py-2.5">
-                          <span className="inline-block rounded-md bg-zinc-800/60 px-2 py-0.5 text-[11px] font-medium text-zinc-400">
-                            {p.category || <span className="text-zinc-600">—</span>}
-                          </span>
+                          <div className="flex flex-col gap-0.5">
+                            <span className="inline-block rounded-md bg-zinc-800/60 px-2 py-0.5 text-[11px] font-medium text-zinc-400">
+                              {p.category || <span className="text-zinc-600">—</span>}
+                            </span>
+                            {p.subcategory && (
+                              <span className="inline-block rounded-md bg-zinc-800/30 px-2 py-0.5 text-[10px] font-medium text-zinc-500">
+                                {p.subcategory}
+                              </span>
+                            )}
+                          </div>
                         </td>
                         <td className="px-3 py-2.5 text-right">
                           <div className="inline-flex items-center gap-1 opacity-70 group-hover:opacity-100 transition-opacity">
@@ -657,7 +698,7 @@ export default function AdminProducts() {
                               title="Historial de precios">
                               <History className="w-4 h-4" />
                             </button>
-                            <button onClick={() => { setForm({name: p.name, price: p.price, cost_price: p.cost_price || "", b2b_price: p.b2b_price || "", stock: p.stock, stock_alert_threshold: p.stock_alert_threshold ?? 5, category: p.category, image_url: p.image_url}); setEditing(i) }}
+                            <button onClick={() => { setForm({name: p.name, price: p.price, cost_price: p.cost_price || "", b2b_price: p.b2b_price || "", stock: p.stock, stock_alert_threshold: p.stock_alert_threshold ?? 5, category: p.category, subcategory: p.subcategory, image_url: p.image_url}); setEditing(i) }}
                               className="rounded-lg p-1.5 text-zinc-500 hover:text-blue-400 hover:bg-blue-500/10 transition-all"
                               title="Editar producto">
                               <Pencil className="w-4 h-4" />
