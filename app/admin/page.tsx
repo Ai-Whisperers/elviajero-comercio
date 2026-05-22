@@ -1,4 +1,5 @@
 'use client'
+import { adminFetch } from "@/lib/admin-fetch"
 import { useAdminAuth } from "@/components/admin/admin-layout"
 import { useState, useEffect } from "react"
 import { PageHeader, StatCard, StatsGridSkeleton, Badge } from "@/components/admin/ui"
@@ -11,7 +12,7 @@ function DashboardContent() {
 
   useEffect(() => {
     if (!authed) return
-    fetch("/api/admin/stats").then(r => r.json()).then(data => {
+    adminFetch("/api/admin/stats").then(r => r.json()).then(data => {
       setStats({ users: data.users, orders: data.orders, revenue: data.revenue, products: data.products, monthOrders: data.monthOrders, monthRevenue: data.monthRevenue })
       setRecentOrders(data.recentOrders || [])
     })

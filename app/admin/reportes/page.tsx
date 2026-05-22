@@ -1,9 +1,10 @@
 "use client"
+import { adminFetch } from "@/lib/admin-fetch"
 import { useAdminAuth } from "@/components/admin/admin-layout"
 import { exportOrdersCSV } from "@/lib/export-csv"
 import { useState, useEffect } from "react"
 import {
-  PageHeader, StatCard, EmptyState, StatsGridSkeleton, TableSkeleton,
+  PageHeader, StatCard, EmptyState, StatsGridSkeleton, TableSkeleton
 } from "@/components/admin/ui"
 
 function RevenueChart({ data }: { data: { label: string; value: number }[] }) {
@@ -107,12 +108,12 @@ export default function SalesReport() {
   useEffect(() => {
     if (!authed) return
     setLoading(true)
-    fetch("/api/admin/orders").then(r => r.json()).then(json => {
+    adminFetch("/api/admin/orders").then(r => r.json()).then(json => {
       const data = Array.isArray(json) ? json : json?.data ?? []
       if (data.length > 0) setOrders(data.map((o: any) => ({ ...o, items: typeof o.items === "string" ? JSON.parse(o.items) : o.items, date: o.created_at || o.date })))
       setLoading(false)
     })
-    fetch("/api/admin/config?key=exchange_rate")
+    adminFetch("/api/admin/config?key=exchange_rate")
       .then(r => r.json())
       .then(val => { if (typeof val === "number" && val > 0) setExchangeRate(val) })
       .catch(() => {})
@@ -133,7 +134,7 @@ export default function SalesReport() {
 
   const dayData = Object.entries(byDay).sort(([a], [b]) => a.localeCompare(b)).map(([label, v]) => ({
     label: label.slice(5),
-    value: v.total / exchangeRate,
+    value: v.total / exchangeRate
   }))
   const topProducts = Object.entries(productCount).sort((a, b) => b[1] - a[1]).slice(0, 15)
   const totalRevenue = filtered.reduce((s, o) => s + parseNum(o.total), 0)
@@ -253,7 +254,7 @@ function ProfitabilityReport() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetch("/api/admin/products?perPage=1000")
+    adminFetch("/api/admin/products?perPage=1000")
       .then(r => r.json())
       .then(res => {
         setProducts(res.data || [])

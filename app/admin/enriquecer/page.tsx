@@ -1,4 +1,5 @@
 "use client"
+import { adminFetch } from "@/lib/admin-fetch"
 import { useAdminAuth } from "@/components/admin/admin-layout"
 import { useState, useEffect } from "react"
 import { PageHeader, SearchInput, EmptyState, TableSkeleton } from "@/components/admin/ui"
@@ -16,12 +17,12 @@ export default function AdminEnrich() {
   useEffect(() => {
     if (!authed) return
     setLoading(true)
-    fetch("/api/admin/products").then(r => r.json()).then(data => { if (data?.data) setProducts(data.data); setLoading(false) }).catch(() => setLoading(false))
+    adminFetch("/api/admin/products").then(r => r.json()).then(data => { if (data?.data) setProducts(data.data); setLoading(false) }).catch(() => setLoading(false))
   }, [authed])
 
   const save = async (id: string) => {
     setSaving(true)
-    await fetch("/api/admin/products", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id, ...form }) })
+    await adminFetch("/api/admin/products", { method: "PATCH", body: JSON.stringify({ id, ...form }) })
     setProducts(products.map(p => p.id === id ? { ...p, ...form } : p))
     setEditing(null)
     setSaving(false)
@@ -30,10 +31,9 @@ export default function AdminEnrich() {
   const enrich = async (id: string, name: string) => {
     setEnriching(id)
     try {
-      const res = await fetch("/api/admin/enrich", {
+      const res = await adminFetch("/api/admin/enrich", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, current: form }),
+        body: JSON.stringify({ name, current: form })
       })
       if (res.ok) {
         const data = await res.json()
@@ -43,7 +43,7 @@ export default function AdminEnrich() {
             description: data.suggested_description || form.description || "",
             specs: data.suggested_specs || form.specs || "",
             brand: data.suggested_brand || form.brand || "",
-            weight: data.suggested_weight || form.weight || "",
+            weight: data.suggested_weight || form.weight || ""
           })
         }
       }
@@ -54,10 +54,9 @@ export default function AdminEnrich() {
   const applyEnrich = async (p: any) => {
     setEnriching(p.id)
     try {
-      const res = await fetch("/api/admin/enrich", {
+      const res = await adminFetch("/api/admin/enrich", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: p.name, current: p }),
+        body: JSON.stringify({ name: p.name, current: p })
       })
       if (!res.ok) { setEnriching(null); return }
       const data = await res.json()
@@ -68,7 +67,7 @@ export default function AdminEnrich() {
       if (data.suggested_weight) updates.weight = data.suggested_weight
 
       if (Object.keys(updates).length > 1) {
-        await fetch("/api/admin/products", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify(updates) })
+        await adminFetch("/api/admin/products", { method: "PATCH", body: JSON.stringify(updates) })
         setProducts(products.map(prod => prod.id === p.id ? { ...prod, ...updates } : prod))
       }
     } catch {}

@@ -1,4 +1,5 @@
 "use client"
+import { adminFetch } from "@/lib/admin-fetch"
 import { useAdminAuth } from "@/components/admin/admin-layout"
 import { useState, useEffect } from "react"
 import { PageHeader, SearchInput, EmptyState, StatsGridSkeleton } from "@/components/admin/ui"
@@ -13,7 +14,7 @@ export default function AdminCategories() {
   useEffect(() => {
     if (!authed) return
     setLoading(true)
-    fetch("/api/admin/categories").then(r => r.json()).then(data => {
+    adminFetch("/api/admin/categories").then(r => r.json()).then(data => {
       if (Array.isArray(data)) setCats(data); setLoading(false)
     })
   }, [authed])
@@ -22,12 +23,12 @@ export default function AdminCategories() {
 
   const add = async () => {
     if (!newCat.trim()) return
-    const res = await fetch("/api/admin/categories", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name: newCat.trim() }) })
+    const res = await adminFetch("/api/admin/categories", { method: "POST", body: JSON.stringify({ name: newCat.trim() }) })
     if (res.ok) { const data = await res.json(); setCats([...cats, data]); setNewCat("") }
   }
 
   const remove = async (id: string) => {
-    await fetch("/api/admin/categories?id=" + id, { method: "DELETE" })
+    await adminFetch("/api/admin/categories?id=" + id, { method: "DELETE" })
     setCats(cats.filter(c => c.id !== id))
   }
 

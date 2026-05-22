@@ -1,4 +1,5 @@
 "use client"
+import { adminFetch } from "@/lib/admin-fetch"
 import { useAdminAuth } from "@/components/admin/admin-layout"
 import { useState, useEffect } from "react"
 import { PageHeader, EmptyState } from "@/components/admin/ui"
@@ -20,12 +21,12 @@ export default function ScheduledPostsPage() {
   const [showForm, setShowForm] = useState(false)
   const [form, setForm] = useState<Partial<ScheduledPost>>({
     type: "blog",
-    scheduled_at: new Date().toISOString().slice(0, 16),
+    scheduled_at: new Date().toISOString().slice(0, 16)
   })
 
   useEffect(() => {
     if (!authed) return
-    fetch("/api/admin/scheduled-posts")
+    adminFetch("/api/admin/scheduled-posts")
       .then(r => r.json())
       .then(data => { setPosts(Array.isArray(data) ? data : []); setLoading(false) })
       .catch(() => setLoading(false))
@@ -39,12 +40,11 @@ export default function ScheduledPostsPage() {
       type: form.type || "blog",
       scheduled_at: form.scheduled_at || new Date().toISOString(),
       published: false,
-      platform: form.platform,
+      platform: form.platform
     }
-    await fetch("/api/admin/scheduled-posts", {
+    await adminFetch("/api/admin/scheduled-posts", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newPost),
+      body: JSON.stringify(newPost)
     })
     setPosts([newPost, ...posts])
     setShowForm(false)
@@ -55,10 +55,9 @@ export default function ScheduledPostsPage() {
     const post = posts.find(p => p.id === id)
     if (!post) return
     const updated = { ...post, published: !post.published }
-    await fetch("/api/admin/scheduled-posts", {
+    await adminFetch("/api/admin/scheduled-posts", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(updated),
+      body: JSON.stringify(updated)
     })
     setPosts(posts.map(p => p.id === id ? updated : p))
   }

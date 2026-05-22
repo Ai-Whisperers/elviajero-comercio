@@ -1,4 +1,5 @@
 "use client"
+import { adminFetch } from "@/lib/admin-fetch"
 import { useAdminAuth } from "@/components/admin/admin-layout"
 import { useState, useEffect } from "react"
 import { PageHeader, EmptyState, TableSkeleton } from "@/components/admin/ui"
@@ -12,7 +13,7 @@ export default function StockAlertsPage() {
   useEffect(() => {
     if (!authed) return
     setLoading(true)
-    fetch("/api/admin/stock-alerts")
+    adminFetch("/api/admin/stock-alerts")
       .then(r => r.json())
       .then(data => {
         setAlerts(data.alerts || [])

@@ -1,4 +1,5 @@
 "use client"
+import { adminFetch } from "@/lib/admin-fetch"
 import { useAdminAuth } from "@/components/admin/admin-layout"
 import { useState, useEffect } from "react"
 import { PageHeader, SearchInput, EmptyState, TableSkeleton, Badge } from "@/components/admin/ui"
@@ -13,11 +14,11 @@ export default function AdminReviews() {
   useEffect(() => {
     if (!authed) return
     setLoading(true)
-    fetch("/api/admin/reviews").then(r => r.json()).then(data => { if (data) setReviews(data); setLoading(false) }).catch(() => setLoading(false))
+    adminFetch("/api/admin/reviews").then(r => r.json()).then(data => { if (data) setReviews(data); setLoading(false) }).catch(() => setLoading(false))
   }, [authed])
 
   const remove = async (id: string) => {
-    await fetch("/api/admin/reviews?id=" + id, { method: "DELETE" })
+    await adminFetch("/api/admin/reviews?id=" + id, { method: "DELETE" })
     setReviews(reviews.filter(r => r.id !== id))
   }
 

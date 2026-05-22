@@ -1,4 +1,5 @@
 "use client"
+import { adminFetch } from "@/lib/admin-fetch"
 import { useAdminAuth } from "@/components/admin/admin-layout"
 import { useState, useEffect } from "react"
 import { PageHeader, EmptyState, TableSkeleton } from "@/components/admin/ui"
@@ -13,7 +14,7 @@ const actionLabels: Record<string, string> = {
   "stock.remove": "Retiro de stock",
   "stock.adjustment": "Ajuste de stock",
   "stock.sale": "Venta",
-  "stock.return": "Devolución",
+  "stock.return": "Devolución"
 }
 
 const actionIcons: Record<string, string> = {
@@ -25,7 +26,7 @@ const actionIcons: Record<string, string> = {
   "stock.remove": "📉",
   "stock.adjustment": "⚖️",
   "stock.sale": "🛒",
-  "stock.return": "↩️",
+  "stock.return": "↩️"
 }
 
 export default function AdminActivity() {
@@ -40,7 +41,7 @@ export default function AdminActivity() {
     setLoading(true)
     const params = new URLSearchParams({ limit: String(limit) })
     if (filter) params.set("action", filter)
-    fetch(`/api/admin/activity?${params}`)
+    adminFetch(`/api/admin/activity?${params}`)
       .then(r => r.json())
       .then(data => { if (Array.isArray(data)) setActivity(data); setLoading(false) })
       .catch(() => setLoading(false))

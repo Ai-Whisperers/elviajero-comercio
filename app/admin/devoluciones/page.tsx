@@ -1,4 +1,5 @@
 "use client"
+import { adminFetch } from "@/lib/admin-fetch"
 import { useAdminAuth } from "@/components/admin/admin-layout"
 import { useState, useEffect } from "react"
 import { PageHeader, EmptyState, TableSkeleton } from "@/components/admin/ui"
@@ -20,17 +21,16 @@ export default function ReturnsPage() {
 
   useEffect(() => {
     if (!authed) return
-    fetch("/api/admin/returns")
+    adminFetch("/api/admin/returns")
       .then(r => r.json())
       .then(data => { setReturns(Array.isArray(data) ? data : []); setLoading(false) })
       .catch(() => setLoading(false))
   }, [authed])
 
   const updateStatus = async (id: string, status: ReturnRequest["status"]) => {
-    await fetch("/api/admin/returns", {
+    await adminFetch("/api/admin/returns", {
       method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id, status }),
+      body: JSON.stringify({ id, status })
     })
     setReturns(returns.map(r => r.id === id ? { ...r, status } : r))
   }

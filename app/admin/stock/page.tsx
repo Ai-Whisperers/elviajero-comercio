@@ -1,4 +1,5 @@
 "use client"
+import { adminFetch } from "@/lib/admin-fetch"
 import { useAdminAuth } from "@/components/admin/admin-layout"
 import { useState, useEffect, useCallback } from "react"
 import { PageHeader, EmptyState, TableSkeleton } from "@/components/admin/ui"
@@ -9,7 +10,7 @@ const typeLabels: Record<string, { label: string; color: string }> = {
   remove: { label: "Retiro", color: "text-red-400" },
   adjustment: { label: "Ajuste", color: "text-amber-400" },
   sale: { label: "Venta", color: "text-blue-400" },
-  return: { label: "Devolución", color: "text-purple-400" },
+  return: { label: "Devolución", color: "text-purple-400" }
 }
 
 export default function AdminStock() {
@@ -24,7 +25,7 @@ export default function AdminStock() {
     setLoading(true)
     const params = new URLSearchParams()
     if (productSearch) params.set("product_id", productSearch)
-    fetch(`/api/admin/stock-movements?${params}`)
+    adminFetch(`/api/admin/stock-movements?${params}`)
       .then(r => r.json())
       .then(data => { if (Array.isArray(data)) setMovements(data); setLoading(false) })
       .catch(() => setLoading(false))

@@ -1,4 +1,5 @@
 "use client"
+import { adminFetch } from "@/lib/admin-fetch"
 import { useAdminAuth } from "@/components/admin/admin-layout"
 import { useState, useEffect } from "react"
 import { PageHeader, EmptyState, TableSkeleton } from "@/components/admin/ui"
@@ -23,20 +24,20 @@ export default function InvoicesPage() {
   const [form, setForm] = useState({
     order_id: "",
     type: "nota_remision" as "factura" | "nota_remision",
-    ruc: "",
+    ruc: ""
   })
 
   useEffect(() => {
     if (!authed) return
     setLoading(true)
     Promise.all([
-      fetch("/api/admin/orders").then(r => r.json()),
-      fetch("/api/admin/invoices").then(r => r.json().catch(() => [])),
+      adminFetch("/api/admin/orders").then(r => r.json()),
+      adminFetch("/api/admin/invoices").then(r => r.json().catch(() => [])),
     ]).then(([ordersData, invoicesData]) => {
       if (ordersData) {
         setOrders(ordersData.map((o: any) => ({
           ...o,
-          items: typeof o.items === "string" ? JSON.parse(o.items) : o.items,
+          items: typeof o.items === "string" ? JSON.parse(o.items) : o.items
         })))
       }
       setInvoices(Array.isArray(invoicesData) ? invoicesData : [])
@@ -56,13 +57,12 @@ export default function InvoicesPage() {
       status: "pending",
       type: form.type,
       ruc: form.ruc,
-      created_at: new Date().toISOString(),
+      created_at: new Date().toISOString()
     }
 
-    await fetch("/api/admin/invoices", {
+    await adminFetch("/api/admin/invoices", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(invoice),
+      body: JSON.stringify(invoice)
     })
 
     setInvoices([invoice, ...invoices])
@@ -71,10 +71,9 @@ export default function InvoicesPage() {
   }
 
   const updateStatus = async (number: string, status: "pending" | "issued" | "cancelled") => {
-    await fetch("/api/admin/invoices", {
+    await adminFetch("/api/admin/invoices", {
       method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ number, status }),
+      body: JSON.stringify({ number, status })
     })
     setInvoices(invoices.map(i => i.number === number ? { ...i, status } : i))
   }

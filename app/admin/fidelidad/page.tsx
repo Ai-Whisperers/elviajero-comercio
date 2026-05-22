@@ -1,4 +1,5 @@
 "use client"
+import { adminFetch } from "@/lib/admin-fetch"
 import { useAdminAuth } from "@/components/admin/admin-layout"
 import { useState, useEffect } from "react"
 import { PageHeader, EmptyState } from "@/components/admin/ui"
@@ -23,7 +24,7 @@ const defaultConfig: LoyaltyConfig = {
     { name: "Plata", min_points: 1000, discount_percent: 5 },
     { name: "Oro", min_points: 5000, discount_percent: 10 },
     { name: "Platino", min_points: 15000, discount_percent: 15 },
-  ],
+  ]
 }
 
 export default function LoyaltyPage() {
@@ -34,7 +35,7 @@ export default function LoyaltyPage() {
 
   useEffect(() => {
     if (!authed) return
-    fetch("/api/admin/loyalty")
+    adminFetch("/api/admin/loyalty")
       .then(r => r.json())
       .then(data => {
         if (data && typeof data === "object" && "enabled" in data) setConfig(data)
@@ -44,10 +45,9 @@ export default function LoyaltyPage() {
   }, [authed])
 
   const save = async () => {
-    await fetch("/api/admin/loyalty", {
+    await adminFetch("/api/admin/loyalty", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(config),
+      body: JSON.stringify(config)
     })
     setSaved(true)
     setTimeout(() => setSaved(false), 2000)

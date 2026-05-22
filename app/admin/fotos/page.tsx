@@ -1,4 +1,5 @@
 "use client"
+import { adminFetch } from "@/lib/admin-fetch"
 import { useState, useEffect } from "react"
 import { useAdminAuth } from "@/components/admin/admin-layout"
 import { useToast } from "@/hooks/use-toast"
@@ -14,7 +15,7 @@ export default function AdminPhotos() {
   useEffect(() => {
     if (!authed) return
     setLoading(true)
-    fetch("/api/admin/products").then(r => r.json()).then(data => {
+    adminFetch("/api/admin/products").then(r => r.json()).then(data => {
       if (data) setProducts(data.map((p: any) => ({ id: p.id, name: p.name, image_url: p.image_url })))
       setLoading(false)
     }).catch(() => setLoading(false))
@@ -34,10 +35,9 @@ export default function AdminPhotos() {
       return
     }
 
-    await fetch("/api/admin/products", {
+    await adminFetch("/api/admin/products", {
       method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: productId, image_url: data.url }),
+      body: JSON.stringify({ id: productId, image_url: data.url })
     })
     setProducts(products.map(p => p.id === productId ? { ...p, image_url: data.url } : p))
     addToast("success", "Foto subida correctamente")

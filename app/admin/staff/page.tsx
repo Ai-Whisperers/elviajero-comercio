@@ -1,4 +1,5 @@
 "use client"
+import { adminFetch } from "@/lib/admin-fetch"
 import { useAdminAuth } from "@/components/admin/admin-layout"
 import { useState, useEffect } from "react"
 import { PageHeader, EmptyState, TableSkeleton } from "@/components/admin/ui"
@@ -7,14 +8,14 @@ const roleLabels: Record<string, string> = {
   admin: "Administrador",
   ventas: "Ventas",
   bodega: "Bodega",
-  customer: "Cliente",
+  customer: "Cliente"
 }
 
 const roleColors: Record<string, string> = {
   admin: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
   ventas: "bg-blue-500/10 text-blue-400 border-blue-500/20",
   bodega: "bg-amber-500/10 text-amber-400 border-amber-500/20",
-  customer: "bg-zinc-800 text-zinc-400 border-zinc-700/50",
+  customer: "bg-zinc-800 text-zinc-400 border-zinc-700/50"
 }
 
 export default function StaffPage() {
@@ -25,13 +26,13 @@ export default function StaffPage() {
   useEffect(() => {
     if (!authed) return
     setLoading(true)
-    fetch("/api/admin/staff")
+    adminFetch("/api/admin/staff")
       .then(r => r.json())
       .then(data => { setUsers(Array.isArray(data) ? data : []); setLoading(false) })
   }, [authed])
 
   const updateRole = async (id: string, role: string) => {
-    await fetch("/api/admin/staff", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id, role }) })
+    await adminFetch("/api/admin/staff", { method: "PATCH", body: JSON.stringify({ id, role }) })
     setUsers(users.map(u => u.id === id ? { ...u, role } : u))
   }
 

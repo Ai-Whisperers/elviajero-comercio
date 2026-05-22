@@ -1,4 +1,5 @@
 "use client"
+import { adminFetch } from "@/lib/admin-fetch"
 import { useAdminAuth } from "@/components/admin/admin-layout"
 import { useState, useRef, useEffect } from "react"
 import { Send, Bot, User, Trash2, AlertTriangle, Loader2 } from "lucide-react"
@@ -55,10 +56,9 @@ export default function AsistentePage() {
     setLoading(true)
 
     try {
-      const res = await fetch("/api/admin/assistant", {
+      const res = await adminFetch("/api/admin/assistant", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: [...messages, { role: "user", content: text }] }),
+        body: JSON.stringify({ messages: [...messages, { role: "user", content: text }] })
       })
       const data = await res.json()
 

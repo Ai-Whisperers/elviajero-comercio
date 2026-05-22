@@ -1,10 +1,11 @@
 "use client"
+import { adminFetch } from "@/lib/admin-fetch"
 import { useAdminAuth } from "@/components/admin/admin-layout"
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import {
   PageHeader, SearchInput, StatCard, Badge,
-  CardSkeleton, EmptyState,
+  CardSkeleton, EmptyState
 } from "@/components/admin/ui"
 
 const statusColors: Record<string, string> = {
@@ -12,7 +13,7 @@ const statusColors: Record<string, string> = {
   confirmado: "bg-blue-500/10 text-blue-400 border-blue-500/20",
   enviado: "bg-purple-500/10 text-purple-400 border-purple-500/20",
   entregado: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
-  cancelado: "bg-red-500/10 text-red-400 border-red-500/20",
+  cancelado: "bg-red-500/10 text-red-400 border-red-500/20"
 }
 
 export default function AdminCustomerHistory() {
@@ -27,7 +28,7 @@ export default function AdminCustomerHistory() {
   useEffect(() => {
     if (!authed) return
     setCustomersLoading(true)
-    fetch("/api/admin/customers").then(r => r.json()).then(data => {
+    adminFetch("/api/admin/customers").then(r => r.json()).then(data => {
       if (Array.isArray(data)) setProfiles(data)
       setCustomersLoading(false)
       setLoading(false)
@@ -37,7 +38,7 @@ export default function AdminCustomerHistory() {
   useEffect(() => {
     if (!selected) return
     setLoading(true)
-    fetch("/api/admin/orders").then(r => r.json()).then(data => {
+    adminFetch("/api/admin/orders").then(r => r.json()).then(data => {
       if (Array.isArray(data)) setOrders(data.filter((o: any) => o.user_id === selected))
       setLoading(false)
     })

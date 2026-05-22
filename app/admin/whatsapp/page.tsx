@@ -1,4 +1,5 @@
 "use client"
+import { adminFetch } from "@/lib/admin-fetch"
 import { useAdminAuth } from "@/components/admin/admin-layout"
 import { useState, useEffect } from "react"
 import { PageHeader, EmptyState } from "@/components/admin/ui"
@@ -29,7 +30,7 @@ export default function WhatsAppTemplatesPage() {
 
   useEffect(() => {
     if (!authed) return
-    fetch("/api/admin/whatsapp-templates")
+    adminFetch("/api/admin/whatsapp-templates")
       .then(r => r.json())
       .then(data => {
         const list = Array.isArray(data) && data.length > 0 ? data : defaultTemplates
@@ -44,10 +45,9 @@ export default function WhatsAppTemplatesPage() {
 
   const save = async () => {
     const updated = templates.map(t => t.id === editing ? { ...t, ...form } as Template : t)
-    await fetch("/api/admin/whatsapp-templates", {
+    await adminFetch("/api/admin/whatsapp-templates", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(updated),
+      body: JSON.stringify(updated)
     })
     setTemplates(updated)
     setEditing(null)
@@ -55,10 +55,9 @@ export default function WhatsAppTemplatesPage() {
 
   const toggleActive = async (id: string) => {
     const updated = templates.map(t => t.id === id ? { ...t, active: !t.active } : t)
-    await fetch("/api/admin/whatsapp-templates", {
+    await adminFetch("/api/admin/whatsapp-templates", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(updated),
+      body: JSON.stringify(updated)
     })
     setTemplates(updated)
   }

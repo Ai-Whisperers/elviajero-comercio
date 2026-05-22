@@ -1,4 +1,5 @@
 "use client"
+import { adminFetch } from "@/lib/admin-fetch"
 import { useAdminAuth } from "@/components/admin/admin-layout"
 import { useState, useEffect } from "react"
 import Link from "next/link"
@@ -25,7 +26,7 @@ export default function AdminBlog() {
 
   const load = async () => {
     setLoading(true)
-    const res = await fetch("/api/admin/blog")
+    const res = await adminFetch("/api/admin/blog")
     if (res.ok) setPosts(await res.json())
     setLoading(false)
   }
@@ -34,9 +35,9 @@ export default function AdminBlog() {
     setSaving(true)
     if (!form.slug) form.slug = slugify(form.title)
     const method = editing ? "PATCH" : "POST"
-    const res = await fetch("/api/admin/blog", {
-      method, headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(editing ? { ...form, original_slug: editing } : form),
+    const res = await adminFetch("/api/admin/blog", {
+      method,
+      body: JSON.stringify(editing ? { ...form, original_slug: editing } : form)
     })
     if (res.ok) { setShowForm(false); setEditing(null); setForm({ slug: "", title: "", excerpt: "", content: "", category: "general", image_url: "", author: "", published: false, created_at: new Date().toISOString().split("T")[0] }); load() }
     setSaving(false)
@@ -44,7 +45,7 @@ export default function AdminBlog() {
 
   const remove = async (slug: string) => {
     if (!confirm("¿Eliminar este post?")) return
-    await fetch("/api/admin/blog?slug=" + slug, { method: "DELETE" })
+    await adminFetch("/api/admin/blog?slug=" + slug, { method: "DELETE" })
     load()
   }
 

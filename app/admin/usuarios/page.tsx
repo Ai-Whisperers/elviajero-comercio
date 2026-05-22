@@ -1,4 +1,5 @@
 "use client"
+import { adminFetch } from "@/lib/admin-fetch"
 import { useAdminAuth } from "@/components/admin/admin-layout"
 import { useState, useEffect } from "react"
 import { PageHeader, SearchInput, DataTable, EmptyState, TableSkeleton, Badge } from "@/components/admin/ui"
@@ -12,7 +13,7 @@ export default function AdminUsers() {
   useEffect(() => {
     if (!authed) return
     setLoading(true)
-    fetch("/api/admin/users").then(r => r.json()).then(data => {
+    adminFetch("/api/admin/users").then(r => r.json()).then(data => {
       if (Array.isArray(data)) setUsers(data); setLoading(false)
     })
   }, [authed])

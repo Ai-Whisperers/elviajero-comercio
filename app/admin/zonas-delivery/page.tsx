@@ -1,4 +1,5 @@
 "use client"
+import { adminFetch } from "@/lib/admin-fetch"
 import { useAdminAuth } from "@/components/admin/admin-layout"
 import { useState, useEffect } from "react"
 import { PageHeader, EmptyState } from "@/components/admin/ui"
@@ -18,7 +19,7 @@ export default function DeliveryZonesPage() {
 
   const loadZones = () => {
     setLoading(true)
-    fetch("/api/admin/delivery-zones")
+    adminFetch("/api/admin/delivery-zones")
       .then(r => r.json())
       .then(data => { setZones(Array.isArray(data) ? data : []); setLoading(false) })
   }
@@ -26,17 +27,16 @@ export default function DeliveryZonesPage() {
   const save = async () => {
     const cities = form.cities.split(",").map(c => c.trim()).filter(Boolean)
     const body = { name: form.name, cities, cost: form.cost, min_order: form.min_order || "0", free_threshold: form.free_threshold || "" }
-    const res = await fetch("/api/admin/delivery-zones", {
+    const res = await adminFetch("/api/admin/delivery-zones", {
       method: editing ? "PATCH" : "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(editing ? { ...body, id: editing.id } : body),
+      body: JSON.stringify(editing ? { ...body, id: editing.id } : body)
     })
     if (res.ok) { setShowForm(false); setEditing(null); setForm({ name: "", cities: "", cost: "", min_order: "", free_threshold: "" }); loadZones() }
   }
 
   const remove = async (id: string) => {
     if (!confirm("¿Eliminar esta zona?")) return
-    await fetch(`/api/admin/delivery-zones?id=${id}`, { method: "DELETE" })
+    await adminFetch(`/api/admin/delivery-zones?id=${id}`, { method: "DELETE" })
     loadZones()
   }
 

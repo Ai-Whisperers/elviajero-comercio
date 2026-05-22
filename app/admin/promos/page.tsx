@@ -1,4 +1,5 @@
 "use client"
+import { adminFetch } from "@/lib/admin-fetch"
 import { useAdminAuth } from "@/components/admin/admin-layout"
 import { useState, useEffect } from "react"
 import { PageHeader, SearchInput, EmptyState, TableSkeleton } from "@/components/admin/ui"
@@ -15,7 +16,7 @@ export default function AdminPromos() {
   useEffect(() => {
     if (!authed) return
     setLoading(true)
-    fetch("/api/admin/promos").then(r => r.json()).then(data => { if (Array.isArray(data)) setPromos(data); setLoading(false) })
+    adminFetch("/api/admin/promos").then(r => r.json()).then(data => { if (Array.isArray(data)) setPromos(data); setLoading(false) })
   }, [authed])
 
   const filtered = search ? promos.filter(p => p.code.toLowerCase().includes(search.toLowerCase())) : promos
@@ -29,17 +30,17 @@ export default function AdminPromos() {
     if (form.validUntil) body.valid_until = form.validUntil
     if (editingCode) body.original_code = editingCode
 
-    const res = await fetch("/api/admin/promos", { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) })
+    const res = await adminFetch("/api/admin/promos", { method, body: JSON.stringify(body) })
     if (res.ok) {
       resetForm()
       setShowForm(false)
       setEditingCode(null)
-      fetch("/api/admin/promos").then(r => r.json()).then(data => { if (Array.isArray(data)) setPromos(data) })
+      adminFetch("/api/admin/promos").then(r => r.json()).then(data => { if (Array.isArray(data)) setPromos(data) })
     }
   }
 
   const remove = async (code: string) => {
-    await fetch("/api/admin/promos?code=" + code, { method: "DELETE" })
+    await adminFetch("/api/admin/promos?code=" + code, { method: "DELETE" })
     setPromos(promos.filter(p => p.code !== code))
   }
 
@@ -51,7 +52,7 @@ export default function AdminPromos() {
       minPurchase: p.min_purchase || 0,
       maxUses: p.max_uses || 100,
       validFrom: p.valid_from ? p.valid_from.slice(0, 10) : "",
-      validUntil: p.valid_until ? p.valid_until.slice(0, 10) : "",
+      validUntil: p.valid_until ? p.valid_until.slice(0, 10) : ""
     })
     setEditingCode(p.code)
     setShowForm(true)

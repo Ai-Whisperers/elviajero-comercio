@@ -1,9 +1,10 @@
 "use client"
+import { adminFetch } from "@/lib/admin-fetch"
 import { useAdminAuth } from "@/components/admin/admin-layout"
 import { useState, useEffect } from "react"
 import {
   PageHeader, SearchInput, FilterBar, SummaryBar, OrderCard,
-  CardSkeleton, EmptyState,
+  CardSkeleton, EmptyState
 } from "@/components/admin/ui"
 
 const statusOptions = [
@@ -30,12 +31,12 @@ export default function AdminOrders() {
   useEffect(() => {
     if (!authed) return
     setLoading(true)
-    fetch("/api/admin/orders").then(r => r.json()).then(json => {
+    adminFetch("/api/admin/orders").then(r => r.json()).then(json => {
       const data = Array.isArray(json) ? json : json?.data ?? []
       if (data && data.length > 0) {
         setOrders(data.map((o: any) => ({
           ...o,
-          items: typeof o.items === "string" ? JSON.parse(o.items) : o.items,
+          items: typeof o.items === "string" ? JSON.parse(o.items) : o.items
         })))
       }
       setLoading(false)
@@ -43,21 +44,20 @@ export default function AdminOrders() {
   }, [authed])
 
   const updatePayment = async (orderId: string, paymentStatus: string) => {
-    await fetch("/api/admin/orders", {
+    await adminFetch("/api/admin/orders", {
       method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: orderId, payment_status: paymentStatus, payment_confirmed_at: paymentStatus === "verified" ? new Date().toISOString() : undefined }),
+      body: JSON.stringify({ id: orderId, payment_status: paymentStatus, payment_confirmed_at: paymentStatus === "verified" ? new Date().toISOString() : undefined })
     })
     setOrders(orders.map(o => o.id === orderId ? { ...o, payment_status: paymentStatus } : o))
   }
 
   const update = async (orderId: string, newStatus: string) => {
-    await fetch("/api/admin/orders", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: orderId, status: newStatus }) })
+    await adminFetch("/api/admin/orders", { method: "PATCH", body: JSON.stringify({ id: orderId, status: newStatus }) })
     setOrders(orders.map(o => o.id === orderId ? { ...o, status: newStatus } : o))
   }
 
   const saveNote = async (orderId: string) => {
-    await fetch("/api/admin/orders", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: orderId, note: noteText }) })
+    await adminFetch("/api/admin/orders", { method: "PATCH", body: JSON.stringify({ id: orderId, note: noteText }) })
     setOrders(orders.map(o => o.id === orderId ? { ...o, note: noteText } : o))
     setNoteInput(null)
   }

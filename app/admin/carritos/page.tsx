@@ -1,4 +1,5 @@
 "use client"
+import { adminFetch } from "@/lib/admin-fetch"
 import { useAdminAuth } from "@/components/admin/admin-layout"
 import { useState, useEffect } from "react"
 import { PageHeader, EmptyState, TableSkeleton } from "@/components/admin/ui"
@@ -19,17 +20,16 @@ export default function AbandonedCartsPage() {
 
   useEffect(() => {
     if (!authed) return
-    fetch("/api/admin/abandoned-carts")
+    adminFetch("/api/admin/abandoned-carts")
       .then(r => r.json())
       .then(data => { setCarts(Array.isArray(data) ? data : []); setLoading(false) })
       .catch(() => setLoading(false))
   }, [authed])
 
   const markRecovered = async (id: string) => {
-    await fetch("/api/admin/abandoned-carts", {
+    await adminFetch("/api/admin/abandoned-carts", {
       method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id, recovered: true }),
+      body: JSON.stringify({ id, recovered: true })
     })
     setCarts(carts.map(c => c.id === id ? { ...c, recovered: true } : c))
   }

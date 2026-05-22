@@ -1,4 +1,5 @@
 "use client"
+import { adminFetch } from "@/lib/admin-fetch"
 import { useState, useEffect } from "react"
 import { useSearchParams } from "next/navigation"
 import Link from "next/link"
@@ -27,7 +28,7 @@ function OrderDetailInner() {
 
   useEffect(() => {
     if (!orderId) return
-    fetch("/api/admin/orders?id=" + orderId).then(r => r.json()).then(data => {
+    adminFetch("/api/admin/orders?id=" + orderId).then(r => r.json()).then(data => {
       if (data) {
         setOrder({ ...data, items: typeof data.items === "string" ? JSON.parse(data.items) : data.items })
         setTrackingNum(data.tracking_number || "")
@@ -40,14 +41,13 @@ function OrderDetailInner() {
 
   const saveTracking = async () => {
     setSaving(true)
-    const res = await fetch("/api/admin/orders", {
+    const res = await adminFetch("/api/admin/orders", {
       method: "PATCH",
-      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         id: orderId,
         tracking_number: trackingNum,
         carrier: carrier,
-        status: status,
+        status: status
       })
     })
     if (res.ok) {

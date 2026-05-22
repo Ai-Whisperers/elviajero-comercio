@@ -1,4 +1,5 @@
 "use client"
+import { adminFetch } from "@/lib/admin-fetch"
 import { useAdminAuth } from "@/components/admin/admin-layout"
 import { useState, useEffect } from "react"
 import { PageHeader } from "@/components/admin/ui"
@@ -25,7 +26,7 @@ export default function AdminTheme() {
       const local = JSON.parse(localStorage.getItem(THEME_KEY) || "null")
       if (local) setTheme(local)
     } catch {}
-    fetch("/api/admin/theme").then(r => r.json()).then(data => {
+    adminFetch("/api/admin/theme").then(r => r.json()).then(data => {
       if (data?.theme) {
         const t = JSON.parse(data.theme)
         setTheme(t)
@@ -46,10 +47,9 @@ export default function AdminTheme() {
     localStorage.setItem(THEME_KEY, JSON.stringify(t))
     applyTheme(t)
     setSaving(true)
-    await fetch("/api/admin/theme", {
+    await adminFetch("/api/admin/theme", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ theme: JSON.stringify(t) }),
+      body: JSON.stringify({ theme: JSON.stringify(t) })
     })
     setSaving(false)
     setSaved(true)

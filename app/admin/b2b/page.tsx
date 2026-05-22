@@ -1,4 +1,5 @@
 "use client"
+import { adminFetch } from "@/lib/admin-fetch"
 import { useAdminAuth } from "@/components/admin/admin-layout"
 import { useState, useEffect } from "react"
 import { PageHeader, SearchInput, EmptyState, TableSkeleton } from "@/components/admin/ui"
@@ -18,14 +19,14 @@ export default function AdminB2B() {
 
   const load = async () => {
     setLoading(true)
-    const res = await fetch("/api/admin/b2b")
+    const res = await adminFetch("/api/admin/b2b")
     if (res.ok) setCustomers(await res.json())
     setLoading(false)
   }
 
   const add = async () => {
-    await fetch("/api/admin/b2b", {
-      method: "POST", headers: { "Content-Type": "application/json" },
+    await adminFetch("/api/admin/b2b", {
+      method: "POST",
       body: JSON.stringify({ business_name: form.businessName, contact_name: form.contactName, email: form.email, phone: form.phone, ruc: form.ruc, credit_limit: form.creditLimit, payment_terms: form.paymentTerms })
     })
     setShowForm(false)
@@ -34,8 +35,8 @@ export default function AdminB2B() {
   }
 
   const toggleStatus = async (id: string, current: string) => {
-    await fetch("/api/admin/b2b", {
-      method: "PATCH", headers: { "Content-Type": "application/json" },
+    await adminFetch("/api/admin/b2b", {
+      method: "PATCH",
       body: JSON.stringify({ id, status: current === "active" ? "suspended" : "active" })
     })
     load()

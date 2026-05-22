@@ -1,4 +1,5 @@
 "use client"
+import { adminFetch } from "@/lib/admin-fetch"
 import { useAdminAuth } from "@/components/admin/admin-layout"
 import { useState, useEffect, useCallback } from "react"
 import defaultContentRaw from "@/content/es.json"
@@ -56,7 +57,7 @@ function ContentEditor() {
 
   useEffect(() => {
     if (!authed) return
-    fetch("/api/admin/content").then(r => r.json()).then(d => { if (d) setOverrides(d) })
+    adminFetch("/api/admin/content").then(r => r.json()).then(d => { if (d) setOverrides(d) })
   }, [authed])
 
   const merged = { ...defaultContent, ...overrides }
@@ -70,10 +71,9 @@ function ContentEditor() {
 
   const save = async () => {
     setSaving(true)
-    const res = await fetch("/api/admin/content", {
+    const res = await adminFetch("/api/admin/content", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(overrides),
+      body: JSON.stringify(overrides)
     })
     if (res.ok) { setSaved(true); setTimeout(() => setSaved(false), 2000) }
     setSaving(false)
