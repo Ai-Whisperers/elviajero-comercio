@@ -20,7 +20,7 @@ interface FilterSection {
 
 interface StoreSidebarProps {
   sections: FilterSection[]
-  categories?: { id: string; name: string; slug: string; subcategories: { id: string; name: string; slug: string }[] }[]
+  categories?: { id: string; name: string; subcategories: { id: string; name: string; slug: string }[] }[]
   activeCount: number
   onClear: () => void
   priceRange: { min: number; max: number }

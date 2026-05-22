@@ -15,8 +15,7 @@ describe("Content es.json — structure", () => {
 
   it("has hero section inside home", () => {
     expect(content.home).toBeDefined()
-    expect(content.home.hero).toBeDefined()
-    expect(content.home.hero.headline).toBeDefined()
+    // The Home hero IS the heroCarousel (admin section "Hero / Portada" manages home.heroCarousel)
     expect(content.home.heroCarousel).toBeDefined()
     expect(content.home.heroCarousel.enabled).toBe(true)
     expect(Array.isArray(content.home.heroCarousel.slides)).toBe(true)
