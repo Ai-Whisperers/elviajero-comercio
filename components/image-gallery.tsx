@@ -1,18 +1,17 @@
 "use client"
 import { useState } from "react"
 import Image from "next/image"
+import { getCategoryPlaceholderSvg } from "@/lib/category-placeholders"
 
-interface Props { images: string[]; productName: string; isNew?: boolean; hasDiscount?: boolean }
+interface Props { images: string[]; productName: string; isNew?: boolean; hasDiscount?: boolean; category?: string }
 
-export function ImageGallery({ images, productName, isNew, hasDiscount }: Props) {
+export function ImageGallery({ images, productName, isNew, hasDiscount, category }: Props) {
   const [selected, setSelected] = useState(0)
   const [zoomed, setZoomed] = useState(false)
 
   if (!images.length) return (
-    <div className="flex aspect-square items-center justify-center rounded-2xl border border-border bg-muted">
-      <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="text-muted-foreground/30">
-        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/>
-      </svg>
+    <div className="relative flex aspect-square items-center justify-center rounded-2xl border border-border bg-muted overflow-hidden">
+      <Image src={getCategoryPlaceholderSvg(category, productName)} alt={productName} fill className="object-contain" unoptimized />
     </div>
   )
 

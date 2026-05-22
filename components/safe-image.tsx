@@ -1,6 +1,7 @@
 "use client"
 import Image from "next/image"
 import { useState } from "react"
+import { getCategoryPlaceholderSvg } from "@/lib/category-placeholders"
 
 interface Props {
   src?: string
@@ -11,25 +12,39 @@ interface Props {
   className?: string
   containerClassName?: string
   priority?: boolean
+  /** Product category — used for branded placeholder when no image */
+  category?: string
 }
 
-export function SafeImage({ src, alt, width = 400, height = 300, fill, className = "", containerClassName = "", priority = false }: Props) {
+export function SafeImage({ src, alt, width = 400, height = 300, fill, className = "", containerClassName = "", priority = false, category }: Props) {
   const [loaded, setLoaded] = useState(false)
   const [error, setError] = useState(false)
 
+  // Use category-branded placeholder when no source or image failed
+  const placeholderSrc = getCategoryPlaceholderSvg(category, alt)
+
   if (!src || error) {
     return (
-      <div className={"flex items-center justify-center bg-muted " + containerClassName}>
-        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="text-muted-foreground/40">
-          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/>
-        </svg>
+      <div className={"relative overflow-hidden " + containerClassName}>
+        <Image
+          src={placeholderSrc}
+          alt={alt}
+          width={fill ? undefined : width}
+          height={fill ? undefined : height}
+          fill={fill}
+          className={className}
+          priority={priority}
+          unoptimized
+        />
       </div>
     )
   }
 
   return (
     <div className={"relative overflow-hidden " + containerClassName}>
-      {!loaded && <div className="absolute inset-0 animate-shimmer bg-muted" />}
+      {!loaded && (
+        <div className="absolute inset-0 animate-shimmer bg-muted" />
+      )}
       <Image
         src={src} alt={alt}
         width={fill ? undefined : width} height={fill ? undefined : height}

@@ -85,24 +85,15 @@ export function ProductCard({ product, onClick }: { product: Product; onClick?: 
           onClick={() => onClick?.(product)}
           className="relative block aspect-[4/3] overflow-hidden bg-muted"
         >
-          {product.imageUrl ? (
-            <SafeImage
-              src={product.imageUrl}
-              alt={product.name}
-              width={260}
-              height={195}
-              containerClassName="h-full w-full"
-              className="h-full w-full object-contain p-2 transition-transform duration-300 group-hover:scale-105"
-            />
-          ) : (
-            <div className="flex h-full w-full items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="text-muted-foreground/25">
-                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                <circle cx="8.5" cy="8.5" r="1.5"/>
-                <path d="M21 15l-5-5L5 21"/>
-              </svg>
-            </div>
-          )}
+          <SafeImage
+            src={product.imageUrl}
+            alt={product.name}
+            category={product.category}
+            width={260}
+            height={195}
+            containerClassName="h-full w-full"
+            className="h-full w-full object-contain p-2 transition-transform duration-300 group-hover:scale-105"
+          />
 
           {/* Sale badge */}
           {isOnSale && (

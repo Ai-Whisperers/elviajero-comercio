@@ -279,6 +279,7 @@ export default function ProductPageContent({ slug }: { slug: string }) {
               productName={product.name}
               isNew={product.isNew}
               hasDiscount={!!product.priceBefore}
+              category={product.category}
             />
 
             {/* Product info */}
