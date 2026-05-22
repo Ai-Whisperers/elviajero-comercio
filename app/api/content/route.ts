@@ -1,10 +1,13 @@
-import { NextRequest, NextResponse } from "next/server"
+import { NextResponse } from "next/server"
 import { createAdminClient } from "@ai-whisperers/auth/supabase/admin"
 import defaultContent from "@/content/es.json"
 
-const CONFIG_KEY = "content_overrides"
+// Public endpoint: merges live overrides with defaults
+// AI agents and draft content are NEVER exposed here
+const SITE_KEY = process.env.NEXT_PUBLIC_SITE_KEY || "elviajero"
+const LIVE_KEY = `content_overrides_${SITE_KEY}`
 
-export async function GET(request: NextRequest) {
+export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
   const path = searchParams.get("path")
 
@@ -12,12 +15,10 @@ export async function GET(request: NextRequest) {
   const { data } = await supabase
     .from("ej_site_config")
     .select("value")
-    .eq("key", CONFIG_KEY)
+    .eq("key", LIVE_KEY)
     .single()
 
   const overrides = data?.value ?? {}
-
-  // Deep merge: overrides take priority, fallback to es.json defaults
   const merged = deepMerge(defaultContent, overrides)
 
   if (path) {
@@ -35,7 +36,7 @@ function deepMerge(defaults: any, overrides: any): any {
   if (typeof defaults !== "object" || defaults === null) return overrides ?? defaults
   if (typeof overrides !== "object" || overrides === null) return overrides ?? defaults
   if (Array.isArray(defaults) || Array.isArray(overrides)) return overrides ?? defaults
-  
+
   const result: any = { ...defaults }
   for (const key of Object.keys(overrides)) {
     if (key in defaults) {

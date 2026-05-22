@@ -5,8 +5,9 @@ import { ContentOverrideSchema } from "@/lib/validation"
 
 // Site-specific key so shared Supabase doesn't leak cross-site data
 const SITE_KEY = process.env.NEXT_PUBLIC_SITE_KEY || "elviajero"
-const CONFIG_KEY = `content_overrides_${SITE_KEY}`
+const LIVE_KEY = `content_overrides_${SITE_KEY}`
 
+// GET returns LIVE content (used by admin to show current published state)
 export async function GET(req: NextRequest) {
   const { error: authError } = await requireAdmin(req)
   if (authError) return authError
@@ -15,7 +16,7 @@ export async function GET(req: NextRequest) {
   const { data, error } = await supabase
     .from("ej_site_config")
     .select("value")
-    .eq("key", CONFIG_KEY)
+    .eq("key", LIVE_KEY)
     .single()
 
   if (error && error.code !== "PGRST116") {
@@ -25,6 +26,8 @@ export async function GET(req: NextRequest) {
   return NextResponse.json(data?.value ?? {})
 }
 
+// POST now saves to LIVE only (use content-workflow for draft/publish)
+// This is kept for backward compat but logs a warning
 export async function POST(req: NextRequest) {
   const { error: authError } = await requireAdmin(req)
   if (authError) return authError
@@ -40,10 +43,11 @@ export async function POST(req: NextRequest) {
     )
   }
 
-  // Upsert: replace entire overrides object for this site
+  // IMPORTANT: This writes directly to LIVE.
+  // Prefer using /api/admin/content-workflow with action "save-draft" + "publish"
   const { data, error } = await supabase
     .from("ej_site_config")
-    .upsert({ key: CONFIG_KEY, value: parsed.data }, { onConflict: "key" })
+    .upsert({ key: LIVE_KEY, value: parsed.data }, { onConflict: "key" })
     .select()
     .single()
 

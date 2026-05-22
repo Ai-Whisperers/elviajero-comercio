@@ -54,11 +54,37 @@ function ContentEditor() {
   const [overrides, setOverrides] = useState<any>({})
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
+  const [publishing, setPublishing] = useState(false)
+  const [published, setPublished] = useState(false)
+  const [hasDraft, setHasDraft] = useState(false)
+  const [draftDiffersFromLive, setDraftDiffersFromLive] = useState(false)
+  const [showPresetDialog, setShowPresetDialog] = useState(false)
+  const [showHistoryDialog, setShowHistoryDialog] = useState(false)
+  const [presetName, setPresetName] = useState("")
+  const [presetDesc, setPresetDesc] = useState("")
+  const [presets, setPresets] = useState<any[]>([])
+  const [snapshots, setSnapshots] = useState<any[]>([])
 
+  // Load draft first, fall back to live content
   useEffect(() => {
     if (!authed) return
-    adminFetch("/api/admin/content").then(r => r.json()).then(d => { if (d) setOverrides(d) })
+    adminFetch("/api/admin/content-workflow?action=draft").then(r => r.json()).then(draft => {
+      if (draft && Object.keys(draft).length > 0) {
+        setOverrides(draft)
+        setHasDraft(true)
+      } else {
+        adminFetch("/api/admin/content").then(r => r.json()).then(d => { if (d) setOverrides(d) })
+      }
+    })
+    refreshStatus()
   }, [authed])
+
+  const refreshStatus = async () => {
+    adminFetch("/api/admin/content-workflow?action=status").then(r => r.json()).then(s => {
+      setHasDraft(s.hasDraft)
+      setDraftDiffersFromLive(s.draftDiffersFromLive)
+    }).catch(() => {})
+  }
 
   const merged = { ...defaultContent, ...overrides }
   const get = (path: string) => {
@@ -67,17 +93,121 @@ function ContentEditor() {
   }
   const set = (path: string, value: any) => {
     setOverrides((prev: any) => deepSet(prev, path, value))
+    setDraftDiffersFromLive(true)
   }
 
-  const save = async () => {
+  // Save to DRAFT only (never touches live)
+  const saveDraft = async () => {
     setSaving(true)
-    const res = await adminFetch("/api/admin/content", {
+    const res = await adminFetch("/api/admin/content-workflow", {
       method: "POST",
-      body: JSON.stringify(overrides)
+      body: JSON.stringify({ action: "save-draft", content: overrides })
     })
-    if (res.ok) { setSaved(true); setTimeout(() => setSaved(false), 2000) }
+    if (res.ok) { setSaved(true); setHasDraft(true); setTimeout(() => setSaved(false), 2000) }
     setSaving(false)
   }
+
+  // Publish: requires admin auth, snapshots live, promotes draft
+  const publishDraft = async () => {
+    if (!confirm("Publicar cambios? El contenido actual del sitio sera reemplazado por el borrador.")) return
+    setPublishing(true)
+    const res = await adminFetch("/api/admin/content-workflow", {
+      method: "POST",
+      body: JSON.stringify({ action: "publish" })
+    })
+    if (res.ok) {
+      setPublished(true); setHasDraft(false); setDraftDiffersFromLive(false)
+      setTimeout(() => setPublished(false), 3000)
+      // Reload from live since draft was cleared
+      adminFetch("/api/admin/content").then(r => r.json()).then(d => { if (d) setOverrides(d) })
+    }
+    setPublishing(false)
+  }
+
+  const discardDraft = async () => {
+    if (!confirm("Descartar borrador? Los cambios no publicados se perderan.")) return
+    await adminFetch("/api/admin/content-workflow", {
+      method: "POST",
+      body: JSON.stringify({ action: "discard-draft" })
+    })
+    setHasDraft(false)
+    setDraftDiffersFromLive(false)
+    adminFetch("/api/admin/content").then(r => r.json()).then(d => { if (d) setOverrides(d) })
+  }
+
+  const savePreset = async () => {
+    if (!presetName.trim()) return
+    await adminFetch("/api/admin/content-workflow", {
+      method: "POST",
+      body: JSON.stringify({ action: "save-preset", name: presetName.trim(), description: presetDesc, content: overrides })
+    })
+    setPresetName(""); setPresetDesc(""); setShowPresetDialog(false)
+    loadPresets()
+  }
+
+  const loadPreset = async (name: string) => {
+    if (!confirm(`Cargar preset "${name}"? Se reemplazara el borrador actual.`)) return
+    const res = await adminFetch("/api/admin/content-workflow", {
+      method: "POST",
+      body: JSON.stringify({ action: "load-preset", name })
+    })
+    if (res.ok) {
+      // The preset was saved to draft — reload it
+      const draftRes = await adminFetch("/api/admin/content-workflow?action=draft")
+      const draft = await draftRes.json()
+      if (draft && Object.keys(draft).length > 0) {
+        setOverrides(draft)
+      }
+      setHasDraft(true)
+      setDraftDiffersFromLive(true)
+    }
+  }
+
+  const deletePreset = async (name: string) => {
+    if (!confirm(`Eliminar preset "${name}"?`)) return
+    await adminFetch("/api/admin/content-workflow", {
+      method: "POST",
+      body: JSON.stringify({ action: "delete-preset", name })
+    })
+    loadPresets()
+  }
+
+  const rollbackToSnapshot = async (id: string) => {
+    if (!confirm(`Restaurar version del ${id.replace(/_/g, " ")}? El contenido actual se guardara como snapshot.`)) return
+    const res = await adminFetch("/api/admin/content-workflow", {
+      method: "POST",
+      body: JSON.stringify({ action: "rollback", snapshotId: id })
+    })
+    if (res.ok) {
+      adminFetch("/api/admin/content").then(r => r.json()).then(d => { if (d) setOverrides(d) })
+      loadSnapshots()
+    }
+  }
+
+  const resetToDefaults = async () => {
+    if (!confirm("REINICIAR a valores por defecto? Todo el contenido personalizado se eliminara del sitio. Se guardara un snapshot antes.")) return
+    await adminFetch("/api/admin/content-workflow", {
+      method: "POST",
+      body: JSON.stringify({ action: "reset-to-defaults" })
+    })
+    setOverrides({})
+    setHasDraft(false)
+    setDraftDiffersFromLive(false)
+  }
+
+  const loadPresets = () => {
+    adminFetch("/api/admin/content-workflow", {
+      method: "POST",
+      body: JSON.stringify({ action: "list-presets" })
+    }).then(r => r.json()).then(setPresets).catch(() => {})
+  }
+
+  const loadSnapshots = () => {
+    adminFetch("/api/admin/content-workflow?action=snapshots").then(r => r.json()).then(setSnapshots).catch(() => {})
+  }
+
+  // Keep the old save as an alias for backward compat
+  const save = saveDraft
 
   const addArrayItem = (path: string, template: any) => {
     setOverrides((prev: any) => {
@@ -160,15 +290,125 @@ function ContentEditor() {
           title={SECTIONS.find(s => s.key === section)?.label || "Contenido"}
           subtitle="Editá el contenido de tu sitio"
           actions={
-            <div className="flex items-center gap-3">
-              {saved && <span className="text-xs text-emerald-400">✓ Guardado</span>}
-              <button onClick={save} disabled={saving}
+            <div className="flex items-center gap-2">
+              {saved && <span className="text-xs text-emerald-400">✓ Borrador guardado</span>}
+              {published && <span className="text-xs text-emerald-400">✓ Publicado al sitio</span>}
+              {hasDraft && draftDiffersFromLive && (
+                <span className="rounded-full bg-amber-500/20 px-2 py-0.5 text-xs text-amber-300">Borrador pendiente</span>
+              )}
+              <button onClick={() => { setShowHistoryDialog(true); loadSnapshots() }}
+                className="rounded-lg border border-zinc-600 px-3 py-2 text-xs text-zinc-300 hover:text-white transition-all"
+                title="Historial de versiones">
+                Historial
+              </button>
+              <button onClick={() => { setShowPresetDialog(true); loadPresets() }}
+                className="rounded-lg border border-zinc-600 px-3 py-2 text-xs text-zinc-300 hover:text-white transition-all"
+                title="Guardar o cargar configuraciones predefinidas">
+                Presets
+              </button>
+              <button onClick={discardDraft} disabled={!hasDraft}
+                className="rounded-lg border border-zinc-600 px-3 py-2 text-xs text-red-400 hover:text-red-300 disabled:opacity-30 transition-all"
+                title="Descartar borrador sin publicar">
+                Descartar
+              </button>
+              <button onClick={saveDraft} disabled={saving}
+                className="rounded-lg bg-zinc-600 px-4 py-2 text-sm font-semibold text-white hover:bg-zinc-500 disabled:opacity-50 transition-all">
+                {saving ? "Guardando..." : "Guardar Borrador"}
+              </button>
+              <button onClick={publishDraft} disabled={publishing || !hasDraft}
                 className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-500 disabled:opacity-50 transition-all">
-                {saving ? "Guardando..." : "Guardar Cambios"}
+                {publishing ? "Publicando..." : "Publicar al Sitio"}
               </button>
             </div>
           }
         />
+
+        {/* Preset Dialog */}
+        {showPresetDialog && (
+          <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center" onClick={() => setShowPresetDialog(false)}>
+            <div className="bg-zinc-900 border border-zinc-700 rounded-xl p-6 w-full max-w-lg max-h-[80vh] overflow-auto" onClick={e => e.stopPropagation()}>
+              <h2 className="text-lg font-bold text-white mb-4">Configuraciones Guardadas</h2>
+              
+              {/* Save new preset */}
+              <div className="mb-6 p-4 rounded-lg bg-zinc-800 border border-zinc-700/50">
+                <h3 className="text-sm font-semibold text-zinc-300 mb-2">Guardar configuracion actual</h3>
+                <input type="text" placeholder="Nombre del preset" value={presetName}
+                  onChange={e => setPresetName(e.target.value)}
+                  className="w-full rounded-lg border border-zinc-700 bg-zinc-900 px-3 py-2 text-sm text-white mb-2" />
+                <input type="text" placeholder="Descripcion (opcional)" value={presetDesc}
+                  onChange={e => setPresetDesc(e.target.value)}
+                  className="w-full rounded-lg border border-zinc-700 bg-zinc-900 px-3 py-2 text-sm text-white mb-3" />
+                <div className="flex gap-2">
+                  <button onClick={savePreset} disabled={!presetName.trim()}
+                    className="rounded-lg bg-emerald-600 px-4 py-2 text-sm text-white disabled:opacity-30">
+                    Guardar
+                  </button>
+                  <button onClick={resetToDefaults}
+                    className="rounded-lg bg-red-600/80 px-4 py-2 text-sm text-white hover:bg-red-500">
+                    Reiniciar a Default
+                  </button>
+                </div>
+              </div>
+
+              {/* List presets */}
+              {presets.length > 0 && (
+                <div>
+                  <h3 className="text-sm font-semibold text-zinc-300 mb-2">Presets guardados</h3>
+                  {presets.map((p: any) => (
+                    <div key={p.name} className="flex items-center justify-between p-3 rounded-lg bg-zinc-800/50 border border-zinc-700/30 mb-2">
+                      <div>
+                        <p className="text-sm text-white font-medium">{p.name}</p>
+                        {p.description && <p className="text-xs text-zinc-400">{p.description}</p>}
+                        {p.savedAt && <p className="text-xs text-zinc-500">{new Date(p.savedAt).toLocaleString()}</p>}
+                      </div>
+                      <div className="flex gap-2">
+                        <button onClick={() => loadPreset(p.name)}
+                          className="rounded-lg bg-zinc-600 px-3 py-1.5 text-xs text-white hover:bg-zinc-500">
+                          Cargar
+                        </button>
+                        <button onClick={() => deletePreset(p.name)}
+                          className="rounded-lg border border-zinc-600 px-3 py-1.5 text-xs text-red-400 hover:text-red-300">
+                          Eliminar
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+              {presets.length === 0 && (
+                <p className="text-sm text-zinc-500 text-center py-4">No hay presets guardados</p>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* History Dialog */}
+        {showHistoryDialog && (
+          <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center" onClick={() => setShowHistoryDialog(false)}>
+            <div className="bg-zinc-900 border border-zinc-700 rounded-xl p-6 w-full max-w-lg max-h-[80vh] overflow-auto" onClick={e => e.stopPropagation()}>
+              <h2 className="text-lg font-bold text-white mb-4">Historial de Versiones</h2>
+              {snapshots.length > 0 ? (
+                <div>
+                  {snapshots.map((s: any) => (
+                    <div key={s.id} className="flex items-center justify-between p-3 rounded-lg bg-zinc-800/50 border border-zinc-700/30 mb-2">
+                      <div>
+                        <p className="text-sm text-white font-medium">{s.label}</p>
+                        {s.timestamp.includes("prereset_") && <span className="text-xs text-amber-400 ml-2">Pre-reset</span>}
+                        {s.timestamp.includes("prerollback_") && <span className="text-xs text-amber-400 ml-2">Pre-rollback</span>}
+                      </div>
+                      <button onClick={() => rollbackToSnapshot(s.id)}
+                        className="rounded-lg bg-zinc-600 px-3 py-1.5 text-xs text-white hover:bg-zinc-500">
+                        Restaurar
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-sm text-zinc-500 text-center py-4">No hay versiones anteriores</p>
+              )}
+            </div>
+          </div>
+        )}
 
         <div className="rounded-xl border border-zinc-800/60 bg-zinc-900/50 p-6">
           {section === "general" && (
