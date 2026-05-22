@@ -203,12 +203,33 @@
       "orderMessageTemplate": "Hola! Me interesa {{productName}} ({{productPrice}}). Quiero saber disponibilidad y formas de pago.",
       "categories": [
         "Camping",
-        "Pesca",
-        "Accesorios Personales",
-        "Electrónica",
-        "Accesorios para Vehículos"
+        "Artículos de pesca",
+        "Ruta y Aventura",
+        "Exploración y táctico"
       ],
-      "products": []
+      "products": [],
+      "subcategories": {
+        "rutayaventura": [
+          {
+            "name": "Juegos",
+            "slug": "juegos",
+            "description": "Aeromodelismo y vehículos a control remoto que cargan combustible (artículos para gente grande)"
+          },
+          {
+            "name": "Electrónico para viaje",
+            "slug": "electronico-para-viaje",
+            "description": "Tecnología para tus viajes"
+          },
+          {
+            "name": "Accesorio para viaje",
+            "slug": "accesorio-para-viaje",
+            "description": "Accesorios útiles para viajar"
+          }
+        ],
+        "camping": [],
+        "articulosdepesca": [],
+        "exploracionytactico": []
+      }
     },
     "gallery": {
       "title": "Galeria",

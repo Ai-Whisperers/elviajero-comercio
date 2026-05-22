@@ -495,6 +495,42 @@ function ContentEditor() {
                     <button onClick={() => removeArrayItem("home.productCatalog.categories", i)} className="text-xs text-red-400 shrink-0">✕</button>
                   </div>
                   <ImageUpload label={`Imagen (slug: ${slug})`} currentUrl={get(`home.categoryImages.${slug}`) || undefined} onUpload={v => set(`home.categoryImages.${slug}`, v)} />
+                  {(() => {
+                    const subs = deepGetRaw(overrides, `home.productCatalog.subcategories.${slug}`) as any[] || []
+                    return (
+                      <div className="mt-3 pl-4 border-t border-zinc-700/40 pt-3">
+                        <p className="text-xs text-zinc-400 mb-2 font-medium">Subcategorías</p>
+                        {subs.map((sub: any, si: number) => (
+                          <div key={si} className="flex items-center gap-2 mb-2">
+                            <input
+                              value={sub.name || ""}
+                              onChange={e => {
+                                const current = get(`home.productCatalog.subcategories.${slug}`) as any[] || []
+                                const updated = [...current]
+                                updated[si] = { ...sub, name: e.target.value, slug: e.target.value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z]/g, "") }
+                                set(`home.productCatalog.subcategories.${slug}`, updated)
+                              }}
+                              className="flex-1 rounded bg-zinc-900 px-2 py-1.5 text-xs text-white border border-zinc-700/60 focus:outline-none focus:border-emerald-500/50"
+                              placeholder="Nombre subcategoría"
+                            />
+                            <button onClick={() => {
+                              const current = get(`home.productCatalog.subcategories.${slug}`) as any[] || []
+                              set(`home.productCatalog.subcategories.${slug}`, current.filter((_: any, i: number) => i !== si))
+                            }} className="text-xs text-red-400 shrink-0">X</button>
+                          </div>
+                        ))}
+                        <button onClick={() => {
+                          const current = get(`home.productCatalog.subcategories.${slug}`) as any[] || []
+                          set(`home.productCatalog.subcategories.${slug}`, [...current, { name: "", slug: "" }])
+                        }} className="text-xs text-emerald-400 hover:text-emerald-300 mt-1">
+                          + Agregar subcategoría
+                        </button>
+                        {subs.length === 0 && (
+                          <p className="text-xs text-zinc-500 mt-1">Sin subcategorías</p>
+                        )}
+                      </div>
+                    )
+                  })()}
                 </div>
               )})}
               <button onClick={() => addArrayItem("home.productCatalog.categories", "Nueva categoría")}
