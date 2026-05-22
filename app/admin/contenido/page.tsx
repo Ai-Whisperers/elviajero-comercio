@@ -502,11 +502,18 @@ function ContentEditor() {
                 <p className="mb-2 text-xs font-medium text-zinc-400">Párrafos de la historia</p>
                 {(() => {
                   const defaultParas = defaultContent.about?.story?.paragraphs || []
-                  const overrideParas = getArray("about.story.paragraphs")
+                  const rawOverride = deepGetRaw(overrides, "about.story.paragraphs")
+                  const overrideParas = Array.isArray(rawOverride) ? rawOverride : []
                   const paragraphs = overrideParas.length > 0 ? overrideParas : defaultParas
                   return paragraphs.map((p: any, i: number) => (
                     <div key={i} className="mb-2">
-                      <Input label={`Párrafo ${i + 1}`} multiline value={typeof p === 'string' ? p : p.text || ''} onChange={v => set(`about.story.paragraphs.${i}`, v)} placeholder="" />
+                      <Input label={`Párrafo ${i + 1}`} multiline value={typeof p === 'string' ? p : p.text || ''} onChange={v => {
+                        const current = Array.isArray(deepGetRaw(overrides, "about.story.paragraphs"))
+                          ? JSON.parse(JSON.stringify(deepGetRaw(overrides, "about.story.paragraphs")))
+                          : JSON.parse(JSON.stringify(defaultParas))
+                        current[i] = v
+                        set("about.story.paragraphs", current)
+                      }} placeholder="" />
                       <button onClick={() => removeArrayItem("about.story.paragraphs", i)} className="text-xs text-red-400 hover:underline mt-1">Eliminar</button>
                     </div>
                   ))
