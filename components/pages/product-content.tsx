@@ -131,6 +131,17 @@ export default function ProductPageContent({ slug }: { slug: string }) {
   const allProducts = dbProducts
   const product = useMemo(() => allProducts.find((p: any) => slugify(p.name) === slug), [slug, allProducts])
 
+  // ALL hooks must be called before any early returns (Rules of Hooks)
+  const variantList = useMemo(() => {
+    if (!product?.variants || !Array.isArray(product.variants)) return []
+    return product.variants as Array<{ sku?: string; color?: string; size?: string; price?: string; stock?: number }>
+  }, [product?.variants])
+
+  const selectedVariantData = useMemo(() => {
+    if (!selectedVariant || variantList.length === 0) return null
+    return variantList.find((v) => [v.sku, v.color, v.size].filter(Boolean).join(" / ") === selectedVariant) || null
+  }, [selectedVariant, variantList])
+
   /* Wait for DB before deciding 404 — avoids flash on first render */
   if (!product && dbLoaded) {
     return (
@@ -172,17 +183,6 @@ export default function ProductPageContent({ slug }: { slug: string }) {
 
   const priceNum = parseGs(product.price)
   const specLines = (product.specs || "").split("|").map((s: string) => s.trim()).filter(Boolean)
-
-  // Variant handling
-  const variantList = useMemo(() => {
-    if (!product.variants || !Array.isArray(product.variants)) return []
-    return product.variants as Array<{ sku?: string; color?: string; size?: string; price?: string; stock?: number }>
-  }, [product.variants])
-
-  const selectedVariantData = useMemo(() => {
-    if (!selectedVariant || variantList.length === 0) return null
-    return variantList.find((v) => [v.sku, v.color, v.size].filter(Boolean).join(" / ") === selectedVariant) || null
-  }, [selectedVariant, variantList])
 
   const effectivePrice = selectedVariantData?.price || product.price
   const effectivePriceNum = parseGs(effectivePrice)
