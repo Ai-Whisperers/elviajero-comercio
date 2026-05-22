@@ -36,6 +36,16 @@ function deepGet(obj: any, path: string): string {
   return typeof cur === "string" ? cur : typeof cur === "number" ? String(cur) : ""
 }
 
+function deepGetRaw(obj: any, path: string): any {
+  const parts = path.split(".")
+  let cur = obj
+  for (const p of parts) {
+    if (cur?.[p] === undefined || cur?.[p] === null) return undefined
+    cur = cur[p]
+  }
+  return cur
+}
+
 function deepSet(obj: any, path: string, value: any): any {
   const parts = path.split(".")
   const clone = JSON.parse(JSON.stringify(obj))
@@ -423,21 +433,35 @@ function ContentEditor() {
 
           {section === "hero" && (
             <div className="space-y-6">
-              <p className="text-sm text-zinc-400">Carrusel principal del hero en la home. Se muestran hasta 5 slides.</p>
+              <p className="text-sm text-zinc-400">Carrusel principal del hero en la home. Se muestran hasta 6 slides.</p>
               {(() => {
                 const defaultSlides = defaultContent.home?.heroCarousel?.slides || []
-                const overrideSlides = getArray("home.heroCarousel.slides")
+                const rawOverride = deepGetRaw(overrides, "home.heroCarousel.slides")
+                const overrideSlides = Array.isArray(rawOverride) ? rawOverride : []
                 const slides = overrideSlides.length > 0 ? overrideSlides : defaultSlides
-                return slides.map((_: any, i: number) => (
-                  <div key={i} className="rounded-lg border border-zinc-700/60 bg-zinc-800/50 p-4">
-                    <h3 className="text-sm font-semibold text-white mb-3">Slide {i + 1}</h3>
-                    <Input label="Título" value={deepGet(overrideSlides[i] || defaultSlides[i] || {}, "title")} onChange={v => set(`home.heroCarousel.slides.${i}.title`, v)} placeholder={deepGet(defaultContent, `home.heroCarousel.slides.${i}.title`)} />
-                    <Input label="Subtítulo" multiline value={deepGet(overrideSlides[i] || defaultSlides[i] || {}, "subtitle")} onChange={v => set(`home.heroCarousel.slides.${i}.subtitle`, v)} placeholder={deepGet(defaultContent, `home.heroCarousel.slides.${i}.subtitle`)} />
-                    <ImageUpload label={`Imagen de fondo ${i + 1}`} currentUrl={deepGet(overrideSlides[i] || defaultSlides[i] || {}, "image") || undefined} onUpload={v => set(`home.heroCarousel.slides.${i}.image`, v)} />
-                    <Input label="Texto botón" value={deepGet(overrideSlides[i] || defaultSlides[i] || {}, "ctaText")} onChange={v => set(`home.heroCarousel.slides.${i}.ctaText`, v)} placeholder={deepGet(defaultContent, `home.heroCarousel.slides.${i}.ctaText`)} />
-                    <Input label="Link botón" value={deepGet(overrideSlides[i] || defaultSlides[i] || {}, "ctaHref")} onChange={v => set(`home.heroCarousel.slides.${i}.ctaHref`, v)} placeholder={deepGet(defaultContent, `home.heroCarousel.slides.${i}.ctaHref`)} />
-                  </div>
-                ))
+                const source = (idx: number) => overrideSlides.length > 0 ? overrideSlides[idx] : defaultSlides[idx]
+                const setSlideField = (idx: number, field: string, value: any) => {
+                  // Ensure slides array exists in overrides
+                  const current = Array.isArray(deepGetRaw(overrides, "home.heroCarousel.slides"))
+                    ? JSON.parse(JSON.stringify(deepGetRaw(overrides, "home.heroCarousel.slides")))
+                    : JSON.parse(JSON.stringify(defaultSlides))
+                  if (!current[idx]) current[idx] = {}
+                  current[idx][field] = value
+                  set("home.heroCarousel.slides", current)
+                }
+                return slides.map((_: any, i: number) => {
+                  const s = source(i) || {}
+                  return (
+                    <div key={i} className="rounded-lg border border-zinc-700/60 bg-zinc-800/50 p-4">
+                      <h3 className="text-sm font-semibold text-white mb-3">Slide {i + 1}</h3>
+                      <Input label="Título" value={s.title || ""} onChange={v => setSlideField(i, "title", v)} placeholder={deepGet(defaultContent, `home.heroCarousel.slides.${i}.title`)} />
+                      <Input label="Subtítulo" multiline value={s.subtitle || ""} onChange={v => setSlideField(i, "subtitle", v)} placeholder={deepGet(defaultContent, `home.heroCarousel.slides.${i}.subtitle`)} />
+                      <ImageUpload label={`Imagen de fondo ${i + 1}`} currentUrl={s.image || undefined} onUpload={v => setSlideField(i, "image", v)} />
+                      <Input label="Texto botón" value={s.ctaText || ""} onChange={v => setSlideField(i, "ctaText", v)} placeholder={deepGet(defaultContent, `home.heroCarousel.slides.${i}.ctaText`)} />
+                      <Input label="Link botón" value={s.ctaHref || ""} onChange={v => setSlideField(i, "ctaHref", v)} placeholder={deepGet(defaultContent, `home.heroCarousel.slides.${i}.ctaHref`)} />
+                    </div>
+                  )
+                })
               })()}
             </div>
           )}
