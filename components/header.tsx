@@ -15,7 +15,8 @@ export function Header({ onCartClick }: { onCartClick?: () => void }) {
   const { get } = useContent()
   const nav = get("navigation.ui") || []
   const ui = get("ui") || {}
-  const businessName = "El Viajero"
+  const businessName = get("businessName") || get("siteName") || "El Viajero"
+  const logoUrl = get("branding.logoUrl") || "/images/logo.svg"
   const [mobileOpen, setMobileOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const pathname = usePathname()
@@ -29,7 +30,7 @@ export function Header({ onCartClick }: { onCartClick?: () => void }) {
               <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" /></svg>
             </button>
             <Link href="/" className="flex items-center gap-2">
-              <img src="/images/logo.svg" alt={businessName} className="h-8 w-auto" />
+              <img src={logoUrl} alt={businessName} className="h-8 w-auto" />
             </Link>
             <nav className="hidden lg:flex items-center gap-1">
               {nav.map((item: any) => (
