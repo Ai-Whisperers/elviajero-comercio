@@ -129,7 +129,8 @@
       ]
     },
     "kitsCarousel": {
-      "items": []
+      "items": [],
+      "title": "Kits y Promociones"
     },
     "testimonials": [
       {
@@ -258,10 +259,27 @@
     "story": {
       "paragraphs": []
     },
-    "values": []
+    "values": [],
+    "hero": {
+      "title": "Sobre Nosotros",
+      "subtitle": "Equipamiento para aventura"
+    },
+    "seo": {
+      "description": "Conocé El Viajero. Apasionados por la aventura y el aire libre en Mariano Roque Alonso, Paraguay.",
+      "title": "Sobre El Viajero | Tu Tienda Outdoor en Paraguay"
+    }
   },
   "contacto": {
-    "info": {}
+    "info": {
+      "address": "Coronel Felipe Toledo, Barrio La Concordia (detrás de Mariam Lubricantes), Mariano Roque Alonso",
+      "email": "info@tiendaelviajero.com.py",
+      "hours": "Lun-Vie 08:00-19:00 | Sáb 08:00-17:00 | Dom 09:00-13:00",
+      "phone": "+595 984 009751"
+    },
+    "seo": {
+      "description": "Contactanos por WhatsApp para consultar productos de camping, pesca y outdoor. Visitanos en Mariano Roque Alonso o pedí delivery a todo Paraguay.",
+      "title": "Contacto - El Viajero | Tienda Outdoor en Mariano Roque Alonso"
+    }
   },
   "faq": {
     "seo": {
@@ -340,7 +358,15 @@
     "contactStrip": []
   },
   "promociones": {
-    "promotions": []
+    "promotions": [],
+    "hero": {
+      "headline": "Promociones",
+      "subheadline": "No te pierdas nuestras ofertas"
+    },
+    "seo": {
+      "description": "Aprovechá nuestras promociones en camping, pesca, accesorios para auto y moto. Ofertas por tiempo limitado. Envíos a todo Paraguay.",
+      "title": "Promociones - El Viajero | Ofertas en Camping y Pesca"
+    }
   },
   "deliveryZones": [
     {
@@ -406,13 +432,17 @@
     }
   ],
   "paymentMethods": {
-    "icons": []
+    "icons": [],
+    "installments": "3, 6 y 12 cuotas sin interés",
+    "note": "Consultá medios de pago disponibles"
   },
   "whatsapp": {
     "defaultMessage": "Hola! Quisiera informacion sobre productos de El Viajero",
     "serviceMessage": "Hola! Quisiera consultar por {{productName}}",
     "businessNumber": "595984009751",
-    "businessLink": "https://wa.me/595984009751"
+    "businessLink": "https://wa.me/595984009751",
+    "message": "Hola! Quisiera información sobre {{productName}}",
+    "number": "595984009751"
   },
   "store": {
     "title": "Tienda Online",

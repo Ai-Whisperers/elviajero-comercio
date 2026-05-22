@@ -43,8 +43,6 @@ interface StoreProduct {
 interface CategoryWithSubs {
   id: string
   name: string
-  icon?: string
-  description?: string
   subcategories: { id: string; name: string; slug: string }[]
 }
 

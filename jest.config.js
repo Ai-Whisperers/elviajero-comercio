@@ -11,6 +11,6 @@ const config = {
     "^@ai-whisperers/commerce/cart/(.*)$": "<rootDir>/packages/commerce/cart/$1",
     "^@ai-whisperers/commerce$": "<rootDir>/packages/commerce/index.ts",
   },
-  testPathIgnorePatterns: ["<rootDir>/.next/", "<rootDir>/node_modules/", "<rootDir>/__tests__/test-helpers", "<rootDir>/__tests__/test-utils\\.ts$", "<rootDir>/e2e/"],
+  testPathIgnorePatterns: ["<rootDir>/.next/", "<rootDir>/node_modules/", "<rootDir>/__tests__/test-helpers/", "<rootDir>/__tests__/test-utils\\.ts$", "<rootDir>/e2e/"],
 }
 module.exports = createJestConfig(config)

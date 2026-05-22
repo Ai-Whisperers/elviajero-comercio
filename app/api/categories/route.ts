@@ -6,7 +6,7 @@ export async function GET() {
 
   const { data: categories, error } = await supabase
     .from("ej_categories")
-    .select("id, name, icon, description")
+    .select("id, name")
     .order("name")
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
