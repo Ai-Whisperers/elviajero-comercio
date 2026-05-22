@@ -11,7 +11,8 @@ export async function GET() {
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
-  // Load subcategories from ej_site_config
+  // Load subcategories from ej_site_config (site-specific key)
+  // Gracefully handle missing config — return empty, callers handle fallback
   const SITE_KEY = process.env.NEXT_PUBLIC_SITE_KEY || "elviajero"
   const LIVE_KEY = `content_overrides_${SITE_KEY}`
 
@@ -29,31 +30,31 @@ export async function GET() {
     }
   }
 
-  // Also load category metadata (icons, descriptions, etc) from site_config
-  const { data: catData } = await supabase
-    .from("ej_site_config")
-    .select("key, value")
-    .eq("key", "home")
-    .maybeSingle()
+  // Build categories array from the subcategories keys + any static category list
+  // Fallback: extract category names from the product data itself (allCategories)
+  const { data: allProducts } = await supabase
+    .from("ej_products")
+    .select("category")
+    .order("category")
+
+  const catNames = [...new Set((allProducts || []).map((p: any) => p.category).filter(Boolean))].sort()
 
   let categories: Array<{ id: string; name: string; subcategories: Array<{ id: string; name: string; slug: string }> }> = []
-  if (catData?.value && typeof catData.value === "object") {
-    const val = catData.value as any
-    if (val.productCatalog?.categories && Array.isArray(val.productCatalog.categories)) {
-      // categories is a string[] but we need subcategory info from the subcategories map
-      categories = (val.productCatalog.categories as string[]).map((name: string) => {
-        const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, "")
-        return {
-          id: slug,
-          name,
-          subcategories: (subcategories[slug] || []).map((s: any) => ({
-            id: s.slug || s.name?.toLowerCase().replace(/[^a-z0-9]+/g, "") || "",
-            name: s.name,
-            slug: s.slug || s.name?.toLowerCase().replace(/[^a-z0-9]+/g, "") || "",
-          })),
-        }
-      })
-    }
+  for (const name of catNames) {
+    const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, "")
+    categories.push({
+      id: slug,
+      name,
+      subcategories: (subcategories[slug] || []).map((s: any) => ({
+        id: s.slug || slugify(s.name),
+        name: s.name,
+        slug: s.slug || slugify(s.name),
+      })),
+    })
+  }
+
+  function slugify(str: string) {
+    return str.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/-+$/, "")
   }
 
   const newArrivals = products?.filter((p: any) => p.is_new) || []
