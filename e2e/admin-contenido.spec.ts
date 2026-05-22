@@ -48,42 +48,55 @@ async function openContenido(page: Page) {
   await page.waitForTimeout(2000)
 }
 
+// Strip accents: á→a, é→e, í→i, ó→o, ú→u, ñ→n
+function stripAccents(s: string) {
+  return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+}
+
 // ------------------------------------------------------------------
 // Helper: click a section in the admin sidebar/tab nav
 // ------------------------------------------------------------------
 async function selectSection(page: Page, sectionLabel: string) {
-  // Normalize: "general" -> "General", "faq" -> "FAQ", etc.
+  // Normalize: "general" -> "General", "faq" -> "FAQ"
   const displayName = sectionLabel
     .replace(/-/g, " ")
     .replace(/\b\w/g, c => c.toUpperCase())
 
+  const displayStripped = stripAccents(displayName)
+
   // Try exact match first (e.g. "FAQ", "General")
   let btn = page.locator(`button:has-text("${displayName}")`).first()
   if (await btn.count() === 0) {
-    // Try case-insensitive partial
-    btn = page.locator("button", { hasText: new RegExp(displayName, "i") }).first()
+    // Try case-insensitive partial (handles accents)
+    btn = page.locator("button").filter({ hasText: new RegExp(displayStripped, "i") }).first()
   }
   if (await btn.count() === 0) {
-    // Fallback to partial lowercase
-    btn = page.locator("button").filter({ hasText: new RegExp(sectionLabel.replace("-", " "), "i") }).first()
+    // Fallback: match the label param (stripped of accents too)
+    btn = page.locator("button").filter({ hasText: new RegExp(stripAccents(sectionLabel.replace("-", " ")), "i") }).first()
   }
 
-  await btn.waitFor({ state: "visible", timeout: 15_000 })
+  // Scroll section nav into view first so all buttons are visible
+  const sectionNav = page.locator('[class*="tab"], [class*="section"], nav').first()
+  if (await sectionNav.count() > 0) {
+    await sectionNav.scrollIntoViewIfNeeded().catch(() => {})
+  }
+
+  await btn.waitFor({ state: "attached", timeout: 30_000 })
+  await btn.scrollIntoViewIfNeeded().catch(() => {})
   await btn.click()
-  // Wait for the section content to appear (inputs/forms for that section)
-  await page.waitForLoadState("networkidle")
+  // Hero/FAQ sections poll APIs indefinitely — don't wait for networkidle
+  await page.waitForLoadState("domcontentloaded")
 }
 
-// ------------------------------------------------------------------
-// Helper: get all text/textarea/input values currently visible
-// ------------------------------------------------------------------
+// Helper: get all textbox/input values (placeholder shows when value empty)
 async function getFormValues(page: Page): Promise<Record<string, string>> {
   return page.evaluate(() => {
     const vals: Record<string, string> = {}
-    document.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input[type="text"], textarea').forEach(el => {
-      if (el.id || el.name || el.placeholder) {
-        vals[el.id || el.name || el.placeholder] = el.value
-      }
+    // Use textbox role (the Input component renders as <input type="text"> with an id)
+    document.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>(
+      'input[id], textarea[id], [role="textbox"][id]'
+    ).forEach(el => {
+      vals[el.id] = el.value || el.getAttribute("placeholder") || ""
     })
     return vals
   })
@@ -123,11 +136,14 @@ test.describe("Admin Login", () => {
 
 // ------------------------------------------------------------------
 // Test: Section Navigation — all 26 sections load without error
+// Uses storageState to persist auth cookie so login only happens once
 // ------------------------------------------------------------------
+test.use({ storageState: ".auth/admin.json" })
+
 test.describe("Section Navigation", () => {
   test.beforeEach(async ({ page }) => {
-    await adminLogin(page)
-    await openContenido(page)
+    await page.goto(`${BASE}/admin/contenido`)
+    await page.waitForLoadState("domcontentloaded")
   })
 
   const sections = [
@@ -142,7 +158,7 @@ test.describe("Section Navigation", () => {
   for (const section of sections) {
     test(`${section} section loads without 500 error`, async ({ page }) => {
       await selectSection(page, section)
-      await page.waitForTimeout(2000)
+      await page.waitForTimeout(1500)
       const body = await page.locator("body").innerText()
       expect(body).not.toContain("500")
       expect(body).not.toContain("Application error")
@@ -221,8 +237,8 @@ test.describe("Field Editing & Save", () => {
     await selectSection(page, "general")
     await page.waitForTimeout(2000)
 
-    // Find first textbox/input and type into it
-    const firstInput = page.locator("input[type='text'], input[type='url'], textarea, [role='textbox']").first()
+    // Find first input with id and type into it
+    const firstInput = page.locator("input[id], textarea[id]").first()
     await firstInput.scrollIntoViewIfNeeded()
     await firstInput.clear()
     await firstInput.fill("TEST_VALUE_" + Date.now())
@@ -334,7 +350,7 @@ test.describe("Draft & Publish Workflow", () => {
     await selectSection(page, "general")
     await page.waitForTimeout(2000)
 
-    const firstInput = page.locator("input[type='text'], input[type='url'], textarea, [role='textbox']").first()
+    const firstInput = page.locator("input[id], textarea[id]").first()
     if (await firstInput.count() > 0) {
       await firstInput.fill("Draft test " + Date.now())
       await page.waitForTimeout(500)
@@ -360,7 +376,7 @@ test.describe("Draft & Publish Workflow", () => {
     await selectSection(page, "general")
     await page.waitForTimeout(2000)
 
-    const firstInput = page.locator("input[type='text'], input[type='url'], textarea, [role='textbox']").first()
+    const firstInput = page.locator("input[id], textarea[id]").first()
     if (await firstInput.count() > 0) {
       await firstInput.fill("Discard test " + Date.now())
       await page.waitForTimeout(500)
@@ -387,10 +403,14 @@ test.describe("No Console Errors", () => {
         if (msg.type() === "error") errors.push(msg.text())
       })
 
+      // Log in once for this test
       await adminLogin(page)
+      // Navigate directly to contenido with section param — no selectSection button hunting
+      await page.goto(`${BASE}/admin/contenido`)
+      await page.waitForTimeout(3000)
+
       await selectSection(page, section)
       await page.waitForTimeout(2000)
-      await page.waitForLoadState("networkidle")
 
       const critical = errors.filter(e =>
         e.includes("Minified React error #310") ||

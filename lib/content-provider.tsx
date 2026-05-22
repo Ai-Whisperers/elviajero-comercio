@@ -1,5 +1,6 @@
 "use client"
 import { createContext, useContext, useState, useEffect, useCallback, useRef, useMemo } from "react"
+import defaultContent from "@/content/es.json"
 type ContentData = Record<string, any>
 
 interface ContentContextType {
@@ -21,13 +22,12 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true)
   const fetchedRef = useRef(false)
 
-  // Memoize merged content to stabilize reference
-  const content = useMemo(() => deepMerge({}, overrides), [overrides])
+  // Deep merge defaults (content/es.json) with admin overrides from Supabase
+  // This ensures all default content (stats, features, testimonials, etc.)
+  // is available even when Supabase only has partial overrides
+  const content = useMemo(() => deepMerge(deepMerge({}, defaultContent), overrides), [overrides])
 
   const get = useCallback((path: string) => {
-    // Use the already-deep-merged content so partial overrides don't kill
-    // default fields (e.g. kitsCarousel disappearing when DepiFlash overrides
-    // have a "home" key without kitsCarousel).
     return deepGet(content, path)
   }, [content])
 
@@ -75,15 +75,15 @@ function deepGet(obj: any, path: string): any {
   return cur
 }
 
-function deepMerge(defaults: any, overrides: any): any {
-  if (typeof defaults !== "object" || defaults === null) return overrides ?? defaults
-  if (typeof overrides !== "object" || overrides === null) return overrides ?? defaults
-  if (Array.isArray(defaults) || Array.isArray(overrides)) return overrides ?? defaults
-  
-  const result: any = { ...defaults }
+function deepMerge(base: any, overrides: any): any {
+  if (typeof base !== "object" || base === null) return overrides ?? base
+  if (typeof overrides !== "object" || overrides === null) return overrides ?? base
+  if (Array.isArray(base) || Array.isArray(overrides)) return overrides ?? base
+
+  const result: any = { ...base }
   for (const key of Object.keys(overrides)) {
-    if (key in defaults) {
-      result[key] = deepMerge(defaults[key], overrides[key])
+    if (key in base) {
+      result[key] = deepMerge(base[key], overrides[key])
     } else {
       result[key] = overrides[key]
     }
