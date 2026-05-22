@@ -136,12 +136,10 @@ test.describe("Admin Login", () => {
 
 // ------------------------------------------------------------------
 // Test: Section Navigation — all 26 sections load without error
-// Uses storageState to persist auth cookie so login only happens once
 // ------------------------------------------------------------------
-test.use({ storageState: ".auth/admin.json" })
-
 test.describe("Section Navigation", () => {
   test.beforeEach(async ({ page }) => {
+    await adminLogin(page)
     await page.goto(`${BASE}/admin/contenido`)
     await page.waitForLoadState("domcontentloaded")
   })
