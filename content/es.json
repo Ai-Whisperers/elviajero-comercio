@@ -1,7 +1,7 @@
 {
   "siteName": "El Viajero",
   "businessName": "Tienda El Viajero",
-  "tagline": "Equipamiento para aventura",
+  "tagline": "Equipamiento de aventura",
   "navigation": {
     "businessName": "El Viajero",
     "ctaText": "Pedir por WhatsApp",
@@ -74,7 +74,7 @@
       "slides": [
         {
           "image": "/images/marketing/hero-carousel-01-family-river.png",
-          "title": "Equipate para tu próxima aventura",
+          "title": "Equipamiento de aventura",
           "subtitle": "Camping, pesca, outdoor — todo en un solo lugar",
           "ctaText": "Ir a tienda",
           "ctaHref": "/tienda",

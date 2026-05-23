@@ -37,7 +37,7 @@ export async function GET() {
   if (savedCats.length > 0) {
     // Use admin-defined category order
     for (const name of savedCats) {
-      const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, "")
+      const slug = name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "")
       categories.push({
         id: slug,
         name,
@@ -51,7 +51,7 @@ export async function GET() {
   } else {
     // Fallback: derive from product data (sorted alphabetically)
     for (const name of catNames) {
-      const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, "")
+      const slug = name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "")
       categories.push({
         id: slug,
         name,
@@ -65,7 +65,7 @@ export async function GET() {
   }
 
   function slugify(str: string) {
-    return str.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/-+$/, "")
+    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/-+$/, "")
   }
 
   const newArrivals = products?.filter((p: any) => p.is_new) || []
