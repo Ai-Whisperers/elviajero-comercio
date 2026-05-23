@@ -73,7 +73,7 @@
       "interval": 6000,
       "slides": [
         {
-          "image": "/images/marketing/hero-carousel-01-family-river.png",
+          "image": "/images/marketing/hero-carousel-01-family-river.webp",
           "title": "Equipamiento de aventura",
           "subtitle": "Camping, pesca, outdoor — todo en un solo lugar",
           "ctaText": "Ir a tienda",
@@ -82,7 +82,7 @@
           "ctaPrimaryHref": "/tienda"
         },
         {
-          "image": "/images/marketing/category-camping.png",
+          "image": "/images/marketing/category-camping.webp",
           "title": "Ofertas en Camping",
           "subtitle": "Carpas, bolsas de dormir, linternas y más con precios especiales",
           "ctaText": "Ver Camping",
@@ -91,7 +91,7 @@
           "ctaPrimaryHref": "/tienda?cat=Camping"
         },
         {
-          "image": "/images/marketing/hero-carousel-02-fishing-sunrise.png",
+          "image": "/images/marketing/hero-carousel-02-fishing-sunrise.webp",
           "title": "Pesca: Temporada Alta",
           "subtitle": "Equipate con las mejores cañas, señuelos y accesorios",
           "ctaText": "Ver Pesca",
@@ -100,7 +100,7 @@
           "ctaPrimaryHref": "/tienda?cat=Art%C3%ADculos%20de%20pesca"
         },
         {
-          "image": "/images/marketing/hero-carousel-03-truck-adventure.png",
+          "image": "/images/marketing/hero-carousel-03-truck-adventure.webp",
           "title": "Ruta y aventura",
           "subtitle": "Equipo outdoor, autos y moto — cargá tu próximo viaje",
           "ctaText": "Ver vehículos",
@@ -109,7 +109,7 @@
           "ctaPrimaryHref": "/tienda?cat=Ruta%20y%20Aventura"
         },
         {
-          "image": "/images/marketing/hero-carousel-04-shop-warm.png",
+          "image": "/images/marketing/hero-carousel-04-shop-warm.webp",
           "title": "Visitanos en la Tienda",
           "subtitle": "Te esperamos en Mariano Roque Alonso con atencion personalizada",
           "ctaText": "Ver tienda",
@@ -118,7 +118,7 @@
           "ctaPrimaryHref": "/tienda"
         },
         {
-          "image": "/images/marketing/hero-carousel-05-trail-wide.png",
+          "image": "/images/marketing/hero-carousel-05-trail-wide.webp",
           "title": "Paraguay te espera",
           "subtitle": "Descubrí destinos y preparate con nosotros",
           "ctaText": "Leer guías",
@@ -571,7 +571,7 @@
         "title": "Kit Camping Completo",
         "description": "Carpa 4 pers + 2 bolsas de dormir + colchon inflable. Ahorra Gs. 80.000",
         "badge": "-15%",
-        "image": "/images/marketing/promo-kit-camping.png",
+        "image": "/images/marketing/promo-kit-camping.webp",
         "ctaText": "Consultar por WhatsApp",
         "ctaHref": "https://wa.me/595984009751?text=Hola!%20Quiero%20info%20del%20Kit%20Camping%20Completo"
       },
@@ -579,7 +579,7 @@
         "title": "Combo Pesca Inicial",
         "description": "Caña + caja de herramientas + señuelos. Ideal para empezar.",
         "badge": "-10%",
-        "image": "/images/marketing/promo-combo-pesca.png",
+        "image": "/images/marketing/promo-combo-pesca.webp",
         "ctaText": "Consultar por WhatsApp",
         "ctaHref": "https://wa.me/595984009751?text=Hola!%20Quiero%20info%20del%20Combo%20Pesca%20Inicial"
       },
@@ -587,7 +587,7 @@
         "title": "Envio Gratis",
         "description": "En compras mayores a Gs. 300.000 en Asunción y area metropolitana.",
         "badge": "GRATIS",
-        "image": "/images/marketing/promo-envio-gratis.png",
+        "image": "/images/marketing/promo-envio-gratis.webp",
         "ctaText": "Ver productos",
         "ctaHref": "/tienda"
       }
@@ -856,22 +856,22 @@
           {
             "name": "Camping",
             "description": "Todo para armar el campamento perfecto",
-            "image": "/images/marketing/category-camping.png"
+            "image": "/images/marketing/category-camping.webp"
           },
           {
             "name": "Pesca",
             "description": "Tecnicas, señuelos y equipamiento",
-            "image": "/images/marketing/category-pesca.png"
+            "image": "/images/marketing/category-pesca.webp"
           },
           {
             "name": "Aventura",
             "description": "Destinos y tips para explorar Paraguay",
-            "image": "/images/marketing/blog-cat-aventura.png"
+            "image": "/images/marketing/blog-cat-aventura.webp"
           },
           {
             "name": "Mantenimiento",
             "description": "Cuidado y reparacion de tu equipo",
-            "image": "/images/marketing/blog-cat-mantenimiento.png"
+            "image": "/images/marketing/blog-cat-mantenimiento.webp"
           }
         ],
         "posts": [
@@ -881,7 +881,7 @@
             "category": "Camping",
             "excerpt": "Tipos de carpa, materiales, capacidad y presupuesto. Todo lo que necesitas saber para acertar en tu compra.",
             "date": "2026-04-15",
-            "image": "/images/marketing/blog-post-guia-carpa.png",
+            "image": "/images/marketing/blog-post-guia-carpa.webp",
             "author": "Equipo El Viajero"
           },
           {
@@ -890,7 +890,7 @@
             "category": "Pesca",
             "excerpt": "Descubri los mejores rios y lagunas para pescar en Paraguay. Tips por temporada y especies.",
             "date": "2026-04-10",
-            "image": "/images/marketing/blog-post-lugares-pesca.png",
+            "image": "/images/marketing/blog-post-lugares-pesca.webp",
             "author": "Equipo El Viajero"
           },
           {
@@ -899,7 +899,7 @@
             "category": "Camping",
             "excerpt": "No te olvides de nada. Checklist completa de equipo esencial para tu proxima acampada.",
             "date": "2026-04-05",
-            "image": "/images/marketing/blog-post-checklist-camping.png",
+            "image": "/images/marketing/blog-post-checklist-camping.webp",
             "author": "Equipo El Viajero"
           },
           {
@@ -908,7 +908,7 @@
             "category": "Pesca",
             "excerpt": "Materiales, longitudes, accion y mas. Guia para principiantes y expertos.",
             "date": "2026-03-28",
-            "image": "/images/marketing/blog-post-elegir-cana.png",
+            "image": "/images/marketing/blog-post-elegir-cana.webp",
             "author": "Equipo El Viajero"
           },
           {
@@ -917,7 +917,7 @@
             "category": "Mantenimiento",
             "excerpt": "Como limpiar y guardar tu carpa, bolsa de dormir y demas equipo para que duren años.",
             "date": "2026-03-20",
-            "image": "/images/marketing/blog-post-mantenimiento-camping.png",
+            "image": "/images/marketing/blog-post-mantenimiento-camping.webp",
             "author": "Equipo El Viajero"
           },
           {
@@ -926,7 +926,7 @@
             "category": "Aventura",
             "excerpt": "Saltos del Monday, Cerro Cora, San Bernardino y mas. Planifica tu proxima escapada.",
             "date": "2026-03-15",
-            "image": "/images/marketing/blog-post-destinos-paraguay.png",
+            "image": "/images/marketing/blog-post-destinos-paraguay.webp",
             "author": "Equipo El Viajero"
           }
         ]
