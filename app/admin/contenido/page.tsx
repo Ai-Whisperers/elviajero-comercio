@@ -236,6 +236,18 @@ function ContentEditor() {
   // Keep the old save as an alias for backward compat
   const save = saveDraft
 
+  /** Seed the array from defaultContent if the override path doesn't exist yet. */
+  const seedArray = (obj: any, parts: string[]): any[] => {
+    const existing = obj[parts[parts.length - 1]]
+    if (Array.isArray(existing)) return [...existing]
+    let def: any = defaultContent
+    for (const pp of parts) {
+      if (def?.[pp] === undefined) { def = undefined; break }
+      def = def[pp]
+    }
+    return Array.isArray(def) ? JSON.parse(JSON.stringify(def)) : []
+  }
+
   const addArrayItem = (path: string, template: any) => {
     setOverrides((prev: any) => {
       const parts = path.split(".")
@@ -245,7 +257,7 @@ function ContentEditor() {
         if (!obj[parts[i]]) obj[parts[i]] = {}
         obj = obj[parts[i]]
       }
-      const arr = obj[parts[parts.length - 1]] || []
+      const arr = seedArray(obj, parts)
       obj[parts[parts.length - 1]] = [...arr, template]
       return clone
     })
@@ -257,13 +269,11 @@ function ContentEditor() {
       const clone = JSON.parse(JSON.stringify(prev))
       let obj = clone
       for (let i = 0; i < parts.length - 1; i++) {
-        if (!obj[parts[i]]) return prev
+        if (!obj[parts[i]]) obj[parts[i]] = {}
         obj = obj[parts[i]]
       }
-      const arr = obj[parts[parts.length - 1]]
-      if (Array.isArray(arr)) {
-        obj[parts[parts.length - 1]] = arr.filter((_: any, i: number) => i !== index)
-      }
+      const arr = seedArray(obj, parts)
+      obj[parts[parts.length - 1]] = arr.filter((_: any, i: number) => i !== index)
       return clone
     })
   }
@@ -277,7 +287,7 @@ function ContentEditor() {
         if (!obj[parts[i]]) obj[parts[i]] = {}
         obj = obj[parts[i]]
       }
-      const arr = [...(obj[parts[parts.length - 1]] || [])]
+      const arr = seedArray(obj, parts)
       if (field === "" || field === null) {
         arr[index] = value
       } else {
