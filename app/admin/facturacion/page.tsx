@@ -1,4 +1,6 @@
 "use client"
+export const dynamic = 'force-dynamic'
+
 import { adminFetch } from "@/lib/admin-fetch"
 import { useAdminAuth } from "@/components/admin/admin-layout"
 import { useState, useEffect } from "react"

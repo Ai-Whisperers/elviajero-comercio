@@ -9,3 +9,4 @@ node_modules/
 dist/
 *.tsbuildinfo
 test-results/
+.auth/admin.json
