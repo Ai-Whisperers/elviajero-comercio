@@ -95,18 +95,18 @@
           "title": "Pesca: Temporada Alta",
           "subtitle": "Equipate con las mejores cañas, señuelos y accesorios",
           "ctaText": "Ver Pesca",
-          "ctaHref": "/tienda?cat=Pesca",
+          "ctaHref": "/tienda?cat=Art%C3%ADculos%20de%20pesca",
           "ctaPrimaryText": "Ver Pesca",
-          "ctaPrimaryHref": "/tienda?cat=Pesca"
+          "ctaPrimaryHref": "/tienda?cat=Art%C3%ADculos%20de%20pesca"
         },
         {
           "image": "/images/marketing/hero-carousel-03-truck-adventure.png",
           "title": "Ruta y aventura",
           "subtitle": "Equipo outdoor, autos y moto — cargá tu próximo viaje",
           "ctaText": "Ver vehículos",
-          "ctaHref": "/tienda?cat=Accesorios%20para%20veh%C3%ADculos",
-          "ctaPrimaryText": "Ver vehículos",
-          "ctaPrimaryHref": "/tienda?cat=Accesorios%20para%20veh%C3%ADculos"
+          "ctaHref": "/tienda?cat=Ruta%20y%20Aventura",
+          "ctaPrimaryText": "Ver Ruta y Aventura",
+          "ctaPrimaryHref": "/tienda?cat=Ruta%20y%20Aventura"
         },
         {
           "image": "/images/marketing/hero-carousel-04-shop-warm.png",
@@ -215,11 +215,11 @@
       "title": "El Viajero en Numeros",
       "items": [
         {
-          "value": "5",
+          "value": "4",
           "label": "Categorías"
         },
         {
-          "value": "35+",
+          "value": "80+",
           "label": "Productos"
         },
         {
@@ -304,7 +304,18 @@
         ],
         "camping": [],
         "articulosdepesca": [],
-        "exploracionytactico": []
+        "exploracionytactico": [
+          {
+            "name": "Mochilas tácticas",
+            "slug": "mochilas-tacticas",
+            "description": "Mochilas de exploración y uso táctico"
+          },
+          {
+            "name": "Equipo táctico",
+            "slug": "equipo-tactico",
+            "description": "Equipo táctico y de exploración"
+          }
+        ]
       }
     }
   },
@@ -327,7 +338,7 @@
       },
       {
         "title": "Variedad",
-        "description": "Seis categorias con mas de 500 productos para que encuentres todo en un solo lugar."
+        "description": "Cuatro categorias con mas de 80 productos para que encuentres todo en un solo lugar."
       },
       {
         "title": "Pasion por la Aventura",
