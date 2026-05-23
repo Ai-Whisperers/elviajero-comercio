@@ -713,14 +713,14 @@
     "logoUrlPng": "/images/logo-v2.webp",
     "faviconUrl": "/favicon.svg",
     "faviconUrlPng": "/images/favicon-v2.webp",
-    "ogImage": "/images/og-viajero.png"
+    "ogImage": "/images/og-viajero.webp"
   },
   "layoutMetadata": {
     "title": "El Viajero — Tu Aventura Empieza Acá",
     "description": "Camping, pesca, accesorios para auto y moto, equipo outdoor. Todo para tu aventura en Paraguay.",
     "ogTitle": "El Viajero",
     "ogDescription": "Tu aventura empieza acá",
-    "ogImage": "/images/og-viajero.png",
+    "ogImage": "/images/og-viajero.webp",
     "schemaName": "El Viajero",
     "schemaDescription": "Tienda de camping, pesca, accesorios outdoor y más en Paraguay.",
     "schemaTelephone": "+595 984 009751",
