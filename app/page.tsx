@@ -84,23 +84,21 @@ function HomePage() {
 
   return (
     <>
-      <DebugPanel h={h} />
+      {process.env.NODE_ENV === "development" && <DebugPanel h={h} />}
 
       <PromoCarousel />
       <HeroCarousel />
 
-      <section data-section="stats" style={{background:"#e8f5e9",padding:"2rem",textAlign:"center"}}>
-        <h2 style={{color:"green"}}>STATS SECTION (stats={stats.length})</h2>
-        <p>stats data: {JSON.stringify(stats).slice(0,200)}</p>
-      </section>
+      {process.env.NODE_ENV === "development" && (
+        <section data-section="stats" style={{background:"#e8f5e9",padding:"2rem",textAlign:"center"}}>
+          <h2 style={{color:"green"}}>STATS SECTION (stats={stats.length})</h2>
+          <p>stats data: {JSON.stringify(stats).slice(0,200)}</p>
+        </section>
+      )}
 
       {stats.length > 0 ? (
         <StatsSection stats={stats} />
-      ) : (
-        <div style={{background:"#ffcccc",padding:"1rem",textAlign:"center"}}>
-          <strong>StatsSection HIDDEN - stats.length = 0</strong>
-        </div>
-      )}
+      ) : null}
 
       {kits.length > 0 && (
         <KitsHorizontalCarousel kits={kits} title={kitsCarousel.title || "Kits y Promociones"} />
@@ -134,29 +132,17 @@ function HomePage() {
 
       {features.length > 0 ? (
         <FeaturesSection features={features} title={h.features?.title || "¿Por qué elegir El Viajero?"} />
-      ) : (
-        <div style={{background:"#ffcccc",padding:"1rem",textAlign:"center"}}>
-          <strong>FeaturesSection HIDDEN - features.length = 0</strong>
-        </div>
-      )}
+      ) : null}
 
       {testimonials.length > 0 ? (
         <TestimonialsSection testimonials={testimonials} />
-      ) : (
-        <div style={{background:"#ffcccc",padding:"1rem",textAlign:"center"}}>
-          <strong>TestimonialsSection HIDDEN - testimonials.length = 0</strong>
-        </div>
-      )}
+      ) : null}
 
       <PaymentMethodsSection installmentsText="Hasta 12 cuotas con tarjetas selectas" />
 
       {h.finalCta ? (
         <FinalCtaSection finalCta={h.finalCta} />
-      ) : (
-        <div style={{background:"#ffcccc",padding:"1rem",textAlign:"center"}}>
-          <strong>FinalCtaSection HIDDEN - no finalCta</strong>
-        </div>
-      )}
+      ) : null}
 
       <section className="bg-gradient-to-r from-primary/90 to-accent/90 py-10">
         <div className="mx-auto max-w-2xl px-4 text-center">
