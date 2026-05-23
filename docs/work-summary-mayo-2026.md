@@ -154,3 +154,65 @@ docker stack deploy -c docker-compose.yml elviajero --with-registry-auth
 1. **Panel admin /admin/contenido** — No muestra la interfaz de editor de secciones (solo header y footer visibles)
 2. **Supabase overrides** — Cuando Supabase retorna `{}`, verificar que el deep merge preserve los defaults de content/es.json
 3. **Stats/Testimonials/Features** — Necesitan verificarse en producción después del deploy
+
+---
+
+## Session 3: AI Product Images (22 Mayo 2026)
+
+### Problema
+3 productos tenían fotos con fondos naturales (suelo, rocas, manos visibles) que no combinaban con el fondo blanco (`bg-white`) del componente `ProductCard`.
+
+### Productos Afectados
+1. **Carpa camping 2 personas** (`fa1d61ea`) — fondo de pasto/suelo
+2. **Brujula con regla jm232** (`1KkRBH8G`) — fondo con rocas/manos
+3. **Carrete ril con vara rojo y blanco** (`5947d489`) — fondo natural con vara visible
+
+### Solución
+- Usamos FAL API (Flux Schnell) para generar imágenes AI con fondo blanco puro `#FFFFFF`
+- Prompt: producto aislado, fotografía profesional de estudio, centrado, sin sombras ni reflejos
+- 5 imágenes generadas (3 para productos + 2 extra: brújula jm426 y cámara acuática)
+
+### Imágenes Subidas
+- `fa1d61ea-46d6-4901-82fe-9058b99c8df0.png` — carpa (36KB)
+- `89a7afdc-e438-45c1-a642-401683716370.png` — brújula jm232 (67KB)
+- `5947d489-77cf-493c-9819-47ccb98141c6.png` — carrete (34KB)
+
+Storage: `ej_product_images` bucket en Supabase (público)
+DB: `ej_products.image_url` actualizado para cada producto
+Estado: ✅ Imágenes verificadas como públicamente accesibles
+
+---
+
+## Session 4: Mass AI Image Generation — All 80 Products (22 Mayo 2026)
+
+### Objetivo
+Generar imágenes AI para todos los productos de El Viajero que no tenían foto, manteniendo fondo blanco consistente.
+
+### Ejecución
+- Usamos FAL API (Flux Schnell) para generar imágenes en lotes de 5
+- 68 productos sin imagen → AI generados con fondo blanco `#FFFFFF`
+- 12 productos ya tenían imágenes → se conservaron
+- **Total: 80/80 productos con imagen**
+
+### Pipeline
+1. Script Python que lee productos de Supabase
+2. Envía 5 prompts en paralelo a FAL queue
+3. Espera resultados y descarga cada imagen
+4. Sube a Supabase Storage bucket `ej_product_images`
+5. Actualiza `image_url` en tabla `ej_products`
+
+### Prompt Template
+```
+[product description], isolated on pure white background #FFFFFF,
+professional product photography studio lighting centered no shadows
+no reflections clean e-commerce style
+```
+
+### Resultados
+- 73 imágenes .png generadas y subidas (incluye 5 extra de sesión anterior)
+- Rango de tamaños: 12KB — 92KB
+- Todas verificadas: HTTP 200 en Storage
+- DB actualizada: 80 productos con `image_url` poblado
+
+### Estado Final
+✅ Todos los productos en tiendaelviajero.com.py tienen imagen con fondo blanco

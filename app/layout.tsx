@@ -21,7 +21,16 @@ export const metadata: Metadata = {
   metadataBase: new URL(base),
   title: m.title || "El Viajero — Tu Aventura Empieza Acá",
   description: m.description || "Camping, pesca, accesorios para auto y moto, equipo outdoor.",
-  icons: { icon: "/favicon.svg", apple: "/favicon.svg" },
+  icons: {
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico", sizes: "32x32" },
+      { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+  },
   manifest: "/manifest.json",
   appleWebApp: { capable: true, statusBarStyle: "black-translucent" },
   openGraph: {
