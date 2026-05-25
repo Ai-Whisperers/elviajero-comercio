@@ -74,7 +74,12 @@ function HomePage() {
 
   useEffect(() => {
     fetch("/api/home").then(r => r.json()).then(json => {
-      setDbProducts(json.products || [])
+      const normalized = (json.products || []).map((p: any) => ({
+        ...p,
+        imageUrl: p.image_url || null,
+        priceBefore: p.price_before || null,
+      }))
+      setDbProducts(normalized)
       setLoaded(true)
     }).catch(() => setLoaded(true))
   }, [])
@@ -130,13 +135,43 @@ function HomePage() {
         </div>
       </section>
 
-      {features.length > 0 ? (
+      {loaded && featuredProducts.length > 0 && (
+        <section className="bg-background py-10">
+          <div className="mx-auto max-w-7xl px-4">
+            <FadeUp>
+              <h2 className="mb-6 text-center text-2xl font-bold text-foreground">Productos Destacados</h2>
+            </FadeUp>
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+              {featuredProducts.slice(0, 8).map((product: any) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {loaded && newArrivals.length > 0 && (
+        <section className="bg-background py-10">
+          <div className="mx-auto max-w-7xl px-4">
+            <FadeUp>
+              <h2 className="mb-6 text-center text-2xl font-bold text-foreground">Productos Nuevos</h2>
+            </FadeUp>
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+              {newArrivals.slice(0, 8).map((product: any) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* features.length > 0 ? (
         <FeaturesSection features={features} title={h.features?.title || "¿Por qué elegir El Viajero?"} />
-      ) : null}
+      ) : null
 
       {testimonials.length > 0 ? (
         <TestimonialsSection testimonials={testimonials} />
-      ) : null}
+      ) : null */}
 
       <PaymentMethodsSection installmentsText="Hasta 12 cuotas con tarjetas selectas" />
 

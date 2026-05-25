@@ -53,6 +53,7 @@ export function SafeImage({ src, alt, width = 400, height = 300, fill, className
         onLoad={() => setLoaded(true)}
         onError={() => setError(true)}
         priority={priority}
+        unoptimized
       />
     </div>
   )

@@ -19,7 +19,7 @@ async function sendWhatsApp(to: string, message: string) {
 }
 
 async function recoverCarts() {
-  const supabase = createClient(c.supabase.url, process.env.SUPABASE_SERVICE_ROLE_KEY!, { auth: { persistSession: false } })
+  const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!, { auth: { persistSession: false } })
   const hourAgo = new Date(Date.now() - 3600000).toISOString()
   
   const { data: carts } = await supabase
@@ -40,7 +40,7 @@ async function recoverCarts() {
 }
 
 async function dailyBriefing() {
-  const supabase = createClient(c.supabase.url, process.env.SUPABASE_SERVICE_ROLE_KEY!, { auth: { persistSession: false } })
+  const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!, { auth: { persistSession: false } })
   const today = new Date().toISOString().split('T')[0]
   const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0]
 
