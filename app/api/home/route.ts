@@ -4,14 +4,7 @@ import { createAdminClient } from "@ai-whisperers/auth/supabase/admin"
 export async function GET() {
   const supabase = createAdminClient()
 
-  const { data: products, error } = await supabase
-    .from("ej_products")
-    .select("id, name, slug, price, price_before, image_url, brand, category, subcategory, stock, is_new, featured")
-    .order("created_at", { ascending: false })
-
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
-
-  // Load categories directly from ej_categories table
+  // Load categories and products in parallel from ej_categories + ej_subcategories
   const [categoriesData, productsData] = await Promise.all([
     supabase.from("ej_categories")
       .select("id, name, slug, description, image_url, order_index, active")
@@ -22,8 +15,8 @@ export async function GET() {
       .order("created_at", { ascending: false }),
   ])
 
-  const products = productsData.data || []
   const allProductsData = productsData.data || []
+  const products = allProductsData
 
   // Load subcategories from ej_subcategories table
   const { data: allSubcategories } = await supabase
@@ -52,7 +45,7 @@ export async function GET() {
   }))
 
   // Cat names for any legacy code that still expects string arrays
-  const catNames = [...new Set(products.map((p: any) => p.category).filter(Boolean))].sort()
+  const catNames = [...new Set((productsData.data || []).map((p: any) => p.category).filter(Boolean))].sort()
   // Fallback categories from product data (if ej_categories is empty)
   if (categories.length === 0 && catNames.length > 0) {
     categories.push(...catNames.map(name => ({
