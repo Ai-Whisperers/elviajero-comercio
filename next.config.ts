@@ -10,6 +10,7 @@ const securityHeaders = [
 ]
 
 const config: NextConfig = {
+  transpilePackages: ["@ai-whisperers"],
   async headers() {
     return [
       { source: '/(.*)', headers: securityHeaders },

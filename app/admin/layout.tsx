@@ -1,5 +1,5 @@
-import { AdminShell } from "@/components/admin/admin-layout"
+import { AdminLayout } from "@ai-whisperers/admin"
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  return <AdminShell>{children}</AdminShell>
+export default function AdminLayoutWrapper({ children }: { children: React.ReactNode }) {
+  return <AdminLayout>{children}</AdminLayout>
 }

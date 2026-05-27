@@ -2,10 +2,7 @@
   "name": "elviajero",
   "version": "1.0.0",
   "private": true,
-  "workspaces": [
-    "packages/auth",
-    "packages/commerce"
-  ],
+
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -18,8 +15,26 @@
     "e2e:staging": "E2E_BASE_URL=https://tiendaelviajero.com.py playwright test"
   },
   "dependencies": {
+    "@ai-whisperers/abandoned-cart": "^0.1.0",
+    "@ai-whisperers/admin": "^0.3.0",
     "@ai-whisperers/auth": "^0.2.0",
+    "@ai-whisperers/catalog": "^0.2.0",
+    "@ai-whisperers/checkout": "^0.2.0",
     "@ai-whisperers/commerce": "^0.2.0",
+    "@ai-whisperers/commerce-b2b": "^0.1.0",
+    "@ai-whisperers/content": "^0.1.0",
+    "@ai-whisperers/i18n": "^0.2.0",
+    "@ai-whisperers/loyalty": "^0.1.0",
+    "@ai-whisperers/payments": "^0.3.0",
+    "@ai-whisperers/product": "^0.2.0",
+    "@ai-whisperers/sections": "^0.1.0",
+    "@ai-whisperers/seo": "^0.2.0",
+    "@ai-whisperers/supabase": "^0.1.0",
+    "@ai-whisperers/theme": "^0.2.0",
+    "@ai-whisperers/ui": "^0.4.0",
+    "@ai-whisperers/ui-extras": "^0.2.0",
+    "@ai-whisperers/whatsapp": "^0.2.0",
+    "@ai-whisperers/whatsapp-ai": "^0.1.0",
     "@radix-ui/react-dialog": "^1.1.15",
     "@radix-ui/react-dropdown-menu": "^2.1.16",
     "@radix-ui/react-popover": "^1.1.15",
